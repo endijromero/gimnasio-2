@@ -14,26 +14,23 @@ import javax.swing.JOptionPane;
  * @author rodolfo
  */
 public class Principal {
-    
-    public Principal(){
-        
+
+    public Principal() {
+
     }
-    
+
     /**
-     * 
-     * @param login 
-     * @param user 
-     * @param password 
+     *
+     * @param login
+     * @param user
+     * @param password
      */
-    public static void cambiarFrame(frmLogin login, 
-                                    String user, 
-                                    String password){
+    public static void cambiarFrame(frmLogin login,
+            String user,
+            String password) {
         frmPrincipal principal = new frmPrincipal();
         login.setVisible(false);
         principal.setVisible(true);
     }
-    
+
 }
-
-
-

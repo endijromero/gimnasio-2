@@ -5,13 +5,15 @@
  */
 package com.gimnasio.views;
 
-import javax.swing.JFrame;
+import com.gimnasio.model.UsuariosDto;
 
 /**
  *
  * @author rodolfo
  */
 public class frmPrincipal extends javax.swing.JFrame {
+
+    private UsuariosDto usuarioSesion;
     private frmPaquetes paqueteView;
     private frmDescuentos descuentoView;
     private frmProductos productoView;
@@ -26,10 +28,10 @@ public class frmPrincipal extends javax.swing.JFrame {
         //this.setLocationRelativeTo(null);  
         //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setSize(1250, 700);
-        
+
         this.paqueteView = null;
         this.descuentoView = null;
-        this.productoView = null;  
+        this.productoView = null;
         this.buscarClienteView = null;
         this.clienteView = null;
     }
@@ -204,7 +206,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.paqueteView = new frmPaquetes();
         this.dstPrincipal.add(this.paqueteView);
 
-        this.paqueteView.setSize(this.getWidth()-15, 650);
+        this.paqueteView.setSize(this.getWidth() - 15, 650);
         this.paqueteView.setResizable(true);
         this.paqueteView.setClosable(true);
         this.paqueteView.setVisible(true);
@@ -215,11 +217,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.productoView = new frmProductos();
         this.dstPrincipal.add(this.productoView);
 
-        this.productoView.setSize(this.getWidth()-15, this.getHeight()-10);
+        this.productoView.setSize(this.getWidth() - 15, this.getHeight() - 10);
         this.productoView.setResizable(true);
         this.productoView.setClosable(true);
         this.productoView.setVisible(true);
-        
+
     }//GEN-LAST:event_menuProductosActionPerformed
 
     private void menuDescuentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDescuentosActionPerformed
@@ -227,7 +229,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.descuentoView = new frmDescuentos();
         this.dstPrincipal.add(this.descuentoView);
 
-        this.descuentoView.setSize(this.getWidth()-15, this.getHeight()-10);
+        this.descuentoView.setSize(this.getWidth() - 15, this.getHeight() - 10);
         this.descuentoView.setResizable(true);
         this.descuentoView.setClosable(true);
         this.descuentoView.setVisible(true);
@@ -239,7 +241,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void menuClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuClienteActionPerformed
         // TODO add your handling code here:
-       
+
     }//GEN-LAST:event_menuClienteActionPerformed
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
@@ -248,12 +250,12 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void menuClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuClienteMouseClicked
         // TODO add your handling code here:
-       
+
     }//GEN-LAST:event_menuClienteMouseClicked
 
     private void menuClienteMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_menuClienteMenuSelected
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_menuClienteMenuSelected
 
     private void menuCrear_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCrear_clienteActionPerformed
@@ -261,7 +263,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.clienteView = new frmCliente();
         this.dstPrincipal.add(this.clienteView);
 
-        this.clienteView.setSize(this.getWidth()-15, this.getHeight()-10);
+        this.clienteView.setSize(this.getWidth() - 15, this.getHeight() - 10);
         this.clienteView.setResizable(true);
         this.clienteView.setClosable(true);
         this.clienteView.setVisible(true);
@@ -272,10 +274,10 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.buscarClienteView = new frmBuscarCliente();
         this.dstPrincipal.add(this.buscarClienteView);
 
-        this.buscarClienteView.setSize(this.getWidth()-15, this.getHeight()-10);
+        this.buscarClienteView.setSize(this.getWidth() - 15, this.getHeight() - 10);
         this.buscarClienteView.setResizable(true);
         this.buscarClienteView.setClosable(true);
-        this.buscarClienteView.setVisible(true);        
+        this.buscarClienteView.setVisible(true);
     }//GEN-LAST:event_menuBuscar_clienteActionPerformed
 
     /**
@@ -310,7 +312,7 @@ public class frmPrincipal extends javax.swing.JFrame {
             public void run() {
                 frmPrincipal principal = new frmPrincipal();
                 principal.setVisible(true);
-                principal.setLocationRelativeTo(null);      
+                principal.setLocationRelativeTo(null);
             }
         });
     }

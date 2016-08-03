@@ -7,6 +7,13 @@
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/gimnasio?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">emi_*2605</property>
-    <mapping resource="com/gimnasio/model/Persona.hbm.xml"/>
+    <mapping resource="com/gimnasio/model/ClientePaquete.hbm.xml"/>
+    <mapping resource="com/gimnasio/model/Pagos.hbm.xml"/>
+    <mapping resource="com/gimnasio/model/Ingresos.hbm.xml"/>
+    <mapping resource="com/gimnasio/model/Paquetes.hbm.xml"/>
+    <mapping resource="com/gimnasio/model/Clientes.hbm.xml"/>
+    <mapping resource="com/gimnasio/model/Usuarios.hbm.xml"/>
+    <mapping resource="com/gimnasio/model/Personas.hbm.xml"/>
+    <mapping resource="com/gimnasio/model/Descuentos.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

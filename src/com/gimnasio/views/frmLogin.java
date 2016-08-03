@@ -126,7 +126,7 @@ public class frmLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtUserActionPerformed
 
     private void txtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCancelarActionPerformed
@@ -135,11 +135,13 @@ public class frmLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCancelarActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO add your handling code here:
-        if(this.txtUser.getText().equals("") || this.txtPassword.getText().equals("") ) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar un Usario Y contraseña","Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE); //Tipo de mensaje
+        if (this.txtUser.getText().equals("") || this.txtPassword.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar un usario y contraseña", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE); //Tipo de mensaje            
         } else {
-            Principal.cambiarFrame(this, this.txtUser.getText(), this.txtPassword.getText());
+            frmPrincipal principal = new frmPrincipal();
+            // principal.setUsuarioSesion
+            principal.setTitle("Titulo");
+            principal.setVisible(true);
         }
 
     }//GEN-LAST:event_btnLoginActionPerformed
@@ -180,9 +182,8 @@ public class frmLogin extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                frmLogin login = new frmLogin();
-                login.setVisible(true);
-                               
+                new frmLogin().setVisible(true);
+
             }
         });
     }
