@@ -22,8 +22,9 @@ public class frmPrincipal extends javax.swing.JFrame {
      */
     public frmPrincipal() {
         initComponents();
-        this.setLocationRelativeTo(null);  
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //this.setLocationRelativeTo(null);  
+        //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setSize(1250, 700);
         
         this.paqueteView = null;
         this.descuentoView = null;
@@ -54,6 +55,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuCafeteria = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -166,6 +168,10 @@ public class frmPrincipal extends javax.swing.JFrame {
         jMenu5.setText("Fisioterapia");
         jMenuBar1.add(jMenu5);
 
+        jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/file-powerpoint-icon.png"))); // NOI18N
+        jMenu2.setText("Reportes");
+        jMenuBar1.add(jMenu2);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -187,7 +193,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.paqueteView = new frmPaquetes();
         this.dstPrincipal.add(this.paqueteView);
 
-        this.paqueteView.setSize(this.getWidth()-15, this.getHeight()-10);
+        this.paqueteView.setSize(this.getWidth()-15, 650);
         this.paqueteView.setResizable(true);
         this.paqueteView.setClosable(true);
         this.paqueteView.setVisible(true);
@@ -290,6 +296,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane dstPrincipal;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
