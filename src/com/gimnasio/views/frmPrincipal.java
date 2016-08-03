@@ -15,7 +15,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmPaquetes paqueteView;
     private frmDescuentos descuentoView;
     private frmProductos productoView;
-    private frmCliente clienteView;
+    private frmBuscarCliente clienteView;
 
     /**
      * Creates new form frmPrincipal
@@ -50,6 +50,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuProductos = new javax.swing.JMenuItem();
         menuCliente = new javax.swing.JMenu();
         menuCrear_cliente = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         menuPagos = new javax.swing.JMenuItem();
         menuCafeteria = new javax.swing.JMenuItem();
@@ -138,6 +139,15 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
         menuCliente.add(menuCrear_cliente);
+
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Zoom-icon.png"))); // NOI18N
+        jMenuItem1.setText("Buscar");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        menuCliente.add(jMenuItem1);
 
         jMenuBar1.add(menuCliente);
 
@@ -247,14 +257,19 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void menuCrear_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCrear_clienteActionPerformed
         // TODO add your handling code here:
-        this.clienteView = new frmCliente();
+        
+    }//GEN-LAST:event_menuCrear_clienteActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        this.clienteView = new frmBuscarCliente();
         this.dstPrincipal.add(this.clienteView);
 
         this.clienteView.setSize(this.getWidth()-15, this.getHeight()-10);
         this.clienteView.setResizable(true);
         this.clienteView.setClosable(true);
         this.clienteView.setVisible(true);
-    }//GEN-LAST:event_menuCrear_clienteActionPerformed
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -301,6 +316,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem menuCafeteria;
     private javax.swing.JMenu menuCliente;
     private javax.swing.JMenuItem menuCrear_cliente;
