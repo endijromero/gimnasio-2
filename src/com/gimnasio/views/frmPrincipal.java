@@ -15,7 +15,8 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmPaquetes paqueteView;
     private frmDescuentos descuentoView;
     private frmProductos productoView;
-    private frmBuscarCliente clienteView;
+    private frmBuscarCliente buscarClienteView;
+    private frmCliente clienteView;
 
     /**
      * Creates new form frmPrincipal
@@ -28,8 +29,8 @@ public class frmPrincipal extends javax.swing.JFrame {
         
         this.paqueteView = null;
         this.descuentoView = null;
-        this.productoView = null;
-        
+        this.productoView = null;  
+        this.buscarClienteView = null;
         this.clienteView = null;
     }
 
@@ -50,7 +51,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuProductos = new javax.swing.JMenuItem();
         menuCliente = new javax.swing.JMenu();
         menuCrear_cliente = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        menuBuscar_cliente = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         menuPagos = new javax.swing.JMenuItem();
         menuCafeteria = new javax.swing.JMenuItem();
@@ -140,14 +141,14 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         menuCliente.add(menuCrear_cliente);
 
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Zoom-icon.png"))); // NOI18N
-        jMenuItem1.setText("Buscar");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        menuBuscar_cliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Zoom-icon.png"))); // NOI18N
+        menuBuscar_cliente.setText("Buscar");
+        menuBuscar_cliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                menuBuscar_clienteActionPerformed(evt);
             }
         });
-        menuCliente.add(jMenuItem1);
+        menuCliente.add(menuBuscar_cliente);
 
         jMenuBar1.add(menuCliente);
 
@@ -257,19 +258,25 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void menuCrear_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCrear_clienteActionPerformed
         // TODO add your handling code here:
-        
-    }//GEN-LAST:event_menuCrear_clienteActionPerformed
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-        this.clienteView = new frmBuscarCliente();
+        this.clienteView = new frmCliente();
         this.dstPrincipal.add(this.clienteView);
 
         this.clienteView.setSize(this.getWidth()-15, this.getHeight()-10);
         this.clienteView.setResizable(true);
         this.clienteView.setClosable(true);
         this.clienteView.setVisible(true);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_menuCrear_clienteActionPerformed
+
+    private void menuBuscar_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBuscar_clienteActionPerformed
+        // TODO add your handling code here:
+        this.buscarClienteView = new frmBuscarCliente();
+        this.dstPrincipal.add(this.buscarClienteView);
+
+        this.buscarClienteView.setSize(this.getWidth()-15, this.getHeight()-10);
+        this.buscarClienteView.setResizable(true);
+        this.buscarClienteView.setClosable(true);
+        this.buscarClienteView.setVisible(true);        
+    }//GEN-LAST:event_menuBuscar_clienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -316,7 +323,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem menuBuscar_cliente;
     private javax.swing.JMenuItem menuCafeteria;
     private javax.swing.JMenu menuCliente;
     private javax.swing.JMenuItem menuCrear_cliente;
