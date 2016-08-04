@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated ago 2, 2016 10:46:45 p.m. by Hibernate Tools 4.3.1 -->
+<!-- Generated ago 3, 2016 8:37:58 p.m. by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.gimnasio.model.Descuentos" table="descuentos" catalog="gimnasio" optimistic-lock="version">
+    <class name="com.gimnasio.persistences.Descuentos" table="descuentos" catalog="gimnasio" optimistic-lock="version">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
@@ -22,7 +22,7 @@
             <key>
                 <column name="descuento_id" />
             </key>
-            <one-to-many class="com.gimnasio.model.ClientePaquete" />
+            <one-to-many class="com.gimnasio.persistences.ClientePaquete" />
         </set>
     </class>
 </hibernate-mapping>

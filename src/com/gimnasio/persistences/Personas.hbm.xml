@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated ago 2, 2016 10:46:45 p.m. by Hibernate Tools 4.3.1 -->
+<!-- Generated ago 3, 2016 8:37:58 p.m. by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.gimnasio.model.Personas" table="personas" catalog="gimnasio" optimistic-lock="version">
+    <class name="com.gimnasio.persistences.Personas" table="personas" catalog="gimnasio" optimistic-lock="version">
         <id name="id" type="long">
             <column name="id" />
             <generator class="assigned" />
@@ -100,7 +100,7 @@
             <key>
                 <column name="persona_id" not-null="true" />
             </key>
-            <one-to-many class="com.gimnasio.model.Clientes" />
+            <one-to-many class="com.gimnasio.persistences.Clientes" />
         </set>
         <set name="usuarioses" table="usuarios" inverse="true" lazy="true" fetch="select">
             <key>
@@ -108,7 +108,7 @@
                     <comment>Id de la persona</comment>
                 </column>
             </key>
-            <one-to-many class="com.gimnasio.model.Usuarios" />
+            <one-to-many class="com.gimnasio.persistences.Usuarios" />
         </set>
     </class>
 </hibernate-mapping>

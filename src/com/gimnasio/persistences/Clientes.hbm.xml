@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated ago 2, 2016 10:46:45 p.m. by Hibernate Tools 4.3.1 -->
+<!-- Generated ago 3, 2016 8:37:58 p.m. by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.gimnasio.model.Clientes" table="clientes" catalog="gimnasio" optimistic-lock="version">
+    <class name="com.gimnasio.persistences.Clientes" table="clientes" catalog="gimnasio" optimistic-lock="version">
         <id name="id" type="long">
             <column name="id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="personas" class="com.gimnasio.model.Personas" fetch="select">
+        <many-to-one name="personas" class="com.gimnasio.persistences.Personas" fetch="select">
             <column name="persona_id" not-null="true" />
         </many-to-one>
         <property name="peso" type="big_decimal">
@@ -38,7 +38,7 @@
                     <comment>Id del cliente</comment>
                 </column>
             </key>
-            <one-to-many class="com.gimnasio.model.ClientePaquete" />
+            <one-to-many class="com.gimnasio.persistences.ClientePaquete" />
         </set>
     </class>
 </hibernate-mapping>

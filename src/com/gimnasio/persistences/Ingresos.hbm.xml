@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated ago 2, 2016 10:46:45 p.m. by Hibernate Tools 4.3.1 -->
+<!-- Generated ago 3, 2016 8:37:58 p.m. by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.gimnasio.model.Ingresos" table="ingresos" catalog="gimnasio" optimistic-lock="version">
+    <class name="com.gimnasio.persistences.Ingresos" table="ingresos" catalog="gimnasio" optimistic-lock="version">
         <id name="id" type="long">
             <column name="id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="usuarios" class="com.gimnasio.model.Usuarios" fetch="select">
+        <many-to-one name="usuarios" class="com.gimnasio.persistences.Usuarios" fetch="select">
             <column name="usuario_id" not-null="true">
                 <comment>Id del usuario que registra el ingreso</comment>
             </column>

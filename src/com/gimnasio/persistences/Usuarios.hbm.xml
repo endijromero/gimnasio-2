@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated ago 2, 2016 10:46:45 p.m. by Hibernate Tools 4.3.1 -->
+<!-- Generated ago 3, 2016 8:37:58 p.m. by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.gimnasio.model.Usuarios" table="usuarios" catalog="gimnasio" optimistic-lock="version">
+    <class name="com.gimnasio.persistences.Usuarios" table="usuarios" catalog="gimnasio" optimistic-lock="version">
         <id name="id" type="long">
             <column name="id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="personas" class="com.gimnasio.model.Personas" fetch="select">
+        <many-to-one name="personas" class="com.gimnasio.persistences.Personas" fetch="select">
             <column name="persona_id" not-null="true">
                 <comment>Id de la persona</comment>
             </column>
@@ -49,13 +49,13 @@
                     <comment>Id del usuario registro</comment>
                 </column>
             </key>
-            <one-to-many class="com.gimnasio.model.Pagos" />
+            <one-to-many class="com.gimnasio.persistences.Pagos" />
         </set>
         <set name="clientePaquetes" table="cliente_paquete" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="usuario_id" not-null="true" />
             </key>
-            <one-to-many class="com.gimnasio.model.ClientePaquete" />
+            <one-to-many class="com.gimnasio.persistences.ClientePaquete" />
         </set>
         <set name="ingresoses" table="ingresos" inverse="true" lazy="true" fetch="select">
             <key>
@@ -63,7 +63,7 @@
                     <comment>Id del usuario que registra el ingreso</comment>
                 </column>
             </key>
-            <one-to-many class="com.gimnasio.model.Ingresos" />
+            <one-to-many class="com.gimnasio.persistences.Ingresos" />
         </set>
     </class>
 </hibernate-mapping>

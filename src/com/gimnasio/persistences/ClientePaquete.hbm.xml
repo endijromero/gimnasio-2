@@ -1,27 +1,27 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated ago 2, 2016 10:46:45 p.m. by Hibernate Tools 4.3.1 -->
+<!-- Generated ago 3, 2016 8:37:58 p.m. by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.gimnasio.model.ClientePaquete" table="cliente_paquete" catalog="gimnasio" optimistic-lock="version">
+    <class name="com.gimnasio.persistences.ClientePaquete" table="cliente_paquete" catalog="gimnasio" optimistic-lock="version">
         <id name="id" type="java.lang.Long">
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="clientes" class="com.gimnasio.model.Clientes" fetch="select">
+        <many-to-one name="clientes" class="com.gimnasio.persistences.Clientes" fetch="select">
             <column name="cliente_id" not-null="true">
                 <comment>Id del cliente</comment>
             </column>
         </many-to-one>
-        <many-to-one name="descuentos" class="com.gimnasio.model.Descuentos" fetch="select">
+        <many-to-one name="descuentos" class="com.gimnasio.persistences.Descuentos" fetch="select">
             <column name="descuento_id" />
         </many-to-one>
-        <many-to-one name="paquetes" class="com.gimnasio.model.Paquetes" fetch="select">
+        <many-to-one name="paquetes" class="com.gimnasio.persistences.Paquetes" fetch="select">
             <column name="paquete_id" not-null="true">
                 <comment>Id del paquete</comment>
             </column>
         </many-to-one>
-        <many-to-one name="usuarios" class="com.gimnasio.model.Usuarios" fetch="select">
+        <many-to-one name="usuarios" class="com.gimnasio.persistences.Usuarios" fetch="select">
             <column name="usuario_id" not-null="true" />
         </many-to-one>
         <property name="valorTotal" type="big_decimal">
@@ -56,7 +56,7 @@
                     <comment>Id del cliente paquete</comment>
                 </column>
             </key>
-            <one-to-many class="com.gimnasio.model.Pagos" />
+            <one-to-many class="com.gimnasio.persistences.Pagos" />
         </set>
     </class>
 </hibernate-mapping>
