@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
  * @author rodolfo
  */
 public class frmPrincipal extends javax.swing.JFrame {
+    static frmPagos frmPagos;
 
     //private UsuariosDto usuarioSesion;
     private frmPaquetes paqueteView;
@@ -21,7 +22,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmProductos productoView;
     private frmBuscarCliente buscarClienteView;
     private frmCliente clienteView;
-    private frmPagos pagosView;
+    public frmPagos pagosView;
 
     /**
      * Creates new form frmPrincipal
@@ -225,7 +226,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void menuProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProductosActionPerformed
         // TODO add your handling code here:
         this.productoView = new frmProductos();
-        this.jdstPrincipal.add(this.productoView);
+        frmPrincipal.jdstPrincipal.add(this.productoView);
 
         this.productoView.setSize(this.getWidth() - 15, this.getHeight() - 10);
         this.productoView.setResizable(true);
@@ -237,7 +238,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void menuDescuentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDescuentosActionPerformed
         // TODO add your handling code here:
         this.descuentoView = new frmDescuentos();
-        this.jdstPrincipal.add(this.descuentoView);
+        frmPrincipal.jdstPrincipal.add(this.descuentoView);
 
         this.descuentoView.setSize(this.getWidth() - 15, this.getHeight() - 10);
         this.descuentoView.setResizable(true);
@@ -271,7 +272,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void menuCrear_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCrear_clienteActionPerformed
         // TODO add your handling code here:
         this.clienteView = new frmCliente();
-        this.jdstPrincipal.add(this.clienteView);
+        frmPrincipal.jdstPrincipal.add(this.clienteView);
 
         this.clienteView.setSize(this.getWidth() - 15, this.getHeight() - 10);
         this.clienteView.setResizable(true);
@@ -282,7 +283,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void menuBuscar_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBuscar_clienteActionPerformed
         // TODO add your handling code here:
         this.buscarClienteView = new frmBuscarCliente();
-        this.jdstPrincipal.add(this.buscarClienteView);
+        frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
 
         this.buscarClienteView.setSize(this.getWidth() - 15, this.getHeight() - 10);
         this.buscarClienteView.setResizable(true);
@@ -353,7 +354,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     public void setPago() {
         this.buscarClienteView = new frmBuscarCliente();
-        this.jdstPrincipal.add(this.buscarClienteView);
+        frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
 
         this.buscarClienteView.setSize(this.getWidth() - 15, this.getHeight() - 10);
         this.buscarClienteView.setResizable(true);
@@ -368,7 +369,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JDesktopPane jdstPrincipal;
+    public static javax.swing.JDesktopPane jdstPrincipal;
     private javax.swing.JMenuItem menuBuscar_cliente;
     private javax.swing.JMenuItem menuCafeteria;
     private javax.swing.JMenu menuCliente;

@@ -517,8 +517,12 @@ public class frmCliente extends javax.swing.JInternalFrame {
         boolean save;
         save = Principal.setGuradarCliente(this);
         if(save){
-            frmPrincipal principal = new frmPrincipal();
-            principal.setPago();
+            frmPrincipal.frmPagos = new frmPagos();
+            frmPrincipal.jdstPrincipal.add(frmPrincipal.frmPagos);
+            frmPrincipal.frmPagos.setSize(this.getWidth(), this.getHeight() - 10);
+            frmPrincipal.frmPagos.setResizable(true);
+            frmPrincipal.frmPagos.setClosable(true);
+            frmPrincipal.frmPagos.setVisible(true);
         }
         this.setVisible(false);
     }//GEN-LAST:event_btnGuardarActionPerformed
