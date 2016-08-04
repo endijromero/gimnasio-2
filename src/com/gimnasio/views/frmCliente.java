@@ -18,6 +18,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
      */
     public frmCliente() {
         initComponents();
+        
     }
 
     /**
@@ -514,11 +515,12 @@ public class frmCliente extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         //guradar 
         boolean save;
-         save = Principal.setGuradarCliente(this);
-         if(save){
-             
-         }
-        //this.setVisible(false);
+        save = Principal.setGuradarCliente(this);
+        if(save){
+            frmPrincipal principal = new frmPrincipal();
+            principal.setPago();
+        }
+        this.setVisible(false);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
 

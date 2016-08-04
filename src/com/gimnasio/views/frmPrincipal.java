@@ -318,13 +318,13 @@ public class frmPrincipal extends javax.swing.JFrame {
     }
     
     public void setPago(){
-        this.pagosView = new frmPagos();
-        this.dstPrincipal.add(this.pagosView);
+        this.buscarClienteView = new frmBuscarCliente();
+        this.dstPrincipal.add(this.buscarClienteView);
 
-        this.pagosView.setSize(this.getWidth() - 15, this.getHeight() - 10);
-        this.pagosView.setResizable(true);
-        this.pagosView.setClosable(true);
-        this.pagosView.setVisible(true);
+        this.buscarClienteView.setSize(this.getWidth() - 15, this.getHeight() - 10);
+        this.buscarClienteView.setResizable(true);
+        this.buscarClienteView.setClosable(true);
+        this.buscarClienteView.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
