@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  * @author rodolfo
  */
 public class frmLogin extends javax.swing.JFrame {
-    
+
     Operaciones oper = null;
 
     /**
@@ -24,7 +24,7 @@ public class frmLogin extends javax.swing.JFrame {
         initComponents();
         this.oper = new Operaciones();
         this.setLocationRelativeTo(null);
-        
+
         this.txtUser.setText("emendoza1");
         this.txtPassword.setText("1234");
     }
@@ -143,12 +143,9 @@ public class frmLogin extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         if (this.txtUser.getText().equals("") || this.txtPassword.getText().equals("")) {
-            ImageIcon icono = new ImageIcon("/com.gimnasio.files/warning.png");
             JOptionPane.showMessageDialog(null, "Debe ingresar un usario y contraseña", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
-        } else {
-            if (this.oper.setValidateIngreso(this.txtUser.getText(), this.txtPassword.getText())) {
-                this.setVisible(false);
-            }
+        } else if (this.oper.setValidateIngreso(this.txtUser.getText(), this.txtPassword.getText())) {
+            this.setVisible(false);
         }
 
     }//GEN-LAST:event_btnLoginActionPerformed
@@ -190,7 +187,7 @@ public class frmLogin extends javax.swing.JFrame {
             @Override
             public void run() {
                 new frmLogin().setVisible(true);
-                
+
             }
         });
     }
