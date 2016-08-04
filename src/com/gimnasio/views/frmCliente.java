@@ -513,7 +513,11 @@ public class frmCliente extends javax.swing.JInternalFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
         //guradar 
-        Principal.setGuradarCliente(this);
+        boolean save;
+         save = Principal.setGuradarCliente(this);
+         if(save){
+             
+         }
         //this.setVisible(false);
     }//GEN-LAST:event_btnGuardarActionPerformed
 

@@ -17,6 +17,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmProductos productoView;
     private frmBuscarCliente buscarClienteView;
     private frmCliente clienteView;
+    private frmPagos pagosView;
 
     /**
      * Creates new form frmPrincipal
@@ -32,6 +33,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.productoView = null;
         this.buscarClienteView = null;
         this.clienteView = null;
+        this.pagosView = null;
     }
 
     /**
@@ -313,6 +315,16 @@ public class frmPrincipal extends javax.swing.JFrame {
                 principal.setLocationRelativeTo(null);
             }
         });
+    }
+    
+    public void setPago(){
+        this.pagosView = new frmPagos();
+        this.dstPrincipal.add(this.pagosView);
+
+        this.pagosView.setSize(this.getWidth() - 15, this.getHeight() - 10);
+        this.pagosView.setResizable(true);
+        this.pagosView.setClosable(true);
+        this.pagosView.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -36,10 +36,13 @@ public class Principal {
         principal.setVisible(true);
     }
     
-    public static void setGuradarCliente(frmCliente cliente){
-        frmPagos pagos = new frmPagos() ;
-        cliente.setVisible(false);
-        pagos.setVisible(true);
+    /**
+     *
+     * @param cliente
+     * @return
+     */
+    public static boolean setGuradarCliente(frmCliente cliente){
+        return true;
     }
 
 }
