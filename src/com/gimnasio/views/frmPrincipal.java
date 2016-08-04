@@ -5,15 +5,13 @@
  */
 package com.gimnasio.views;
 
-import com.gimnasio.model.UsuariosDto;
-
 /**
  *
  * @author rodolfo
  */
 public class frmPrincipal extends javax.swing.JFrame {
 
-    private UsuariosDto usuarioSesion;
+    //private UsuariosDto usuarioSesion;
     private frmPaquetes paqueteView;
     private frmDescuentos descuentoView;
     private frmProductos productoView;
