@@ -5,6 +5,10 @@
  */
 package com.gimnasio.views;
 
+import com.gimnasio.util.Util;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author rodolfo
@@ -27,6 +31,9 @@ public class frmPrincipal extends javax.swing.JFrame {
         //this.setLocationRelativeTo(null);  
         //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setSize(1250, 700);
+        Util.setCentrarJFrame(this, null);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        Util.setFuncionesJFrame(this, false);
 
         this.paqueteView = null;
         this.descuentoView = null;
@@ -45,7 +52,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        dstPrincipal = new javax.swing.JDesktopPane();
+        jdstPrincipal = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuPaquetes = new javax.swing.JMenuItem();
@@ -63,14 +70,14 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout dstPrincipalLayout = new javax.swing.GroupLayout(dstPrincipal);
-        dstPrincipal.setLayout(dstPrincipalLayout);
-        dstPrincipalLayout.setHorizontalGroup(
-            dstPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout jdstPrincipalLayout = new javax.swing.GroupLayout(jdstPrincipal);
+        jdstPrincipal.setLayout(jdstPrincipalLayout);
+        jdstPrincipalLayout.setHorizontalGroup(
+            jdstPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 890, Short.MAX_VALUE)
         );
-        dstPrincipalLayout.setVerticalGroup(
-            dstPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jdstPrincipalLayout.setVerticalGroup(
+            jdstPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 370, Short.MAX_VALUE)
         );
 
@@ -191,31 +198,34 @@ public class frmPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(dstPrincipal)
+            .addComponent(jdstPrincipal)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(dstPrincipal)
+            .addComponent(jdstPrincipal)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuPaquetesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPaquetesActionPerformed
-        // TODO add your handling code here:
-        this.paqueteView = new frmPaquetes();
-        this.dstPrincipal.add(this.paqueteView);
-
-        this.paqueteView.setSize(this.getWidth() - 15, 650);
-        this.paqueteView.setResizable(true);
-        this.paqueteView.setClosable(true);
-        this.paqueteView.setVisible(true);
+        if (this.paqueteView == null) {
+            this.paqueteView = new frmPaquetes(this);
+            this.jdstPrincipal.add(paqueteView);
+            this.paqueteView.setTitle("Formulario para el registro de paquetes");
+            this.paqueteView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight() - 1);
+            this.paqueteView.setClosable(true);
+            this.paqueteView.setResizable(true);
+            this.paqueteView.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(frmPrincipal.this, "El formulario para el registro de paquetes, ya se encuentra abierto", "Mensaje de información", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_menuPaquetesActionPerformed
 
     private void menuProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProductosActionPerformed
         // TODO add your handling code here:
         this.productoView = new frmProductos();
-        this.dstPrincipal.add(this.productoView);
+        this.jdstPrincipal.add(this.productoView);
 
         this.productoView.setSize(this.getWidth() - 15, this.getHeight() - 10);
         this.productoView.setResizable(true);
@@ -227,7 +237,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void menuDescuentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDescuentosActionPerformed
         // TODO add your handling code here:
         this.descuentoView = new frmDescuentos();
-        this.dstPrincipal.add(this.descuentoView);
+        this.jdstPrincipal.add(this.descuentoView);
 
         this.descuentoView.setSize(this.getWidth() - 15, this.getHeight() - 10);
         this.descuentoView.setResizable(true);
@@ -261,7 +271,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void menuCrear_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCrear_clienteActionPerformed
         // TODO add your handling code here:
         this.clienteView = new frmCliente();
-        this.dstPrincipal.add(this.clienteView);
+        this.jdstPrincipal.add(this.clienteView);
 
         this.clienteView.setSize(this.getWidth() - 15, this.getHeight() - 10);
         this.clienteView.setResizable(true);
@@ -272,7 +282,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void menuBuscar_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBuscar_clienteActionPerformed
         // TODO add your handling code here:
         this.buscarClienteView = new frmBuscarCliente();
-        this.dstPrincipal.add(this.buscarClienteView);
+        this.jdstPrincipal.add(this.buscarClienteView);
 
         this.buscarClienteView.setSize(this.getWidth() - 15, this.getHeight() - 10);
         this.buscarClienteView.setResizable(true);
@@ -316,10 +326,34 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
     }
-    
-    public void setPago(){
+
+    public frmPaquetes getPaqueteView() {
+        return paqueteView;
+    }
+
+    public void setPaqueteView(frmPaquetes paqueteView) {
+        this.paqueteView = paqueteView;
+    }
+
+    public frmProductos getProductoView() {
+        return productoView;
+    }
+
+    public void setProductoView(frmProductos productoView) {
+        this.productoView = productoView;
+    }
+
+    public frmPagos getPagosView() {
+        return pagosView;
+    }
+
+    public void setPagosView(frmPagos pagosView) {
+        this.pagosView = pagosView;
+    }
+
+    public void setPago() {
         this.buscarClienteView = new frmBuscarCliente();
-        this.dstPrincipal.add(this.buscarClienteView);
+        this.jdstPrincipal.add(this.buscarClienteView);
 
         this.buscarClienteView.setSize(this.getWidth() - 15, this.getHeight() - 10);
         this.buscarClienteView.setResizable(true);
@@ -328,13 +362,13 @@ public class frmPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public static javax.swing.JDesktopPane dstPrincipal;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JDesktopPane jdstPrincipal;
     private javax.swing.JMenuItem menuBuscar_cliente;
     private javax.swing.JMenuItem menuCafeteria;
     private javax.swing.JMenu menuCliente;

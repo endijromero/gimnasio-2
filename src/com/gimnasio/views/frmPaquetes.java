@@ -1,9 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.gimnasio.views;
+
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -11,11 +8,14 @@ package com.gimnasio.views;
  */
 public class frmPaquetes extends javax.swing.JInternalFrame {
 
+    private frmPrincipal padre;
+
     /**
      * Creates new form frmPaquetes
      */
-    public frmPaquetes() {
-        initComponents();        
+    public frmPaquetes(frmPrincipal padre) {
+        this.padre = padre;
+        initComponents();
     }
 
     /**
@@ -60,7 +60,25 @@ public class frmPaquetes extends javax.swing.JInternalFrame {
             .addGap(0, 344, Short.MAX_VALUE)
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "AGREGAR", 0, 0, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                limpiarfrmPaquetes(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "AGREGAR", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
         jPanel1.setMaximumSize(new java.awt.Dimension(500, 500));
 
         txtNombre_paquete.addActionListener(new java.awt.event.ActionListener() {
@@ -127,7 +145,7 @@ public class frmPaquetes extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "LISTA DE PAQUETES", 0, 0, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "LISTA DE PAQUETES", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
         jPanel3.setMaximumSize(new java.awt.Dimension(500, 500));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -209,6 +227,10 @@ public class frmPaquetes extends javax.swing.JInternalFrame {
     private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPrecioActionPerformed
+
+    private void limpiarfrmPaquetes(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_limpiarfrmPaquetes
+        this.padre.setPaqueteView(null);
+    }//GEN-LAST:event_limpiarfrmPaquetes
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

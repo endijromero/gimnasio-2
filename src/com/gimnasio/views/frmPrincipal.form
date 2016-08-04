@@ -168,17 +168,17 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="dstPrincipal" alignment="0" max="32767" attributes="0"/>
+          <Component id="jdstPrincipal" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="dstPrincipal" alignment="0" max="32767" attributes="0"/>
+          <Component id="jdstPrincipal" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JDesktopPane" name="dstPrincipal">
+    <Container class="javax.swing.JDesktopPane" name="jdstPrincipal">
 
       <Layout>
         <DimensionLayout dim="0">
