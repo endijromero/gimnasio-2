@@ -1,5 +1,5 @@
 package com.gimnasio.persistences;
-// Generated ago 3, 2016 8:37:57 p.m. by Hibernate Tools 4.3.1
+// Generated ago 3, 2016 11:34:53 p.m. by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -12,7 +12,7 @@ import java.util.Set;
 public class Personas  implements java.io.Serializable {
 
 
-     private long id;
+     private Long id;
      private String primerNombre;
      private String segundoNombre;
      private String primerApellido;
@@ -38,8 +38,7 @@ public class Personas  implements java.io.Serializable {
     }
 
 	
-    public Personas(long id, String primerNombre, String primerApellido, short tipoIdentificacion, String numeroIdentificacion, short genero, Date fechaNacimiento, String movil, String email, String fotoPerfil, Date fechaRegistro, Date fechaModificacion) {
-        this.id = id;
+    public Personas(String primerNombre, String primerApellido, short tipoIdentificacion, String numeroIdentificacion, short genero, Date fechaNacimiento, String movil, String fotoPerfil, Date fechaRegistro, Date fechaModificacion) {
         this.primerNombre = primerNombre;
         this.primerApellido = primerApellido;
         this.tipoIdentificacion = tipoIdentificacion;
@@ -47,13 +46,11 @@ public class Personas  implements java.io.Serializable {
         this.genero = genero;
         this.fechaNacimiento = fechaNacimiento;
         this.movil = movil;
-        this.email = email;
         this.fotoPerfil = fotoPerfil;
         this.fechaRegistro = fechaRegistro;
         this.fechaModificacion = fechaModificacion;
     }
-    public Personas(long id, String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, short tipoIdentificacion, String numeroIdentificacion, String lugaExpedicion, short genero, Short estadoCivil, Date fechaNacimiento, String direccion, String barrio, String telefono, String movil, String email, String fotoPerfil, Date fechaRegistro, Date fechaModificacion, Set clienteses, Set usuarioses) {
-       this.id = id;
+    public Personas(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido, short tipoIdentificacion, String numeroIdentificacion, String lugaExpedicion, short genero, Short estadoCivil, Date fechaNacimiento, String direccion, String barrio, String telefono, String movil, String email, String fotoPerfil, Date fechaRegistro, Date fechaModificacion, Set clienteses, Set usuarioses) {
        this.primerNombre = primerNombre;
        this.segundoNombre = segundoNombre;
        this.primerApellido = primerApellido;
@@ -76,11 +73,11 @@ public class Personas  implements java.io.Serializable {
        this.usuarioses = usuarioses;
     }
    
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
     
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getPrimerNombre() {

@@ -1,5 +1,5 @@
 package com.gimnasio.persistences;
-// Generated ago 3, 2016 8:37:57 p.m. by Hibernate Tools 4.3.1
+// Generated ago 3, 2016 11:34:53 p.m. by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -12,7 +12,7 @@ import java.util.Set;
 public class Usuarios  implements java.io.Serializable {
 
 
-     private long id;
+     private Long id;
      private Personas personas;
      private short tipoUsuario;
      private String loggin;
@@ -28,8 +28,7 @@ public class Usuarios  implements java.io.Serializable {
     }
 
 	
-    public Usuarios(long id, Personas personas, short tipoUsuario, String loggin, String password, short ynActivo, Date fechaRegistro, Date fechaModificacion) {
-        this.id = id;
+    public Usuarios(Personas personas, short tipoUsuario, String loggin, String password, short ynActivo, Date fechaRegistro, Date fechaModificacion) {
         this.personas = personas;
         this.tipoUsuario = tipoUsuario;
         this.loggin = loggin;
@@ -38,8 +37,7 @@ public class Usuarios  implements java.io.Serializable {
         this.fechaRegistro = fechaRegistro;
         this.fechaModificacion = fechaModificacion;
     }
-    public Usuarios(long id, Personas personas, short tipoUsuario, String loggin, String password, short ynActivo, Date fechaRegistro, Date fechaModificacion, Set pagoses, Set clientePaquetes, Set ingresoses) {
-       this.id = id;
+    public Usuarios(Personas personas, short tipoUsuario, String loggin, String password, short ynActivo, Date fechaRegistro, Date fechaModificacion, Set pagoses, Set clientePaquetes, Set ingresoses) {
        this.personas = personas;
        this.tipoUsuario = tipoUsuario;
        this.loggin = loggin;
@@ -52,11 +50,11 @@ public class Usuarios  implements java.io.Serializable {
        this.ingresoses = ingresoses;
     }
    
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
     
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public Personas getPersonas() {

@@ -1,5 +1,5 @@
 package com.gimnasio.persistences;
-// Generated ago 3, 2016 8:37:57 p.m. by Hibernate Tools 4.3.1
+// Generated ago 3, 2016 11:34:53 p.m. by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;

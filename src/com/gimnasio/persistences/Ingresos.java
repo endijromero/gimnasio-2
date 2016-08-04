@@ -1,5 +1,5 @@
 package com.gimnasio.persistences;
-// Generated ago 3, 2016 8:37:57 p.m. by Hibernate Tools 4.3.1
+// Generated ago 3, 2016 11:34:53 p.m. by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
@@ -11,7 +11,7 @@ import java.util.Date;
 public class Ingresos  implements java.io.Serializable {
 
 
-     private long id;
+     private Long id;
      private Usuarios usuarios;
      private String tipoIngreso;
      private BigDecimal valor;
@@ -20,19 +20,18 @@ public class Ingresos  implements java.io.Serializable {
     public Ingresos() {
     }
 
-    public Ingresos(long id, Usuarios usuarios, String tipoIngreso, BigDecimal valor, Date fechaRegistro) {
-       this.id = id;
+    public Ingresos(Usuarios usuarios, String tipoIngreso, BigDecimal valor, Date fechaRegistro) {
        this.usuarios = usuarios;
        this.tipoIngreso = tipoIngreso;
        this.valor = valor;
        this.fechaRegistro = fechaRegistro;
     }
    
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
     
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public Usuarios getUsuarios() {
