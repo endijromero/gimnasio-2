@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  * @author rodolfo
  */
 public class frmPrincipal extends javax.swing.JFrame {
-    static frmPagos frmPagos;
+    static frmRegistrarPagos frmRegistrarPagos;
 
     //private UsuariosDto usuarioSesion;
     private frmPaquetes paqueteView;
@@ -22,7 +22,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmProductos productoView;
     private frmBuscarCliente buscarClienteView;
     private frmCliente clienteView;
-    public frmPagos pagosView;
+    public frmRegistrarPagos registrarPagosView;
 
     /**
      * Creates new form frmPrincipal
@@ -41,7 +41,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.productoView = null;
         this.buscarClienteView = null;
         this.clienteView = null;
-        this.pagosView = null;
+        this.registrarPagosView = null;
     }
 
     /**
@@ -344,12 +344,12 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.productoView = productoView;
     }
 
-    public frmPagos getPagosView() {
-        return pagosView;
+    public frmRegistrarPagos getPagosView() {
+        return registrarPagosView;
     }
 
-    public void setPagosView(frmPagos pagosView) {
-        this.pagosView = pagosView;
+    public void setPagosView(frmRegistrarPagos registrarPagosView) {
+        this.registrarPagosView = registrarPagosView;
     }
 
     public void setPago() {

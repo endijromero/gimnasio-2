@@ -8,7 +8,7 @@ package com.gimnasio.controller;
 import com.gimnasio.persistences.Pagos;
 import com.gimnasio.views.frmCliente;
 import com.gimnasio.views.frmLogin;
-import com.gimnasio.views.frmPagos;
+import com.gimnasio.views.frmRegistrarPagos;
 import com.gimnasio.views.frmPrincipal;
 import javax.swing.JOptionPane;
 
