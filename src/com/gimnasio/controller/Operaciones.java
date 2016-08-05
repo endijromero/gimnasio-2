@@ -19,6 +19,12 @@ public class Operaciones {
         this.model = new GimnasioModel();
     }
 
+    /**
+     * @tutorial valida el ingreso de los usuarios a ala plataforma
+     * @param loggin
+     * @param password
+     * @return
+     */
     public Boolean setValidateIngreso(String loggin, String password) {
         Boolean valido = false;
         List<Usuarios> listUsuarios = this.model.getDatosUsurios(loggin);
@@ -36,4 +42,6 @@ public class Operaciones {
         }
         return valido;
     }
+    
+    //public void setRegistrarPaquetes(String nombrePaquete, )
 }
