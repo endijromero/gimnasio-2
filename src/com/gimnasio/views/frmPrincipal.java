@@ -228,7 +228,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.productoView = new frmProductos();
         frmPrincipal.jdstPrincipal.add(this.productoView);
 
-        this.productoView.setSize(this.getWidth() - 15, this.getHeight() - 10);
+        this.productoView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight()-1);
         this.productoView.setResizable(true);
         this.productoView.setClosable(true);
         this.productoView.setVisible(true);
@@ -240,7 +240,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.descuentoView = new frmDescuentos();
         frmPrincipal.jdstPrincipal.add(this.descuentoView);
 
-        this.descuentoView.setSize(this.getWidth() - 15, this.getHeight() - 10);
+        this.descuentoView.setSize(this.jdstPrincipal.getWidth() - 15, this.jdstPrincipal.getHeight()-1);
         this.descuentoView.setResizable(true);
         this.descuentoView.setClosable(true);
         this.descuentoView.setVisible(true);
@@ -274,7 +274,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.clienteView = new frmCliente();
         frmPrincipal.jdstPrincipal.add(this.clienteView);
 
-        this.clienteView.setSize(this.getWidth() - 15, this.getHeight() - 10);
+        this.clienteView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight() - 1);
         this.clienteView.setResizable(true);
         this.clienteView.setClosable(true);
         this.clienteView.setVisible(true);
@@ -285,7 +285,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.buscarClienteView = new frmBuscarCliente();
         frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
 
-        this.buscarClienteView.setSize(this.getWidth() - 15, this.getHeight() - 10);
+        this.buscarClienteView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight() - 1);
         this.buscarClienteView.setResizable(true);
         this.buscarClienteView.setClosable(true);
         this.buscarClienteView.setVisible(true);
@@ -356,7 +356,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.buscarClienteView = new frmBuscarCliente();
         frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
 
-        this.buscarClienteView.setSize(this.getWidth() - 15, this.getHeight() - 10);
+        this.buscarClienteView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight() - 1);
         this.buscarClienteView.setResizable(true);
         this.buscarClienteView.setClosable(true);
         this.buscarClienteView.setVisible(true);

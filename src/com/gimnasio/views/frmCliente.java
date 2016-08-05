@@ -519,7 +519,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
         if(save){
             frmPrincipal.frmPagos = new frmPagos();
             frmPrincipal.jdstPrincipal.add(frmPrincipal.frmPagos);
-            frmPrincipal.frmPagos.setSize(this.getWidth(), this.getHeight() - 10);
+            frmPrincipal.frmPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
             frmPrincipal.frmPagos.setResizable(true);
             frmPrincipal.frmPagos.setClosable(true);
             frmPrincipal.frmPagos.setVisible(true);
