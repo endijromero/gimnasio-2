@@ -22,7 +22,9 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmProductos productoView;
     private frmBuscarCliente buscarClienteView;
     private frmCliente clienteView;
+    private frmPagos pagosView;
     public frmRegistrarPagos registrarPagosView;
+    
 
     /**
      * Creates new form frmPrincipal
@@ -41,6 +43,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.productoView = null;
         this.buscarClienteView = null;
         this.clienteView = null;
+        this.pagosView = null;
         this.registrarPagosView = null;
     }
 
@@ -240,7 +243,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.descuentoView = new frmDescuentos();
         frmPrincipal.jdstPrincipal.add(this.descuentoView);
 
-        this.descuentoView.setSize(this.jdstPrincipal.getWidth() - 15, this.jdstPrincipal.getHeight()-1);
+        this.descuentoView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight()-1);
         this.descuentoView.setResizable(true);
         this.descuentoView.setClosable(true);
         this.descuentoView.setVisible(true);
@@ -248,6 +251,13 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void menuPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPagosActionPerformed
         // TODO add your handling code here:
+        this.pagosView = new frmPagos();
+        frmPrincipal.jdstPrincipal.add(this.pagosView);
+
+        this.pagosView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight()-1);
+        this.pagosView.setResizable(true);
+        this.pagosView.setClosable(true);
+        this.pagosView.setVisible(true);
     }//GEN-LAST:event_menuPagosActionPerformed
 
     private void menuClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuClienteActionPerformed
