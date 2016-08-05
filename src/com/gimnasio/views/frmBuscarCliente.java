@@ -50,7 +50,15 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tablaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaClientesMouseClicked(evt);
@@ -146,7 +154,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
 
     private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
         // TODO add your handling code here:
-        if(evt.getClickCount() > 1) {
+        if(evt.getClickCount() == 2) {
             JOptionPane.showMessageDialog(null, "doble clik", "", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_tablaClientesMouseClicked
