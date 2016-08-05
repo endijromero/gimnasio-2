@@ -15,13 +15,14 @@ import javax.swing.JOptionPane;
  */
 public class frmPrincipal extends javax.swing.JFrame {
     static frmRegistrarPagos frmRegistrarPagos;
+    static frmCliente frmCliente;
 
     //private UsuariosDto usuarioSesion;
     private frmPaquetes paqueteView;
     private frmDescuentos descuentoView;
     private frmProductos productoView;
     private frmBuscarCliente buscarClienteView;
-    private frmCliente clienteView;
+    public frmCliente clienteView;
     private frmPagos pagosView;
     public frmRegistrarPagos registrarPagosView;
     

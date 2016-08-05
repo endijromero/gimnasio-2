@@ -155,7 +155,15 @@ public class frmPagos extends javax.swing.JInternalFrame {
     private void tableClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableClientesMouseClicked
         // TODO add your handling code here:
         if(evt.getClickCount() == 2) {
-            JOptionPane.showMessageDialog(null, "doble clik", "", JOptionPane.WARNING_MESSAGE);            
+            //JOptionPane.showMessageDialog(null, "doble clik", "", JOptionPane.WARNING_MESSAGE); 
+            frmPrincipal.frmRegistrarPagos = new frmRegistrarPagos();
+            frmPrincipal.jdstPrincipal.add(frmPrincipal.frmRegistrarPagos);
+            frmPrincipal.frmRegistrarPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+            frmPrincipal.frmRegistrarPagos.setResizable(true);
+            frmPrincipal.frmRegistrarPagos.setClosable(true);            
+            frmPrincipal.frmRegistrarPagos.setVisible(true);
+            
+            this.setVisible(false);
         }
     }//GEN-LAST:event_tableClientesMouseClicked
 
