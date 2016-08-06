@@ -375,7 +375,7 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
         if (Character.isLetter(c)) {
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(this, "Ingresa solo letras", "Error de datos", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Ingresa solo numeros", "Error de datos", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_setValidaNumero
 

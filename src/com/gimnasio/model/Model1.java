@@ -50,7 +50,7 @@ public class Model1 {
     
     public boolean setGuardarDescuento(DescuentoDto descuento) throws SQLException {
         PreparedStatement stat = null;
-        if (descuento.getId() > 0) {
+        if (descuento.getId() != null && descuento.getId() > 0) {
             stat = this.conexion.getConexion().prepareStatement("UPDATE descuentos SET nombre = ?, porcentaje = ? WHERE id=?");
             stat.setInt(5, descuento.getId());
         } else {

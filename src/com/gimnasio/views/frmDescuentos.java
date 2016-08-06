@@ -52,10 +52,12 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
             this.tblDescuentos.getColumnModel().getColumn(i).setPreferredWidth(widthColumna[i]);
         }
         this.setConsultarTableDescuentos();
+        this.setLimpiar();
     }
     
     
     public void setConsultarTableDescuentos() throws SQLException {
+        
         List<TablaDto> lista = this.operacion.getDescuentosDatosTablaDto(null);
         this.table.getData().clear();
         this.lblCantidad_descuentos.setText(String.valueOf(lista.size()));
@@ -64,6 +66,14 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
         });
         this.tblDescuentos.setDefaultRenderer(Object.class, new MiRender(this.table));
         this.tblDescuentos.repaint();
+    }
+    
+    public void setLimpiar() {
+        this.txtNombre_paquete.setText("");
+        this.txtPrecio.setText("");
+        this.descuento.setId(null);
+        this.descuento.setNombre("");
+        this.descuento.setPorcentaje(null);
     }
 
     /**
@@ -100,6 +110,11 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
         txtPrecio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPrecioActionPerformed(evt);
+            }
+        });
+        txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioKeyTyped(evt);
             }
         });
 
@@ -260,14 +275,15 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         try {
             if(!this.txtNombre_paquete.getText().equals("") && !this.txtPrecio.getText().equals("")) {
-                 boolean guarda = false;
-                if(! this.descuento.getNombre().equals(this.txtNombre_paquete.getText()) ){
+                boolean guarda = false;
+                if(! this.txtNombre_paquete.getText().equals(this.descuento.getNombre())){
                     guarda = true;
                     this.descuento.setNombre(this.txtNombre_paquete.getText());
                 }
-                if(!this.descuento.getPorcentaje().toString().equals(this.txtPrecio.getText())) {
+                BigDecimal porcentaje = new BigDecimal(this.txtPrecio.getText())
+                if(this.descuento.getPorcentaje() != porcentaje) {
                     guarda = true;                
-                    this.descuento.setPorcentaje(new BigDecimal(this.txtPrecio.getText()));
+                    this.descuento.setPorcentaje(porcentaje);
                 }
                 if(guarda) {
                     boolean save =this.operacion.setSaveUpdateDescuentos(this.descuento);
@@ -276,16 +292,30 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
                         label.setFont(new Font("serif", Font.PLAIN, 14));
                         JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
                         this.setConsultarTableDescuentos();
+                        this.setLimpiar();
                     }
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Debe ingresar Nombre y Porcentaje", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
             }
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(frmPaquetes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    /**
+     * 
+     * @param evt 
+     */
+    private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
+        // TODO add your handling code here:                                   
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(this, "Ingresa solo numeros", "Error de datos", JOptionPane.WARNING_MESSAGE);
+        }    
+    }//GEN-LAST:event_txtPrecioKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
