@@ -7,8 +7,6 @@ package com.gimnasio.views;
 
 import com.gimnasio.controller.*;
 import com.gimnasio.model.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -100,7 +98,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
         jLabel17 = new javax.swing.JLabel();
         panelVisor_eventos = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        textArea_eventos = new javax.swing.JTextArea();
+        txtVisor = new javax.swing.JTextArea();
 
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -206,7 +204,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
         btnHuella.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/sign-check-icon-2.png"))); // NOI18N
         btnHuella.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHuellaActionPerformed(evt);
+                setCapturarHuella(evt);
             }
         });
 
@@ -532,9 +530,9 @@ public class frmCliente extends javax.swing.JInternalFrame {
 
         panelVisor_eventos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        textArea_eventos.setColumns(20);
-        textArea_eventos.setRows(5);
-        jScrollPane1.setViewportView(textArea_eventos);
+        txtVisor.setColumns(20);
+        txtVisor.setRows(5);
+        jScrollPane1.setViewportView(txtVisor);
 
         javax.swing.GroupLayout panelVisor_eventosLayout = new javax.swing.GroupLayout(panelVisor_eventos);
         panelVisor_eventos.setLayout(panelVisor_eventosLayout);
@@ -603,9 +601,9 @@ public class frmCliente extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnHuellaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuellaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnHuellaActionPerformed
+    private void setCapturarHuella(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCapturarHuella
+        frmHuella frm = new frmHuella(this.operacion, this.padre, true, this.clienteDto, Short.parseShort("1"), this);
+    }//GEN-LAST:event_setCapturarHuella
 
     private void btnFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFotoActionPerformed
         // TODO add your handling code here:
@@ -711,7 +709,6 @@ public class frmCliente extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton rbtFemenino;
     private javax.swing.ButtonGroup rbtGenero;
     private javax.swing.JRadioButton rbtMasculino;
-    private javax.swing.JTextArea textArea_eventos;
     private javax.swing.JTextField txtCiudad_expedicion;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtDocumento;
@@ -723,5 +720,6 @@ public class frmCliente extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtPrimer_nombre;
     private javax.swing.JTextField txtSegundo_apellido;
     private javax.swing.JTextField txtSegundo_nombre;
+    private javax.swing.JTextArea txtVisor;
     // End of variables declaration//GEN-END:variables
 }

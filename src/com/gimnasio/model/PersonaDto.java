@@ -1,6 +1,8 @@
 package com.gimnasio.model;
 // Generated ago 3, 2016 11:34:53 p.m. by Hibernate Tools 4.3.1
 
+import com.digitalpersona.onetouch.DPFPTemplate;
+import com.gimnasio.util.Util;
 import java.util.Date;
 
 /**
@@ -25,8 +27,22 @@ public class PersonaDto implements java.io.Serializable {
     private String movil;
     private String email;
     private String fotoPerfil;
+    private byte huellaDactilar[];
+    private DPFPTemplate templateHuella;
     private Date fechaRegistro;
     private Date fechaModificacion;
+
+    public String getNombreCompleto() {
+        String nombre = this.primerNombre;
+        if (!Util.getVacio(this.segundoNombre)) {
+            nombre += " " + this.segundoNombre;
+        }
+        nombre += " " + this.primerApellido;
+        if (!Util.getVacio(this.segundoApellido)) {
+            nombre += " " + this.segundoApellido;
+        }
+        return nombre;
+    }
 
     public Long getId() {
         return id;
@@ -178,6 +194,22 @@ public class PersonaDto implements java.io.Serializable {
 
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
+    }
+
+    public byte[] getHuellaDactilar() {
+        return huellaDactilar;
+    }
+
+    public void setHuellaDactilar(byte[] huellaDactilar) {
+        this.huellaDactilar = huellaDactilar;
+    }
+
+    public DPFPTemplate getTemplateHuella() {
+        return templateHuella;
+    }
+
+    public void setTemplateHuella(DPFPTemplate templateHuella) {
+        this.templateHuella = templateHuella;
     }
 
 }

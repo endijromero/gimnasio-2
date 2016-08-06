@@ -7,10 +7,11 @@ package com.gimnasio.model;
 public class ClienteDto implements java.io.Serializable {
 
     private Long id;
-
     private ClientePaqueteDto clientePaqueteDto;
+    private PersonaDto personaDto;
 
     public ClienteDto() {
+        this.personaDto = new PersonaDto();
         this.clientePaqueteDto = new ClientePaqueteDto();
     }
 
@@ -28,6 +29,14 @@ public class ClienteDto implements java.io.Serializable {
 
     public void setClientePaqueteDto(ClientePaqueteDto clientePaqueteDto) {
         this.clientePaqueteDto = clientePaqueteDto;
+    }
+
+    public PersonaDto getPersonaDto() {
+        return personaDto;
+    }
+
+    public void setPersonaDto(PersonaDto personaDto) {
+        this.personaDto = personaDto;
     }
 
 }
