@@ -41,6 +41,7 @@ public class Operaciones1 {
      * 
      * @param descuento
      * @return 
+     * @throws java.sql.SQLException 
      */
     public boolean setSaveUpdateDescuentos(DescuentoDto descuento) throws SQLException{
         boolean guarda = false;
