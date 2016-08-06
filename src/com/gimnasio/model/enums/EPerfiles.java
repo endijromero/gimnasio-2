@@ -33,7 +33,7 @@ public enum EPerfiles {
      * @param val
      * @return
      */
-    public static EPerfiles getResultados(short val) {
+    public static EPerfiles getResult(short val) {
         for (EPerfiles obj : EPerfiles.getValues()) {
             if (obj.getId() == val) {
                 return obj;
@@ -46,7 +46,7 @@ public enum EPerfiles {
      * @return
      */
     public static EPerfiles[] getValues() {
-        return EPerfiles.getValues();
+        return EPerfiles.values();
     }
 
     public abstract String getNombre();

@@ -380,9 +380,9 @@
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="cbmTipo_documento" max="32767" attributes="0"/>
+                                          <Component id="cmbTipo_documento" max="32767" attributes="0"/>
                                           <Component id="txtPrimer_apellido" max="32767" attributes="0"/>
-                                          <Component id="txtprimer_nombre" min="-2" pref="236" max="-2" attributes="0"/>
+                                          <Component id="txtPrimer_nombre" min="-2" pref="236" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -405,7 +405,7 @@
                                   <Component id="txtSegundo_nombre" min="-2" pref="236" max="-2" attributes="0"/>
                                   <Component id="txtSegundo_apellido" min="-2" pref="236" max="-2" attributes="0"/>
                                   <Component id="txtDocumento" min="-2" pref="236" max="-2" attributes="0"/>
-                                  <Component id="cbmEstado_civil" max="32767" attributes="0"/>
+                                  <Component id="cmbEstado_civil" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -418,7 +418,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="txtprimer_nombre" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
+                          <Component id="txtPrimer_nombre" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
                           <Component id="txtSegundo_nombre" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
                           <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -433,7 +433,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                              <Component id="cbmTipo_documento" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                              <Component id="cmbTipo_documento" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                               <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" alignment="0" groupAlignment="3" attributes="0">
@@ -448,7 +448,7 @@
                               <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                              <Component id="cbmEstado_civil" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                              <Component id="cmbEstado_civil" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                               <Component id="jLabel17" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -492,17 +492,17 @@
           <SubComponents>
             <Component class="javax.swing.JTextField" name="txtSegundo_nombre">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSegundo_nombreActionPerformed"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="setValidateSoloLetras"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtprimer_nombre">
+            <Component class="javax.swing.JTextField" name="txtPrimer_nombre">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtprimer_nombreActionPerformed"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="setValidateSoloLetras"/>
               </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="txtDocumento">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDocumentoActionPerformed"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="setValidaSoloNumeros"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel4">
@@ -541,7 +541,7 @@
                 <Property name="text" type="java.lang.String" value="Segundo Apellido"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="cbmTipo_documento">
+            <Component class="javax.swing.JComboBox" name="cmbTipo_documento">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="4">
@@ -573,7 +573,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtPrimer_apellido">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtPrimer_apellidoActionPerformed"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="setValidateSoloLetras"/>
               </Events>
             </Component>
             <Component class="javax.swing.JFormattedTextField" name="txtFecha_nacimiento">
@@ -583,7 +583,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtSegundo_apellido">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSegundo_apellidoActionPerformed"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="setValidateSoloLetras"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel10">
@@ -597,7 +597,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtMovil">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtMovilActionPerformed"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="setValidaSoloNumeros"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel11">
@@ -640,6 +640,7 @@
             <Component class="javax.swing.JFormattedTextField" name="txtEmail">
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtEmailActionPerformed"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="setValidaEmail"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel13">
@@ -667,7 +668,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtFijo">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtFijoActionPerformed"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="setValidaSoloNumeros"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel15">
@@ -690,7 +691,7 @@
                 <Property name="text" type="java.lang.String" value="Guardar"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="setGuardarCliente"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel16">
@@ -704,10 +705,10 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtCiudad_expedicion">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCiudad_expedicionActionPerformed"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="setValidateSoloLetras"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JComboBox" name="cbmEstado_civil">
+            <Component class="javax.swing.JComboBox" name="cmbEstado_civil">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="4">

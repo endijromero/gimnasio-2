@@ -21,7 +21,6 @@ public class frmPrincipal extends javax.swing.JFrame {
     static frmRegistrarPagos frmRegistrarPagos;
     static frmCliente frmCliente;
 
-    
     //private UsuariosDto usuarioSesion;
     private frmPaquetes paqueteView;
     private frmDescuentos descuentoView;
@@ -299,7 +298,6 @@ public class frmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuClienteMenuSelected
 
     private void setCrearCliente(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCrearCliente
-
         if (this.clienteView == null) {
             try {
                 this.clienteView = new frmCliente(this);
@@ -309,7 +307,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                 this.clienteView.setResizable(true);
                 this.clienteView.setClosable(true);
                 this.clienteView.setVisible(true);
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {

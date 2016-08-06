@@ -21,6 +21,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.net.URLEncoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -28,9 +30,9 @@ import java.net.URLEncoder;
  */
 public class Util {
 
+    private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private static final char[] CONSTS_HEX = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
     public static final String urlServidor = "";
-
     public static final int CANTIDAD_DIVIDE_ARRAY = 20;
 
     public static void setFondoJFrame(JFrame jf, Color color) {
@@ -144,7 +146,6 @@ public class Util {
      * Metodo que convierte un documento a una cadena de texto
      *
      * @param url
-     * @param encodeType
      * @return
      */
     public static String getContents(String url) {
@@ -170,5 +171,17 @@ public class Util {
             System.out.println(e);
         }
         return "";
+    }
+
+    /**
+     *
+     * @param email
+     * @return
+     */
+    public static boolean setValidateEmail(String email) {
+        Pattern pattern = Pattern.compile(PATTERN_EMAIL);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+
     }
 }

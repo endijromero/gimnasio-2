@@ -1,6 +1,8 @@
 package com.gimnasio.controller;
 
 import com.gimnasio.model.*;
+import com.gimnasio.model.enums.EEstadoCivil;
+import com.gimnasio.model.enums.ETipoDocumento;
 import com.gimnasio.util.Util;
 import com.gimnasio.views.frmPrincipal;
 import java.sql.SQLException;
@@ -25,9 +27,28 @@ public class Operaciones {
         this.model.setConexion(this.conexion);
     }
 
+    public List<ComboDto> getTipoDocumentos() throws Exception {
+        List<ComboDto> lista = new ArrayList();
+        for (ETipoDocumento tip : ETipoDocumento.getValues()) {
+            ComboDto dto = new ComboDto(String.valueOf(tip.getId()), tip.getNombre());
+            lista.add(dto);
+        }
+        return lista;
+    }
+
+    public List<ComboDto> getEstadosCiviles() throws Exception {
+        List<ComboDto> lista = new ArrayList();
+        for (EEstadoCivil tip : EEstadoCivil.getValues()) {
+            ComboDto dto = new ComboDto(String.valueOf(tip.getId()), tip.getNombre());
+            lista.add(dto);
+        }
+        return lista;
+    }
+
     /**
      *
      * @param paquete
+     * @return
      * @throws SQLException
      */
     public boolean setGuardarPaquete(PaqueteDto paquete) throws SQLException {
@@ -88,17 +109,16 @@ public class Operaciones {
             listTable.add(tabla);
         }
         return listTable;
-    }       
-    
-    /**
-     * 
-     * @param descuento
-     * @return 
-     */
-    public boolean setSaveUpdateDescuentos(DescuentoDto descuento){        
-        return true;
     }
 
+    /**
+     *
+     * @param descuento
+     * @return
+     */
+    public boolean setSaveUpdateDescuentos(DescuentoDto descuento) {
+        return true;
+    }
 
     public Model getModel() {
         return model;

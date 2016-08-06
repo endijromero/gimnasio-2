@@ -6,33 +6,33 @@ package com.gimnasio.model.enums;
 public enum ESiNo {
 
     SI {
-        @Override
-        public String getNombre() {
-            return "SI";
-        }
+                @Override
+                public String getNombre() {
+                    return "SI";
+                }
 
-        @Override
-        public short getId() {
-            return 1;
-        }
-    },
+                @Override
+                public short getId() {
+                    return 1;
+                }
+            },
     NO {
-        @Override
-        public String getNombre() {
-            return "NO";
-        }
+                @Override
+                public String getNombre() {
+                    return "NO";
+                }
 
-        @Override
-        public short getId() {
-            return 2;
-        }
-    };
+                @Override
+                public short getId() {
+                    return 2;
+                }
+            };
 
     /**
      * @param val
      * @return
      */
-    public static ESiNo getResultados(short val) {
+    public static ESiNo getResult(short val) {
         for (ESiNo obj : ESiNo.getValues()) {
             if (obj.getId() == val) {
                 return obj;
@@ -45,7 +45,7 @@ public enum ESiNo {
      * @return
      */
     public static ESiNo[] getValues() {
-        return ESiNo.getValues();
+        return ESiNo.values();
     }
 
     public abstract String getNombre();

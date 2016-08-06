@@ -5,10 +5,11 @@
  */
 package com.gimnasio.views;
 
-import com.gimnasio.controller.Operaciones;
-import com.gimnasio.controller.Principal;
-import com.gimnasio.model.ClienteDto;
-import java.sql.SQLException;
+import com.gimnasio.controller.*;
+import com.gimnasio.model.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,17 +21,31 @@ public class frmCliente extends javax.swing.JInternalFrame {
     private final ClienteDto clienteDto;
     private Operaciones operacion;
 
+    private final ComboModel comboTipoDocumentos;
+    private final ComboModel comboEstadosCiviles;
+
     /**
      *
+     * @throws java.lang.Exception
      * @tutorial Creates new form frmCliente
      * @param padre
-     * @throws java.sql.SQLException
      */
-    public frmCliente(frmPrincipal padre) throws SQLException {
+    public frmCliente(frmPrincipal padre) throws Exception {
         initComponents();
         this.operacion = new Operaciones();
         this.clienteDto = new ClienteDto();
         this.padre = padre;
+
+        this.comboTipoDocumentos = new ComboModel();
+        this.comboTipoDocumentos.getLista().clear();
+        this.comboTipoDocumentos.getLista().addAll(this.operacion.getTipoDocumentos());
+        this.cmbTipo_documento.setModel(this.comboTipoDocumentos);
+
+        this.comboEstadosCiviles = new ComboModel();
+        this.comboEstadosCiviles.getLista().clear();
+        this.comboEstadosCiviles.getLista().addAll(this.operacion.getEstadosCiviles());
+        this.cmbEstado_civil.setModel(this.comboEstadosCiviles);
+
     }
 
     /**
@@ -54,13 +69,13 @@ public class frmCliente extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         txtSegundo_nombre = new javax.swing.JTextField();
-        txtprimer_nombre = new javax.swing.JTextField();
+        txtPrimer_nombre = new javax.swing.JTextField();
         txtDocumento = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        cbmTipo_documento = new javax.swing.JComboBox();
+        cmbTipo_documento = new javax.swing.JComboBox();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         txtPrimer_apellido = new javax.swing.JTextField();
@@ -81,7 +96,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
         btnGuardar = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
         txtCiudad_expedicion = new javax.swing.JTextField();
-        cbmEstado_civil = new javax.swing.JComboBox();
+        cmbEstado_civil = new javax.swing.JComboBox();
         jLabel17 = new javax.swing.JLabel();
         panelVisor_eventos = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -228,21 +243,21 @@ public class frmCliente extends javax.swing.JInternalFrame {
 
         jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        txtSegundo_nombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSegundo_nombreActionPerformed(evt);
+        txtSegundo_nombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                setValidateSoloLetras(evt);
             }
         });
 
-        txtprimer_nombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtprimer_nombreActionPerformed(evt);
+        txtPrimer_nombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                setValidateSoloLetras(evt);
             }
         });
 
-        txtDocumento.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDocumentoActionPerformed(evt);
+        txtDocumento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                setValidaSoloNumeros(evt);
             }
         });
 
@@ -262,7 +277,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("Segundo Apellido");
 
-        cbmTipo_documento.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbTipo_documento.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -272,9 +287,9 @@ public class frmCliente extends javax.swing.JInternalFrame {
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel9.setText("Documento");
 
-        txtPrimer_apellido.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPrimer_apellidoActionPerformed(evt);
+        txtPrimer_apellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                setValidateSoloLetras(evt);
             }
         });
 
@@ -284,9 +299,9 @@ public class frmCliente extends javax.swing.JInternalFrame {
             }
         });
 
-        txtSegundo_apellido.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSegundo_apellidoActionPerformed(evt);
+        txtSegundo_apellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                setValidateSoloLetras(evt);
             }
         });
 
@@ -294,9 +309,9 @@ public class frmCliente extends javax.swing.JInternalFrame {
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel10.setText("Fecha Nacimiento");
 
-        txtMovil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMovilActionPerformed(evt);
+        txtMovil.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                setValidaSoloNumeros(evt);
             }
         });
 
@@ -324,6 +339,11 @@ public class frmCliente extends javax.swing.JInternalFrame {
                 txtEmailActionPerformed(evt);
             }
         });
+        txtEmail.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                setValidaEmail(evt);
+            }
+        });
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -339,9 +359,9 @@ public class frmCliente extends javax.swing.JInternalFrame {
             }
         });
 
-        txtFijo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFijoActionPerformed(evt);
+        txtFijo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                setValidaSoloNumeros(evt);
             }
         });
 
@@ -354,7 +374,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
+                setGuardarCliente(evt);
             }
         });
 
@@ -362,13 +382,13 @@ public class frmCliente extends javax.swing.JInternalFrame {
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel16.setText("Ciudad Expedicción");
 
-        txtCiudad_expedicion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCiudad_expedicionActionPerformed(evt);
+        txtCiudad_expedicion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                setValidateSoloLetras(evt);
             }
         });
 
-        cbmEstado_civil.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbEstado_civil.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -430,9 +450,9 @@ public class frmCliente extends javax.swing.JInternalFrame {
                                         .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cbmTipo_documento, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cmbTipo_documento, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(txtPrimer_apellido)
-                                    .addComponent(txtprimer_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(txtPrimer_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -448,7 +468,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
                             .addComponent(txtSegundo_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtSegundo_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbmEstado_civil, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(cmbEstado_civil, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(31, 31, 31))
         );
         jPanel6Layout.setVerticalGroup(
@@ -456,7 +476,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtprimer_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPrimer_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSegundo_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel5))
@@ -469,7 +489,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cbmTipo_documento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbTipo_documento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel8))
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -480,7 +500,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
                         .addComponent(txtCiudad_expedicion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel16))
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cbmEstado_civil, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbEstado_civil, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel17)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -600,41 +620,23 @@ public class frmCliente extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_rbtFemeninoActionPerformed
 
-    private void txtMovilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMovilActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtMovilActionPerformed
-
-    private void txtSegundo_apellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSegundo_apellidoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSegundo_apellidoActionPerformed
-
     private void txtFecha_nacimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFecha_nacimientoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFecha_nacimientoActionPerformed
-
-    private void txtPrimer_apellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrimer_apellidoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPrimer_apellidoActionPerformed
-
-    private void txtDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDocumentoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDocumentoActionPerformed
-
-    private void txtprimer_nombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtprimer_nombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtprimer_nombreActionPerformed
-
-    private void txtSegundo_nombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSegundo_nombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSegundo_nombreActionPerformed
 
     private void txtDireccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDireccionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDireccionActionPerformed
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
-        //guradar 
+    public Operaciones getOperacion() {
+        return operacion;
+    }
+
+    public void setOperacion(Operaciones operacion) {
+        this.operacion = operacion;
+    }
+
+    private void setGuardarCliente(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setGuardarCliente
         boolean save;
         save = Principal.setGuradarCliente(this);
         if (save) {
@@ -646,27 +648,42 @@ public class frmCliente extends javax.swing.JInternalFrame {
             frmPrincipal.frmRegistrarPagos.setVisible(true);
         }
         this.setVisible(false);
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
-    private void txtFijoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFijoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFijoActionPerformed
-
-    private void txtCiudad_expedicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCiudad_expedicionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCiudad_expedicionActionPerformed
+    }//GEN-LAST:event_setGuardarCliente
 
     private void setCloseIframeCliente(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_setCloseIframeCliente
         this.padre.setClienteView(null);
     }//GEN-LAST:event_setCloseIframeCliente
+
+    private void setValidateSoloLetras(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_setValidateSoloLetras
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(this, "Ingrese solo letras", "Error de datos", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_setValidateSoloLetras
+
+    private void setValidaSoloNumeros(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_setValidaSoloNumeros
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(this, "Ingrese solo números", "Error de datos", JOptionPane.WARNING_MESSAGE);
+        }
+
+    }//GEN-LAST:event_setValidaSoloNumeros
+
+    private void setValidaEmail(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_setValidaEmail
+        // TODO add your handling code here:
+    }//GEN-LAST:event_setValidaEmail
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFoto;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnHuella;
-    private javax.swing.JComboBox cbmEstado_civil;
-    private javax.swing.JComboBox cbmTipo_documento;
+    private javax.swing.JComboBox cmbEstado_civil;
+    private javax.swing.JComboBox cmbTipo_documento;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -703,8 +720,8 @@ public class frmCliente extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtFijo;
     private javax.swing.JTextField txtMovil;
     private javax.swing.JTextField txtPrimer_apellido;
+    private javax.swing.JTextField txtPrimer_nombre;
     private javax.swing.JTextField txtSegundo_apellido;
     private javax.swing.JTextField txtSegundo_nombre;
-    private javax.swing.JTextField txtprimer_nombre;
     // End of variables declaration//GEN-END:variables
 }
