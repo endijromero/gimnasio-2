@@ -21,6 +21,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     static frmRegistrarPagos frmRegistrarPagos;
     static frmCliente frmCliente;
 
+    
     //private UsuariosDto usuarioSesion;
     private frmPaquetes paqueteView;
     private frmDescuentos descuentoView;
