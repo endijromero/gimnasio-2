@@ -273,7 +273,7 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
                 if(guarda) {
                     boolean save =this.operacion.setSaveUpdateDescuentos(this.descuentoDto);
                     if(save) {
-                        JLabel label = new JLabel("<html>Los datos para el paquete: <b>" + this.descuentoDto.getNombre() + "</b>, fueron guardados correctamente</html>");
+                        JLabel label = new JLabel("<html>Los datos para el Descuento: <b>" + this.descuentoDto.getNombre() + "</b>, fueron guardados correctamente</html>");
                         label.setFont(new Font("serif", Font.PLAIN, 14));
                         JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
                         this.setConsultarTableDescuentos();

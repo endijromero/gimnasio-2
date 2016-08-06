@@ -7,9 +7,17 @@ package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones1;
 import com.gimnasio.model.DescuentoDto;
+import com.gimnasio.model.MiRender;
 import com.gimnasio.model.ProductoDto;
+import com.gimnasio.model.TablaDto;
 import com.gimnasio.model.TablaModelo;
+import java.awt.Font;
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 
@@ -34,7 +42,7 @@ public class frmProductos extends javax.swing.JInternalFrame {
         initComponents();
         this.operacion = new Operaciones1();
         this.productoDto = new ProductoDto();
-        this.headTable = new String[]{"Id", "Nombre", "Porcentaje"};
+        this.headTable = new String[]{"Id", "Nombre", "Precio"};
         int widthColumna[] = {50, 200, 100};
         this.table = new TablaModelo(this.headTable);
         this.tblProductos.setModel(this.table);
@@ -43,7 +51,36 @@ public class frmProductos extends javax.swing.JInternalFrame {
         int columnas = this.tblProductos.getColumnCount();
         for (int i = 0; i < columnas; i++) {
             this.tblProductos.getColumnModel().getColumn(i).setPreferredWidth(widthColumna[i]);
-        }
+        }         
+        this.setConsultarTableDescuentos();
+        this.setLimpiar();
+    }
+    
+    /**
+     * 
+     */
+    public void setLimpiar() {
+        this.txtNombre_producto.setText("");
+        this.txtPrecio.setText("");
+        this.productoDto.setId(null);
+        this.productoDto.setNombre("");
+        this.productoDto.setPrecio(null);
+    }
+    
+    /**
+     * 
+     * @throws SQLException 
+     */
+    public void setConsultarTableDescuentos() throws SQLException {
+        
+        List<TablaDto> lista = this.operacion.getProductosDatosTablaDto(null);
+        this.table.getData().clear();
+        this.lblCantidad_descuentos.setText(String.valueOf(lista.size()));
+        lista.stream().forEach((dto) -> {
+            this.table.setAgregar(dto);
+        });
+        this.tblProductos.setDefaultRenderer(Object.class, new MiRender(this.table));
+        this.tblProductos.repaint();
     }
 
     /**
@@ -176,7 +213,7 @@ public class frmProductos extends javax.swing.JInternalFrame {
         });
         tblProductos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblProductosMouseClicked(evt);
+                editarProducto(evt);
             }
         });
         jScrollPane1.setViewportView(tblProductos);
@@ -245,7 +282,7 @@ public class frmProductos extends javax.swing.JInternalFrame {
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 245, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(86, 86, 86)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -275,13 +312,48 @@ public class frmProductos extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
+        try {
+            if(! this.txtNombre_producto.getText().equals("") && ! this.txtPrecio.getText().equals("")) {
+                boolean guarda = false;
+                if(! this.txtNombre_producto.getText().equals(this.productoDto.getNombre())){
+                    guarda = true;
+                    this.productoDto.setNombre(this.txtNombre_producto.getText());
+                }
+                Double precio = new Double(this.txtPrecio.getText());
+                if(this.productoDto.getPrecio()!= precio) {
+                    guarda = true;                
+                    this.productoDto.setPrecio(precio);
+                }
+                if(guarda) {
+                    boolean save =this.operacion.setSaveUpdateProductos(this.productoDto);
+                    if(save) {
+                        JLabel label = new JLabel("<html>Los datos para el producto: <b>" + this.productoDto.getNombre() + "</b>, fueron guardados correctamente</html>");
+                        label.setFont(new Font("serif", Font.PLAIN, 14));
+                        JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
+                        this.setConsultarTableDescuentos();
+                        this.setLimpiar();
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Debe ingresar Nombre y Precio", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(frmPaquetes.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductosMouseClicked
+    private void editarProducto(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editarProducto
         // TODO add your handling code here:
-    }//GEN-LAST:event_tblProductosMouseClicked
+        if(evt.getClickCount() == 2){
+            int fila = this.tblProductos.getSelectedRow();
+            TablaDto dto = (TablaDto) this.table.getData().get(fila);
+            this.productoDto.setId(Integer.parseInt(dto.getDato1()));
+            this.txtNombre_producto.setText(dto.getDato2());
+            this.txtPrecio.setText(dto.getDato3());                        
+        }
+    }//GEN-LAST:event_editarProducto
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
