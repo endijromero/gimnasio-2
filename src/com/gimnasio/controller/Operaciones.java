@@ -95,12 +95,7 @@ public class Operaciones {
      * @param descuento
      * @return 
      */
-    public boolean setSaveUpdateDescuentos(DescuentoDto descuento){
-        if(descuento.getId() != null && descuento.getId() > 0 ){
-            
-        }else {
-            
-        }
+    public boolean setSaveUpdateDescuentos(DescuentoDto descuento){        
         return true;
     }
 

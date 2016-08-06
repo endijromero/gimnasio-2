@@ -6,24 +6,30 @@
 package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones;
+import com.gimnasio.controller.Operaciones1;
 import com.gimnasio.model.DescuentoDto;
 import com.gimnasio.model.MiRender;
 import com.gimnasio.model.TablaDto;
 import com.gimnasio.model.TablaModelo;
+import java.awt.Font;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author rodolfo
  */
-public class frmDescuentos extends javax.swing.JInternalFrame {
+public final class frmDescuentos extends javax.swing.JInternalFrame {
 
     private final frmPrincipal padre;
     private final String[] headTable;
     private final TablaModelo table;
-    private final Operaciones operacion;
+    private final Operaciones1 operacion;
     private final DescuentoDto descuento;
     /**
      * Creates new form frmDescuentos
@@ -33,7 +39,7 @@ public class frmDescuentos extends javax.swing.JInternalFrame {
     public frmDescuentos(frmPrincipal padre) throws SQLException {
         initComponents();
         this.descuento = new DescuentoDto();
-        this.operacion = new Operaciones();
+        this.operacion = new Operaciones1();
         
         this.headTable = new String[]{"Id", "Nombre", "Porcentaje"};
         int widthColumna[] = {50, 200, 100};
@@ -50,7 +56,7 @@ public class frmDescuentos extends javax.swing.JInternalFrame {
     
     
     public void setConsultarTableDescuentos() throws SQLException {
-        List<TablaDto> lista = this.operacion.getPaquetesDatosTablaDto(null);
+        List<TablaDto> lista = this.operacion.getDescuentosDatosTablaDto(null);
         this.table.getData().clear();
         this.lblCantidad_descuentos.setText(String.valueOf(lista.size()));
         lista.stream().forEach((dto) -> {
@@ -252,10 +258,31 @@ public class frmDescuentos extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-        if(!this.txtNombre_paquete.getText().equals("") && !this.txtPrecio.getText().equals("")) {
-            
-        } else {
-            JOptionPane.showMessageDialog(null, "Debe ingresar Nombre y Porcentaje", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
+        try {
+            if(!this.txtNombre_paquete.getText().equals("") && !this.txtPrecio.getText().equals("")) {
+                 boolean guarda = false;
+                if(! this.descuento.getNombre().equals(this.txtNombre_paquete.getText()) ){
+                    guarda = true;
+                    this.descuento.setNombre(this.txtNombre_paquete.getText());
+                }
+                if(!this.descuento.getPorcentaje().toString().equals(this.txtPrecio.getText())) {
+                    guarda = true;                
+                    this.descuento.setPorcentaje(new BigDecimal(this.txtPrecio.getText()));
+                }
+                if(guarda) {
+                    boolean save =this.operacion.setSaveUpdateDescuentos(this.descuento);
+                    if(save) {
+                        JLabel label = new JLabel("<html>Los datos para el paquete: <b>" + this.descuento.getNombre() + "</b>, fueron guardados correctamente</html>");
+                        label.setFont(new Font("serif", Font.PLAIN, 14));
+                        JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
+                        this.setConsultarTableDescuentos();
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Debe ingresar Nombre y Porcentaje", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        }catch (SQLException ex) {
+            Logger.getLogger(frmPaquetes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 

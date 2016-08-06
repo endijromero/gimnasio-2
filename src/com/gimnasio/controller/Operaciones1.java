@@ -42,13 +42,17 @@ public class Operaciones1 {
      * @param descuento
      * @return 
      */
-    public boolean setSaveUpdateDescuentos(DescuentoDto descuento){
-        if(descuento.getId() != null && descuento.getId() > 0 ){
-            
-        }else {
-            
+    public boolean setSaveUpdateDescuentos(DescuentoDto descuento) throws SQLException{
+        boolean guarda = false;
+        if (Util.getVacio(descuento.getNombre())) {
+            JOptionPane.showMessageDialog(null, "El campo para el nombre del paquete es obligatorio");
+        } else if (Util.getVacio(String.valueOf(descuento.getPorcentaje()))) {
+            JOptionPane.showMessageDialog(null, "El campo para el precio del paquete es obligatorio");
+        }  
+        else {
+            guarda = this.model.setGuardarDescuento(descuento);
         }
-        return true;
+        return guarda;
     }
 
     public Model1 getModel() {

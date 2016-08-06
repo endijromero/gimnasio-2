@@ -48,6 +48,20 @@ public class Model1 {
         return list;
     }
     
+    public boolean setGuardarDescuento(DescuentoDto descuento) throws SQLException {
+        PreparedStatement stat = null;
+        if (descuento.getId() > 0) {
+            stat = this.conexion.getConexion().prepareStatement("UPDATE descuentos SET nombre = ?, porcentaje = ? WHERE id=?");
+            stat.setInt(5, descuento.getId());
+        } else {
+            stat = this.conexion.getConexion().prepareStatement("INSERT INTO descuentos (nombre, porcentaje) VALUES (?,?)");
+        }
+        stat.setString(1, descuento.getNombre());
+        stat.setDouble(2, descuento.getPorcentaje().doubleValue());                
+        stat.execute();
+        stat.close();
+        return true;
+    }
 
     public List<Object> getListPersist() {
         return listPersist;
