@@ -241,14 +241,18 @@ public class frmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuPaquetesActionPerformed
 
     private void menuProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProductosActionPerformed
-        // TODO add your handling code here:
-        this.productoView = new frmProductos();
-        frmPrincipal.jdstPrincipal.add(this.productoView);
+        // TODO add your handling code here:        
+        try {
+            this.productoView = new frmProductos(this);
+            frmPrincipal.jdstPrincipal.add(this.productoView);
 
-        this.productoView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-        this.productoView.setResizable(true);
-        this.productoView.setClosable(true);
-        this.productoView.setVisible(true);
+            this.productoView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+            this.productoView.setResizable(true);
+            this.productoView.setClosable(true);
+            this.productoView.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }            
 
     }//GEN-LAST:event_menuProductosActionPerformed
 
