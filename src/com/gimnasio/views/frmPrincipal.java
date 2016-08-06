@@ -21,11 +21,11 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmPaquetes paqueteView;
     private frmDescuentos descuentoView;
     private frmProductos productoView;
-    private frmBuscarCliente buscarClienteView;
-    public frmCliente clienteView;
+    private frmBuscarCliente buscarClienteView;    
     private frmPagos pagosView;
+    private frmCafeteria cafeteriaView;
     public frmRegistrarPagos registrarPagosView;
-    
+    public frmCliente clienteView;
 
     /**
      * Creates new form frmPrincipal
@@ -181,6 +181,11 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         menuCafeteria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Juice-icon.png"))); // NOI18N
         menuCafeteria.setText("Cafeteria");
+        menuCafeteria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCafeteriaActionPerformed(evt);
+            }
+        });
         jMenu3.add(menuCafeteria);
 
         jMenuBar1.add(jMenu3);
@@ -301,6 +306,17 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.buscarClienteView.setClosable(true);
         this.buscarClienteView.setVisible(true);
     }//GEN-LAST:event_menuBuscar_clienteActionPerformed
+
+    private void menuCafeteriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCafeteriaActionPerformed
+        // TODO add your handling code here:
+        this.cafeteriaView = new frmCafeteria();
+        frmPrincipal.jdstPrincipal.add(this.cafeteriaView);
+
+        this.cafeteriaView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight() - 1);
+        this.cafeteriaView.setResizable(true);
+        this.cafeteriaView.setClosable(true);
+        this.cafeteriaView.setVisible(true);
+    }//GEN-LAST:event_menuCafeteriaActionPerformed
 
     /**
      * @param args the command line arguments
