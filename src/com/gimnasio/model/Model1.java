@@ -52,7 +52,7 @@ public class Model1 {
         PreparedStatement stat = null;
         if (descuento.getId() != null && descuento.getId() > 0) {
             stat = this.conexion.getConexion().prepareStatement("UPDATE descuentos SET nombre = ?, porcentaje = ? WHERE id=?");
-            stat.setInt(5, descuento.getId());
+            stat.setInt(3, descuento.getId());
         } else {
             stat = this.conexion.getConexion().prepareStatement("INSERT INTO descuentos (nombre, porcentaje) VALUES (?,?)");
         }
