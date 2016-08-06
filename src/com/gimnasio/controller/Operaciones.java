@@ -88,7 +88,22 @@ public class Operaciones {
             listTable.add(tabla);
         }
         return listTable;
+    }       
+    
+    /**
+     * 
+     * @param descuento
+     * @return 
+     */
+    public boolean setSaveUpdateDescuentos(DescuentoDto descuento){
+        if(descuento.getId() != null && descuento.getId() > 0 ){
+            
+        }else {
+            
+        }
+        return true;
     }
+
 
     public Model getModel() {
         return model;

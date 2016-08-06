@@ -75,6 +75,12 @@ public class TablaDto {
         this.dato6 = dato6;
         this.dato7 = dato7;
     }
+    
+    public TablaDto(String dato1, String dato2, String dato3) {
+        this.dato1 = dato1;
+        this.dato2 = dato2;
+        this.dato3 = dato3;       
+    }
 
     public Color getColor() {
         return color;

@@ -88,7 +88,7 @@ public class Model {
         }
         stat.close();
         return list;
-    }
+    }        
 
     public List<Object> getListPersist() {
         return listPersist;
