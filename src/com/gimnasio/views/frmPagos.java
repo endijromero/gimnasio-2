@@ -163,7 +163,7 @@ public class frmPagos extends javax.swing.JInternalFrame {
             frmPrincipal.frmRegistrarPagos.setClosable(true);            
             frmPrincipal.frmRegistrarPagos.setVisible(true);
             
-            this.setVisible(false);
+            //this.setVisible(false);
         }
     }//GEN-LAST:event_tableClientesMouseClicked
 
