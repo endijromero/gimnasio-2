@@ -80,12 +80,12 @@
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="jLabel2" min="-2" pref="71" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtNombre_paquete" max="32767" attributes="0"/>
+                              <Component id="txtNombre_descuento" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="jLabel1" min="-2" pref="71" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtPrecio" min="-2" pref="185" max="-2" attributes="0"/>
+                              <Component id="txtPorcentaje" min="-2" pref="185" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Component id="btnGuardar" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -99,12 +99,12 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtNombre_paquete" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
+                      <Component id="txtNombre_descuento" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtPrecio" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                      <Component id="txtPorcentaje" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -115,15 +115,15 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JTextField" name="txtNombre_paquete">
+        <Component class="javax.swing.JTextField" name="txtNombre_descuento">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNombre_paqueteActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNombre_descuentoActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtPrecio">
+        <Component class="javax.swing.JTextField" name="txtPorcentaje">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtPrecioActionPerformed"/>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtPrecioKeyTyped"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtPorcentajeActionPerformed"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="validarSoloNumero"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnGuardar">
@@ -227,6 +227,9 @@
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="editarDescuento"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

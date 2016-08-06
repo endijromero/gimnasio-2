@@ -11,6 +11,7 @@ import com.gimnasio.model.DescuentoDto;
 import com.gimnasio.model.MiRender;
 import com.gimnasio.model.TablaDto;
 import com.gimnasio.model.TablaModelo;
+import com.gimnasio.model.enums.ESiNo;
 import java.awt.Font;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -69,8 +70,8 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
     }
     
     public void setLimpiar() {
-        this.txtNombre_paquete.setText("");
-        this.txtPrecio.setText("");
+        this.txtNombre_descuento.setText("");
+        this.txtPorcentaje.setText("");
         this.descuento.setId(null);
         this.descuento.setNombre("");
         this.descuento.setPorcentaje(null);
@@ -86,8 +87,8 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        txtNombre_paquete = new javax.swing.JTextField();
-        txtPrecio = new javax.swing.JTextField();
+        txtNombre_descuento = new javax.swing.JTextField();
+        txtPorcentaje = new javax.swing.JTextField();
         btnGuardar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -101,20 +102,20 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "AGREGAR", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
         jPanel1.setMaximumSize(new java.awt.Dimension(500, 500));
 
-        txtNombre_paquete.addActionListener(new java.awt.event.ActionListener() {
+        txtNombre_descuento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNombre_paqueteActionPerformed(evt);
+                txtNombre_descuentoActionPerformed(evt);
             }
         });
 
-        txtPrecio.addActionListener(new java.awt.event.ActionListener() {
+        txtPorcentaje.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPrecioActionPerformed(evt);
+                txtPorcentajeActionPerformed(evt);
             }
         });
-        txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtPorcentaje.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtPrecioKeyTyped(evt);
+                validarSoloNumero(evt);
             }
         });
 
@@ -146,11 +147,11 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtNombre_paquete))
+                            .addComponent(txtNombre_descuento))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtPorcentaje, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(btnGuardar))
                 .addContainerGap(150, Short.MAX_VALUE))
         );
@@ -159,11 +160,11 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombre_paquete, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNombre_descuento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPorcentaje, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -184,6 +185,11 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3"
             }
         ));
+        tblDescuentos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                editarDescuento(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblDescuentos);
 
         lblResultado.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -263,24 +269,24 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNombre_paqueteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombre_paqueteActionPerformed
+    private void txtNombre_descuentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombre_descuentoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNombre_paqueteActionPerformed
+    }//GEN-LAST:event_txtNombre_descuentoActionPerformed
 
-    private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
+    private void txtPorcentajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorcentajeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPrecioActionPerformed
+    }//GEN-LAST:event_txtPorcentajeActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
         try {
-            if(!this.txtNombre_paquete.getText().equals("") && !this.txtPrecio.getText().equals("")) {
+            if(! this.txtNombre_descuento.getText().equals("") && ! this.txtPorcentaje.getText().equals("")) {
                 boolean guarda = false;
-                if(! this.txtNombre_paquete.getText().equals(this.descuento.getNombre())){
+                if(! this.txtNombre_descuento.getText().equals(this.descuento.getNombre())){
                     guarda = true;
-                    this.descuento.setNombre(this.txtNombre_paquete.getText());
+                    this.descuento.setNombre(this.txtNombre_descuento.getText());
                 }
-                BigDecimal porcentaje = new BigDecimal(this.txtPrecio.getText())
+                BigDecimal porcentaje = new BigDecimal(this.txtPorcentaje.getText());
                 if(this.descuento.getPorcentaje() != porcentaje) {
                     guarda = true;                
                     this.descuento.setPorcentaje(porcentaje);
@@ -307,7 +313,7 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
      * 
      * @param evt 
      */
-    private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
+    private void validarSoloNumero(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_validarSoloNumero
         // TODO add your handling code here:                                   
         char c = evt.getKeyChar();
         if (Character.isLetter(c)) {
@@ -315,7 +321,16 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
             evt.consume();
             JOptionPane.showMessageDialog(this, "Ingresa solo numeros", "Error de datos", JOptionPane.WARNING_MESSAGE);
         }    
-    }//GEN-LAST:event_txtPrecioKeyTyped
+    }//GEN-LAST:event_validarSoloNumero
+
+    private void editarDescuento(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editarDescuento
+        // TODO add your handling code here:
+        int fila = this.tblDescuentos.getSelectedRow();
+            TablaDto dto = (TablaDto) this.table.getData().get(fila);
+            this.descuento.setId(Integer.parseInt(dto.getDato1()));
+            this.txtNombre_descuento.setText(dto.getDato2());
+            this.txtPorcentaje.setText(dto.getDato3());                        
+    }//GEN-LAST:event_editarDescuento
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
@@ -328,7 +343,7 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblCantidad_descuentos;
     private javax.swing.JLabel lblResultado;
     private javax.swing.JTable tblDescuentos;
-    private javax.swing.JTextField txtNombre_paquete;
-    private javax.swing.JTextField txtPrecio;
+    private javax.swing.JTextField txtNombre_descuento;
+    private javax.swing.JTextField txtPorcentaje;
     // End of variables declaration//GEN-END:variables
 }
