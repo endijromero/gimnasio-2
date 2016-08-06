@@ -45,6 +45,7 @@ public class frmDescuentos extends javax.swing.JInternalFrame {
         for (int i = 0; i < columnas; i++) {
             this.tblDescuentos.getColumnModel().getColumn(i).setPreferredWidth(widthColumna[i]);
         }
+        this.setConsultarTableDescuentos();
     }
     
     
