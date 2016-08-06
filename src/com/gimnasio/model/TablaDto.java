@@ -19,7 +19,7 @@ public class TablaDto {
     private Color color;
 
     public TablaDto() {
-        this.color = Color.WHITE;
+        // this.color = Color.WHITE;
     }
 
     /**

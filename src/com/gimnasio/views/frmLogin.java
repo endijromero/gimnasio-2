@@ -6,7 +6,9 @@
 package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones;
-import javax.swing.ImageIcon;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,16 +17,16 @@ import javax.swing.JOptionPane;
  */
 public class frmLogin extends javax.swing.JFrame {
 
-    Operaciones oper = null;
+    Operaciones operacion;
 
     /**
      * Creates new form Login
      */
     public frmLogin() {
         initComponents();
-        this.oper = new Operaciones();
+        this.operacion = new Operaciones();
         this.setLocationRelativeTo(null);
-
+        
         this.txtUser.setText("emendoza1");
         this.txtPassword.setText("1234");
     }
@@ -144,8 +146,14 @@ public class frmLogin extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         if (this.txtUser.getText().equals("") || this.txtPassword.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Debe ingresar un usario y contraseña", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
-        } else if (this.oper.setValidateIngreso(this.txtUser.getText(), this.txtPassword.getText())) {
-            this.setVisible(false);
+        } else {
+            try {
+                if (this.operacion.setValidateIngreso(this.txtUser.getText(), this.txtPassword.getText())) {
+                    this.setVisible(false);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }//GEN-LAST:event_btnLoginActionPerformed

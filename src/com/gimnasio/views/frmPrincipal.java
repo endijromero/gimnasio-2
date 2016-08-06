@@ -6,6 +6,9 @@
 package com.gimnasio.views;
 
 import com.gimnasio.util.Util;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -14,6 +17,7 @@ import javax.swing.JOptionPane;
  * @author rodolfo
  */
 public class frmPrincipal extends javax.swing.JFrame {
+
     static frmRegistrarPagos frmRegistrarPagos;
     static frmCliente frmCliente;
 
@@ -21,7 +25,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmPaquetes paqueteView;
     private frmDescuentos descuentoView;
     private frmProductos productoView;
-    private frmBuscarCliente buscarClienteView;    
+    private frmBuscarCliente buscarClienteView;
     private frmPagos pagosView;
     private frmCafeteria cafeteriaView;
     public frmRegistrarPagos registrarPagosView;
@@ -220,13 +224,17 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void menuPaquetesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPaquetesActionPerformed
         if (this.paqueteView == null) {
-            this.paqueteView = new frmPaquetes(this);
-            this.jdstPrincipal.add(paqueteView);
-            this.paqueteView.setTitle("Formulario para el registro de paquetes");
-            this.paqueteView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight() - 1);
-            this.paqueteView.setClosable(true);
-            this.paqueteView.setResizable(true);
-            this.paqueteView.setVisible(true);
+            try {
+                this.paqueteView = new frmPaquetes(this);
+                frmPrincipal.jdstPrincipal.add(this.paqueteView);
+                this.paqueteView.setTitle("Formulario para el registro de paquetes");
+                this.paqueteView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight() - 1);
+                this.paqueteView.setClosable(true);
+                this.paqueteView.setResizable(true);
+                this.paqueteView.setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             JOptionPane.showMessageDialog(frmPrincipal.this, "El formulario para el registro de paquetes, ya se encuentra abierto", "Mensaje de información", JOptionPane.WARNING_MESSAGE);
         }
@@ -237,7 +245,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.productoView = new frmProductos();
         frmPrincipal.jdstPrincipal.add(this.productoView);
 
-        this.productoView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight()-1);
+        this.productoView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
         this.productoView.setResizable(true);
         this.productoView.setClosable(true);
         this.productoView.setVisible(true);
@@ -249,7 +257,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.descuentoView = new frmDescuentos();
         frmPrincipal.jdstPrincipal.add(this.descuentoView);
 
-        this.descuentoView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight()-1);
+        this.descuentoView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight() - 1);
         this.descuentoView.setResizable(true);
         this.descuentoView.setClosable(true);
         this.descuentoView.setVisible(true);
@@ -260,7 +268,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.pagosView = new frmPagos();
         frmPrincipal.jdstPrincipal.add(this.pagosView);
 
-        this.pagosView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight()-1);
+        this.pagosView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight() - 1);
         this.pagosView.setResizable(true);
         this.pagosView.setClosable(true);
         this.pagosView.setVisible(true);

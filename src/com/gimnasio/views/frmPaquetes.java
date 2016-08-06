@@ -1,37 +1,69 @@
 package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones;
+import com.gimnasio.model.MiRender;
+import com.gimnasio.model.PaqueteDto;
+import com.gimnasio.model.TablaDto;
 import com.gimnasio.model.TablaModelo;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
  * @author rodolfo
  */
-public class frmPaquetes extends javax.swing.JInternalFrame {
+public final class frmPaquetes extends javax.swing.JInternalFrame {
 
     private final frmPrincipal padre;
     private final String[] headTable;
     private final TablaModelo table;
-    private Operaciones oper;
+    private final PaqueteDto paqueteDto;
+    private Operaciones operacion;
 
     /**
-     * Creates new form frmPaquetes
      *
      * @param padre
+     * @throws SQLException
      */
-    public frmPaquetes(frmPrincipal padre) {
+    public frmPaquetes(frmPrincipal padre) throws SQLException {
         initComponents();
+        this.operacion = new Operaciones();
+        this.paqueteDto = new PaqueteDto();
 
         this.headTable = new String[]{"Id", "Nombre", "Precio", "Tiquetera", "Diaz de aplazamiento"};
         int widthColumna[] = {50, 200, 100, 100, 150};
         this.table = new TablaModelo(this.headTable);
         this.tblPaquetes.setModel(this.table);
-        this.oper = new Operaciones();
+
         this.padre = padre;
         int columnas = this.tblPaquetes.getColumnCount();
         for (int i = 0; i < columnas; i++) {
             this.tblPaquetes.getColumnModel().getColumn(i).setPreferredWidth(widthColumna[i]);
         }
+        this.setConsultarTablePaquetes();
+    }
+
+    /**
+     *
+     * @throws SQLException
+     */
+    public void setConsultarTablePaquetes() throws SQLException {
+        List<TablaDto> lista = this.operacion.getPaquetesDatosTablaDto(null);
+        this.table.getData().clear();
+        this.lblCantidad_paquetes.setText(String.valueOf(lista.size()));
+        for (TablaDto dto : lista) {
+            this.table.setAgregar(dto);
+        }
+        this.tblPaquetes.setDefaultRenderer(Object.class, new MiRender(this.table));
+        this.tblPaquetes.repaint();
+    }
+
+    public Operaciones getOperacion() {
+        return operacion;
+    }
+
+    public void setOperacion(Operaciones operacion) {
+        this.operacion = operacion;
     }
 
     /**
@@ -59,6 +91,8 @@ public class frmPaquetes extends javax.swing.JInternalFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPaquetes = new javax.swing.JTable();
+        lblResultado = new javax.swing.JLabel();
+        lblCantidad_paquetes = new javax.swing.JLabel();
 
         jMenu1.setText("jMenu1");
 
@@ -213,20 +247,36 @@ public class frmPaquetes extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tblPaquetes);
 
+        lblResultado.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblResultado.setText("Resultados");
+
+        lblCantidad_paquetes.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblCantidad_paquetes.setText("0");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 750, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(lblResultado)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblCantidad_paquetes, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblResultado)
+                    .addComponent(lblCantidad_paquetes))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -236,8 +286,8 @@ public class frmPaquetes extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -247,19 +297,11 @@ public class frmPaquetes extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtNombre_paqueteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombre_paqueteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNombre_paqueteActionPerformed
-
-    private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPrecioActionPerformed
 
     private void limpiarfrmPaquetes(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_limpiarfrmPaquetes
         this.padre.setPaqueteView(null);
@@ -270,8 +312,16 @@ public class frmPaquetes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtDias_aplazamientoActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        //this.oper.setRegistrarPaquetes(this.txtNombre_paquete);
+        //this.oper.setRegistrarPaquetes(this);
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPrecioActionPerformed
+
+    private void txtNombre_paqueteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombre_paqueteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombre_paqueteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -283,9 +333,11 @@ public class frmPaquetes extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblCantidad_paquetes;
     private javax.swing.JLabel lblDias_aplazamiento;
     private javax.swing.JLabel lblNombre_paquete;
     private javax.swing.JLabel lblPrecio;
+    private javax.swing.JLabel lblResultado;
     private javax.swing.JRadioButton rbtTiqutera;
     private javax.swing.JTable tblPaquetes;
     private javax.swing.JTextField txtDias_aplazamiento;

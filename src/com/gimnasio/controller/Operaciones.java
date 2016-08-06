@@ -1,9 +1,10 @@
 package com.gimnasio.controller;
 
 import com.gimnasio.model.*;
-import com.gimnasio.persistences.*;
 import com.gimnasio.util.Util;
 import com.gimnasio.views.frmPrincipal;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -13,23 +14,29 @@ import javax.swing.JOptionPane;
  */
 public class Operaciones {
 
-    GimnasioModel model;
+    private Model model;
+    private Conexion conexion;
 
     public Operaciones() {
-        this.model = new GimnasioModel();
+
+        this.conexion = new Conexion();
+        this.conexion.connect();
+        this.model = new Model();
+        this.model.setConexion(this.conexion);
     }
 
     /**
+     * @throws java.sql.SQLException
      * @tutorial valida el ingreso de los usuarios a ala plataforma
      * @param loggin
      * @param password
      * @return
      */
-    public Boolean setValidateIngreso(String loggin, String password) {
+    public Boolean setValidateIngreso(String loggin, String password) throws SQLException {
         Boolean valido = false;
-        List<Usuarios> listUsuarios = this.model.getDatosUsurios(loggin);
+        List<UsuarioDto> listUsuarios = this.model.getDatosUsuarios(loggin);
         if (listUsuarios.size() > 0) {
-            Usuarios user = listUsuarios.get(0);
+            UsuarioDto user = listUsuarios.get(0);
             if (Util.getEncriptarMD5(password).equals(user.getPassword())) {
                 valido = true;
                 frmPrincipal principal = new frmPrincipal();
@@ -42,6 +49,42 @@ public class Operaciones {
         }
         return valido;
     }
-    
-    //public void setRegistrarPaquetes(String nombrePaquete, )
+
+    /**
+     *
+     * @param idPaquete
+     * @return
+     * @throws SQLException
+     */
+    public List<TablaDto> getPaquetesDatosTablaDto(String idPaquete) throws SQLException {
+        List<TablaDto> listTable = new ArrayList();
+        List<PaqueteDto> listPaquetes = this.model.getDatosPaquetes(idPaquete);
+        for (PaqueteDto paquete : listPaquetes) {
+            TablaDto tabla = new TablaDto(
+                    String.valueOf(paquete.getId()),
+                    Util.getQuitaNULL(paquete.getNombre()).toUpperCase(),
+                    String.valueOf(paquete.getPrecioBase()),
+                    String.valueOf(paquete.getYnTiquetera()),
+                    String.valueOf(paquete.getYnTiquetera()));
+            listTable.add(tabla);
+        }
+        return listTable;
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
+    }
+
+    public Conexion getConexion() {
+        return conexion;
+    }
+
+    public void setConexion(Conexion conexion) {
+        this.conexion = conexion;
+    }
+
 }
