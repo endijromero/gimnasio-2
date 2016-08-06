@@ -5,17 +5,58 @@
  */
 package com.gimnasio.views;
 
+import com.gimnasio.controller.Operaciones;
+import com.gimnasio.model.DescuentoDto;
+import com.gimnasio.model.MiRender;
+import com.gimnasio.model.TablaDto;
+import com.gimnasio.model.TablaModelo;
+import java.sql.SQLException;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author rodolfo
  */
 public class frmDescuentos extends javax.swing.JInternalFrame {
 
+    private final frmPrincipal padre;
+    private final String[] headTable;
+    private final TablaModelo table;
+    private final Operaciones operacion;
+    private final DescuentoDto descuento;
     /**
      * Creates new form frmDescuentos
+     * @param padre
+     * @throws java.sql.SQLException
      */
-    public frmDescuentos() {
+    public frmDescuentos(frmPrincipal padre) throws SQLException {
         initComponents();
+        this.descuento = new DescuentoDto();
+        this.operacion = new Operaciones();
+        
+        this.headTable = new String[]{"Id", "Nombre", "Porcentaje"};
+        int widthColumna[] = {50, 200, 100};
+        this.table = new TablaModelo(this.headTable);
+        this.tblDescuentos.setModel(this.table);
+
+        this.padre = padre;
+        int columnas = this.tblDescuentos.getColumnCount();
+        for (int i = 0; i < columnas; i++) {
+            this.tblDescuentos.getColumnModel().getColumn(i).setPreferredWidth(widthColumna[i]);
+        }
+    }
+    
+    
+    public void setConsultarTableDescuentos() throws SQLException {
+        List<TablaDto> lista = this.operacion.getPaquetesDatosTablaDto(null);
+        this.table.getData().clear();
+        this.lblCantidad_descuentos.setText(String.valueOf(lista.size()));
+        lista.stream().forEach((dto) -> {
+            this.table.setAgregar(dto);
+        });
+        this.tblDescuentos.setDefaultRenderer(Object.class, new MiRender(this.table));
+        this.tblDescuentos.repaint();
     }
 
     /**
@@ -35,10 +76,12 @@ public class frmDescuentos extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblDescuentos = new javax.swing.JTable();
+        lblResultado = new javax.swing.JLabel();
+        lblCantidad_descuentos = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "AGREGAR", 0, 0, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "AGREGAR", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
         jPanel1.setMaximumSize(new java.awt.Dimension(500, 500));
 
         txtNombre_paquete.addActionListener(new java.awt.event.ActionListener() {
@@ -56,6 +99,11 @@ public class frmDescuentos extends javax.swing.JInternalFrame {
         btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/floppy-icon.png"))); // NOI18N
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -97,13 +145,13 @@ public class frmDescuentos extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "LISTA DE DESCUENTOS", 0, 0, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "LISTA DE DESCUENTOS", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
         jPanel3.setMaximumSize(new java.awt.Dimension(500, 500));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblDescuentos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -114,22 +162,37 @@ public class frmDescuentos extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblDescuentos);
+
+        lblResultado.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblResultado.setText("Resultados");
+
+        lblCantidad_descuentos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblCantidad_descuentos.setText("0");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(lblResultado)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblCantidad_descuentos, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblResultado)
+                    .addComponent(lblCantidad_descuentos))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -172,10 +235,8 @@ public class frmDescuentos extends javax.swing.JInternalFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addContainerGap(16, Short.MAX_VALUE)))
+                    .addContainerGap(20, Short.MAX_VALUE)))
         );
-
-        jPanel3.getAccessibleContext().setAccessibleName("LISTA DE DESCUENTOS");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -188,6 +249,15 @@ public class frmDescuentos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPrecioActionPerformed
 
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // TODO add your handling code here:
+        if(!this.txtNombre_paquete.getText().equals("") && !this.txtPrecio.getText().equals("")) {
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe ingresar Nombre y Porcentaje", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
@@ -197,7 +267,9 @@ public class frmDescuentos extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblCantidad_descuentos;
+    private javax.swing.JLabel lblResultado;
+    private javax.swing.JTable tblDescuentos;
     private javax.swing.JTextField txtNombre_paquete;
     private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
