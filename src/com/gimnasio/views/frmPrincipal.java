@@ -154,7 +154,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuCrear_cliente.setText("Crear");
         menuCrear_cliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuCrear_clienteActionPerformed(evt);
+                setCrearCliente(evt);
             }
         });
         menuCliente.add(menuCrear_cliente);
@@ -264,7 +264,7 @@ public class frmPrincipal extends javax.swing.JFrame {
             this.descuentoView.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
     }//GEN-LAST:event_menuDescuentosActionPerformed
 
     private void menuPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPagosActionPerformed
@@ -297,16 +297,25 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_menuClienteMenuSelected
 
-    private void menuCrear_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCrear_clienteActionPerformed
-        // TODO add your handling code here:
-        this.clienteView = new frmCliente();
-        frmPrincipal.jdstPrincipal.add(this.clienteView);
+    private void setCrearCliente(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCrearCliente
 
-        this.clienteView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight() - 1);
-        this.clienteView.setResizable(true);
-        this.clienteView.setClosable(true);
-        this.clienteView.setVisible(true);
-    }//GEN-LAST:event_menuCrear_clienteActionPerformed
+        if (this.clienteView == null) {
+            try {
+                this.clienteView = new frmCliente(this);
+                frmPrincipal.jdstPrincipal.add(this.clienteView);
+                this.clienteView.setTitle("Formulario para el registro de clientes");
+                this.clienteView.setSize(this.getWidth(), this.getHeight() - 1);
+                this.clienteView.setResizable(true);
+                this.clienteView.setClosable(true);
+                this.clienteView.setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(frmPrincipal.this, "El formulario para el registro de clientes, ya se encuentra abierto", "Mensaje de información", JOptionPane.WARNING_MESSAGE);
+        }
+
+    }//GEN-LAST:event_setCrearCliente
 
     private void menuBuscar_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBuscar_clienteActionPerformed
         // TODO add your handling code here:
@@ -389,6 +398,14 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     public void setPagosView(frmRegistrarPagos registrarPagosView) {
         this.registrarPagosView = registrarPagosView;
+    }
+
+    public frmCliente getClienteView() {
+        return clienteView;
+    }
+
+    public void setClienteView(frmCliente clienteView) {
+        this.clienteView = clienteView;
     }
 
     public void setPago() {

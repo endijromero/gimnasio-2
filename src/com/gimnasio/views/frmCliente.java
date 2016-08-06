@@ -5,7 +5,10 @@
  */
 package com.gimnasio.views;
 
+import com.gimnasio.controller.Operaciones;
 import com.gimnasio.controller.Principal;
+import com.gimnasio.model.ClienteDto;
+import java.sql.SQLException;
 
 /**
  *
@@ -13,12 +16,21 @@ import com.gimnasio.controller.Principal;
  */
 public class frmCliente extends javax.swing.JInternalFrame {
 
+    private final frmPrincipal padre;
+    private final ClienteDto clienteDto;
+    private Operaciones operacion;
+
     /**
-     * Creates new form frmCliente
+     *
+     * @tutorial Creates new form frmCliente
+     * @param padre
+     * @throws java.sql.SQLException
      */
-    public frmCliente() {
+    public frmCliente(frmPrincipal padre) throws SQLException {
         initComponents();
-        
+        this.operacion = new Operaciones();
+        this.clienteDto = new ClienteDto();
+        this.padre = padre;
     }
 
     /**
@@ -74,6 +86,24 @@ public class frmCliente extends javax.swing.JInternalFrame {
         panelVisor_eventos = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         textArea_eventos = new javax.swing.JTextArea();
+
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                setCloseIframeCliente(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "AGREGAR CLIENTE", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
@@ -607,12 +637,12 @@ public class frmCliente extends javax.swing.JInternalFrame {
         //guradar 
         boolean save;
         save = Principal.setGuradarCliente(this);
-        if(save){
+        if (save) {
             frmPrincipal.frmRegistrarPagos = new frmRegistrarPagos();
             frmPrincipal.jdstPrincipal.add(frmPrincipal.frmRegistrarPagos);
             frmPrincipal.frmRegistrarPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
             frmPrincipal.frmRegistrarPagos.setResizable(true);
-            frmPrincipal.frmRegistrarPagos.setClosable(true);            
+            frmPrincipal.frmRegistrarPagos.setClosable(true);
             frmPrincipal.frmRegistrarPagos.setVisible(true);
         }
         this.setVisible(false);
@@ -625,6 +655,10 @@ public class frmCliente extends javax.swing.JInternalFrame {
     private void txtCiudad_expedicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCiudad_expedicionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCiudad_expedicionActionPerformed
+
+    private void setCloseIframeCliente(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_setCloseIframeCliente
+        this.padre.setClienteView(null);
+    }//GEN-LAST:event_setCloseIframeCliente
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

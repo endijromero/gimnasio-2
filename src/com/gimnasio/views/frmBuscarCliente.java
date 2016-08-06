@@ -5,8 +5,6 @@
  */
 package com.gimnasio.views;
 
-import javax.swing.JOptionPane;
-
 /**
  *
  * @author rodolfo
@@ -155,12 +153,14 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
     private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
         // TODO add your handling code here:
         if(evt.getClickCount() == 2) {
+            /*
             frmPrincipal.frmCliente = new frmCliente();
             frmPrincipal.jdstPrincipal.add(frmPrincipal.frmCliente);
             frmPrincipal.frmCliente.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
             frmPrincipal.frmCliente.setResizable(true);
             frmPrincipal.frmCliente.setClosable(true);            
             frmPrincipal.frmCliente.setVisible(true);
+            */
             
             this.setVisible(false);
         }
