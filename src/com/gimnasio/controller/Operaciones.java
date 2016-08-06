@@ -26,6 +26,25 @@ public class Operaciones {
     }
 
     /**
+     *
+     * @param paquete
+     * @throws SQLException
+     */
+    public boolean setGuardarPaquete(PaqueteDto paquete) throws SQLException {
+        boolean guarda = false;
+        if (Util.getVacio(paquete.getNombre())) {
+            JOptionPane.showMessageDialog(null, "El campo para el nombre del paquete es obligatorio");
+        } else if (Util.getVacio(String.valueOf(paquete.getPrecioBase()))) {
+            JOptionPane.showMessageDialog(null, "El campo para el precio del paquete es obligatorio");
+        } else if (Util.getVacio(String.valueOf(paquete.getDiasAplazamiento()))) {
+            JOptionPane.showMessageDialog(null, "El campo para los días de aplazamiento del paquete es obligatorio");
+        } else {
+            guarda = this.model.setGuardarPaquete(paquete);
+        }
+        return guarda;
+    }
+
+    /**
      * @throws java.sql.SQLException
      * @tutorial valida el ingreso de los usuarios a ala plataforma
      * @param loggin
@@ -62,10 +81,10 @@ public class Operaciones {
         for (PaqueteDto paquete : listPaquetes) {
             TablaDto tabla = new TablaDto(
                     String.valueOf(paquete.getId()),
-                    Util.getQuitaNULL(paquete.getNombre()).toUpperCase(),
+                    Util.getQuitaNULL(paquete.getNombre()),
                     String.valueOf(paquete.getPrecioBase()),
                     String.valueOf(paquete.getYnTiquetera()),
-                    String.valueOf(paquete.getYnTiquetera()));
+                    String.valueOf(paquete.getDiasAplazamiento()));
             listTable.add(tabla);
         }
         return listTable;

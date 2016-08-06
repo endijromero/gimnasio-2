@@ -5,8 +5,15 @@ import com.gimnasio.model.MiRender;
 import com.gimnasio.model.PaqueteDto;
 import com.gimnasio.model.TablaDto;
 import com.gimnasio.model.TablaModelo;
+import com.gimnasio.model.enums.ESiNo;
+import com.gimnasio.util.Util;
+import java.awt.Font;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -54,8 +61,17 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
         for (TablaDto dto : lista) {
             this.table.setAgregar(dto);
         }
+        setCleanFormulario();
         this.tblPaquetes.setDefaultRenderer(Object.class, new MiRender(this.table));
         this.tblPaquetes.repaint();
+    }
+
+    private void setCleanFormulario() {
+        this.paqueteDto.setId(0);
+        this.txtNombre_paquete.setText(null);
+        this.txtDias_aplazamiento.setText(null);
+        this.txtPrecio.setText(null);
+        this.rbtTiqutera.setSelected(false);
     }
 
     public Operaciones getOperacion() {
@@ -132,15 +148,15 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "AGREGAR", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
         jPanel1.setMaximumSize(new java.awt.Dimension(500, 500));
 
-        txtNombre_paquete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNombre_paqueteActionPerformed(evt);
+        txtNombre_paquete.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                setValidaSoloLetras(evt);
             }
         });
 
-        txtPrecio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPrecioActionPerformed(evt);
+        txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                setValidaNumero(evt);
             }
         });
 
@@ -149,7 +165,7 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
+                setGuardarPaquete(evt);
             }
         });
 
@@ -163,9 +179,9 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
 
         rbtTiqutera.setText("Tiquetera");
 
-        txtDias_aplazamiento.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDias_aplazamientoActionPerformed(evt);
+        txtDias_aplazamiento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                setValidaNumero(evt);
             }
         });
 
@@ -238,11 +254,23 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Short.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Short.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblPaquetes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                setEditarPaquete(evt);
             }
         });
         jScrollPane1.setViewportView(tblPaquetes);
@@ -307,21 +335,58 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
         this.padre.setPaqueteView(null);
     }//GEN-LAST:event_limpiarfrmPaquetes
 
-    private void txtDias_aplazamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDias_aplazamientoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDias_aplazamientoActionPerformed
+    private void setGuardarPaquete(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setGuardarPaquete
+        try {
+            this.paqueteDto.setNombre(this.txtNombre_paquete.getText());
+            if (!Util.getVacio(this.txtPrecio.getText())) {
+                this.paqueteDto.setPrecioBase(Double.parseDouble(this.txtPrecio.getText()));
+            }
+            this.paqueteDto.setYnTiquetera(this.rbtTiqutera.isSelected() ? ESiNo.SI.getId() : ESiNo.NO.getId());
+            if (!Util.getVacio(this.txtDias_aplazamiento.getText())) {
+                this.paqueteDto.setDiasAplazamiento(Short.parseShort(this.txtDias_aplazamiento.getText()));
+            }
+            boolean guarda = this.operacion.setGuardarPaquete(this.paqueteDto);
+            if (guarda) {
+                JLabel label = new JLabel("<html>Los datos para el paquete: <b>" + this.paqueteDto.getNombre() + "</b>, fueron guardados correctamente</html>");
+                label.setFont(new Font("serif", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
+                this.setConsultarTablePaquetes();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(frmPaquetes.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        //this.oper.setRegistrarPaquetes(this);
-    }//GEN-LAST:event_btnGuardarActionPerformed
+    }//GEN-LAST:event_setGuardarPaquete
 
-    private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPrecioActionPerformed
+    private void setEditarPaquete(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setEditarPaquete
+        if (evt.getClickCount() == 2) {
+            int fila = this.tblPaquetes.getSelectedRow();
+            TablaDto dto = (TablaDto) this.table.getData().get(fila);
+            this.paqueteDto.setId(Integer.parseInt(dto.getDato1()));
+            this.txtNombre_paquete.setText(dto.getDato2());
+            this.txtPrecio.setText(dto.getDato3());
+            this.rbtTiqutera.setSelected(Integer.parseInt(dto.getDato5()) == ESiNo.SI.getId());
+            this.txtDias_aplazamiento.setText(dto.getDato5());
+        }
+    }//GEN-LAST:event_setEditarPaquete
 
-    private void txtNombre_paqueteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombre_paqueteActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNombre_paqueteActionPerformed
+    private void setValidaNumero(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_setValidaNumero
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(this, "Ingresa solo letras", "Error de datos", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_setValidaNumero
+
+    private void setValidaSoloLetras(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_setValidaSoloLetras
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(this, "Ingresa solo letras", "Error de datos", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_setValidaSoloLetras
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

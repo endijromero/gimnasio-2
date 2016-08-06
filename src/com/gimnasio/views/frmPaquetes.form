@@ -173,12 +173,12 @@
       <SubComponents>
         <Component class="javax.swing.JTextField" name="txtNombre_paquete">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNombre_paqueteActionPerformed"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="setValidaSoloLetras"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtPrecio">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtPrecioActionPerformed"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="setValidaNumero"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnGuardar">
@@ -192,7 +192,7 @@
             <Property name="text" type="java.lang.String" value="Guardar"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="setGuardarPaquete"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblPrecio">
@@ -220,7 +220,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txtDias_aplazamiento">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDias_aplazamientoActionPerformed"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="setValidaNumero"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblDias_aplazamiento">
@@ -292,11 +292,11 @@
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="5" rowCount="4">
-                    <Column editable="true" title="Id" type="java.lang.Integer"/>
-                    <Column editable="true" title="Nombre" type="java.lang.String"/>
-                    <Column editable="true" title="Precio base" type="java.lang.Double"/>
-                    <Column editable="true" title="D&#xed;as de aplazamiento" type="java.lang.Short"/>
-                    <Column editable="true" title="Tiquetera" type="java.lang.String"/>
+                    <Column editable="false" title="Id" type="java.lang.Integer"/>
+                    <Column editable="false" title="Nombre" type="java.lang.String"/>
+                    <Column editable="false" title="Precio base" type="java.lang.String"/>
+                    <Column editable="false" title="D&#xed;as de aplazamiento" type="java.lang.Short"/>
+                    <Column editable="false" title="Tiquetera" type="java.lang.String"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -332,6 +332,9 @@
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="setEditarPaquete"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

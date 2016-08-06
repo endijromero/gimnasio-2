@@ -1,6 +1,7 @@
 package com.gimnasio.model;
 
 import com.gimnasio.util.Util;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,6 +19,24 @@ public class Model {
 
     public Model() {
 
+    }
+
+    public boolean setGuardarPaquete(PaqueteDto paquete) throws SQLException {
+        PreparedStatement stat = null;
+        if (paquete.getId() > 0) {
+            stat = this.conexion.getConexion().prepareStatement("UPDATE paquetes SET nombre = ?, precio_base = ?, yn_tiquetera = ?, dias_aplazamiento = ? WHERE id=?");
+            stat.setInt(5, paquete.getId());
+        } else {
+            stat = this.conexion.getConexion().prepareStatement("INSERT INTO paquetes (nombre, precio_base, yn_tiquetera, dias_aplazamiento) VALUES (?,?,?,?)");
+
+        }
+        stat.setString(1, paquete.getNombre());
+        stat.setDouble(2, paquete.getPrecioBase());
+        stat.setShort(3, paquete.getYnTiquetera());
+        stat.setShort(4, paquete.getDiasAplazamiento());
+        stat.execute();
+        stat.close();
+        return true;
     }
 
     public List<UsuarioDto> getDatosUsuarios(String loggin) throws SQLException {
