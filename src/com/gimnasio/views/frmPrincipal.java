@@ -347,10 +347,10 @@ public class frmPrincipal extends javax.swing.JFrame {
         if (this.productoView == null) {
             try {
                 this.cafeteriaView = new frmCafeteria();
-                frmPrincipal.jdstPrincipal.add(this.cafeteriaView);
-                this.cafeteriaView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-                this.cafeteriaView.setResizable(true);
                 this.cafeteriaView.setUsuarioDto(this.usuarioSessionDto);
+                frmPrincipal.jdstPrincipal.add(this.cafeteriaView);                
+                this.cafeteriaView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                this.cafeteriaView.setResizable(true);                
                 this.cafeteriaView.setClosable(true);
                 this.cafeteriaView.setVisible(true);
             } catch (Exception ex) {
