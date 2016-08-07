@@ -11,11 +11,14 @@ package com.gimnasio.views;
  */
 public class frmBuscarCliente extends javax.swing.JInternalFrame {
 
+    private final String tipo;
     /**
      * Creates new form frmCliente
+     * @param tipo
      */
-    public frmBuscarCliente() {
+    public frmBuscarCliente(String tipo) {
         initComponents();
+        this.tipo = tipo;
     }
 
     /**
@@ -153,6 +156,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
     private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
         // TODO add your handling code here:
         if(evt.getClickCount() == 2) {
+            if(this.tipo.equals("1")) {
             /*
             frmPrincipal.frmCliente = new frmCliente();
             frmPrincipal.jdstPrincipal.add(frmPrincipal.frmCliente);
@@ -161,7 +165,14 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
             frmPrincipal.frmCliente.setClosable(true);            
             frmPrincipal.frmCliente.setVisible(true);
             */
-            
+            }else if(this.tipo.equals("2")){
+                frmPrincipal.fisitorepiaView = new frmFisioterapia();
+                frmPrincipal.jdstPrincipal.add(frmPrincipal.fisitorepiaView);
+                frmPrincipal.fisitorepiaView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                frmPrincipal.fisitorepiaView.setResizable(true);
+                frmPrincipal.fisitorepiaView.setClosable(true);            
+                frmPrincipal.fisitorepiaView.setVisible(true);
+            }
             this.setVisible(false);
         }
     }//GEN-LAST:event_tablaClientesMouseClicked

@@ -21,6 +21,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     
     static frmRegistrarPagos frmRegistrarPagos;
     static frmClientes frmCliente;
+    static frmFisioterapia fisitorepiaView;
     
     private UsuarioDto usuarioSessionDto;
     private frmPaquetes paqueteView;
@@ -31,6 +32,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmCafeteria cafeteriaView;
     private frmRegistrarPagos registrarPagosView;
     private frmClientes clienteView;
+    
 
     /**
      * Creates new form frmPrincipal
@@ -49,6 +51,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.clienteView = null;
         this.pagosView = null;
         this.registrarPagosView = null;
+        frmPrincipal.fisitorepiaView = null;
         this.usuarioSessionDto = new UsuarioDto();
     }
 
@@ -75,6 +78,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuCafeteria = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -200,6 +204,16 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/medical-suitecase-icon.png"))); // NOI18N
         jMenu5.setText("Fisioterapia");
+
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/medical-suitecase-icon.png"))); // NOI18N
+        jMenuItem1.setText("Registrar");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem1);
+
         jMenuBar1.add(jMenu5);
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/file-powerpoint-icon.png"))); // NOI18N
@@ -240,6 +254,10 @@ public class frmPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_setCrearPaquetes
 
+    /**
+     * 
+     * @param evt 
+     */
     private void setCrearPoductos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCrearPoductos
         if (this.productoView == null) {
             try {
@@ -255,10 +273,12 @@ public class frmPrincipal extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(frmPrincipal.this, "El formulario para el registro de productos, ya se encuentra abierto", "Mensaje de información", JOptionPane.WARNING_MESSAGE);
         }
-        
-
     }//GEN-LAST:event_setCrearPoductos
 
+    /**
+     * 
+     * @param evt 
+     */
     private void setCrearDescuentos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCrearDescuentos
         
         if (this.productoView == null) {
@@ -277,6 +297,10 @@ public class frmPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_setCrearDescuentos
 
+    /**
+     * 
+     * @param evt 
+     */
     private void setRegistrarPagosPlanes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRegistrarPagosPlanes
         if (this.productoView == null) {
             try {
@@ -312,10 +336,14 @@ public class frmPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_menuClienteMenuSelected
-
+    
+    /**
+     * 
+     * @param evt 
+     */
     private void setBuscarClientes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setBuscarClientes
         // TODO add your handling code here:
-        this.buscarClienteView = new frmBuscarCliente();
+        this.buscarClienteView = new frmBuscarCliente("1");
         frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
         
         this.buscarClienteView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
@@ -324,6 +352,10 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.buscarClienteView.setVisible(true);
     }//GEN-LAST:event_setBuscarClientes
 
+    /**
+     * 
+     * @param evt 
+     */
     private void setRegistrarPagosProductos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRegistrarPagosProductos
         if (this.productoView == null) {
             try {
@@ -364,6 +396,22 @@ public class frmPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(frmPrincipal.this, "El formulario para el registro de clientes, ya se encuentra abierto", "Mensaje de información", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_setRegistrarClientes
+
+    /**
+     * 
+     * @param evt 
+     */
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        this.buscarClienteView = new frmBuscarCliente("2");
+        frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
+        
+        this.buscarClienteView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+        this.buscarClienteView.setResizable(true);
+        this.buscarClienteView.setClosable(true);
+        this.buscarClienteView.setVisible(true);
+        
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -434,8 +482,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.clienteView = clienteView;
     }
     
+    /**
+     * 
+     */
     public void setPago() {
-        this.buscarClienteView = new frmBuscarCliente();
+        this.buscarClienteView = new frmBuscarCliente("3");
         frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
         
         this.buscarClienteView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
@@ -459,6 +510,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     public static javax.swing.JDesktopPane jdstPrincipal;
     private javax.swing.JMenuItem menuBuscar_cliente;
     private javax.swing.JMenuItem menuCafeteria;
