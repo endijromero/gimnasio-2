@@ -24,6 +24,7 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
     private final ComboModel comboProductos;
     private final Operaciones1 operacion;
     private final List<ProductoDto> listaProductos;
+    private double precio;
     
     
     /**
@@ -106,6 +107,7 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Cantidad");
 
+        txtTotal_pagar.setEditable(false);
         txtTotal_pagar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtTotal_pagar.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtTotal_pagar.addActionListener(new java.awt.event.ActionListener() {
@@ -185,17 +187,19 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
 
@@ -212,7 +216,12 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(null, "Datos Guardados con exíto", "", JOptionPane.INFORMATION_MESSAGE);
+        if(! this.txtCantidad.getText().equals("") && ! this.txtTotal_pagar.getText().equals("") && this.cmbProducto.getSelectedItem() != null) {
+        
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe Selecionar un Producto y Cantidad", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+        
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void cmbProductoPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_cmbProductoPopupMenuWillBecomeVisible
@@ -223,11 +232,14 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
         // TODO add your handling code here:       
         ComboDto select = (ComboDto) this.cmbProducto.getSelectedItem();
         int id = Integer.valueOf(select.getCodigo());
-        if(id > 0 ) {
+        if(id > 0) {
             for (ProductoDto producto : this.listaProductos) {
                 if(id == producto.getId()) {
-                    double Valor = producto.getPrecio()* Double.parseDouble(this.txtCantidad.getText());
-                    this.txtTotal_pagar.setText(String.valueOf(Valor));
+                    this.precio = producto.getPrecio();                    
+                    if(!this.txtCantidad.getText().equals("")) {
+                        double valor = this.precio * Double.parseDouble(this.txtCantidad.getText());
+                        this.txtTotal_pagar.setText(String.valueOf(valor));
+                    }
                 }
             }
         }
@@ -253,10 +265,13 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
      */
     private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyReleased
         // TODO add your handling code here:
-        if(this.txtCantidad.getText().equals("") && Integer.valueOf(this.txtCantidad.getText()) < 1) {
-            JOptionPane.showMessageDialog(this, "este no es un valor valido", "Error de datos", JOptionPane.WARNING_MESSAGE);
-            this.txtCantidad.setText("1");
-        } 
+        if(this.txtCantidad.getText().equals("") || Integer.valueOf(this.txtCantidad.getText()) < 1) {
+            //JOptionPane.showMessageDialog(this, "este no es un valor valido", "Error de datos", JOptionPane.WARNING_MESSAGE);
+            this.txtCantidad.setText("");
+        } else {
+            double valor = this.precio * Double.parseDouble(this.txtCantidad.getText());
+            this.txtTotal_pagar.setText(String.valueOf(valor));
+        }
     }//GEN-LAST:event_txtCantidadKeyReleased
 
 
