@@ -902,7 +902,11 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
     private void txtIMCKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIMCKeyTyped
         // TODO add your handling code here:
     }//GEN-LAST:event_txtIMCKeyTyped
-
+    
+    /**
+     * 
+     * @param evt 
+     */
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
         List<String> listMessage = this.operacion.setGuardarFisioterapia(this.fisioterapiaDto);
@@ -914,7 +918,13 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
-
+    
+    /**
+     * 
+     */
+    public void setLLenarFisiterapiaDto(){
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
