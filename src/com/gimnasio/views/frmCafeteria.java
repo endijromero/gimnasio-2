@@ -31,18 +31,17 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
     private final Operaciones1 operacion;
     private List<ProductoDto> listaProductos;
     private double precio;
-    private final UsuarioDto usuarioDto;
+    private UsuarioDto usuarioDto;
     
     
     /**
      * Creates new form frmCafeteria
      * @param usuario
      */
-    public frmCafeteria(UsuarioDto usuario){
+    public frmCafeteria(){
         initComponents();
         this.operacion = new Operaciones1();
-        this.comboProductos = new ComboModel();
-        this.usuarioDto = usuario;
+        this.comboProductos = new ComboModel();        
         
         this.comboProductos.getLista().clear();
         this.listaProductos = new ArrayList<>();
@@ -297,6 +296,13 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtCantidadKeyReleased
 
+    /**
+     * 
+     * @param usuarioDto 
+     */
+    public void setUsuarioDto(UsuarioDto usuarioDto){
+        this.usuarioDto = usuarioDto;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
