@@ -118,6 +118,22 @@ public class Operaciones1 {
         }
         return guarda;
     }
+    
+    /**
+     * 
+     * @param idProducto
+     * @param cantidad
+     * @param valor_total
+     * @return 
+     */
+    public boolean setSaveUpdateCafeteria(int idProducto, String cantidad, String valor_total){        
+        boolean guarda = false;
+        if(idProducto >0 && !cantidad.equals("") && !valor_total.equals("")) {
+            
+            
+        }
+        return true;
+    }
 
     public Model1 getModel() {
         return model;

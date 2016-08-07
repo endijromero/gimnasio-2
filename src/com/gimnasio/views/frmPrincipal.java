@@ -346,7 +346,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void setRegistrarPagosProductos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRegistrarPagosProductos
         if (this.productoView == null) {
             try {
-                this.cafeteriaView = new frmCafeteria();
+                this.cafeteriaView = new frmCafeteria(this.usuarioSessionDto);
                 frmPrincipal.jdstPrincipal.add(this.cafeteriaView);
                 this.cafeteriaView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
                 this.cafeteriaView.setResizable(true);

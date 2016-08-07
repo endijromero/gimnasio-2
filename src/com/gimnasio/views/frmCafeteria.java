@@ -12,6 +12,7 @@ import com.gimnasio.model.ComboDto;
 import com.gimnasio.model.ComboModel;
 import com.gimnasio.model.ProductoDto;
 import com.gimnasio.model.TablaDto;
+import com.gimnasio.model.UsuarioDto;
 import java.awt.Font;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -30,16 +31,19 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
     private final Operaciones1 operacion;
     private List<ProductoDto> listaProductos;
     private double precio;
+    private final UsuarioDto usuarioDto;
     
     
     /**
      * Creates new form frmCafeteria
+     * @param usuario
      */
-    public frmCafeteria(){
+    public frmCafeteria(UsuarioDto usuario){
         initComponents();
         this.operacion = new Operaciones1();
-
         this.comboProductos = new ComboModel();
+        this.usuarioDto = usuario;
+        
         this.comboProductos.getLista().clear();
         this.listaProductos = new ArrayList<>();
         try {            
@@ -227,14 +231,16 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
         if(! this.txtCantidad.getText().equals("") && ! this.txtTotal_pagar.getText().equals("") && this.cmbProducto.getSelectedItem() != null) {
-            /*boolean save =this.operacion.setSaveUpdateDescuentos(this.descuentoDto);
+            ComboDto select = (ComboDto) this.cmbProducto.getSelectedItem();
+            int id = Integer.valueOf(select.getCodigo());
+            boolean save = this.operacion.setSaveUpdateCafeteria(id, this.txtCantidad.getText(), this.txtCantidad.getText());
             if(save) {
-               // JLabel label = new JLabel("<html>Los datos para el Descuento: <b>" + this.descuentoDto.getNombre() + "</b>, fueron guardados correctamente</html>");
+                JLabel label = new JLabel("<html>Los datos para el Descuento: <b>" + select.getDescripcion() + "</b>, fueron guardados correctamente</html>");
                 label.setFont(new Font("serif", Font.PLAIN, 14));
                 JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
                 //this.setConsultarTableDescuentos();
                 this.setLimpiar();
-            }*/
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Debe Selecionar un Producto y Cantidad", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
         }
