@@ -27,6 +27,47 @@ public class Operaciones {
         this.model.setConexion(this.conexion);
     }
 
+    /**
+     *
+     * @param clienteDto
+     * @return
+     * @throws SQLException
+     */
+    public List<String> setGuardarCliente(ClienteDto clienteDto) throws SQLException {
+        List<String> listMessages = new ArrayList();
+        if (Util.getVacio(clienteDto.getPersonaDto().getPrimerNombre())) {
+            listMessages.add("Primer nombre");
+        }
+        if (Util.getVacio(clienteDto.getPersonaDto().getPrimerApellido())) {
+            listMessages.add("Primer appelido");
+        }
+        if (Util.getVacio(String.valueOf(clienteDto.getPersonaDto().getTipoIdentificacion()))) {
+            listMessages.add("Tipo documento");
+        }
+        if (Util.getVacio(String.valueOf(clienteDto.getPersonaDto().getNumeroIdentificacion()))) {
+            listMessages.add("Número de documento");
+        }
+        if (Util.getVacio(String.valueOf(clienteDto.getPersonaDto().getEstadoCivil()))) {
+            listMessages.add("Estado civil");
+        }
+        if (Util.getVacio(clienteDto.getPersonaDto().getFechaNacimiento().toString())) {
+            listMessages.add("La fecha de nacimiento");
+        }
+        if (Util.getVacio(clienteDto.getPersonaDto().getMovil())) {
+            listMessages.add("Número móvil");
+        }
+        if (Util.getVacio(clienteDto.getPersonaDto().getDireccion())) {
+            listMessages.add("Dirección domicilio");
+        }
+        if (Util.getVacio(clienteDto.getPersonaDto().getBarrio())) {
+            listMessages.add("Barrio domicilio");
+        }
+        if (listMessages.size() < 1) {
+            this.model.setGuardarPaquete(null);
+        }
+        return listMessages;
+    }
+
     public List<ComboDto> getTipoDocumentos() throws Exception {
         List<ComboDto> lista = new ArrayList();
         for (ETipoDocumento tip : ETipoDocumento.getValues()) {
@@ -109,15 +150,6 @@ public class Operaciones {
             listTable.add(tabla);
         }
         return listTable;
-    }
-
-    /**
-     *
-     * @param descuento
-     * @return
-     */
-    public boolean setSaveUpdateDescuentos(DescuentoDto descuento) {
-        return true;
     }
 
     public Model getModel() {

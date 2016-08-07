@@ -26,7 +26,7 @@ public class frmLogin extends javax.swing.JFrame {
         initComponents();
         this.operacion = new Operaciones();
         this.setLocationRelativeTo(null);
-        
+
         this.txtUser.setText("emendoza1");
         this.txtPassword.setText("1234");
     }
@@ -195,7 +195,6 @@ public class frmLogin extends javax.swing.JFrame {
             @Override
             public void run() {
                 new frmLogin().setVisible(true);
-
             }
         });
     }

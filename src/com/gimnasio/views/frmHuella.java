@@ -243,16 +243,13 @@ public class frmHuella extends javax.swing.JDialog {
                 System.err.println("Error: " + ex.getMessage());
             } finally {
                 this.cantidadHuellas++;
-                // Comprueba si la plantilla se ha creado.
                 switch (Reclutador.getTemplateStatus()) {
                     case TEMPLATE_STATUS_READY: {
-                        //informe de éxito y detiene  la captura de huellas
                         stop();
                         setTemplate(Reclutador.getTemplate());
                     }
                     break;
                     case TEMPLATE_STATUS_FAILED: {
-                        //informe de fallas y reiniciar la captura de huellas
                         Reclutador.clear();
                         stop();
                         setTemplate(null);
@@ -272,7 +269,7 @@ public class frmHuella extends javax.swing.JDialog {
             // this.setRegistrarSalida();
         } else {
             if (this.cantidadHuellas == 4) {
-                String ruta = "sonidos/";//new File(".").getAbsolutePath().substring(0, new File(".").getAbsolutePath().length()-1)+"src/";
+                String ruta = "/com/gimnasio/files/audios/";
                 try {
                     this.usuarioIncorrecto = new FileInputStream(ruta + "huella.mp3");
                     this.usuarioIncorrectoCache = new BufferedInputStream(this.usuarioIncorrecto);
