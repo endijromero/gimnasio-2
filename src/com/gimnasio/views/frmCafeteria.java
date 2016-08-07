@@ -5,6 +5,15 @@
  */
 package com.gimnasio.views;
 
+import com.gimnasio.controller.Operaciones;
+import com.gimnasio.controller.Operaciones1;
+import com.gimnasio.model.ClienteDto;
+import com.gimnasio.model.ComboDto;
+import com.gimnasio.model.ComboModel;
+import com.gimnasio.model.ProductoDto;
+import com.gimnasio.model.TablaDto;
+import java.sql.SQLException;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -12,12 +21,27 @@ import javax.swing.JOptionPane;
  * @author rodolfo
  */
 public class frmCafeteria extends javax.swing.JInternalFrame {
-
+    private final ComboModel comboProductos;
+    private final Operaciones1 operacion;
+    private final List<ProductoDto> listaProductos;
+    
+    
     /**
      * Creates new form frmCafeteria
+     * @throws java.sql.SQLException
      */
-    public frmCafeteria() {
+    public frmCafeteria() throws SQLException {
         initComponents();
+        this.operacion = new Operaciones1();
+        
+        this.comboProductos = new ComboModel();
+        this.comboProductos.getLista().clear();
+        this.comboProductos.getLista().addAll(this.operacion.getProductosDatosComboDto());
+        this.cmbProducto.setModel(this.comboProductos);
+        
+        this.listaProductos = this.operacion.getProductosDatosDto(null);
+        
+        
     }
 
     /**
@@ -30,27 +54,51 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox();
+        cmbProducto = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtCantidad = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtTotal_pagar = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         btnGuardar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CAFETERIA", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbProducto.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbProducto.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                SelectOpcion(evt);
+            }
+        });
+        cmbProducto.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                cmbProductoPopupMenuWillBecomeVisible(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Producto");
 
-        jTextField1.setText("1");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtCantidad.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCantidad.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtCantidad.setText("1");
+        txtCantidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtCantidadActionPerformed(evt);
+            }
+        });
+        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyTyped(evt);
             }
         });
 
@@ -58,10 +106,11 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Cantidad");
 
-        jTextField2.setText("1");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        txtTotal_pagar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtTotal_pagar.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTotal_pagar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                txtTotal_pagarActionPerformed(evt);
             }
         });
 
@@ -91,15 +140,15 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtTotal_pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(31, 31, 31))
         );
         jPanel1Layout.setVerticalGroup(
@@ -107,11 +156,11 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTotal_pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addGap(49, 49, 49)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -147,35 +196,79 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtCantidadActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txtTotal_pagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotal_pagarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txtTotal_pagarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
         JOptionPane.showMessageDialog(null, "Datos Guardados con exíto", "", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    private void cmbProductoPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_cmbProductoPopupMenuWillBecomeVisible
+        // TODO add your handling code here
+    }//GEN-LAST:event_cmbProductoPopupMenuWillBecomeVisible
+
+    private void SelectOpcion(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SelectOpcion
+        // TODO add your handling code here:       
+        ComboDto select = (ComboDto) this.cmbProducto.getSelectedItem();
+        int id = Integer.valueOf(select.getCodigo());
+        if(id > 0 ) {
+            for (ProductoDto producto : this.listaProductos) {
+                if(id == producto.getId()) {
+                    double Valor = producto.getPrecio()* Double.parseDouble(this.txtCantidad.getText());
+                    this.txtTotal_pagar.setText(String.valueOf(Valor));
+                }
+            }
+        }
+    }//GEN-LAST:event_SelectOpcion
+
+    /**
+     * 
+     * @param evt 
+     */
+    private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+            JOptionPane.showMessageDialog(this, "Ingresa solo numeros", "Error de datos", JOptionPane.WARNING_MESSAGE);
+        } 
+    }//GEN-LAST:event_txtCantidadKeyTyped
+
+    /**
+     * 
+     * @param evt 
+     */
+    private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyReleased
+        // TODO add your handling code here:
+        if(this.txtCantidad.getText().equals("") && Integer.valueOf(this.txtCantidad.getText()) < 1) {
+            JOptionPane.showMessageDialog(this, "este no es un valor valido", "Error de datos", JOptionPane.WARNING_MESSAGE);
+            this.txtCantidad.setText("1");
+        } 
+    }//GEN-LAST:event_txtCantidadKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox cmbProducto;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField txtCantidad;
+    private javax.swing.JTextField txtTotal_pagar;
     // End of variables declaration//GEN-END:variables
 }

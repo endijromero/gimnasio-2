@@ -39,13 +39,24 @@ public class Operaciones1 {
     
     /**
      * 
-     * @param idDescuento
+     * @param idProducto
+     * @return
+     * @throws SQLException 
+     */
+    public List<ProductoDto> getProductosDatosDto(String idProducto) throws SQLException {        
+        List<ProductoDto> listProductos = this.model.getDatosProductos(idProducto);        
+        return listProductos;
+    }
+    
+    /**
+     * 
+     * @param idProducto
      * @return
      * @throws SQLException 
      */
     public List<TablaDto> getProductosDatosTablaDto(String idProducto) throws SQLException {
         List<TablaDto> listTable = new ArrayList();
-        List<ProductoDto> listProductos = this.model.getDatosProductos(idProducto);
+        List<ProductoDto> listProductos = this.getProductosDatosDto(idProducto);
         listProductos.stream().map((producto) -> new TablaDto(
                 String.valueOf(producto.getId()),
                 Util.getQuitaNULL(producto.getNombre()),
@@ -53,6 +64,21 @@ public class Operaciones1 {
                     listTable.add(tabla);
                 });
         return listTable;
+    }
+    
+    /**
+     * 
+     * @return
+     * @throws SQLException 
+     */
+    public List<ComboDto> getProductosDatosComboDto() throws SQLException {
+        List<ComboDto> listTable = new ArrayList();
+        List<ProductoDto> listProductos = this.getProductosDatosDto(null);
+        listProductos.stream().map((producto) -> new ComboDto(String.valueOf(producto.getId()),
+                Util.getQuitaNULL(producto.getNombre()))).forEach((tabla) -> {
+            listTable.add(tabla);
+                });
+        return listTable;        
     }
     
     /**
