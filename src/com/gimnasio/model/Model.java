@@ -42,7 +42,7 @@ public class Model {
                     + "email = ?, huella_dactilar = ?, "
                     + "foto_perfil = ? "
                     + "WHERE id=? ");
-            stat.setLong(5, clienteDto.getId());
+            stat.setLong(18, clienteDto.getId());
         } else {
             stat = this.conexion.getConexion().prepareStatement("INSERT INTO `personas` (`primer_nombre`, `segundo_nombre`, "
                     + "`primer_apellido`, `segundo_apellido`, "
@@ -61,18 +61,17 @@ public class Model {
         stat.setString(4, clienteDto.getPersonaDto().getSegundoApellido());
         stat.setShort(5, clienteDto.getPersonaDto().getTipoIdentificacion());
         stat.setString(6, clienteDto.getPersonaDto().getNumeroIdentificacion());
-        stat.setString(7, clienteDto.getPersonaDto().getPrimerNombre());
-        stat.setString(8, clienteDto.getPersonaDto().getPrimerNombre());
-        stat.setString(9, clienteDto.getPersonaDto().getPrimerNombre());
-        stat.setString(10, clienteDto.getPersonaDto().getPrimerNombre());
-        stat.setString(11, clienteDto.getPersonaDto().getPrimerNombre());
-        stat.setString(12, clienteDto.getPersonaDto().getPrimerNombre());
-        stat.setString(13, clienteDto.getPersonaDto().getPrimerNombre());
-        stat.setString(14, clienteDto.getPersonaDto().getPrimerNombre());
-        stat.setString(15, clienteDto.getPersonaDto().getPrimerNombre());
-        stat.setString(16, clienteDto.getPersonaDto().getPrimerNombre());
-        stat.setString(17, clienteDto.getPersonaDto().getPrimerNombre());
-
+        stat.setString(7, clienteDto.getPersonaDto().getLugaExpedicion());
+        stat.setShort(8, clienteDto.getPersonaDto().getGenero());
+        stat.setShort(9, clienteDto.getPersonaDto().getEstadoCivil());
+        stat.setString(10, clienteDto.getPersonaDto().getFechaNacimiento());
+        stat.setString(11, clienteDto.getPersonaDto().getDireccion());
+        stat.setString(12, clienteDto.getPersonaDto().getBarrio());
+        stat.setString(13, clienteDto.getPersonaDto().getTelefono());
+        stat.setString(14, clienteDto.getPersonaDto().getMovil());
+        stat.setString(15, clienteDto.getPersonaDto().getEmail());
+        stat.setBytes(16, clienteDto.getPersonaDto().getHuellaDactilar());
+        stat.setString(17, clienteDto.getPersonaDto().getNumeroIdentificacion() + ".jpg");
         stat.execute();
         stat.close();
     }

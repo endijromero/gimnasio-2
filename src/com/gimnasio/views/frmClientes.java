@@ -87,7 +87,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
         lblTipo_documento = new javax.swing.JLabel();
         lblDocumento = new javax.swing.JLabel();
         txtPrimer_apellido = new javax.swing.JTextField();
-        txtFecha_nacimiento = new javax.swing.JFormattedTextField();
         txtSegundo_apellido = new javax.swing.JTextField();
         lblFecha_nacimiento = new javax.swing.JLabel();
         txtMovil = new javax.swing.JTextField();
@@ -108,6 +107,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         jLabel17 = new javax.swing.JLabel();
         lblDireccion = new javax.swing.JLabel();
         txtDireccion = new javax.swing.JTextField();
+        txtFecha_nacimiento = new com.toedter.calendar.JDateChooser();
         panelVisor_eventos = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtVisor = new javax.swing.JTextArea();
@@ -386,6 +386,8 @@ public class frmClientes extends javax.swing.JInternalFrame {
         lblDireccion.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblDireccion.setText("Dirección");
 
+        txtFecha_nacimiento.setDateFormatString("yyyy-mm-dd ");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -503,11 +505,11 @@ public class frmClientes extends javax.swing.JInternalFrame {
                         .addComponent(jLabel17)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFecha_nacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblFecha_nacimiento)
                     .addComponent(rbtMasculino)
                     .addComponent(rbtFemenino)
-                    .addComponent(lblGenero))
+                    .addComponent(lblGenero)
+                    .addComponent(txtFecha_nacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -516,7 +518,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblDireccion)
                         .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(38, 38, 38)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtMovil, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -552,7 +554,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
             panelVisor_eventosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelVisor_eventosLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
 
@@ -598,7 +600,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -643,7 +645,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
         clienteDto.getPersonaDto().setSegundoNombre(this.txtSegundo_nombre.getText());
         clienteDto.getPersonaDto().setPrimerApellido(this.txtPrimer_apellido.getText());
         clienteDto.getPersonaDto().setSegundoApellido(this.txtSegundo_apellido.getText());
-
         if (!Util.getVacio(cmbTipoDocumento.getCodigo())) {
             clienteDto.getPersonaDto().setTipoIdentificacion(Short.parseShort(cmbTipoDocumento.getCodigo()));
         }
@@ -658,9 +659,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         if (this.rbtMasculino.isSelected()) {
             clienteDto.getPersonaDto().setGenero(EGenero.MASCULINO.getId());
         }
-        if (!Util.getVacio(this.txtFecha_nacimiento.getText())) {
-            clienteDto.getPersonaDto().setFechaNacimiento(new Date(this.txtFecha_nacimiento.getText()));
-        }
+        clienteDto.getPersonaDto().setFechaNacimiento(this.txtFecha_nacimiento.getDateFormatString());
         clienteDto.getPersonaDto().setDireccion(this.txtDireccion.getText());
         clienteDto.getPersonaDto().setBarrio(this.txtBarrio.getText());
         clienteDto.getPersonaDto().setMovil(this.txtMovil.getText());
@@ -764,7 +763,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtDocumento;
     private javax.swing.JFormattedTextField txtEmail;
-    private javax.swing.JFormattedTextField txtFecha_nacimiento;
+    private com.toedter.calendar.JDateChooser txtFecha_nacimiento;
     private javax.swing.JTextField txtFijo;
     private javax.swing.JTextField txtLugar_expedicion;
     private javax.swing.JTextField txtMovil;

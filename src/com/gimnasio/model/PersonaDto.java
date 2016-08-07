@@ -20,7 +20,7 @@ public class PersonaDto implements java.io.Serializable {
     private String lugaExpedicion;
     private short genero;
     private Short estadoCivil;
-    private Date fechaNacimiento;
+    private String fechaNacimiento;
     private String direccion;
     private String barrio;
     private String telefono;
@@ -124,11 +124,11 @@ public class PersonaDto implements java.io.Serializable {
         this.estadoCivil = estadoCivil;
     }
 
-    public Date getFechaNacimiento() {
+    public String getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
+    public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 

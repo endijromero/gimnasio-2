@@ -38,7 +38,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="27" max="32767" attributes="0"/>
+              <EmptySpace pref="23" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -461,11 +461,11 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="txtFecha_nacimiento" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
                           <Component id="lblFecha_nacimiento" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="rbtMasculino" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="rbtFemenino" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="lblGenero" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtFecha_nacimiento" min="-2" pref="31" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -478,7 +478,7 @@
                               <Component id="txtDireccion" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                               <Component id="txtMovil" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
@@ -587,8 +587,6 @@
               <Events>
                 <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="setValidateSoloLetras"/>
               </Events>
-            </Component>
-            <Component class="javax.swing.JFormattedTextField" name="txtFecha_nacimiento">
             </Component>
             <Component class="javax.swing.JTextField" name="txtSegundo_apellido">
               <Events>
@@ -742,6 +740,11 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtDireccion">
             </Component>
+            <Component class="com.toedter.calendar.JDateChooser" name="txtFecha_nacimiento">
+              <Properties>
+                <Property name="dateFormatString" type="java.lang.String" value="yyyy-mm-dd "/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="panelVisor_eventos">
@@ -767,7 +770,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="147" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>

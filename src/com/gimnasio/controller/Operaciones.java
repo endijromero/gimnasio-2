@@ -49,14 +49,17 @@ public class Operaciones {
         if (Util.getVacio(String.valueOf(clienteDto.getPersonaDto().getTipoIdentificacion()))) {
             listMessages.add("<li>Tipo documento</li>");
         }
-        if (Util.getVacio(String.valueOf(clienteDto.getPersonaDto().getNumeroIdentificacion()))) {
+        if (Util.getVacio(clienteDto.getPersonaDto().getNumeroIdentificacion())) {
             listMessages.add("<li>Número de documento</li>");
         }
-        if (Util.getVacio(String.valueOf(clienteDto.getPersonaDto().getEstadoCivil()))) {
+        if (clienteDto.getPersonaDto().getEstadoCivil() == null) {
             listMessages.add("<li>Estado civil</li>");
         }
-        if (clienteDto.getPersonaDto().getFechaNacimiento() == null) {
-            listMessages.add("<li>La fecha de nacimiento</li>");
+        if (clienteDto.getPersonaDto().getGenero() == 0) {
+            listMessages.add("<li>Género</li>");
+        }
+        if (Util.getVacio(clienteDto.getPersonaDto().getFechaNacimiento())) {
+            listMessages.add("<li>Fecha de nacimiento</li>");
         }
         if (Util.getVacio(clienteDto.getPersonaDto().getMovil())) {
             listMessages.add("<li>Número móvil</li>");
