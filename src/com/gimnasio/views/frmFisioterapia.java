@@ -5,6 +5,14 @@
  */
 package com.gimnasio.views;
 
+import com.gimnasio.controller.Operaciones1;
+import com.gimnasio.model.FisioterapiaDto;
+import com.google.common.base.Joiner;
+import java.awt.Font;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,11 +21,15 @@ import javax.swing.JOptionPane;
  */
 public class frmFisioterapia extends javax.swing.JInternalFrame {
 
+    private final Operaciones1 operacion;
+    private final FisioterapiaDto fisioterapiaDto;    
     /**
      * Creates new form frmFisioterapia
      */
     public frmFisioterapia() {
         initComponents();
+        this.operacion = new Operaciones1();
+        this.fisioterapiaDto = new FisioterapiaDto();
     }
 
     /**
@@ -69,6 +81,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtObservaciones = new javax.swing.JTextArea();
         jLabel18 = new javax.swing.JLabel();
+        btnGuardar = new javax.swing.JButton();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CLIENTE", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
@@ -97,7 +110,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
                 txtMMSSKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtMMSSKeyTyped(evt);
+                validarSoloNumero(evt);
             }
         });
 
@@ -126,7 +139,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "FLEXIBILIDAD TEST", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TEST FLEXIBILIDAD", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
         txtTest_uno.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtTest_uno.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -607,6 +620,15 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel18.setText("Observaciones");
 
+        btnGuardar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/floppy-icon.png"))); // NOI18N
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -614,17 +636,27 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 566, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(21, Short.MAX_VALUE))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                        .addComponent(btnGuardar)
+                        .addGap(26, 26, 26))))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -682,7 +714,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_txtMMSSKeyReleased
 
-    private void txtMMSSKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMMSSKeyTyped
+    private void validarSoloNumero(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_validarSoloNumero
         // TODO add your handling code here:
         char c = evt.getKeyChar();
         if (Character.isLetter(c)) {
@@ -690,7 +722,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
             evt.consume();
             JOptionPane.showMessageDialog(this, "Ingresa solo numeros", "Error de datos", JOptionPane.WARNING_MESSAGE);
         }
-    }//GEN-LAST:event_txtMMSSKeyTyped
+    }//GEN-LAST:event_validarSoloNumero
 
     private void txtMMIIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMMIIActionPerformed
         // TODO add your handling code here:
@@ -702,6 +734,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
     private void txtMMIIKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMMIIKeyTyped
         // TODO add your handling code here:
+        this.validarSoloNumero(evt);
     }//GEN-LAST:event_txtMMIIKeyTyped
 
     private void txtTest_unoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTest_unoActionPerformed
@@ -714,6 +747,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
     private void txtTest_unoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTest_unoKeyTyped
         // TODO add your handling code here:
+        this.validarSoloNumero(evt);
     }//GEN-LAST:event_txtTest_unoKeyTyped
 
     private void txtTest_dosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTest_dosActionPerformed
@@ -726,6 +760,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
     private void txtTest_dosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTest_dosKeyTyped
         // TODO add your handling code here:
+        this.validarSoloNumero(evt);
     }//GEN-LAST:event_txtTest_dosKeyTyped
 
     private void txtTest_tresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTest_tresActionPerformed
@@ -738,6 +773,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
     private void txtTest_tresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTest_tresKeyTyped
         // TODO add your handling code here:
+        this.validarSoloNumero(evt);
     }//GEN-LAST:event_txtTest_tresKeyTyped
 
     private void txtPromedio_flexibilidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPromedio_flexibilidadActionPerformed
@@ -762,6 +798,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
     private void txtMedida_unoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMedida_unoKeyTyped
         // TODO add your handling code here:
+        this.validarSoloNumero(evt);
     }//GEN-LAST:event_txtMedida_unoKeyTyped
 
     private void txtMedida_dosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMedida_dosActionPerformed
@@ -774,6 +811,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
     private void txtMedida_dosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMedida_dosKeyTyped
         // TODO add your handling code here:
+        this.validarSoloNumero(evt);
     }//GEN-LAST:event_txtMedida_dosKeyTyped
 
     private void txtMedida_cincoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMedida_cincoActionPerformed
@@ -786,6 +824,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
     private void txtMedida_cincoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMedida_cincoKeyTyped
         // TODO add your handling code here:
+        this.validarSoloNumero(evt);
     }//GEN-LAST:event_txtMedida_cincoKeyTyped
 
     private void txtMedida_tresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMedida_tresActionPerformed
@@ -798,6 +837,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
     private void txtMedida_tresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMedida_tresKeyTyped
         // TODO add your handling code here:
+        this.validarSoloNumero(evt);
     }//GEN-LAST:event_txtMedida_tresKeyTyped
 
     private void txtModel_cuatroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtModel_cuatroActionPerformed
@@ -810,6 +850,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
     private void txtModel_cuatroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtModel_cuatroKeyTyped
         // TODO add your handling code here:
+        this.validarSoloNumero(evt);
     }//GEN-LAST:event_txtModel_cuatroKeyTyped
 
     private void txtPorcentaje_grasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorcentaje_grasaActionPerformed
@@ -834,6 +875,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
     private void txtPesoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesoKeyTyped
         // TODO add your handling code here:
+        this.validarSoloNumero(evt);
     }//GEN-LAST:event_txtPesoKeyTyped
 
     private void txtTallaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTallaActionPerformed
@@ -846,6 +888,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
     private void txtTallaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTallaKeyTyped
         // TODO add your handling code here:
+        this.validarSoloNumero(evt);
     }//GEN-LAST:event_txtTallaKeyTyped
 
     private void txtIMCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIMCActionPerformed
@@ -860,8 +903,21 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtIMCKeyTyped
 
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // TODO add your handling code here:
+        List<String> listMessage = this.operacion.setGuardarFisioterapia(this.fisioterapiaDto);
+        if (listMessage.size() < 1) {
+            
+        } else {
+            JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ul>" + Joiner.on("\n").join(listMessage) + "</ul></html>");
+            label.setFont(new Font("verdana", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;

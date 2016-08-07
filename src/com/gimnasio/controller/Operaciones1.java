@@ -142,6 +142,54 @@ public class Operaciones1 {
         }
         return guarda;
     }
+    
+    
+    /**
+     * 
+     * @param fisioterapia
+     * @return 
+     */
+    public List<String> setGuardarFisioterapia(FisioterapiaDto fisioterapia) {
+        List<String> listMessages = new ArrayList();
+        if(fisioterapia.getTest_mmss()> 0){} else {
+            listMessages.add("<li>TEST DE MMSS: Número de repeticiones</li>");
+        }
+        if(fisioterapia.getTest_mmii()> 0){} else {
+            listMessages.add("<li>TEST DE MMII: Número de repeticiones</li>");
+        }
+        
+        if(fisioterapia.getTest_uno()> 0){} else {
+            listMessages.add("<li>TEST DE FLEXIBILIDAD: Test uno</li>");
+        }
+        if(fisioterapia.getTest_dos()> 0){} else {
+            listMessages.add("<li>TEST DE FLEXIBILIDAD: Test dos</li>");
+        }
+        if(fisioterapia.getTest_tres()> 0){} else {
+            listMessages.add("<li>TEST DE FLEXIBILIDAD: Test tres</li>");
+        }        
+        if(fisioterapia.getMedida_uno()>0){}else{
+            listMessages.add("<li>PORCENTAJE DE GRASA: Medida uno</li>");    
+        }
+        if(fisioterapia.getMedida_dos()>0){}else{
+            listMessages.add("<li>PORCENTAJE DE GRASA: Medida dos</li>");    
+        }
+        if(fisioterapia.getMedida_tres()>0){}else{
+            listMessages.add("<li>PORCENTAJE DE GRASA: Medida tres</li>");    
+        }
+        if(fisioterapia.getMedida_cuatro()>0){}else{
+            listMessages.add("<li>PORCENTAJE DE GRASA: Medida cuatro</li>");    
+        }
+        if(fisioterapia.getMedida_cinco()>0){}else{
+            listMessages.add("<li>PORCENTAJE DE GRASA: Medida cinco</li>");    
+        }
+        if(fisioterapia.getPeso()>0){}else{
+            listMessages.add("<li>INDICE DE MASA CORPORAL: Peso</li>");
+        }
+        if(fisioterapia.getPeso()>0){}else{
+            listMessages.add("<li>INDICE DE MASA CORPORAL: Talla</li>");
+        }
+        return listMessages;
+    }
 
     public Model1 getModel() {
         return model;
