@@ -173,7 +173,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
                 frmPrincipal.fisitorepiaView.setClosable(true);            
                 frmPrincipal.fisitorepiaView.setVisible(true);
             }
-            this.setVisible(false);
+            //this.setVisible(false);
         }
     }//GEN-LAST:event_tablaClientesMouseClicked
 
