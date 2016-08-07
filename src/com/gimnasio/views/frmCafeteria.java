@@ -12,8 +12,13 @@ import com.gimnasio.model.ComboDto;
 import com.gimnasio.model.ComboModel;
 import com.gimnasio.model.ProductoDto;
 import com.gimnasio.model.TablaDto;
+import java.awt.Font;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,28 +28,33 @@ import javax.swing.JOptionPane;
 public class frmCafeteria extends javax.swing.JInternalFrame {
     private final ComboModel comboProductos;
     private final Operaciones1 operacion;
-    private final List<ProductoDto> listaProductos;
+    private List<ProductoDto> listaProductos;
     private double precio;
     
     
     /**
      * Creates new form frmCafeteria
-     * @throws java.sql.SQLException
      */
-    public frmCafeteria() throws SQLException {
+    public frmCafeteria(){
         initComponents();
         this.operacion = new Operaciones1();
-        
+
         this.comboProductos = new ComboModel();
         this.comboProductos.getLista().clear();
-        this.comboProductos.getLista().addAll(this.operacion.getProductosDatosComboDto());
-        this.cmbProducto.setModel(this.comboProductos);
-        
-        this.listaProductos = this.operacion.getProductosDatosDto(null);
-        
-        
+        this.listaProductos = new ArrayList<>();
+        try {            
+            this.listaProductos = this.operacion.getProductosDatosDto(null);
+            this.comboProductos.getLista().addAll(this.operacion.getProductosDatosComboDto());
+            this.cmbProducto.setModel(this.comboProductos);                       
+        } catch (SQLException ex) {
+            Logger.getLogger(frmCafeteria.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
+    public void setLimpiar(){
+        this.txtTotal_pagar.setText("");
+        
+    };
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -217,7 +227,14 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
         if(! this.txtCantidad.getText().equals("") && ! this.txtTotal_pagar.getText().equals("") && this.cmbProducto.getSelectedItem() != null) {
-        
+            /*boolean save =this.operacion.setSaveUpdateDescuentos(this.descuentoDto);
+            if(save) {
+               // JLabel label = new JLabel("<html>Los datos para el Descuento: <b>" + this.descuentoDto.getNombre() + "</b>, fueron guardados correctamente</html>");
+                label.setFont(new Font("serif", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
+                //this.setConsultarTableDescuentos();
+                this.setLimpiar();
+            }*/
         } else {
             JOptionPane.showMessageDialog(null, "Debe Selecionar un Producto y Cantidad", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
         }
