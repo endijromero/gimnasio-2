@@ -48,6 +48,38 @@ public class Model1 {
         return list;
     }
     
+    /**
+     * 
+     * @param idProducto
+     * @return
+     * @throws SQLException 
+     */
+    public List<ProductoDto> getDatosProductos(String idProducto) throws SQLException {
+        List<ProductoDto> list = new ArrayList();
+        try (Statement stat = this.conexion.getConexion().createStatement()) {
+            String sql = "SELECT * FROM productos WHERE 1";
+            if (!Util.getVacio(idProducto)) {
+                sql += " AND id=" + idProducto;                
+            }
+            sql += " ORDER BY id ASC ";
+            ResultSet res = stat.executeQuery(sql);
+            while (res.next()) {
+                ProductoDto dto = new ProductoDto();
+                dto.setId(res.getInt("id"));
+                dto.setNombre(res.getString("nombre"));
+                dto.setPrecio(res.getDouble("precio"));                
+                list.add(dto);
+            }
+        }
+        return list;
+    }
+   
+    /**
+     * 
+     * @param descuento
+     * @return
+     * @throws SQLException 
+     */
     public boolean setGuardarDescuento(DescuentoDto descuento) throws SQLException {
         PreparedStatement stat = null;
         if (descuento.getId() != null && descuento.getId() > 0) {
@@ -58,6 +90,27 @@ public class Model1 {
         }
         stat.setString(1, descuento.getNombre());
         stat.setDouble(2, descuento.getPorcentaje().doubleValue());                
+        stat.execute();
+        stat.close();
+        return true;
+    }
+    
+    /**
+     * 
+     * @param producto
+     * @return
+     * @throws SQLException 
+     */
+    public boolean setGuardarProducto(ProductoDto producto) throws SQLException {
+        PreparedStatement stat = null;
+        if (producto.getId() != null && producto.getId() > 0) {
+            stat = this.conexion.getConexion().prepareStatement("UPDATE productos SET nombre = ?, precio = ? WHERE id=?");
+            stat.setInt(3, producto.getId());
+        } else {
+            stat = this.conexion.getConexion().prepareStatement("INSERT INTO productos (nombre, precio) VALUES (?,?)");
+        }
+        stat.setString(1, producto.getNombre());
+        stat.setDouble(2, producto.getPrecio());                
         stat.execute();
         stat.close();
         return true;

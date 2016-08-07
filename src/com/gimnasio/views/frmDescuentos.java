@@ -31,7 +31,7 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
     private final String[] headTable;
     private final TablaModelo table;
     private final Operaciones1 operacion;
-    private final DescuentoDto descuento;
+    private final DescuentoDto descuentoDto;
     /**
      * Creates new form frmDescuentos
      * @param padre
@@ -39,7 +39,7 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
      */
     public frmDescuentos(frmPrincipal padre) throws SQLException {
         initComponents();
-        this.descuento = new DescuentoDto();
+        this.descuentoDto = new DescuentoDto();
         this.operacion = new Operaciones1();
         
         this.headTable = new String[]{"Id", "Nombre", "Porcentaje"};
@@ -72,9 +72,9 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
     public void setLimpiar() {
         this.txtNombre_descuento.setText("");
         this.txtPorcentaje.setText("");
-        this.descuento.setId(null);
-        this.descuento.setNombre("");
-        this.descuento.setPorcentaje(null);
+        this.descuentoDto.setId(null);
+        this.descuentoDto.setNombre("");
+        this.descuentoDto.setPorcentaje(null);
     }
 
     /**
@@ -261,19 +261,19 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
         try {
             if(! this.txtNombre_descuento.getText().equals("") && ! this.txtPorcentaje.getText().equals("")) {
                 boolean guarda = false;
-                if(! this.txtNombre_descuento.getText().equals(this.descuento.getNombre())){
+                if(! this.txtNombre_descuento.getText().equals(this.descuentoDto.getNombre())){
                     guarda = true;
-                    this.descuento.setNombre(this.txtNombre_descuento.getText());
+                    this.descuentoDto.setNombre(this.txtNombre_descuento.getText());
                 }
                 BigDecimal porcentaje = new BigDecimal(this.txtPorcentaje.getText());
-                if(this.descuento.getPorcentaje() != porcentaje) {
+                if(this.descuentoDto.getPorcentaje() != porcentaje) {
                     guarda = true;                
-                    this.descuento.setPorcentaje(porcentaje);
+                    this.descuentoDto.setPorcentaje(porcentaje);
                 }
                 if(guarda) {
-                    boolean save =this.operacion.setSaveUpdateDescuentos(this.descuento);
+                    boolean save =this.operacion.setSaveUpdateDescuentos(this.descuentoDto);
                     if(save) {
-                        JLabel label = new JLabel("<html>Los datos para el paquete: <b>" + this.descuento.getNombre() + "</b>, fueron guardados correctamente</html>");
+                        JLabel label = new JLabel("<html>Los datos para el Descuento: <b>" + this.descuentoDto.getNombre() + "</b>, fueron guardados correctamente</html>");
                         label.setFont(new Font("serif", Font.PLAIN, 14));
                         JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
                         this.setConsultarTableDescuentos();
@@ -304,11 +304,13 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
 
     private void editarDescuento(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editarDescuento
         // TODO add your handling code here:
-        int fila = this.tblDescuentos.getSelectedRow();
+        if(evt.getClickCount() == 2){
+            int fila = this.tblDescuentos.getSelectedRow();
             TablaDto dto = (TablaDto) this.table.getData().get(fila);
-            this.descuento.setId(Integer.parseInt(dto.getDato1()));
+            this.descuentoDto.setId(Integer.parseInt(dto.getDato1()));
             this.txtNombre_descuento.setText(dto.getDato2());
             this.txtPorcentaje.setText(dto.getDato3());                        
+        }
     }//GEN-LAST:event_editarDescuento
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
