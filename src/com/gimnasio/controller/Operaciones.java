@@ -28,7 +28,12 @@ public class Operaciones {
     }
 
     /**
+     * /
      *
+     **
+     * @tutorial Method Description: valida que la informacion este correcta
+     * @author Eminson Mendoza ~~ emimaster16@gmail.com
+     * @date 08/07/2016
      * @param clienteDto
      * @return
      * @throws SQLException
@@ -62,8 +67,11 @@ public class Operaciones {
         if (Util.getVacio(clienteDto.getPersonaDto().getBarrio())) {
             listMessages.add("<li>Barrio domicilio</li>");
         }
+        if (clienteDto.getPersonaDto().getHuellaDactilar() == null) {
+            listMessages.add("<li>Huella dactilar</li>");
+        }
         if (listMessages.size() < 1) {
-            this.model.setGuardarPaquete(null);
+            this.model.setGuardarCliente(clienteDto);
         }
         return listMessages;
     }

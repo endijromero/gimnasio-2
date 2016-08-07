@@ -21,6 +21,62 @@ public class Model {
 
     }
 
+    /**
+     *
+     * @tutorial Method Description: valida que la informacion este correcta
+     * @author Eminson Mendoza ~~ emimaster16@gmail.com
+     * @date 08/07/2016
+     * @param clienteDto
+     * @throws java.sql.SQLException
+     */
+    public void setGuardarCliente(ClienteDto clienteDto) throws SQLException {
+        PreparedStatement stat = null;
+        if (clienteDto.getId() > 0) {
+            stat = this.conexion.getConexion().prepareStatement("UPDATE personas SET primer_nombre = ?, "
+                    + "segundo_nombre = ?, primer_apellido = ?, "
+                    + "tipo_identificacion = ?, numero_identificacion = ?, "
+                    + "luga_expedicion = ?, genero = ?, "
+                    + "estado_civil = ?, fecha_nacimiento = ?, "
+                    + "direccion = ?, barrio = ?, "
+                    + "telefono = ?, movil = ?, "
+                    + "email = ?, huella_dactilar = ?, "
+                    + "foto_perfil = ? "
+                    + "WHERE id=? ");
+            stat.setLong(5, clienteDto.getId());
+        } else {
+            stat = this.conexion.getConexion().prepareStatement("INSERT INTO `personas` (`primer_nombre`, `segundo_nombre`, "
+                    + "`primer_apellido`, `segundo_apellido`, "
+                    + "`tipo_identificacion`, `numero_identificacion`, "
+                    + "`luga_expedicion`, `genero`, "
+                    + "`estado_civil`, `fecha_nacimiento`, "
+                    + "`direccion`, `barrio`, "
+                    + "`telefono`, `movil`, "
+                    + "`email`, `huella_dactilar`, "
+                    + "`foto_perfil`)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
+        }
+        stat.setString(1, clienteDto.getPersonaDto().getPrimerNombre());
+        stat.setString(2, clienteDto.getPersonaDto().getSegundoNombre());
+        stat.setString(3, clienteDto.getPersonaDto().getPrimerApellido());
+        stat.setString(4, clienteDto.getPersonaDto().getSegundoApellido());
+        stat.setShort(5, clienteDto.getPersonaDto().getTipoIdentificacion());
+        stat.setString(6, clienteDto.getPersonaDto().getNumeroIdentificacion());
+        stat.setString(7, clienteDto.getPersonaDto().getPrimerNombre());
+        stat.setString(8, clienteDto.getPersonaDto().getPrimerNombre());
+        stat.setString(9, clienteDto.getPersonaDto().getPrimerNombre());
+        stat.setString(10, clienteDto.getPersonaDto().getPrimerNombre());
+        stat.setString(11, clienteDto.getPersonaDto().getPrimerNombre());
+        stat.setString(12, clienteDto.getPersonaDto().getPrimerNombre());
+        stat.setString(13, clienteDto.getPersonaDto().getPrimerNombre());
+        stat.setString(14, clienteDto.getPersonaDto().getPrimerNombre());
+        stat.setString(15, clienteDto.getPersonaDto().getPrimerNombre());
+        stat.setString(16, clienteDto.getPersonaDto().getPrimerNombre());
+        stat.setString(17, clienteDto.getPersonaDto().getPrimerNombre());
+
+        stat.execute();
+        stat.close();
+    }
+
     public boolean setGuardarPaquete(PaqueteDto paquete) throws SQLException {
         PreparedStatement stat = null;
         if (paquete.getId() > 0) {
@@ -88,7 +144,7 @@ public class Model {
         }
         stat.close();
         return list;
-    }        
+    }
 
     public List<Object> getListPersist() {
         return listPersist;

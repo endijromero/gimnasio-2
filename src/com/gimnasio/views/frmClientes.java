@@ -25,12 +25,12 @@ import javax.swing.JOptionPane;
  */
 public class frmClientes extends javax.swing.JInternalFrame {
 
-    private final frmPrincipal padre;
-    private final ClienteDto clienteDto;
-    private Operaciones operacion;
-
     private final ComboModel comboTipoDocumentos;
     private final ComboModel comboEstadosCiviles;
+    private UsuarioDto usuarioSessionDto;
+    private final ClienteDto clienteDto;
+    private final frmPrincipal padre;
+    private Operaciones operacion;
 
     /**
      *
@@ -303,12 +303,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
             }
         });
 
-        txtFecha_nacimiento.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFecha_nacimientoActionPerformed(evt);
-            }
-        });
-
         txtSegundo_apellido.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 setValidateSoloLetras(evt);
@@ -339,11 +333,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
         lblGenero.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblGenero.setText("Genero");
 
-        txtEmail.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtEmailActionPerformed(evt);
-            }
-        });
         txtEmail.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 setValidaEmail(evt);
@@ -357,12 +346,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
         lblBarrio.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblBarrio.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblBarrio.setText("Barrio");
-
-        txtBarrio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBarrioActionPerformed(evt);
-            }
-        });
 
         txtFijo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -402,12 +385,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
         lblDireccion.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblDireccion.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblDireccion.setText("Dirección");
-
-        txtDireccion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDireccionActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -637,18 +614,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_btnFotoActionPerformed
 
-    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtEmailActionPerformed
-
-    private void txtFecha_nacimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFecha_nacimientoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFecha_nacimientoActionPerformed
-
-    private void txtBarrioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBarrioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBarrioActionPerformed
-
     public Operaciones getOperacion() {
         return operacion;
     }
@@ -657,19 +622,35 @@ public class frmClientes extends javax.swing.JInternalFrame {
         this.operacion = operacion;
     }
 
+    public UsuarioDto getUsuarioSessionDto() {
+        return usuarioSessionDto;
+    }
+
+    public void setUsuarioSessionDto(UsuarioDto usuarioSessionDto) {
+        this.usuarioSessionDto = usuarioSessionDto;
+    }
+
+    /**
+     * @tutorial Method Description: llena la información capturada del
+     * ----------------------------- formulario en clienteDto
+     * @author Eminson Mendoza ~~ emimaster16@gmail.com
+     * @date 08/07/2016
+     */
     protected void setLlenarClienteDto() {
+        ComboDto cmbTipoDocumento = (ComboDto) this.cmbTipo_documento.getSelectedItem();
+        ComboDto cmbEstadoCivil = (ComboDto) this.cmbEstado_civil.getSelectedItem();
         clienteDto.getPersonaDto().setPrimerNombre(this.txtPrimer_nombre.getText());
         clienteDto.getPersonaDto().setSegundoNombre(this.txtSegundo_nombre.getText());
         clienteDto.getPersonaDto().setPrimerApellido(this.txtPrimer_apellido.getText());
         clienteDto.getPersonaDto().setSegundoApellido(this.txtSegundo_apellido.getText());
 
-        if (!Util.getVacio(this.cmbTipo_documento.getSelectedItem().toString())) {
-            clienteDto.getPersonaDto().setTipoIdentificacion(Short.parseShort(this.cmbTipo_documento.getSelectedItem().toString()));
+        if (!Util.getVacio(cmbTipoDocumento.getCodigo())) {
+            clienteDto.getPersonaDto().setTipoIdentificacion(Short.parseShort(cmbTipoDocumento.getCodigo()));
         }
         clienteDto.getPersonaDto().setNumeroIdentificacion(this.txtDocumento.getText());
         clienteDto.getPersonaDto().setLugaExpedicion(this.txtLugar_expedicion.getText());
-        if (!Util.getVacio(this.cmbEstado_civil.getSelectedItem().toString())) {
-            clienteDto.getPersonaDto().setEstadoCivil(Short.parseShort(this.cmbEstado_civil.getSelectedItem().toString()));
+        if (!Util.getVacio(cmbEstadoCivil.getCodigo())) {
+            clienteDto.getPersonaDto().setEstadoCivil(Short.parseShort(cmbEstadoCivil.getCodigo()));
         }
         if (this.rbtFemenino.isSelected()) {
             clienteDto.getPersonaDto().setGenero(EGenero.FEMENIMO.getId());
@@ -685,8 +666,17 @@ public class frmClientes extends javax.swing.JInternalFrame {
         clienteDto.getPersonaDto().setMovil(this.txtMovil.getText());
         clienteDto.getPersonaDto().setTelefono(this.txtFijo.getText());
         clienteDto.getPersonaDto().setEmail(this.txtEmail.getText());
-
     }
+
+    /**
+     * @tutorial Method Description: valida la informacion de los clientes para
+     * ----------------------------- realizar el proceso de guardado de los
+     * ----------------------------- datos
+     * @author Eminson Mendoza ~~ emimaster16@gmail.com
+     * @date 08/07/2016
+     * @param evt
+     * @return void
+     */
     private void setGuardarCliente(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setGuardarCliente
         try {
             setLlenarClienteDto();
@@ -701,9 +691,8 @@ public class frmClientes extends javax.swing.JInternalFrame {
             } else {
                 JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ul>" + Joiner.on("\n").join(listMessage) + "</ul></html>");
                 label.setFont(new Font("verdana", Font.PLAIN, 14));
-                JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -735,10 +724,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
     private void setValidaEmail(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_setValidaEmail
         // TODO add your handling code here:
     }//GEN-LAST:event_setValidaEmail
-
-    private void txtDireccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDireccionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDireccionActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

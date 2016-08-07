@@ -589,9 +589,6 @@
               </Events>
             </Component>
             <Component class="javax.swing.JFormattedTextField" name="txtFecha_nacimiento">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtFecha_nacimientoActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="txtSegundo_apellido">
               <Events>
@@ -648,7 +645,6 @@
             </Component>
             <Component class="javax.swing.JFormattedTextField" name="txtEmail">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtEmailActionPerformed"/>
                 <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="setValidaEmail"/>
               </Events>
             </Component>
@@ -671,9 +667,6 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtBarrio">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtBarrioActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="txtFijo">
               <Events>
@@ -748,9 +741,6 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtDireccion">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDireccionActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
