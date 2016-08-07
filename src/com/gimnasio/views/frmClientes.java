@@ -334,11 +334,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
 
         rbtGenero.add(rbtFemenino);
         rbtFemenino.setText("Femenino");
-        rbtFemenino.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbtFemeninoActionPerformed(evt);
-            }
-        });
 
         lblGenero.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblGenero.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -645,10 +640,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
     private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
-
-    private void rbtFemeninoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtFemeninoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rbtFemeninoActionPerformed
 
     private void txtFecha_nacimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFecha_nacimientoActionPerformed
         // TODO add your handling code here:

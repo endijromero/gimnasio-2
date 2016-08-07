@@ -121,7 +121,7 @@ public class Operaciones {
             if (Util.getEncriptarMD5(password).equals(user.getPassword())) {
                 valido = true;
                 frmPrincipal principal = new frmPrincipal();
-                //principal.setUsuarioSesion
+                principal.setUsuarioSessionDto(user);
                 principal.setTitle("Titulo");
                 principal.setVisible(true);
             } else {

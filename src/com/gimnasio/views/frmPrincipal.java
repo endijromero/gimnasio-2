@@ -5,6 +5,7 @@
  */
 package com.gimnasio.views;
 
+import com.gimnasio.model.UsuarioDto;
 import com.gimnasio.util.Util;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -21,15 +22,15 @@ public class frmPrincipal extends javax.swing.JFrame {
     static frmRegistrarPagos frmRegistrarPagos;
     static frmClientes frmCliente;
 
-    //private UsuariosDto usuarioSesion;
+    private UsuarioDto usuarioSessionDto;
     private frmPaquetes paqueteView;
     private frmDescuentos descuentoView;
     private frmProductos productoView;
     private frmBuscarCliente buscarClienteView;
     private frmPagos pagosView;
     private frmCafeteria cafeteriaView;
-    public frmRegistrarPagos registrarPagosView;
-    public frmClientes clienteView;
+    private frmRegistrarPagos registrarPagosView;
+    private frmClientes clienteView;
 
     /**
      * Creates new form frmPrincipal
@@ -48,6 +49,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.clienteView = null;
         this.pagosView = null;
         this.registrarPagosView = null;
+        this.usuarioSessionDto = new UsuarioDto();
     }
 
     /**
@@ -436,6 +438,14 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.buscarClienteView.setResizable(true);
         this.buscarClienteView.setClosable(true);
         this.buscarClienteView.setVisible(true);
+    }
+
+    public UsuarioDto getUsuarioSessionDto() {
+        return usuarioSessionDto;
+    }
+
+    public void setUsuarioSessionDto(UsuarioDto usuarioSessionDto) {
+        this.usuarioSessionDto = usuarioSessionDto;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
