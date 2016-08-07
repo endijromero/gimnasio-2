@@ -10,18 +10,20 @@ import com.gimnasio.model.*;
 import com.gimnasio.model.enums.EGenero;
 import com.gimnasio.util.Util;
 import com.google.common.base.Joiner;
+import java.awt.Font;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author rodolfo
  */
-public class frmCliente extends javax.swing.JInternalFrame {
+public class frmClientes extends javax.swing.JInternalFrame {
 
     private final frmPrincipal padre;
     private final ClienteDto clienteDto;
@@ -36,7 +38,7 @@ public class frmCliente extends javax.swing.JInternalFrame {
      * @tutorial Creates new form frmCliente
      * @param padre
      */
-    public frmCliente(frmPrincipal padre) throws Exception {
+    public frmClientes(frmPrincipal padre) throws Exception {
         initComponents();
         this.operacion = new Operaciones();
         this.clienteDto = new ClienteDto();
@@ -535,12 +537,13 @@ public class frmCliente extends javax.swing.JInternalFrame {
                     .addComponent(rbtFemenino)
                     .addComponent(lblGenero))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDireccion)
-                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblBarrio)
-                        .addComponent(txtBarrio, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtBarrio, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblDireccion)
+                        .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -705,11 +708,13 @@ public class frmCliente extends javax.swing.JInternalFrame {
                 frmPrincipal.frmRegistrarPagos.setClosable(true);
                 frmPrincipal.frmRegistrarPagos.setVisible(true);
             } else {
-                JOptionPane.showMessageDialog(this, "Verífique la siguiente lista de campos obligatorios\n" + Joiner.on("\n").join(listMessage));
+                JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ul>" + Joiner.on("\n").join(listMessage) + "</ul></html>");
+                label.setFont(new Font("verdana", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.WARNING_MESSAGE);
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(frmCliente.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_setGuardarCliente
 

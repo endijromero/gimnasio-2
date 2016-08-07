@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
 public class frmPrincipal extends javax.swing.JFrame {
 
     static frmRegistrarPagos frmRegistrarPagos;
-    static frmCliente frmCliente;
+    static frmClientes frmCliente;
 
     //private UsuariosDto usuarioSesion;
     private frmPaquetes paqueteView;
@@ -29,15 +29,13 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmPagos pagosView;
     private frmCafeteria cafeteriaView;
     public frmRegistrarPagos registrarPagosView;
-    public frmCliente clienteView;
+    public frmClientes clienteView;
 
     /**
      * Creates new form frmPrincipal
      */
     public frmPrincipal() {
         initComponents();
-        //this.setLocationRelativeTo(null);  
-        //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setSize(1250, 700);
         Util.setCentrarJFrame(this, null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -102,7 +100,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuPaquetes.setText("Paquetes");
         menuPaquetes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuPaquetesActionPerformed(evt);
+                setCrearPaquetes(evt);
             }
         });
         jMenu1.add(menuPaquetes);
@@ -112,7 +110,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuDescuentos.setToolTipText("");
         menuDescuentos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuDescuentosActionPerformed(evt);
+                setCrearDescuentos(evt);
             }
         });
         jMenu1.add(menuDescuentos);
@@ -121,7 +119,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuProductos.setText("Productos");
         menuProductos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuProductosActionPerformed(evt);
+                setCrearPoductos(evt);
             }
         });
         jMenu1.add(menuProductos);
@@ -154,7 +152,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuCrear_cliente.setText("Crear");
         menuCrear_cliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setCrearCliente(evt);
+                setCrearClientes(evt);
             }
         });
         menuCliente.add(menuCrear_cliente);
@@ -163,7 +161,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuBuscar_cliente.setText("Buscar");
         menuBuscar_cliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuBuscar_clienteActionPerformed(evt);
+                setBuscarClientes(evt);
             }
         });
         menuCliente.add(menuBuscar_cliente);
@@ -178,7 +176,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuPagos.setToolTipText("");
         menuPagos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuPagosActionPerformed(evt);
+                setRegistrarPagosPlanes(evt);
             }
         });
         jMenu3.add(menuPagos);
@@ -187,7 +185,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuCafeteria.setText("Cafeteria");
         menuCafeteria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuCafeteriaActionPerformed(evt);
+                setRegistrarPagosProductos(evt);
             }
         });
         jMenu3.add(menuCafeteria);
@@ -222,13 +220,13 @@ public class frmPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void menuPaquetesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPaquetesActionPerformed
+    private void setCrearPaquetes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCrearPaquetes
         if (this.paqueteView == null) {
             try {
                 this.paqueteView = new frmPaquetes(this);
                 frmPrincipal.jdstPrincipal.add(this.paqueteView);
                 this.paqueteView.setTitle("Formulario para el registro de paquetes");
-                this.paqueteView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight() - 1);
+                this.paqueteView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
                 this.paqueteView.setClosable(true);
                 this.paqueteView.setResizable(true);
                 this.paqueteView.setVisible(true);
@@ -238,49 +236,61 @@ public class frmPrincipal extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(frmPrincipal.this, "El formulario para el registro de paquetes, ya se encuentra abierto", "Mensaje de información", JOptionPane.WARNING_MESSAGE);
         }
-    }//GEN-LAST:event_menuPaquetesActionPerformed
+    }//GEN-LAST:event_setCrearPaquetes
 
-    private void menuProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProductosActionPerformed
-        // TODO add your handling code here:        
-        try {
-            this.productoView = new frmProductos(this);
-            frmPrincipal.jdstPrincipal.add(this.productoView);
-
-            this.productoView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-            this.productoView.setResizable(true);
-            this.productoView.setClosable(true);
-            this.productoView.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }            
-
-    }//GEN-LAST:event_menuProductosActionPerformed
-
-    private void menuDescuentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDescuentosActionPerformed
-        try {
-            // TODO add your handling code here:
-            this.descuentoView = new frmDescuentos(this);
-            frmPrincipal.jdstPrincipal.add(this.descuentoView);
-
-            this.descuentoView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight() - 1);
-            this.descuentoView.setResizable(true);
-            this.descuentoView.setClosable(true);
-            this.descuentoView.setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+    private void setCrearPoductos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCrearPoductos
+        if (this.productoView == null) {
+            try {
+                this.productoView = new frmProductos(this);
+                frmPrincipal.jdstPrincipal.add(this.productoView);
+                this.productoView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                this.productoView.setResizable(true);
+                this.productoView.setClosable(true);
+                this.productoView.setVisible(true);
+            } catch (Exception ex) {
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(frmPrincipal.this, "El formulario para el registro de productos, ya se encuentra abierto", "Mensaje de información", JOptionPane.WARNING_MESSAGE);
         }
-    }//GEN-LAST:event_menuDescuentosActionPerformed
 
-    private void menuPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPagosActionPerformed
-        // TODO add your handling code here:
-        this.pagosView = new frmPagos();
-        frmPrincipal.jdstPrincipal.add(this.pagosView);
 
-        this.pagosView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight() - 1);
-        this.pagosView.setResizable(true);
-        this.pagosView.setClosable(true);
-        this.pagosView.setVisible(true);
-    }//GEN-LAST:event_menuPagosActionPerformed
+    }//GEN-LAST:event_setCrearPoductos
+
+    private void setCrearDescuentos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCrearDescuentos
+
+        if (this.productoView == null) {
+            try {
+                this.descuentoView = new frmDescuentos(this);
+                frmPrincipal.jdstPrincipal.add(this.descuentoView);
+                this.descuentoView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                this.descuentoView.setResizable(true);
+                this.descuentoView.setClosable(true);
+                this.descuentoView.setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(frmPrincipal.this, "El formulario para el registro de descuentos, ya se encuentra abierto", "Mensaje de información", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_setCrearDescuentos
+
+    private void setRegistrarPagosPlanes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRegistrarPagosPlanes
+        if (this.productoView == null) {
+            try {
+                this.pagosView = new frmPagos();
+                frmPrincipal.jdstPrincipal.add(this.pagosView);
+                this.pagosView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                this.pagosView.setResizable(true);
+                this.pagosView.setClosable(true);
+                this.pagosView.setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(frmPrincipal.this, "El formulario para el registro de planes o paquetes, ya se encuentra abierto", "Mensaje de información", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_setRegistrarPagosPlanes
 
     private void menuClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuClienteActionPerformed
         // TODO add your handling code here:
@@ -301,10 +311,10 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_menuClienteMenuSelected
 
-    private void setCrearCliente(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCrearCliente
+    private void setCrearClientes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCrearClientes
         if (this.clienteView == null) {
             try {
-                this.clienteView = new frmCliente(this);
+                this.clienteView = new frmClientes(this);
                 frmPrincipal.jdstPrincipal.add(this.clienteView);
                 this.clienteView.setTitle("Formulario para el registro de clientes");
                 this.clienteView.setSize(this.getWidth(), this.getHeight() - 1);
@@ -318,29 +328,36 @@ public class frmPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(frmPrincipal.this, "El formulario para el registro de clientes, ya se encuentra abierto", "Mensaje de información", JOptionPane.WARNING_MESSAGE);
         }
 
-    }//GEN-LAST:event_setCrearCliente
+    }//GEN-LAST:event_setCrearClientes
 
-    private void menuBuscar_clienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBuscar_clienteActionPerformed
+    private void setBuscarClientes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setBuscarClientes
         // TODO add your handling code here:
         this.buscarClienteView = new frmBuscarCliente();
         frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
 
-        this.buscarClienteView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight() - 1);
+        this.buscarClienteView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
         this.buscarClienteView.setResizable(true);
         this.buscarClienteView.setClosable(true);
         this.buscarClienteView.setVisible(true);
-    }//GEN-LAST:event_menuBuscar_clienteActionPerformed
+    }//GEN-LAST:event_setBuscarClientes
 
-    private void menuCafeteriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCafeteriaActionPerformed
-        // TODO add your handling code here:
-        this.cafeteriaView = new frmCafeteria();
-        frmPrincipal.jdstPrincipal.add(this.cafeteriaView);
+    private void setRegistrarPagosProductos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRegistrarPagosProductos
+        if (this.productoView == null) {
+            try {
+                this.cafeteriaView = new frmCafeteria();
+                frmPrincipal.jdstPrincipal.add(this.cafeteriaView);
+                this.cafeteriaView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                this.cafeteriaView.setResizable(true);
+                this.cafeteriaView.setClosable(true);
+                this.cafeteriaView.setVisible(true);
+            } catch (Exception ex) {
+                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(frmPrincipal.this, "El formulario para el registro de pagos por productos, ya se encuentra abierto", "Mensaje de información", JOptionPane.WARNING_MESSAGE);
+        }
 
-        this.cafeteriaView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight() - 1);
-        this.cafeteriaView.setResizable(true);
-        this.cafeteriaView.setClosable(true);
-        this.cafeteriaView.setVisible(true);
-    }//GEN-LAST:event_menuCafeteriaActionPerformed
+    }//GEN-LAST:event_setRegistrarPagosProductos
 
     /**
      * @param args the command line arguments
@@ -403,11 +420,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.registrarPagosView = registrarPagosView;
     }
 
-    public frmCliente getClienteView() {
+    public frmClientes getClienteView() {
         return clienteView;
     }
 
-    public void setClienteView(frmCliente clienteView) {
+    public void setClienteView(frmClientes clienteView) {
         this.clienteView = clienteView;
     }
 
@@ -415,7 +432,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.buscarClienteView = new frmBuscarCliente();
         frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
 
-        this.buscarClienteView.setSize(this.jdstPrincipal.getWidth(), this.jdstPrincipal.getHeight() - 1);
+        this.buscarClienteView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
         this.buscarClienteView.setResizable(true);
         this.buscarClienteView.setClosable(true);
         this.buscarClienteView.setVisible(true);

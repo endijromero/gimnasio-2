@@ -5,7 +5,7 @@
  */
 package com.gimnasio.controller;
 
-import com.gimnasio.views.frmCliente;
+import com.gimnasio.views.frmClientes;
 import com.gimnasio.views.frmLogin;
 import com.gimnasio.views.frmPrincipal;
 
@@ -38,7 +38,7 @@ public class Principal {
      * @param cliente
      * @return
      */
-    public static boolean setGuradarCliente(frmCliente cliente){
+    public static boolean setGuradarCliente(frmClientes cliente){
         return true;
     }
 

@@ -6,13 +6,11 @@
 package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones1;
-import com.gimnasio.model.DescuentoDto;
 import com.gimnasio.model.MiRender;
 import com.gimnasio.model.ProductoDto;
 import com.gimnasio.model.TablaDto;
 import com.gimnasio.model.TablaModelo;
 import java.awt.Font;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,59 +18,58 @@ import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-
 /**
  *
  * @author rodolfo
  */
-public class frmProductos extends javax.swing.JInternalFrame {
-    
+public final class frmProductos extends javax.swing.JInternalFrame {
+
     private final frmPrincipal padre;
     private final String[] headTable;
     private final TablaModelo table;
     private final Operaciones1 operacion;
     private final ProductoDto productoDto;
-    
+
     /**
      * Creates new form frmProductos
+     *
      * @param padre
      * @throws java.sql.SQLException
      */
     public frmProductos(frmPrincipal padre) throws SQLException {
         initComponents();
+        this.padre = padre;
         this.operacion = new Operaciones1();
         this.productoDto = new ProductoDto();
         this.headTable = new String[]{"Id", "Nombre", "Precio"};
         int widthColumna[] = {50, 200, 100};
         this.table = new TablaModelo(this.headTable);
         this.tblProductos.setModel(this.table);
-
-        this.padre = padre;
         int columnas = this.tblProductos.getColumnCount();
         for (int i = 0; i < columnas; i++) {
             this.tblProductos.getColumnModel().getColumn(i).setPreferredWidth(widthColumna[i]);
-        }         
-        this.setConsultarTableDescuentos();
-        this.setLimpiar();
+        }
+        setConsultarTableDescuentos();
+        setLimpiar();
     }
-    
+
     /**
-     * 
+     *
      */
-    public void setLimpiar() {
+    protected void setLimpiar() {
         this.txtNombre_producto.setText("");
         this.txtPrecio.setText("");
         this.productoDto.setId(null);
         this.productoDto.setNombre("");
         this.productoDto.setPrecio(null);
     }
-    
+
     /**
-     * 
-     * @throws SQLException 
+     *
+     * @throws SQLException
      */
-    public void setConsultarTableDescuentos() throws SQLException {
-        
+    protected void setConsultarTableDescuentos() throws SQLException {
+
         List<TablaDto> lista = this.operacion.getProductosDatosTablaDto(null);
         this.table.getData().clear();
         this.lblCantidad_descuentos.setText(String.valueOf(lista.size()));
@@ -120,20 +117,9 @@ public class frmProductos extends javax.swing.JInternalFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "AGREGAR", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
         jPanel1.setMaximumSize(new java.awt.Dimension(500, 500));
 
-        txtNombre_producto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNombre_productoActionPerformed(evt);
-            }
-        });
-
-        txtPrecio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPrecioActionPerformed(evt);
-            }
-        });
         txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                validarSoloNumero(evt);
+                setValidaSoloNumero(evt);
             }
         });
 
@@ -142,7 +128,7 @@ public class frmProductos extends javax.swing.JInternalFrame {
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
+                setGuardarProducto(evt);
             }
         });
 
@@ -213,7 +199,7 @@ public class frmProductos extends javax.swing.JInternalFrame {
         });
         tblProductos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                editarProducto(evt);
+                setEditarProducto(evt);
             }
         });
         jScrollPane1.setViewportView(tblProductos);
@@ -292,41 +278,32 @@ public class frmProductos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNombre_productoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombre_productoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNombre_productoActionPerformed
-
-    private void txtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPrecioActionPerformed
-
-    private void validarSoloNumero(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_validarSoloNumero
-        // TODO add your handling code here:
+    private void setValidaSoloNumero(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_setValidaSoloNumero
         char c = evt.getKeyChar();
         if (Character.isLetter(c)) {
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(this, "Ingresa solo numeros", "Error de datos", JOptionPane.WARNING_MESSAGE);
-        } 
-    }//GEN-LAST:event_validarSoloNumero
+            JOptionPane.showMessageDialog(this, "Ingrese solo numeros", "Error de datos", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_setValidaSoloNumero
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+    private void setGuardarProducto(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setGuardarProducto
         // TODO add your handling code here:
         try {
-            if(! this.txtNombre_producto.getText().equals("") && ! this.txtPrecio.getText().equals("")) {
+            if (!this.txtNombre_producto.getText().equals("") && !this.txtPrecio.getText().equals("")) {
                 boolean guarda = false;
-                if(! this.txtNombre_producto.getText().equals(this.productoDto.getNombre())){
+                if (!this.txtNombre_producto.getText().equals(this.productoDto.getNombre())) {
                     guarda = true;
                     this.productoDto.setNombre(this.txtNombre_producto.getText());
                 }
                 Double precio = new Double(this.txtPrecio.getText());
-                if(this.productoDto.getPrecio()!= precio) {
-                    guarda = true;                
+                if (this.productoDto.getPrecio() != precio) {
+                    guarda = true;
                     this.productoDto.setPrecio(precio);
                 }
-                if(guarda) {
-                    boolean save =this.operacion.setSaveUpdateProductos(this.productoDto);
-                    if(save) {
+                if (guarda) {
+                    boolean save = this.operacion.setSaveUpdateProductos(this.productoDto);
+                    if (save) {
                         JLabel label = new JLabel("<html>Los datos para el producto: <b>" + this.productoDto.getNombre() + "</b>, fueron guardados correctamente</html>");
                         label.setFont(new Font("serif", Font.PLAIN, 14));
                         JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
@@ -340,20 +317,20 @@ public class frmProductos extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(frmPaquetes.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-    }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void editarProducto(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editarProducto
+
+    }//GEN-LAST:event_setGuardarProducto
+
+    private void setEditarProducto(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setEditarProducto
         // TODO add your handling code here:
-        if(evt.getClickCount() == 2){
+        if (evt.getClickCount() == 2) {
             int fila = this.tblProductos.getSelectedRow();
             TablaDto dto = (TablaDto) this.table.getData().get(fila);
             this.productoDto.setId(Integer.parseInt(dto.getDato1()));
             this.txtNombre_producto.setText(dto.getDato2());
-            this.txtPrecio.setText(dto.getDato3());                        
+            this.txtPrecio.setText(dto.getDato3());
         }
-    }//GEN-LAST:event_editarProducto
+    }//GEN-LAST:event_setEditarProducto
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

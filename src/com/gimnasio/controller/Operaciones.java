@@ -36,31 +36,31 @@ public class Operaciones {
     public List<String> setGuardarCliente(ClienteDto clienteDto) throws SQLException {
         List<String> listMessages = new ArrayList();
         if (Util.getVacio(clienteDto.getPersonaDto().getPrimerNombre())) {
-            listMessages.add("Primer nombre");
+            listMessages.add("<li>Primer nombre</li>");
         }
         if (Util.getVacio(clienteDto.getPersonaDto().getPrimerApellido())) {
-            listMessages.add("Primer appelido");
+            listMessages.add("<li>Primer appelido</li>");
         }
         if (Util.getVacio(String.valueOf(clienteDto.getPersonaDto().getTipoIdentificacion()))) {
-            listMessages.add("Tipo documento");
+            listMessages.add("<li>Tipo documento</li>");
         }
         if (Util.getVacio(String.valueOf(clienteDto.getPersonaDto().getNumeroIdentificacion()))) {
-            listMessages.add("Número de documento");
+            listMessages.add("<li>Número de documento</li>");
         }
         if (Util.getVacio(String.valueOf(clienteDto.getPersonaDto().getEstadoCivil()))) {
-            listMessages.add("Estado civil");
+            listMessages.add("<li>Estado civil</li>");
         }
-        if (Util.getVacio(clienteDto.getPersonaDto().getFechaNacimiento().toString())) {
-            listMessages.add("La fecha de nacimiento");
+        if (clienteDto.getPersonaDto().getFechaNacimiento() == null) {
+            listMessages.add("<li>La fecha de nacimiento</li>");
         }
         if (Util.getVacio(clienteDto.getPersonaDto().getMovil())) {
-            listMessages.add("Número móvil");
+            listMessages.add("<li>Número móvil</li>");
         }
         if (Util.getVacio(clienteDto.getPersonaDto().getDireccion())) {
-            listMessages.add("Dirección domicilio");
+            listMessages.add("<li>Dirección domicilio</li>");
         }
         if (Util.getVacio(clienteDto.getPersonaDto().getBarrio())) {
-            listMessages.add("Barrio domicilio");
+            listMessages.add("<li>Barrio domicilio</li>");
         }
         if (listMessages.size() < 1) {
             this.model.setGuardarPaquete(null);

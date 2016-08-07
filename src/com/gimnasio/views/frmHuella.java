@@ -76,7 +76,7 @@ public class frmHuella extends javax.swing.JDialog {
     private short tipoProceso;
     private Object padre;
 
-    public frmHuella(Operaciones operacion, javax.swing.JFrame parent, boolean modal, ClienteDto clienteDto, short tipoProceso, frmCliente padre) {
+    public frmHuella(Operaciones operacion, javax.swing.JFrame parent, boolean modal, ClienteDto clienteDto, short tipoProceso, frmClientes padre) {
         super(parent, modal);
         initComponents();
         this.cambia = false;

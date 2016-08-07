@@ -363,7 +363,7 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
             this.paqueteDto.setId(Integer.parseInt(dto.getDato1()));
             this.txtNombre_paquete.setText(dto.getDato2());
             this.txtPrecio.setText(dto.getDato3());
-            this.rbtTiqutera.setSelected(Integer.parseInt(dto.getDato5()) == ESiNo.SI.getId());
+            this.rbtTiqutera.setSelected(Integer.parseInt(dto.getDato4()) == ESiNo.SI.getId());
             this.txtDias_aplazamiento.setText(dto.getDato5());
         }
     }//GEN-LAST:event_setEditarPaquete

@@ -5,7 +5,7 @@
  */
 package com.gimnasio.views;
 
-import javax.swing.JOptionPane;
+import java.sql.SQLException;
 
 /**
  *
@@ -16,7 +16,7 @@ public class frmPagos extends javax.swing.JInternalFrame {
     /**
      * Creates new form frmPagos
      */
-    public frmPagos() {
+    public frmPagos() throws SQLException{
         initComponents();
     }
 
