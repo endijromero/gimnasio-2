@@ -54,9 +54,14 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
         }
     }
 
-    public void setLimpiar(){
-        this.txtTotal_pagar.setText("");
-        
+    /**
+     * 
+     */
+    public void setLimpiar(){        
+        this.txtTotal_pagar.setText("");                
+        this.txtCantidad.setText("1");
+        this.cmbProducto.setSelectedIndex(-1);
+        this.cmbProducto.repaint();
     };
     /**
      * This method is called from within the constructor to initialize the form.
@@ -232,7 +237,7 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
         if(! this.txtCantidad.getText().equals("") && ! this.txtTotal_pagar.getText().equals("") && this.cmbProducto.getSelectedItem() != null) {
             ComboDto select = (ComboDto) this.cmbProducto.getSelectedItem();
             int id = Integer.valueOf(select.getCodigo());
-            boolean save = this.operacion.setSaveUpdateCafeteria(id, this.txtCantidad.getText(), this.txtCantidad.getText());
+            boolean save = this.operacion.setSaveUpdateCafeteria(id, this.usuarioDto.getId(), this.txtCantidad.getText(), this.txtTotal_pagar.getText());
             if(save) {
                 JLabel label = new JLabel("<html>Los datos para el Descuento: <b>" + select.getDescripcion() + "</b>, fueron guardados correctamente</html>");
                 label.setFont(new Font("serif", Font.PLAIN, 14));
@@ -251,9 +256,13 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cmbProductoPopupMenuWillBecomeVisible
 
     private void SelectOpcion(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SelectOpcion
-        // TODO add your handling code here:       
-        ComboDto select = (ComboDto) this.cmbProducto.getSelectedItem();
-        int id = Integer.valueOf(select.getCodigo());
+        // TODO add your handling code here:    
+        int id = 0;
+        
+        if(this.cmbProducto.getSelectedIndex() > -1) {
+            ComboDto select = (ComboDto) this.cmbProducto.getSelectedItem();
+            id = Integer.valueOf(select.getCodigo());
+        }
         if(id > 0) {
             for (ProductoDto producto : this.listaProductos) {
                 if(id == producto.getId()) {

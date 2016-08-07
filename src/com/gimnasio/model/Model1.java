@@ -1,11 +1,13 @@
 package com.gimnasio.model;
 
 import com.gimnasio.util.Util;
+import java.security.Timestamp;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -111,6 +113,21 @@ public class Model1 {
         }
         stat.setString(1, producto.getNombre());
         stat.setDouble(2, producto.getPrecio());                
+        stat.execute();
+        stat.close();
+        return true;
+    }
+    
+    public boolean setGuardarCafeteria(int idProducto, long idUsuario, String cantidad, String valor_total, Date fecha) throws SQLException {
+        PreparedStatement stat = null;
+        
+        stat = this.conexion.getConexion().prepareStatement("INSERT INTO producto_ventas (productos_id, cantidad, valor_total, fecha_registro, usuario_id) VALUES (?,?,?,?,?)");
+        
+        stat.setInt(1, idProducto);
+        stat.setDouble(2, Double.valueOf(cantidad));
+        stat.setDouble(3, Double.valueOf(valor_total));
+        stat.setTimestamp(4, new java.sql.Timestamp(fecha.getTime()));
+        stat.setInt(5, (int)idUsuario);                
         stat.execute();
         stat.close();
         return true;

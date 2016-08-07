@@ -5,7 +5,10 @@ import com.gimnasio.util.Util;
 import com.gimnasio.views.frmPrincipal;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -122,17 +125,22 @@ public class Operaciones1 {
     /**
      * 
      * @param idProducto
+     * @param idUsuario
      * @param cantidad
      * @param valor_total
      * @return 
      */
-    public boolean setSaveUpdateCafeteria(int idProducto, String cantidad, String valor_total){        
+    public boolean setSaveUpdateCafeteria(int idProducto, long idUsuario, String cantidad, String valor_total){        
         boolean guarda = false;
-        if(idProducto >0 && !cantidad.equals("") && !valor_total.equals("")) {
-            
-            
+        try {
+            if(idProducto > 0 && idUsuario > 0 && !cantidad.equals("") && !valor_total.equals("")) {            
+                java.util.Date fecha = new Date();
+                guarda = this.model.setGuardarCafeteria(idProducto, idUsuario, cantidad, valor_total, fecha);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Operaciones1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return true;
+        return guarda;
     }
 
     public Model1 getModel() {
