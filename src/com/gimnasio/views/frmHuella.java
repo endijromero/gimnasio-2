@@ -74,36 +74,37 @@ public class frmHuella extends javax.swing.JDialog {
     private ClienteDto clienteDto;
     private int cantidadHuellas;
     private short tipoProceso;
-    private Object padre;
+    private frmClientes frmCliente;
 
-    public frmHuella(Operaciones operacion, javax.swing.JFrame parent, boolean modal, ClienteDto clienteDto, short tipoProceso, frmClientes padre) {
+    public frmHuella(Operaciones operacion, javax.swing.JFrame parent, boolean modal, ClienteDto cliDto, short tipoProceso, frmClientes frmCliente) {
         super(parent, modal);
         initComponents();
         this.cambia = false;
         this.operacion = operacion;
         try {
             this.listTemplates = new ArrayList();
-            // this.listClientesHuellas = this.operacion.getClientesDatos();
+            this.listClientesHuellas = new ArrayList(); //this.operacion.getClientesDatos();
             for (ClienteDto dto : this.listClientesHuellas) {
                 DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(dto.getPersonaDto().getHuellaDactilar());
                 dto.getPersonaDto().setTemplateHuella(referenceTemplate);
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
-            System.out.println(e);
         }
         this.listClientes = (List<List<ClienteDto>>) Util.getDivideArray(this.listClientesHuellas, Util.CANTIDAD_DIVIDE_ARRAY);
 
-        this.padre = padre;
+        this.frmCliente = frmCliente;
         this.cantidadHuellas = 0;
         Util.setCentrarJFrame(null, this);
         this.setResizable(false);
         this.lblIndiceDerecho.setText(null);
 
         this.tipoProceso = tipoProceso;
-        this.clienteDto = clienteDto;
+        this.clienteDto = cliDto;
 
-        this.lblCodigo.setText(this.clienteDto.getId().toString());
+        if (this.clienteDto.getId() != null) {
+            this.lblCodigo.setText(this.clienteDto.getId().toString());
+        }
         switch (tipoProceso) {
             case 1: {
                 this.btnGuardar.setEnabled(false);
@@ -138,7 +139,7 @@ public class frmHuella extends javax.swing.JDialog {
         if (Lector.isStarted()) {
             Lector.stopCapture();
         }
-        //this.padre.txtVisor.setText("");
+        //this.frmCliente.setUsuarioSessionDto(usuarioSessionDto);
     }
 
     public void start() {
@@ -267,22 +268,20 @@ public class frmHuella extends javax.swing.JDialog {
             }
         } else if (this.tipoProceso == 4) {
             // this.setRegistrarSalida();
-        } else {
-            if (this.cantidadHuellas == 4) {
-                String ruta = "/com/gimnasio/files/audios/";
-                try {
-                    this.usuarioIncorrecto = new FileInputStream(ruta + "huella.mp3");
-                    this.usuarioIncorrectoCache = new BufferedInputStream(this.usuarioIncorrecto);
-                    this.playUsuarioIncorrecto = new Player(this.usuarioIncorrectoCache);
-                    this.playUsuarioIncorrecto.play();
-                    this.playUsuarioIncorrecto.close();
-                } catch (FileNotFoundException | JavaLayerException ex) {
-                    this.btnCancelar.setEnabled(true);
-                    System.err.println(ex.getMessage() + " Error en los ingresos");
-                    Logger.getLogger(frmHuella.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                this.btnGuardar.setEnabled(true);
+        } else if (this.cantidadHuellas == 4) {
+            String ruta = "audios/";
+            try {
+                this.usuarioIncorrecto = new FileInputStream(ruta + "huella.mp3");
+                this.usuarioIncorrectoCache = new BufferedInputStream(this.usuarioIncorrecto);
+                this.playUsuarioIncorrecto = new Player(this.usuarioIncorrectoCache);
+                this.playUsuarioIncorrecto.play();
+                this.playUsuarioIncorrecto.close();
+            } catch (FileNotFoundException | JavaLayerException ex) {
+                this.btnCancelar.setEnabled(true);
+                System.err.println(ex.getMessage() + " Error en los ingresos");
+                Logger.getLogger(frmHuella.class.getName()).log(Level.SEVERE, null, ex);
             }
+            this.btnGuardar.setEnabled(true);
         }
         System.gc();
     }
@@ -424,7 +423,6 @@ public class frmHuella extends javax.swing.JDialog {
     }//GEN-LAST:event_getCerrarPanel
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // guardarHuella();
         //start();
         Reclutador.clear();
         stop();
