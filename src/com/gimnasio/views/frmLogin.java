@@ -6,6 +6,7 @@
 package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones;
+import com.gimnasio.model.UsuarioDto;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,7 +55,6 @@ public class frmLogin extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFocusCycleRoot(false);
         setLocation(new java.awt.Point(300, 400));
-        setMaximumSize(new java.awt.Dimension(360, 370));
         setMinimumSize(new java.awt.Dimension(360, 370));
         setResizable(false);
         getContentPane().setLayout(null);
@@ -117,12 +117,12 @@ public class frmLogin extends javax.swing.JFrame {
         getContentPane().add(jLabel2);
         jLabel2.setBounds(110, 210, 70, 20);
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Usuario");
         getContentPane().add(jLabel3);
         jLabel3.setBounds(110, 150, 45, 20);
 
+        jLabel1.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/textura.jpg"))); // NOI18N
         jLabel1.setToolTipText("Usuario");
         jLabel1.setMaximumSize(new java.awt.Dimension(500, 200));
@@ -148,7 +148,12 @@ public class frmLogin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Debe ingresar un usario y contraseña", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
         } else {
             try {
-                if (this.operacion.setValidateIngreso(this.txtUser.getText(), this.txtPassword.getText())) {
+                UsuarioDto userDto = this.operacion.setValidateIngreso(this.txtUser.getText(), this.txtPassword.getText());
+                if (userDto.getId() > 0) {
+                    frmPrincipal principal = new frmPrincipal();
+                    principal.setUsuarioSessionDto(userDto);
+                    principal.setTitle("Sistem GymStreet");
+                    principal.setVisible(true);
                     this.setVisible(false);
                 }
             } catch (SQLException ex) {

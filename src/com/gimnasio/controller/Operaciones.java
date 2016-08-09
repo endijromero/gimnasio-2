@@ -2,9 +2,9 @@ package com.gimnasio.controller;
 
 import com.gimnasio.model.*;
 import com.gimnasio.model.enums.EEstadoCivil;
+import com.gimnasio.model.enums.ESiNo;
 import com.gimnasio.model.enums.ETipoDocumento;
 import com.gimnasio.util.Util;
-import com.gimnasio.views.frmPrincipal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,9 +79,59 @@ public class Operaciones {
         return listMessages;
     }
 
+    public List<String> setGuardarUsuario(UsuarioDto usuarioDto) throws SQLException {
+        List<String> listMessages = new ArrayList();
+        if (Util.getVacio(usuarioDto.getPersonaDto().getPrimerNombre())) {
+            listMessages.add("<li>Primer nombre</li>");
+        }
+        if (Util.getVacio(usuarioDto.getPersonaDto().getPrimerApellido())) {
+            listMessages.add("<li>Primer appelido</li>");
+        }
+        if (Util.getVacio(String.valueOf(usuarioDto.getPersonaDto().getTipoIdentificacion()))) {
+            listMessages.add("<li>Tipo documento</li>");
+        }
+        if (Util.getVacio(usuarioDto.getPersonaDto().getNumeroIdentificacion())) {
+            listMessages.add("<li>Número de documento</li>");
+        }
+        if (usuarioDto.getPersonaDto().getEstadoCivil() == null) {
+            listMessages.add("<li>Estado civil</li>");
+        }
+        if (usuarioDto.getPersonaDto().getGenero() == 0) {
+            listMessages.add("<li>Género</li>");
+        }
+        if (Util.getVacio(usuarioDto.getPersonaDto().getFechaNacimiento())) {
+            listMessages.add("<li>Fecha de nacimiento</li>");
+        }
+        if (Util.getVacio(usuarioDto.getPersonaDto().getMovil())) {
+            listMessages.add("<li>Número móvil</li>");
+        }
+        if (Util.getVacio(usuarioDto.getPersonaDto().getDireccion())) {
+            listMessages.add("<li>Dirección domicilio</li>");
+        }
+        if (Util.getVacio(usuarioDto.getPersonaDto().getBarrio())) {
+            listMessages.add("<li>Barrio domicilio</li>");
+        }
+        if (usuarioDto.getPersonaDto().getHuellaDactilar() == null) {
+            listMessages.add("<li>Huella dactilar</li>");
+        }
+        if (listMessages.size() < 1) {
+            this.model.setGuardarUsuario(usuarioDto);
+        }
+        return listMessages;
+    }
+
     public List<ComboDto> getTipoDocumentos() throws Exception {
         List<ComboDto> lista = new ArrayList();
         for (ETipoDocumento tip : ETipoDocumento.getValues()) {
+            ComboDto dto = new ComboDto(String.valueOf(tip.getId()), tip.getNombre());
+            lista.add(dto);
+        }
+        return lista;
+    }
+
+    public List<ComboDto> getYnActivo() throws Exception {
+        List<ComboDto> lista = new ArrayList();
+        for (ESiNo tip : ESiNo.getValues()) {
             ComboDto dto = new ComboDto(String.valueOf(tip.getId()), tip.getNombre());
             lista.add(dto);
         }
@@ -124,22 +174,18 @@ public class Operaciones {
      * @param password
      * @return
      */
-    public Boolean setValidateIngreso(String loggin, String password) throws SQLException {
-        Boolean valido = false;
+    public UsuarioDto setValidateIngreso(String loggin, String password) throws SQLException {
+        UsuarioDto user = new UsuarioDto();
         List<UsuarioDto> listUsuarios = this.model.getDatosUsuarios(loggin);
         if (listUsuarios.size() > 0) {
-            UsuarioDto user = listUsuarios.get(0);
+            user = listUsuarios.get(0);
             if (Util.getEncriptarMD5(password).equals(user.getPassword())) {
-                valido = true;
-                frmPrincipal principal = new frmPrincipal();
-                principal.setUsuarioSessionDto(user);
-                principal.setTitle("Titulo");
-                principal.setVisible(true);
+                return user;
             } else {
                 JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrecta", "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
             }
         }
-        return valido;
+        return user;
     }
 
     /**

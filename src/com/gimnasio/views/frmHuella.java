@@ -27,6 +27,7 @@ import com.digitalpersona.onetouch.verification.DPFPVerification;
 import com.gimnasio.controller.Operaciones;
 import com.gimnasio.model.ClienteDto;
 import com.gimnasio.model.HiloBusqueda;
+import com.gimnasio.model.UsuarioDto;
 import java.awt.Image;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -71,10 +72,12 @@ public class frmHuella extends javax.swing.JDialog {
 
     private List<HiloBusqueda> listaHilos;
     private boolean cambia = false;
+    private UsuarioDto usuarioDto;
     private ClienteDto clienteDto;
     private int cantidadHuellas;
     private short tipoProceso;
     private frmClientes frmCliente;
+    private frmUsuarios frmUsuario;
 
     public frmHuella(Operaciones operacion, javax.swing.JFrame parent, boolean modal, ClienteDto cliDto, short tipoProceso, frmClientes frmCliente) {
         super(parent, modal);
@@ -101,6 +104,55 @@ public class frmHuella extends javax.swing.JDialog {
 
         this.tipoProceso = tipoProceso;
         this.clienteDto = cliDto;
+
+        if (this.clienteDto.getId() != null) {
+            this.lblCodigo.setText(this.clienteDto.getId().toString());
+        }
+        switch (tipoProceso) {
+            case 1: {
+                this.btnGuardar.setEnabled(false);
+                this.lblEstudiante.setText(this.clienteDto.getPersonaDto().getNombreCompleto());
+            }
+            break;
+            case 2: {
+                this.lblEstudiante.setText(null);
+                this.btnGuardar.setVisible(false);
+            }
+            break;
+            default: {
+                this.lblEstudiante.setText(null);
+                this.btnGuardar.setVisible(false);
+                this.btnCancelar.setText("Cerrar");
+            }
+            break;
+        }
+    }
+
+    public frmHuella(Operaciones operacion, javax.swing.JFrame parent, boolean modal, UsuarioDto usuarioDto, short tipoProceso, frmUsuarios frmUsuario) {
+        super(parent, modal);
+        initComponents();
+        this.cambia = false;
+        this.operacion = operacion;
+        try {
+            this.listTemplates = new ArrayList();
+            this.listClientesHuellas = new ArrayList(); //this.operacion.getClientesDatos();
+            for (ClienteDto dto : this.listClientesHuellas) {
+                DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(dto.getPersonaDto().getHuellaDactilar());
+                dto.getPersonaDto().setTemplateHuella(referenceTemplate);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        this.listClientes = (List<List<ClienteDto>>) Util.getDivideArray(this.listClientesHuellas, Util.CANTIDAD_DIVIDE_ARRAY);
+
+        this.frmUsuario = frmUsuario;
+        this.cantidadHuellas = 0;
+        Util.setCentrarJFrame(null, this);
+        this.setResizable(false);
+        this.lblIndiceDerecho.setText(null);
+
+        this.tipoProceso = tipoProceso;
+        this.usuarioDto = usuarioDto;
 
         if (this.clienteDto.getId() != null) {
             this.lblCodigo.setText(this.clienteDto.getId().toString());

@@ -44,15 +44,15 @@ public class Model {
                     + "WHERE id=? ");
             stat.setLong(18, clienteDto.getId());
         } else {
-            stat = this.conexion.getConexion().prepareStatement("INSERT INTO `personas` (`primer_nombre`, `segundo_nombre`, "
-                    + "`primer_apellido`, `segundo_apellido`, "
-                    + "`tipo_identificacion`, `numero_identificacion`, "
-                    + "`luga_expedicion`, `genero`, "
-                    + "`estado_civil`, `fecha_nacimiento`, "
-                    + "`direccion`, `barrio`, "
-                    + "`telefono`, `movil`, "
-                    + "`email`, `huella_dactilar`, "
-                    + "`foto_perfil`)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            stat = this.conexion.getConexion().prepareStatement("INSERT INTO personas (primer_nombre, segundo_nombre, "
+                    + "primer_apellido, segundo_apellido, "
+                    + "tipo_identificacion, numero_identificacion, "
+                    + "luga_expedicion, genero, "
+                    + "estado_civil, fecha_nacimiento, "
+                    + "direccion, barrio, "
+                    + "telefono, movil, "
+                    + "email, huella_dactilar, "
+                    + "foto_perfil)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
         }
         stat.setString(1, clienteDto.getPersonaDto().getPrimerNombre());
@@ -73,6 +73,69 @@ public class Model {
         stat.setBytes(16, clienteDto.getPersonaDto().getHuellaDactilar());
         stat.setString(17, clienteDto.getPersonaDto().getNumeroIdentificacion() + ".jpg");
         stat.execute();
+        stat.close();
+    }
+
+    public void setGuardarUsuario(UsuarioDto usuarioDto) throws SQLException {
+        PreparedStatement stat = null;
+        if (usuarioDto.getId() > 0) {
+            stat = this.conexion.getConexion().prepareStatement("UPDATE personas SET primer_nombre = ?, "
+                    + "segundo_nombre = ?, primer_apellido = ?, "
+                    + "tipo_identificacion = ?, numero_identificacion = ?, "
+                    + "luga_expedicion = ?, genero = ?, "
+                    + "estado_civil = ?, fecha_nacimiento = ?, "
+                    + "direccion = ?, barrio = ?, "
+                    + "telefono = ?, movil = ?, "
+                    + "email = ?, huella_dactilar = ?, "
+                    + "foto_perfil = ? "
+                    + "WHERE id=? ");
+            stat.setLong(18, usuarioDto.getId());
+        } else {
+            stat = this.conexion.getConexion().prepareStatement("INSERT INTO personas (primer_nombre, segundo_nombre, "
+                    + "primer_apellido, segundo_apellido, "
+                    + "tipo_identificacion, numero_identificacion, "
+                    + "luga_expedicion, genero, "
+                    + "estado_civil, fecha_nacimiento, "
+                    + "direccion, barrio, "
+                    + "telefono, movil, "
+                    + "email, huella_dactilar, "
+                    + "foto_perfil)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+
+        }
+        stat.setString(1, usuarioDto.getPersonaDto().getPrimerNombre());
+        stat.setString(2, usuarioDto.getPersonaDto().getSegundoNombre());
+        stat.setString(3, usuarioDto.getPersonaDto().getPrimerApellido());
+        stat.setString(4, usuarioDto.getPersonaDto().getSegundoApellido());
+        stat.setShort(5, usuarioDto.getPersonaDto().getTipoIdentificacion());
+        stat.setString(6, usuarioDto.getPersonaDto().getNumeroIdentificacion());
+        stat.setString(7, usuarioDto.getPersonaDto().getLugaExpedicion());
+        stat.setShort(8, usuarioDto.getPersonaDto().getGenero());
+        stat.setShort(9, usuarioDto.getPersonaDto().getEstadoCivil());
+        stat.setString(10, usuarioDto.getPersonaDto().getFechaNacimiento());
+        stat.setString(11, usuarioDto.getPersonaDto().getDireccion());
+        stat.setString(12, usuarioDto.getPersonaDto().getBarrio());
+        stat.setString(13, usuarioDto.getPersonaDto().getTelefono());
+        stat.setString(14, usuarioDto.getPersonaDto().getMovil());
+        stat.setString(15, usuarioDto.getPersonaDto().getEmail());
+        stat.setBytes(16, usuarioDto.getPersonaDto().getHuellaDactilar());
+        stat.setString(17, usuarioDto.getPersonaDto().getNumeroIdentificacion() + ".jpg");
+        if (stat.execute()) {
+            if (usuarioDto.getId() > 0) {
+                stat = this.conexion.getConexion().prepareStatement("UPDATE  usuarios  SET tipo_usuario = '?', yn_activo = '?', WHERE id = '?';");
+                stat.setShort(1, usuarioDto.getTipoUsuario());
+                stat.setShort(2, usuarioDto.getYnActivo());
+                stat.setLong(3, usuarioDto.getId());
+            } else {
+                stat = this.conexion.getConexion().prepareStatement("INSERT INTO usuarios (tipo_usuario, persona_id, loggin, password, yn_activo, fecha_registro) "
+                        + "VALUES ('?', '?', '?', '?', '?', 'NOW()') ;");
+                stat.setShort(1, usuarioDto.getTipoUsuario());
+                stat.setLong(2, usuarioDto.getPersonaDto().getId());
+                stat.setString(3, usuarioDto.getLoggin());
+                stat.setString(4, usuarioDto.getPassword());
+                stat.setShort(5, usuarioDto.getYnActivo());
+            }
+            stat.execute();
+        }
         stat.close();
     }
 
