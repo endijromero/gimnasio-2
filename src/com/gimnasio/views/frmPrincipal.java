@@ -379,7 +379,13 @@ public class frmPrincipal extends javax.swing.JFrame {
      */
     private void setRegistrarDatosFisioterapeuta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRegistrarDatosFisioterapeuta
         // TODO add your handling code here:
-
+        this.buscarClienteView = new frmBuscarCliente("2");
+        frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
+        
+        this.buscarClienteView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+        this.buscarClienteView.setResizable(true);
+        this.buscarClienteView.setClosable(true);
+        this.buscarClienteView.setVisible(true);
 
     }//GEN-LAST:event_setRegistrarDatosFisioterapeuta
 

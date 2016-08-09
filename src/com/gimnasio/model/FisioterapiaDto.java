@@ -172,7 +172,7 @@ public class FisioterapiaDto implements java.io.Serializable  {
            promedio = (this.test_uno + this.test_dos + this.test_tres)/3;
        }
        BigDecimal flex = new BigDecimal(promedio);
-       return flex.setScale(2, RoundingMode.UP).doubleValue();
+       return flex.setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
     
     /**
@@ -182,9 +182,9 @@ public class FisioterapiaDto implements java.io.Serializable  {
     public double setCalcularIMC(){
         double calculo = 0;
         if(this.peso > 0 && this.talla > 0) {
-            calculo = this.peso/(Math.pow((this.peso/100),2));
+            calculo = this.peso/(Math.pow((this.talla/100),2));
         }
         BigDecimal flex = new BigDecimal(calculo);
-        return flex.setScale(2, RoundingMode.UP).doubleValue();
+        return flex.setScale(2, RoundingMode.HALF_UP).doubleValue();
     } 
 }

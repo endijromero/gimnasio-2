@@ -7,6 +7,7 @@ package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones1;
 import com.gimnasio.model.FisioterapiaDto;
+import com.gimnasio.util.Util;
 import com.google.common.base.Joiner;
 import java.awt.Font;
 import java.sql.SQLException;
@@ -511,6 +512,11 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
         txtPeso.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtPeso.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtPeso.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtPesoFocusLost(evt);
+            }
+        });
         txtPeso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPesoActionPerformed(evt);
@@ -527,14 +533,19 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel15.setText("Peso");
+        jLabel15.setText("Peso Kg");
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel16.setText("Talla");
+        jLabel16.setText("Talla Cm");
 
         txtTalla.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtTalla.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTalla.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtTallaFocusLost(evt);
+            }
+        });
         txtTalla.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTallaActionPerformed(evt);
@@ -871,6 +882,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
     private void txtPesoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesoKeyReleased
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtPesoKeyReleased
 
     private void txtPesoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesoKeyTyped
@@ -879,7 +891,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtPesoKeyTyped
 
     private void txtTallaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTallaActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:        
     }//GEN-LAST:event_txtTallaActionPerformed
 
     private void txtTallaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTallaKeyReleased
@@ -889,6 +901,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
     private void txtTallaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTallaKeyTyped
         // TODO add your handling code here:
         this.validarSoloNumero(evt);
+        this.getIMC();
     }//GEN-LAST:event_txtTallaKeyTyped
 
     private void txtIMCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIMCActionPerformed
@@ -905,6 +918,15 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
     
     /**
      * 
+     */
+    public void getIMC() {
+        double imc = this.fisioterapiaDto.setCalcularIMC();
+        if(imc > 0) {            
+            this.txtIMC.setText(String.valueOf(imc));
+        }        
+    }
+    /**
+     * 
      * @param evt 
      */
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -918,6 +940,30 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void txtPesoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPesoFocusLost
+        // TODO add your handling code here:
+        double peso = 0;
+        if(!Util.getVacio(this.txtPeso.getText())) {
+            peso = Double.valueOf(this.txtPeso.getText());
+        }
+        this.fisioterapiaDto.setPeso(peso);
+        this.getIMC();
+    }//GEN-LAST:event_txtPesoFocusLost
+
+    /**
+     * 
+     * @param evt 
+     */
+    private void txtTallaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTallaFocusLost
+        // TODO add your handling code here:
+        double talla = 0;
+        if(!Util.getVacio(this.txtTalla.getText())) {
+            talla = Double.valueOf(this.txtTalla.getText());
+        }
+        this.fisioterapiaDto.setTalla(talla);
+        this.getIMC();
+    }//GEN-LAST:event_txtTallaFocusLost
     
     /**
      * 
