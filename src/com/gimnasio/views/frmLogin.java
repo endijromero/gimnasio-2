@@ -117,6 +117,7 @@ public class frmLogin extends javax.swing.JFrame {
         getContentPane().add(jLabel2);
         jLabel2.setBounds(110, 210, 70, 20);
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Usuario");
         getContentPane().add(jLabel3);

@@ -32,6 +32,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmCafeteria cafeteriaView;
     private frmRegistrarPagos registrarPagosView;
     private frmClientes clienteView;
+    private frmUsuarios usuarioView;
 
     /**
      * Creates new form frmPrincipal
@@ -383,16 +384,16 @@ public class frmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_setRegistrarDatosFisioterapeuta
 
     private void setCrearUsuarios(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCrearUsuarios
-        if (this.clienteView == null) {
+        if (this.usuarioView == null) {
             try {
-                this.clienteView = new frmClientes(this);
-                this.clienteView.setTitle("Formulario para el registro de clientes");
-                this.clienteView.setSize(this.getWidth(), this.getHeight() - 1);
-                this.clienteView.setUsuarioSessionDto(this.usuarioSessionDto);
-                this.clienteView.setResizable(true);
-                this.clienteView.setClosable(true);
-                this.clienteView.setVisible(true);
-                frmPrincipal.jdstPrincipal.add(this.clienteView);
+                this.usuarioView = new frmUsuarios(this);
+                this.usuarioView.setTitle("Formulario para el registro de clientes");
+                this.usuarioView.setSize(this.getWidth(), this.getHeight() - 1);
+                this.usuarioView.setUsuarioSessionDto(this.usuarioSessionDto);
+                this.usuarioView.setResizable(true);
+                this.usuarioView.setClosable(true);
+                this.usuarioView.setVisible(true);
+                frmPrincipal.jdstPrincipal.add(this.usuarioView);
             } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -468,6 +469,14 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     public void setClienteView(frmClientes clienteView) {
         this.clienteView = clienteView;
+    }
+
+    public frmUsuarios getUsuarioView() {
+        return usuarioView;
+    }
+
+    public void setUsuarioView(frmUsuarios usuarioView) {
+        this.usuarioView = usuarioView;
     }
 
     /**
