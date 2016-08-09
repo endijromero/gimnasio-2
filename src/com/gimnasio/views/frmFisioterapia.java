@@ -144,6 +144,11 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
         txtTest_uno.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtTest_uno.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTest_uno.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtTest_unoFocusLost(evt);
+            }
+        });
         txtTest_uno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTest_unoActionPerformed(evt);
@@ -160,6 +165,11 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
         txtTest_dos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtTest_dos.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTest_dos.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtTest_dosFocusLost(evt);
+            }
+        });
         txtTest_dos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTest_dosActionPerformed(evt);
@@ -176,6 +186,11 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
         txtTest_tres.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtTest_tres.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTest_tres.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtTest_tresFocusLost(evt);
+            }
+        });
         txtTest_tres.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTest_tresActionPerformed(evt);
@@ -925,6 +940,17 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
             this.txtIMC.setText(String.valueOf(imc));
         }        
     }
+    
+    /**
+     * 
+     */
+    public void getTestFlexibilidad(){
+        double test = this.fisioterapiaDto.setCalculaTesFlexibilidad();
+        if(test >0 ) {
+            this.txtPromedio_flexibilidad.setText(String.valueOf(test));
+        }
+    }
+    
     /**
      * 
      * @param evt 
@@ -964,6 +990,48 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
         this.fisioterapiaDto.setTalla(talla);
         this.getIMC();
     }//GEN-LAST:event_txtTallaFocusLost
+    
+    /**
+     * 
+     * @param evt 
+     */
+    private void txtTest_unoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTest_unoFocusLost
+        // TODO add your handling code here:
+        double test = 0;
+        if(!Util.getVacio(this.txtTest_uno.getText())) {
+            test = Double.valueOf(this.txtTest_uno.getText());
+        }
+        this.fisioterapiaDto.setTest_uno(test);
+        this.getTestFlexibilidad();
+    }//GEN-LAST:event_txtTest_unoFocusLost
+
+    /**
+     * 
+     * @param evt 
+     */
+    private void txtTest_dosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTest_dosFocusLost
+        // TODO add your handling code here:
+        double test = 0;
+        if(!Util.getVacio(this.txtTest_dos.getText())) {
+            test = Double.valueOf(this.txtTest_dos.getText());
+        }
+        this.fisioterapiaDto.setTest_dos(test);
+        this.getTestFlexibilidad();
+    }//GEN-LAST:event_txtTest_dosFocusLost
+    
+    /**
+     * 
+     * @param evt 
+     */
+    private void txtTest_tresFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTest_tresFocusLost
+        // TODO add your handling code here:
+        double test = 0;
+        if(!Util.getVacio(this.txtTest_tres.getText())) {
+            test = Double.valueOf(this.txtTest_tres.getText());
+        }
+        this.fisioterapiaDto.setTest_tres(test);
+        this.getTestFlexibilidad();
+    }//GEN-LAST:event_txtTest_tresFocusLost
     
     /**
      * 
