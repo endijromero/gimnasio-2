@@ -120,9 +120,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblCodigo">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jLabel2"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>

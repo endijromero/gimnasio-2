@@ -33,9 +33,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import com.gimnasio.util.Util;
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -86,15 +86,18 @@ public class frmHuella extends javax.swing.JDialog {
         this.operacion = operacion;
         try {
             this.listTemplates = new ArrayList();
-            this.listClientesHuellas = new ArrayList(); //this.operacion.getClientesDatos();
+            this.listClientesHuellas = this.operacion.getClienteDatos(null);
             for (ClienteDto dto : this.listClientesHuellas) {
-                DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(dto.getPersonaDto().getHuellaDactilar());
+                DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate();
+                referenceTemplate.deserialize(dto.getPersonaDto().getHuellaDactilar());
                 dto.getPersonaDto().setTemplateHuella(referenceTemplate);
             }
-        } catch (Exception e) {
+        } catch (SQLException | IllegalArgumentException e) {
             System.err.println(e.getMessage());
         }
-        this.listClientes = (List<List<ClienteDto>>) Util.getDivideArray(this.listClientesHuellas, Util.CANTIDAD_DIVIDE_ARRAY);
+        if (this.listClientesHuellas.size() > 0) {
+            this.listClientes = (List<List<ClienteDto>>) Util.getDivideArray(this.listClientesHuellas, Util.CANTIDAD_DIVIDE_ARRAY);
+        }
 
         this.frmCliente = frmCliente;
         this.cantidadHuellas = 0;
@@ -398,8 +401,6 @@ public class frmHuella extends javax.swing.JDialog {
         });
 
         jLabel1.setText("Código:");
-
-        lblCodigo.setText("jLabel2");
 
         jLabel3.setText("Estudiante:");
 

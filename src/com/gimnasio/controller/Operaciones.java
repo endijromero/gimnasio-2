@@ -28,7 +28,19 @@ public class Operaciones {
     }
 
     /**
-     * /
+     * @tutorial Method Description: consulta los datos del cliente
+     * @author Eminson Mendoza ~~ emimaster16@gmail.com
+     * @date 09/07/2016
+     * @param idCliente
+     * @throws java.sql.SQLException
+     * @return
+     */
+    public List<ClienteDto> getClienteDatos(String idCliente) throws SQLException {
+        List<ClienteDto> list = this.model.getClienteDatos(idCliente);
+        return list;
+    }
+
+    /**
      *
      **
      * @tutorial Method Description: valida que la informacion este correcta
@@ -176,7 +188,7 @@ public class Operaciones {
      */
     public UsuarioDto setValidateIngreso(String loggin, String password) throws SQLException {
         UsuarioDto user = new UsuarioDto();
-        List<UsuarioDto> listUsuarios = this.model.getDatosUsuarios(loggin);
+        List<UsuarioDto> listUsuarios = this.model.getUsuariosDatos(loggin);
         if (listUsuarios.size() > 0) {
             user = listUsuarios.get(0);
             if (Util.getEncriptarMD5(password).equals(user.getPassword())) {
@@ -196,7 +208,7 @@ public class Operaciones {
      */
     public List<TablaDto> getPaquetesDatosTablaDto(String idPaquete) throws SQLException {
         List<TablaDto> listTable = new ArrayList();
-        List<PaqueteDto> listPaquetes = this.model.getDatosPaquetes(idPaquete);
+        List<PaqueteDto> listPaquetes = this.model.getPaquetesDatos(idPaquete);
         for (PaqueteDto paquete : listPaquetes) {
             TablaDto tabla = new TablaDto(
                     String.valueOf(paquete.getId()),

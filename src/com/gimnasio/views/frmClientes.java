@@ -12,7 +12,6 @@ import com.gimnasio.util.Util;
 import com.google.common.base.Joiner;
 import java.awt.Font;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -75,6 +74,8 @@ public class frmClientes extends javax.swing.JInternalFrame {
         panelHuella = new javax.swing.JPanel();
         btnHuella = new javax.swing.JButton();
         lblTitulo_huella = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        log = new javax.swing.JTextArea();
         jPanel6 = new javax.swing.JPanel();
         txtSegundo_nombre = new javax.swing.JTextField();
         txtPrimer_nombre = new javax.swing.JTextField();
@@ -224,6 +225,12 @@ public class frmClientes extends javax.swing.JInternalFrame {
         lblTitulo_huella.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo_huella.setText("Huella");
 
+        log.setColumns(20);
+        log.setFont(new java.awt.Font("Monospaced", 0, 10)); // NOI18N
+        log.setRows(5);
+        log.setEnabled(false);
+        jScrollPane3.setViewportView(log);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -240,6 +247,11 @@ public class frmClientes extends javax.swing.JInternalFrame {
                         .addContainerGap()
                         .addComponent(panelHuella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jScrollPane3)
+                    .addContainerGap()))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -249,6 +261,11 @@ public class frmClientes extends javax.swing.JInternalFrame {
                 .addComponent(panelHuella, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnHuella))
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(65, 65, 65)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(66, Short.MAX_VALUE)))
         );
 
         jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -649,7 +666,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
             clienteDto.getPersonaDto().setTipoIdentificacion(Short.parseShort(cmbTipoDocumento.getCodigo()));
         }
         clienteDto.getPersonaDto().setNumeroIdentificacion(this.txtDocumento.getText());
-        clienteDto.getPersonaDto().setLugaExpedicion(this.txtLugar_expedicion.getText());
+        clienteDto.getPersonaDto().setLugarExpedicion(this.txtLugar_expedicion.getText());
         if (!Util.getVacio(cmbEstadoCivil.getCodigo())) {
             clienteDto.getPersonaDto().setEstadoCivil(Short.parseShort(cmbEstadoCivil.getCodigo()));
         }
@@ -739,6 +756,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblBarrio;
     private javax.swing.JLabel lblDireccion;
     private javax.swing.JLabel lblDocumento;
@@ -753,6 +771,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblTipo_documento;
     private javax.swing.JLabel lblTitulo_foto;
     private javax.swing.JLabel lblTitulo_huella;
+    private javax.swing.JTextArea log;
     private javax.swing.JPanel panelFoto;
     private javax.swing.JPanel panelHuella;
     private javax.swing.JPanel panelVisor_eventos;

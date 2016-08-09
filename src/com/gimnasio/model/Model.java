@@ -23,6 +23,50 @@ public class Model {
 
     /**
      *
+     * @param idCliente
+     * @return
+     * @throws SQLException
+     */
+    public List<ClienteDto> getClienteDatos(String idCliente) throws SQLException {
+        List<ClienteDto> list = new ArrayList();
+        Statement stat = this.conexion.getConexion().createStatement();
+        String sql = "SELECT cli.*, per.* FROM clientes cli INNER JOIN personas per ON cli.persona_id=per.id WHERE 1 ";
+        if (!Util.getVacio(idCliente)) {
+            sql += " AND cli.id=" + idCliente;
+        }
+        sql += " ORDER BY cli.id ASC ";
+        ResultSet res = stat.executeQuery(sql);
+        while (res.next()) {
+            ClienteDto dto = new ClienteDto();
+            dto.setId(res.getLong("id"));
+            dto.getPersonaDto().setId(res.getLong("idPersona"));
+            dto.getPersonaDto().setPrimerNombre(res.getString("primer_nombre"));
+            dto.getPersonaDto().setSegundoNombre(res.getString("segundo_nombre"));
+            dto.getPersonaDto().setPrimerApellido(res.getString("primer_apellido"));
+            dto.getPersonaDto().setSegundoApellido(res.getString("segundo_apellido"));
+            dto.getPersonaDto().setTipoIdentificacion(res.getShort("tipo_identificacion"));
+            dto.getPersonaDto().setNumeroIdentificacion(res.getString("tipo_identificacion"));
+            dto.getPersonaDto().setLugarExpedicion(res.getString("tipo_identificacion"));
+            dto.getPersonaDto().setGenero(res.getShort("genero"));
+            dto.getPersonaDto().setEstadoCivil(res.getShort("tipo_identificacion"));
+            dto.getPersonaDto().setGenero(res.getShort("tipo_identificacion"));
+            dto.getPersonaDto().setEstadoCivil(res.getShort("estado_civil"));
+            dto.getPersonaDto().setFechaNacimiento(res.getString("fecha_nacimiento"));
+            dto.getPersonaDto().setDireccion(res.getString("direccion"));
+            dto.getPersonaDto().setBarrio(res.getString("barrio"));
+            dto.getPersonaDto().setTelefono(res.getString("telefono"));
+            dto.getPersonaDto().setMovil(res.getString("movil"));
+            dto.getPersonaDto().setHuellaDactilar(res.getBytes("huella_dactilar"));
+            dto.getPersonaDto().setFechaRegistro(res.getString("fecha_registro"));
+            dto.getPersonaDto().setFechaModificacion(res.getString("fecha_modificacion"));
+            list.add(dto);
+        }
+        stat.close();
+        return list;
+    }
+
+    /**
+     *
      * @tutorial Method Description: valida que la informacion este correcta
      * @author Eminson Mendoza ~~ emimaster16@gmail.com
      * @date 08/07/2016
@@ -61,7 +105,7 @@ public class Model {
         stat.setString(4, clienteDto.getPersonaDto().getSegundoApellido());
         stat.setShort(5, clienteDto.getPersonaDto().getTipoIdentificacion());
         stat.setString(6, clienteDto.getPersonaDto().getNumeroIdentificacion());
-        stat.setString(7, clienteDto.getPersonaDto().getLugaExpedicion());
+        stat.setString(7, clienteDto.getPersonaDto().getLugarExpedicion());
         stat.setShort(8, clienteDto.getPersonaDto().getGenero());
         stat.setShort(9, clienteDto.getPersonaDto().getEstadoCivil());
         stat.setString(10, clienteDto.getPersonaDto().getFechaNacimiento());
@@ -108,7 +152,7 @@ public class Model {
         stat.setString(4, usuarioDto.getPersonaDto().getSegundoApellido());
         stat.setShort(5, usuarioDto.getPersonaDto().getTipoIdentificacion());
         stat.setString(6, usuarioDto.getPersonaDto().getNumeroIdentificacion());
-        stat.setString(7, usuarioDto.getPersonaDto().getLugaExpedicion());
+        stat.setString(7, usuarioDto.getPersonaDto().getLugarExpedicion());
         stat.setShort(8, usuarioDto.getPersonaDto().getGenero());
         stat.setShort(9, usuarioDto.getPersonaDto().getEstadoCivil());
         stat.setString(10, usuarioDto.getPersonaDto().getFechaNacimiento());
@@ -157,7 +201,7 @@ public class Model {
         return true;
     }
 
-    public List<UsuarioDto> getDatosUsuarios(String loggin) throws SQLException {
+    public List<UsuarioDto> getUsuariosDatos(String loggin) throws SQLException {
         List<UsuarioDto> list = new ArrayList();
         Statement stat = this.conexion.getConexion().createStatement();
         String sql = "SELECT usu.*, per.*, per.id as idPersona FROM usuarios usu INNER JOIN personas per ON usu.persona_id=per.id WHERE loggin='" + loggin + "'";
@@ -173,6 +217,20 @@ public class Model {
             dto.getPersonaDto().setSegundoNombre(res.getString("segundo_nombre"));
             dto.getPersonaDto().setPrimerApellido(res.getString("primer_apellido"));
             dto.getPersonaDto().setSegundoApellido(res.getString("segundo_apellido"));
+            dto.getPersonaDto().setTipoIdentificacion(res.getShort("tipo_identificacion"));
+            dto.getPersonaDto().setNumeroIdentificacion(res.getString("tipo_identificacion"));
+            dto.getPersonaDto().setLugarExpedicion(res.getString("tipo_identificacion"));
+            dto.getPersonaDto().setGenero(res.getShort("genero"));
+            dto.getPersonaDto().setEstadoCivil(res.getShort("tipo_identificacion"));
+            dto.getPersonaDto().setGenero(res.getShort("tipo_identificacion"));
+            dto.getPersonaDto().setEstadoCivil(res.getShort("estado_civil"));
+            dto.getPersonaDto().setFechaNacimiento(res.getString("fecha_nacimiento"));
+            dto.getPersonaDto().setDireccion(res.getString("direccion"));
+            dto.getPersonaDto().setBarrio(res.getString("barrio"));
+            dto.getPersonaDto().setTelefono(res.getString("telefono"));
+            dto.getPersonaDto().setMovil(res.getString("movil"));
+            dto.getPersonaDto().setFechaRegistro(res.getString("fecha_registro"));
+            dto.getPersonaDto().setFechaModificacion(res.getString("fecha_modificacion"));
             list.add(dto);
         }
         stat.close();
@@ -185,7 +243,7 @@ public class Model {
      * @return
      * @throws SQLException
      */
-    public List<PaqueteDto> getDatosPaquetes(String idPaquete) throws SQLException {
+    public List<PaqueteDto> getPaquetesDatos(String idPaquete) throws SQLException {
         List<PaqueteDto> list = new ArrayList();
         Statement stat = this.conexion.getConexion().createStatement();
         String sql = "SELECT * FROM paquetes WHERE 1";

@@ -675,7 +675,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
             usuarioDto.getPersonaDto().setTipoIdentificacion(Short.parseShort(cmbTipoDocumento.getCodigo()));
         }
         usuarioDto.getPersonaDto().setNumeroIdentificacion(this.txtDocumento.getText());
-        usuarioDto.getPersonaDto().setLugaExpedicion(this.txtLugar_expedicion.getText());
+        usuarioDto.getPersonaDto().setLugarExpedicion(this.txtLugar_expedicion.getText());
         if (!Util.getVacio(cmbEstadoCivil.getCodigo())) {
             usuarioDto.getPersonaDto().setEstadoCivil(Short.parseShort(cmbEstadoCivil.getCodigo()));
         }

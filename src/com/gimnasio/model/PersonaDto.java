@@ -17,7 +17,7 @@ public class PersonaDto implements java.io.Serializable {
     private String segundoApellido;
     private short tipoIdentificacion;
     private String numeroIdentificacion;
-    private String lugaExpedicion;
+    private String lugarExpedicion;
     private short genero;
     private Short estadoCivil;
     private String fechaNacimiento;
@@ -27,19 +27,22 @@ public class PersonaDto implements java.io.Serializable {
     private String movil;
     private String email;
     private String fotoPerfil;
-    private byte huellaDactilar[];
+    private byte[] huellaDactilar;
     private DPFPTemplate templateHuella;
-    private Date fechaRegistro;
-    private Date fechaModificacion;
+    private String fechaRegistro;
+    private String fechaModificacion;
 
     public String getNombreCompleto() {
-        String nombre = this.primerNombre;
-        if (!Util.getVacio(this.segundoNombre)) {
-            nombre += " " + this.segundoNombre;
-        }
-        nombre += " " + this.primerApellido;
-        if (!Util.getVacio(this.segundoApellido)) {
-            nombre += " " + this.segundoApellido;
+        String nombre = "";
+        if (!Util.getVacio(this.primerNombre)) {
+            nombre += this.primerNombre;
+            if (!Util.getVacio(this.segundoNombre)) {
+                nombre += " " + this.segundoNombre;
+            }
+            nombre += " " + this.primerApellido;
+            if (!Util.getVacio(this.segundoApellido)) {
+                nombre += " " + this.segundoApellido;
+            }
         }
         return nombre;
     }
@@ -100,12 +103,12 @@ public class PersonaDto implements java.io.Serializable {
         this.numeroIdentificacion = numeroIdentificacion;
     }
 
-    public String getLugaExpedicion() {
-        return lugaExpedicion;
+    public String getLugarExpedicion() {
+        return lugarExpedicion;
     }
 
-    public void setLugaExpedicion(String lugaExpedicion) {
-        this.lugaExpedicion = lugaExpedicion;
+    public void setLugarExpedicion(String lugarExpedicion) {
+        this.lugarExpedicion = lugarExpedicion;
     }
 
     public short getGenero() {
@@ -180,19 +183,19 @@ public class PersonaDto implements java.io.Serializable {
         this.fotoPerfil = fotoPerfil;
     }
 
-    public Date getFechaRegistro() {
+    public String getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(Date fechaRegistro) {
+    public void setFechaRegistro(String fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public Date getFechaModificacion() {
+    public String getFechaModificacion() {
         return fechaModificacion;
     }
 
-    public void setFechaModificacion(Date fechaModificacion) {
+    public void setFechaModificacion(String fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
     }
 
