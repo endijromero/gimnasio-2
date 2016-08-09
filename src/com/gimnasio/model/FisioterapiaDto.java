@@ -5,6 +5,9 @@
  */
 package com.gimnasio.model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  *
  * @author rodolfo
@@ -159,7 +162,29 @@ public class FisioterapiaDto implements java.io.Serializable  {
         this.personaDto = personaDto;
     }
     
+    /**
+     * 
+     * @return 
+     */
+    public double setCalculaTesFlexibilidad(){
+       double promedio = 0;
+       if (this.test_uno > 0 && this.test_dos > 0 && this.test_tres > 0 ) {
+           promedio = (this.test_uno + this.test_dos + this.test_tres)/3;
+       }
+       BigDecimal flex = new BigDecimal(promedio);
+       return flex.setScale(2, RoundingMode.UP).doubleValue();
+    }
     
-    
-    
+    /**
+     * 
+     * @return 
+     */
+    public double setCalcularIMC(){
+        double calculo = 0;
+        if(this.peso > 0 && this.talla > 0) {
+            calculo = this.peso/(Math.pow((this.peso/100),2));
+        }
+        BigDecimal flex = new BigDecimal(calculo);
+        return flex.setScale(2, RoundingMode.UP).doubleValue();
+    } 
 }
