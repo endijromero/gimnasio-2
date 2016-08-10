@@ -166,21 +166,27 @@ public class Operaciones1 {
         }
         if(fisioterapia.getTest_tres()> 0){} else {
             listMessages.add("<li>TEST DE FLEXIBILIDAD: Test tres</li>");
-        }        
-        if(fisioterapia.getMedida_uno()>0){}else{
-            listMessages.add("<li>PORCENTAJE DE GRASA: Medida uno</li>");    
+        }      
+        
+        //if(fisioterapia.getPersonaDto()->getGenero() == (short)1) { Mujer
+        if(fisioterapia.getTriceps()>0){}else{
+            listMessages.add("<li>PORCENTAJE DE GRASA: Triceps</li>");    
         }
-        if(fisioterapia.getMedida_dos()>0){}else{
-            listMessages.add("<li>PORCENTAJE DE GRASA: Medida dos</li>");    
+        if(fisioterapia.getSiliaco()>0){}else{
+            listMessages.add("<li>PORCENTAJE DE GRASA: Siliaco</li>");    
         }
-        if(fisioterapia.getMedida_tres()>0){}else{
-            listMessages.add("<li>PORCENTAJE DE GRASA: Medida tres</li>");    
-        }
-        if(fisioterapia.getMedida_cuatro()>0){}else{
-            listMessages.add("<li>PORCENTAJE DE GRASA: Medida cuatro</li>");    
-        }
-        if(fisioterapia.getMedida_cinco()>0){}else{
-            listMessages.add("<li>PORCENTAJE DE GRASA: Medida cinco</li>");    
+        //}
+        
+        //if(fisioterapia.getPersonaDto()->getGenero() == (short)1) { HOMBRE
+            if(fisioterapia.getPectoral()>0){}else{
+                listMessages.add("<li>PORCENTAJE DE GRASA: Pectoral</li>");    
+            }               
+            if(fisioterapia.getAbdomen()>0){}else{
+                listMessages.add("<li>PORCENTAJE DE GRASA: Abdomen</li>");    
+            }
+        //}
+        if(fisioterapia.getMuslo_ant()>0){}else{
+            listMessages.add("<li>PORCENTAJE DE GRASA: Muslo-ant</li>");    
         }
         if(fisioterapia.getPeso()>0){}else{
             listMessages.add("<li>INDICE DE MASA CORPORAL: Peso</li>");

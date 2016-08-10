@@ -57,14 +57,14 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        txtMedida_uno = new javax.swing.JTextField();
+        txtTriceps = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        txtMedida_dos = new javax.swing.JTextField();
+        txtPectoral = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        txtMedida_cinco = new javax.swing.JTextField();
-        txtMedida_tres = new javax.swing.JTextField();
+        txtMuslo_ant = new javax.swing.JTextField();
+        txtSiliaco = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        txtModel_cuatro = new javax.swing.JTextField();
+        txtAbdomen = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         txtPorcentaje_grasa = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
@@ -288,107 +288,107 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PORCENTAJE DE GRASA", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PORCENTAJE DE GRASA (JACKSON/POLLOCK)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("Medida uno");
+        jLabel9.setText("Triceps");
 
-        txtMedida_uno.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtMedida_uno.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtMedida_uno.addActionListener(new java.awt.event.ActionListener() {
+        txtTriceps.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtTriceps.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTriceps.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMedida_unoActionPerformed(evt);
+                txtTricepsActionPerformed(evt);
             }
         });
-        txtMedida_uno.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtTriceps.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtMedida_unoKeyReleased(evt);
+                txtTricepsKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtMedida_unoKeyTyped(evt);
+                txtTricepsKeyTyped(evt);
             }
         });
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel10.setText("Medida dos");
+        jLabel10.setText("Pectoral");
 
-        txtMedida_dos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtMedida_dos.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtMedida_dos.addActionListener(new java.awt.event.ActionListener() {
+        txtPectoral.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtPectoral.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtPectoral.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMedida_dosActionPerformed(evt);
+                txtPectoralActionPerformed(evt);
             }
         });
-        txtMedida_dos.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtPectoral.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtMedida_dosKeyReleased(evt);
+                txtPectoralKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtMedida_dosKeyTyped(evt);
+                txtPectoralKeyTyped(evt);
             }
         });
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel11.setText("Medida cinco");
+        jLabel11.setText("Muslo-ant");
 
-        txtMedida_cinco.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtMedida_cinco.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtMedida_cinco.addActionListener(new java.awt.event.ActionListener() {
+        txtMuslo_ant.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtMuslo_ant.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtMuslo_ant.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMedida_cincoActionPerformed(evt);
+                txtMuslo_antActionPerformed(evt);
             }
         });
-        txtMedida_cinco.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtMuslo_ant.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtMedida_cincoKeyReleased(evt);
+                txtMuslo_antKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtMedida_cincoKeyTyped(evt);
+                txtMuslo_antKeyTyped(evt);
             }
         });
 
-        txtMedida_tres.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtMedida_tres.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtMedida_tres.addActionListener(new java.awt.event.ActionListener() {
+        txtSiliaco.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtSiliaco.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtSiliaco.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMedida_tresActionPerformed(evt);
+                txtSiliacoActionPerformed(evt);
             }
         });
-        txtMedida_tres.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtSiliaco.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtMedida_tresKeyReleased(evt);
+                txtSiliacoKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtMedida_tresKeyTyped(evt);
+                txtSiliacoKeyTyped(evt);
             }
         });
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel12.setText("Medida tres");
+        jLabel12.setText("Siliaco");
 
-        txtModel_cuatro.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txtModel_cuatro.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        txtModel_cuatro.addActionListener(new java.awt.event.ActionListener() {
+        txtAbdomen.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtAbdomen.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtAbdomen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtModel_cuatroActionPerformed(evt);
+                txtAbdomenActionPerformed(evt);
             }
         });
-        txtModel_cuatro.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtAbdomen.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtModel_cuatroKeyReleased(evt);
+                txtAbdomenKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtModel_cuatroKeyTyped(evt);
+                txtAbdomenKeyTyped(evt);
             }
         });
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel13.setText("Medida cuatro");
+        jLabel13.setText("Abdomen");
 
         txtPorcentaje_grasa.setEditable(false);
         txtPorcentaje_grasa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -421,29 +421,29 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMedida_tres, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtSiliaco, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMedida_uno, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtTriceps, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(24, 24, 24)
-                        .addComponent(jLabel13)
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtModel_cuatro, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtAbdomen, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel10)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtMedida_dos, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtPectoral, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtMedida_cinco, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtMuslo_ant, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtPorcentaje_grasa, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -456,26 +456,26 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtMedida_uno, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTriceps, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9))
                         .addGap(5, 5, 5))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtMedida_dos, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtPectoral, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel10))
                             .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtMedida_tres, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSiliaco, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12)
                     .addComponent(jLabel13)
                     .addComponent(txtPorcentaje_grasa, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtModel_cuatro, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtAbdomen, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtMedida_cinco, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMuslo_ant, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11))
                 .addContainerGap(17, Short.MAX_VALUE))
         );
@@ -548,11 +548,11 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel15.setText("Peso Kg");
+        jLabel15.setText("Peso (Kg)");
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel16.setText("Talla Cm");
+        jLabel16.setText("Talla (Cm)");
 
         txtTalla.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtTalla.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
@@ -667,7 +667,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 424, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                         .addComponent(btnGuardar)
                         .addGap(26, 26, 26))))
         );
@@ -707,7 +707,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(0, 13, Short.MAX_VALUE))
+                .addGap(0, 3, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -814,70 +814,70 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPromedio_flexibilidadKeyTyped
 
-    private void txtMedida_unoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMedida_unoActionPerformed
+    private void txtTricepsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTricepsActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtMedida_unoActionPerformed
+    }//GEN-LAST:event_txtTricepsActionPerformed
 
-    private void txtMedida_unoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMedida_unoKeyReleased
+    private void txtTricepsKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTricepsKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtMedida_unoKeyReleased
+    }//GEN-LAST:event_txtTricepsKeyReleased
 
-    private void txtMedida_unoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMedida_unoKeyTyped
+    private void txtTricepsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTricepsKeyTyped
         // TODO add your handling code here:
         this.validarSoloNumero(evt);
-    }//GEN-LAST:event_txtMedida_unoKeyTyped
+    }//GEN-LAST:event_txtTricepsKeyTyped
 
-    private void txtMedida_dosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMedida_dosActionPerformed
+    private void txtPectoralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPectoralActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtMedida_dosActionPerformed
+    }//GEN-LAST:event_txtPectoralActionPerformed
 
-    private void txtMedida_dosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMedida_dosKeyReleased
+    private void txtPectoralKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPectoralKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtMedida_dosKeyReleased
+    }//GEN-LAST:event_txtPectoralKeyReleased
 
-    private void txtMedida_dosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMedida_dosKeyTyped
-        // TODO add your handling code here:
-        this.validarSoloNumero(evt);
-    }//GEN-LAST:event_txtMedida_dosKeyTyped
-
-    private void txtMedida_cincoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMedida_cincoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtMedida_cincoActionPerformed
-
-    private void txtMedida_cincoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMedida_cincoKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtMedida_cincoKeyReleased
-
-    private void txtMedida_cincoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMedida_cincoKeyTyped
+    private void txtPectoralKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPectoralKeyTyped
         // TODO add your handling code here:
         this.validarSoloNumero(evt);
-    }//GEN-LAST:event_txtMedida_cincoKeyTyped
+    }//GEN-LAST:event_txtPectoralKeyTyped
 
-    private void txtMedida_tresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMedida_tresActionPerformed
+    private void txtMuslo_antActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMuslo_antActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtMedida_tresActionPerformed
+    }//GEN-LAST:event_txtMuslo_antActionPerformed
 
-    private void txtMedida_tresKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMedida_tresKeyReleased
+    private void txtMuslo_antKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMuslo_antKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtMedida_tresKeyReleased
+    }//GEN-LAST:event_txtMuslo_antKeyReleased
 
-    private void txtMedida_tresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMedida_tresKeyTyped
-        // TODO add your handling code here:
-        this.validarSoloNumero(evt);
-    }//GEN-LAST:event_txtMedida_tresKeyTyped
-
-    private void txtModel_cuatroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtModel_cuatroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtModel_cuatroActionPerformed
-
-    private void txtModel_cuatroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtModel_cuatroKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtModel_cuatroKeyReleased
-
-    private void txtModel_cuatroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtModel_cuatroKeyTyped
+    private void txtMuslo_antKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMuslo_antKeyTyped
         // TODO add your handling code here:
         this.validarSoloNumero(evt);
-    }//GEN-LAST:event_txtModel_cuatroKeyTyped
+    }//GEN-LAST:event_txtMuslo_antKeyTyped
+
+    private void txtSiliacoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSiliacoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSiliacoActionPerformed
+
+    private void txtSiliacoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSiliacoKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSiliacoKeyReleased
+
+    private void txtSiliacoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSiliacoKeyTyped
+        // TODO add your handling code here:
+        this.validarSoloNumero(evt);
+    }//GEN-LAST:event_txtSiliacoKeyTyped
+
+    private void txtAbdomenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAbdomenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAbdomenActionPerformed
+
+    private void txtAbdomenKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAbdomenKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAbdomenKeyReleased
+
+    private void txtAbdomenKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAbdomenKeyTyped
+        // TODO add your handling code here:
+        this.validarSoloNumero(evt);
+    }//GEN-LAST:event_txtAbdomenKeyTyped
 
     private void txtPorcentaje_grasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorcentaje_grasaActionPerformed
         // TODO add your handling code here:
@@ -1066,21 +1066,21 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField txtAbdomen;
     private javax.swing.JTextField txtIMC;
     private javax.swing.JTextField txtMMII;
     private javax.swing.JTextField txtMMSS;
-    private javax.swing.JTextField txtMedida_cinco;
-    private javax.swing.JTextField txtMedida_dos;
-    private javax.swing.JTextField txtMedida_tres;
-    private javax.swing.JTextField txtMedida_uno;
-    private javax.swing.JTextField txtModel_cuatro;
+    private javax.swing.JTextField txtMuslo_ant;
     private javax.swing.JTextArea txtObservaciones;
+    private javax.swing.JTextField txtPectoral;
     private javax.swing.JTextField txtPeso;
     private javax.swing.JTextField txtPorcentaje_grasa;
     private javax.swing.JTextField txtPromedio_flexibilidad;
+    private javax.swing.JTextField txtSiliaco;
     private javax.swing.JTextField txtTalla;
     private javax.swing.JTextField txtTest_dos;
     private javax.swing.JTextField txtTest_tres;
     private javax.swing.JTextField txtTest_uno;
+    private javax.swing.JTextField txtTriceps;
     // End of variables declaration//GEN-END:variables
 }

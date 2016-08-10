@@ -20,11 +20,11 @@ public class FisioterapiaDto implements java.io.Serializable  {
     private double test_dos;
     private double test_tres;
     
-    private double medida_uno;
-    private double medida_dos;
-    private double medida_tres;
-    private double medida_cuatro;
-    private double medida_cinco;
+    private double triceps;
+    private double pectoral;
+    private double siliaco;
+    private double abdomen;
+    private double muslo_ant;
     
     private double talla;
     private double peso;
@@ -82,44 +82,44 @@ public class FisioterapiaDto implements java.io.Serializable  {
         this.test_tres = test_tres;
     }
 
-    public double getMedida_uno() {
-        return medida_uno;
+    public double getTriceps() {
+        return triceps;
     }
 
-    public void setMedida_uno(double medida_uno) {
-        this.medida_uno = medida_uno;
+    public void setTriceps(double triceps) {
+        this.triceps = triceps;
     }
 
-    public double getMedida_dos() {
-        return medida_dos;
+    public double getPectoral() {
+        return pectoral;
     }
 
-    public void setMedida_dos(double medida_dos) {
-        this.medida_dos = medida_dos;
+    public void setPectoral(double pectoral) {
+        this.pectoral = pectoral;
     }
 
-    public double getMedida_tres() {
-        return medida_tres;
+    public double getSiliaco() {
+        return siliaco;
     }
 
-    public void setMedida_tres(double medida_tres) {
-        this.medida_tres = medida_tres;
+    public void setSiliaco(double siliaco) {
+        this.siliaco = siliaco;
     }
 
-    public double getMedida_cuatro() {
-        return medida_cuatro;
+    public double getAbdomen() {
+        return abdomen;
     }
 
-    public void setMedida_cuatro(double medida_cuatro) {
-        this.medida_cuatro = medida_cuatro;
+    public void setAbdomen(double abdomen) {
+        this.abdomen = abdomen;
     }
 
-    public double getMedida_cinco() {
-        return medida_cinco;
+    public double getMuslo_ant() {
+        return muslo_ant;
     }
 
-    public void setMedida_cinco(double medida_cinco) {
-        this.medida_cinco = medida_cinco;
+    public void setMuslo_ant(double muslo_ant) {
+        this.muslo_ant = muslo_ant;
     }
 
     public double getTalla() {
@@ -187,4 +187,35 @@ public class FisioterapiaDto implements java.io.Serializable  {
         BigDecimal flex = new BigDecimal(calculo);
         return flex.setScale(2, RoundingMode.HALF_UP).doubleValue();
     } 
+    
+    /**
+     * 
+     */
+    public void getJacksonPollock() {
+        double sumatoria = 0;
+        double jp = 0;
+        double edad = 0;
+        //if() { Hombre
+            if(this.getPectoral() > 0 && this.getMuslo_ant() >0 && this.getAbdomen() > 0) {
+                double a = 1.1093800;
+                double b = 0.0008267;
+                double c = 0.0000016;
+                double d = 0.0002574;
+                
+                sumatoria = this.getPectoral()+this.getMuslo_ant()+this.getAbdomen();
+                
+                jp = (a-(b*sumatoria)+(c*Math.pow(a,2))-(d*edad));
+            
+            }
+        //} else if() {//mujer
+            if(this.getTriceps()> 0 && this.getMuslo_ant() >0 && this.getSiliaco() > 0) {
+                double a = 1.0994921;
+                double b = 0.0009929;
+                double c = 0.0000023;
+                double d = 0.0001392;
+                
+                jp = (a-(b*sumatoria)+(c*Math.pow(a,2))-(d*edad));
+            }                
+        //}  
+    }
 }
