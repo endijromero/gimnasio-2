@@ -110,11 +110,14 @@ public class frmHuella extends javax.swing.JDialog {
 
         if (this.clienteDto.getId() != null) {
             this.lblCodigo.setText(this.clienteDto.getId().toString());
+        } else {
+            int id = this.listClientesHuellas.size() + 1;
+            this.lblCodigo.setText(String.valueOf(id));
         }
+        this.lblEstudiante.setText(this.clienteDto.getPersonaDto().getNombreCompleto());
         switch (tipoProceso) {
             case 1: {
                 this.btnGuardar.setEnabled(false);
-                this.lblEstudiante.setText(this.clienteDto.getPersonaDto().getNombreCompleto());
             }
             break;
             case 2: {
@@ -204,14 +207,14 @@ public class frmHuella extends javax.swing.JDialog {
         //EnviarTexto("Utilizando el Lector de Huella Dactilar ");
     }
 
-    protected void Iniciar() {
+    protected void setIniciar() {
         Lector.addDataListener(new DPFPDataAdapter() {
             @Override
             public void dataAcquired(final DPFPDataEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         //EnviarTexto("La Huella Digital ha sido Capturada");
-                        ProcesarCaptura(e.getSample());
+                        setProcesarCaptura(e.getSample());
                     }
                 });
             }
@@ -268,7 +271,7 @@ public class frmHuella extends javax.swing.JDialog {
         });
     }
 
-    public DPFPFeatureSet extraerCaracteristicas(DPFPSample sample, DPFPDataPurpose purpose) {
+    public DPFPFeatureSet setExtraerCaracteristicas(DPFPSample sample, DPFPDataPurpose purpose) {
         DPFPFeatureExtraction extractor = DPFPGlobal.getFeatureExtractionFactory().createFeatureExtraction();
         try {
             return extractor.createFeatureSet(sample, purpose);
@@ -278,12 +281,12 @@ public class frmHuella extends javax.swing.JDialog {
         }
     }
 
-    public void ProcesarCaptura(DPFPSample sample) {
+    public void setProcesarCaptura(DPFPSample sample) {
         this.listaHilos = null;
         boolean conErrores = false;
         this.listaHilos = null;
-        featuresinscripcion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
-        featuresverificacion = extraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
+        featuresinscripcion = setExtraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
+        featuresverificacion = setExtraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
         if (featuresinscripcion != null) {
             try {
                 this.btnCancelar.setEnabled(true);
@@ -372,24 +375,25 @@ public class frmHuella extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
                 getCerrarPanel(evt);
             }
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                getCerrado(evt);
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                getCerrarPanel(evt);
             }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 getAbrirPanel(evt);
             }
         });
 
-        lblIndiceDerecho.setText("jLabel1");
+        lblIndiceDerecho.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblIndiceDerecho.setText("Huella dactilar");
         lblIndiceDerecho.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        btnGuardar.setText("Guardar");
+        btnGuardar.setText("Asignar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
+                setAsignarHuella(evt);
             }
         });
 
@@ -402,9 +406,11 @@ public class frmHuella extends javax.swing.JDialog {
 
         jLabel1.setText("Código:");
 
-        jLabel3.setText("Estudiante:");
+        lblCodigo.setText("Código del cliente");
 
-        lblEstudiante.setText("jLabel2");
+        jLabel3.setText("Cliente:");
+
+        lblEstudiante.setText("Nombre del cliente");
         lblEstudiante.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -413,27 +419,22 @@ public class frmHuella extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblEstudiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel3))
-                                .addGap(0, 121, Short.MAX_VALUE)))
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnGuardar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCancelar))
-                            .addComponent(lblIndiceDerecho, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblEstudiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnGuardar)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnCancelar))
+                        .addComponent(lblIndiceDerecho, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -441,14 +442,14 @@ public class frmHuella extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblCodigo))
+                    .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblEstudiante)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(lblEstudiante))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblIndiceDerecho, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
                     .addComponent(btnCancelar))
@@ -466,26 +467,32 @@ public class frmHuella extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void getAbrirPanel(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_getAbrirPanel
-        Iniciar();
+        setIniciar();
         start();
     }//GEN-LAST:event_getAbrirPanel
 
     private void getCerrarPanel(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_getCerrarPanel
-        //Reclutador.clear();
-        //stop();
+        Reclutador.clear();
+        stop();
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.dispose();
     }//GEN-LAST:event_getCerrarPanel
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        //start();
+    private void setAsignarHuella(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setAsignarHuella
+
+        this.clienteDto.getPersonaDto().setHuellaDactilar(this.template.serialize());
+        Reclutador.clear();
+        this.dispose();
+        this.btnGuardar.setEnabled(false);
+        this.cantidadHuellas = 0;
+        Reclutador.clear();
+        stop();
+        this.dispose();
+
         Reclutador.clear();
         stop();
 
-    }//GEN-LAST:event_btnGuardarActionPerformed
-
-    private void getCerrado(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_getCerrado
-        //Reclutador.clear();
-        //stop();
-    }//GEN-LAST:event_getCerrado
+    }//GEN-LAST:event_setAsignarHuella
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

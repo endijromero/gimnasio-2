@@ -12,6 +12,7 @@ import com.gimnasio.util.Util;
 import com.google.common.base.Joiner;
 import java.awt.Font;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -114,13 +115,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
         txtVisor = new javax.swing.JTextArea();
 
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
-            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-                setCloseIframeCliente(evt);
-            }
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
@@ -128,6 +122,13 @@ public class frmClientes extends javax.swing.JInternalFrame {
             public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                setCloseIframeCliente(evt);
             }
         });
 
@@ -404,6 +405,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         lblDireccion.setText("Dirección");
 
         txtFecha_nacimiento.setDateFormatString("yyyy-mm-dd ");
+        txtFecha_nacimiento.setMaxSelectableDate(new java.util.Date(253370786466000L));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -624,6 +626,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setCapturarHuella(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCapturarHuella
+        setLlenarClienteDto();
         frmHuella frm = new frmHuella(this.operacion, this.padre, true, this.clienteDto, Short.parseShort("1"), this);
         frm.setVisible(true);
     }//GEN-LAST:event_setCapturarHuella
@@ -676,7 +679,11 @@ public class frmClientes extends javax.swing.JInternalFrame {
         if (this.rbtMasculino.isSelected()) {
             clienteDto.getPersonaDto().setGenero(EGenero.MASCULINO.getId());
         }
-        clienteDto.getPersonaDto().setFechaNacimiento(this.txtFecha_nacimiento.getDateFormatString());
+        if (this.txtFecha_nacimiento.getDate() != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String fechaNacimiento = sdf.format(this.txtFecha_nacimiento.getDate().getTime());
+            clienteDto.getPersonaDto().setFechaNacimiento(fechaNacimiento);
+        }
         clienteDto.getPersonaDto().setDireccion(this.txtDireccion.getText());
         clienteDto.getPersonaDto().setBarrio(this.txtBarrio.getText());
         clienteDto.getPersonaDto().setMovil(this.txtMovil.getText());

@@ -47,8 +47,11 @@ public class Conexion {
 
     public void connect() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            this.conexion = DriverManager.getConnection("jdbc:mysql://" + this.host + "/" + this.dataBase, this.user, this.password);
+            if (this.conexion == null) {
+                Class.forName("com.mysql.jdbc.Driver");
+                this.conexion = DriverManager.getConnection("jdbc:mysql://" + this.host + "/" + this.dataBase, this.user, this.password);
+                this.conexion.setAutoCommit(false);
+            }
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println(e);
         }
@@ -57,6 +60,22 @@ public class Conexion {
     public void close() {
         try {
             this.conexion.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void commt() {
+        try {
+            this.conexion.commit();
+        } catch (SQLException ex) {
+            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void rollback() {
+        try {
+            this.conexion.rollback();
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
