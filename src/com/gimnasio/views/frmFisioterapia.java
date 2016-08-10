@@ -66,8 +66,10 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
         jLabel12 = new javax.swing.JLabel();
         txtAbdomen = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        txtPorcentaje_grasa = new javax.swing.JTextField();
+        txtDensidad_grasa = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
+        txtPorcentaje_grasa1 = new javax.swing.JTextField();
+        jLabel19 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         txtMMII = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -390,26 +392,47 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Abdomen");
 
-        txtPorcentaje_grasa.setEditable(false);
-        txtPorcentaje_grasa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtPorcentaje_grasa.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtPorcentaje_grasa.addActionListener(new java.awt.event.ActionListener() {
+        txtDensidad_grasa.setEditable(false);
+        txtDensidad_grasa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtDensidad_grasa.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtDensidad_grasa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPorcentaje_grasaActionPerformed(evt);
+                txtDensidad_grasaActionPerformed(evt);
             }
         });
-        txtPorcentaje_grasa.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtDensidad_grasa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtPorcentaje_grasaKeyReleased(evt);
+                txtDensidad_grasaKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtPorcentaje_grasaKeyTyped(evt);
+                txtDensidad_grasaKeyTyped(evt);
             }
         });
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("Resultado");
+        jLabel14.setText("Densidad");
+
+        txtPorcentaje_grasa1.setEditable(false);
+        txtPorcentaje_grasa1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtPorcentaje_grasa1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtPorcentaje_grasa1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPorcentaje_grasa1ActionPerformed(evt);
+            }
+        });
+        txtPorcentaje_grasa1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPorcentaje_grasa1KeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPorcentaje_grasa1KeyTyped(evt);
+            }
+        });
+
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel19.setText("Porcentaje");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -419,35 +442,32 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSiliaco, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTriceps, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtTriceps, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52)
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtPectoral, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtSiliaco, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(24, 24, 24)
                         .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtAbdomen, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPectoral, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtMuslo_ant, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                        .addComponent(txtMuslo_ant, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtPorcentaje_grasa, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48))
+                    .addComponent(txtDensidad_grasa, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPorcentaje_grasa1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(49, 49, 49))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -458,26 +478,33 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtTriceps, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9))
-                        .addGap(5, 5, 5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtPectoral, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel10))
-                            .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtPectoral, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10))
+                        .addGap(18, 18, 18)))
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSiliaco, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12)
                     .addComponent(jLabel13)
-                    .addComponent(txtPorcentaje_grasa, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtAbdomen, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtMuslo_ant, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(4, 4, 4)
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtDensidad_grasa, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel19)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtPorcentaje_grasa1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TEST DE MMII", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
@@ -682,7 +709,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -879,17 +906,17 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
         this.validarSoloNumero(evt);
     }//GEN-LAST:event_txtAbdomenKeyTyped
 
-    private void txtPorcentaje_grasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorcentaje_grasaActionPerformed
+    private void txtDensidad_grasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDensidad_grasaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPorcentaje_grasaActionPerformed
+    }//GEN-LAST:event_txtDensidad_grasaActionPerformed
 
-    private void txtPorcentaje_grasaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPorcentaje_grasaKeyReleased
+    private void txtDensidad_grasaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDensidad_grasaKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPorcentaje_grasaKeyReleased
+    }//GEN-LAST:event_txtDensidad_grasaKeyReleased
 
-    private void txtPorcentaje_grasaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPorcentaje_grasaKeyTyped
+    private void txtDensidad_grasaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDensidad_grasaKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPorcentaje_grasaKeyTyped
+    }//GEN-LAST:event_txtDensidad_grasaKeyTyped
 
     private void txtPesoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPesoActionPerformed
         // TODO add your handling code here:
@@ -1032,6 +1059,18 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
         this.fisioterapiaDto.setTest_tres(test);
         this.getTestFlexibilidad();
     }//GEN-LAST:event_txtTest_tresFocusLost
+
+    private void txtPorcentaje_grasa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorcentaje_grasa1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPorcentaje_grasa1ActionPerformed
+
+    private void txtPorcentaje_grasa1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPorcentaje_grasa1KeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPorcentaje_grasa1KeyReleased
+
+    private void txtPorcentaje_grasa1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPorcentaje_grasa1KeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPorcentaje_grasa1KeyTyped
     
     /**
      * 
@@ -1051,6 +1090,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1067,6 +1107,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField txtAbdomen;
+    private javax.swing.JTextField txtDensidad_grasa;
     private javax.swing.JTextField txtIMC;
     private javax.swing.JTextField txtMMII;
     private javax.swing.JTextField txtMMSS;
@@ -1074,7 +1115,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
     private javax.swing.JTextArea txtObservaciones;
     private javax.swing.JTextField txtPectoral;
     private javax.swing.JTextField txtPeso;
-    private javax.swing.JTextField txtPorcentaje_grasa;
+    private javax.swing.JTextField txtPorcentaje_grasa1;
     private javax.swing.JTextField txtPromedio_flexibilidad;
     private javax.swing.JTextField txtSiliaco;
     private javax.swing.JTextField txtTalla;

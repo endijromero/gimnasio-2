@@ -5,6 +5,7 @@
  */
 package com.gimnasio.model;
 
+import com.gimnasio.model.enums.EGenero;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -26,20 +27,25 @@ public class FisioterapiaDto implements java.io.Serializable  {
     private double abdomen;
     private double muslo_ant;
     
+    private double densidad;
+    private double porcentaje;
+    
     private double talla;
     private double peso;
+    
+    
     
     private String observaciones;
     
     private ClienteDto clienteDto;
-    private PersonaDto personaDto;
+    
 
     /**
      * 
      */
     public FisioterapiaDto() {
         this.clienteDto = new ClienteDto();
-        this.personaDto = new PersonaDto();
+        
     }
     
     public double getTest_mmss() {
@@ -152,15 +158,23 @@ public class FisioterapiaDto implements java.io.Serializable  {
 
     public void setClienteDto(ClienteDto clienteDto) {
         this.clienteDto = clienteDto;
+    }  
+
+    public double getDensidad() {
+        return densidad;
     }
 
-    public PersonaDto getPersonaDto() {
-        return personaDto;
+    public void setDensidad(double densidad) {
+        this.densidad = densidad;
     }
 
-    public void setPersonaDto(PersonaDto personaDto) {
-        this.personaDto = personaDto;
+    public double getPorcentaje() {
+        return porcentaje;
     }
+
+    public void setPorcentaje(double porcentaje) {
+        this.porcentaje = porcentaje;
+    }        
     
     /**
      * 
@@ -193,29 +207,35 @@ public class FisioterapiaDto implements java.io.Serializable  {
      */
     public void getJacksonPollock() {
         double sumatoria = 0;
-        double jp = 0;
+        double densidad = 0;
+        double porcentaje = 0;
         double edad = 0;
-        //if() { Hombre
+        if(this.getClienteDto().getPersonaDto().getGenero() == EGenero.MASCULINO.getId()) { //Hombre
             if(this.getPectoral() > 0 && this.getMuslo_ant() >0 && this.getAbdomen() > 0) {
                 double a = 1.1093800;
                 double b = 0.0008267;
                 double c = 0.0000016;
                 double d = 0.0002574;
                 
-                sumatoria = this.getPectoral()+this.getMuslo_ant()+this.getAbdomen();
-                
-                jp = (a-(b*sumatoria)+(c*Math.pow(a,2))-(d*edad));
-            
-            }
-        //} else if() {//mujer
+                sumatoria = this.getPectoral()+this.getMuslo_ant()+this.getAbdomen();                
+                densidad = (a-(b*sumatoria)+(c*Math.pow(a,2))-(d*edad));
+            }                
+        } else if(this.getClienteDto().getPersonaDto().getGenero() == EGenero.FEMENIMO.getId()) {//mujer
             if(this.getTriceps()> 0 && this.getMuslo_ant() >0 && this.getSiliaco() > 0) {
                 double a = 1.0994921;
                 double b = 0.0009929;
                 double c = 0.0000023;
                 double d = 0.0001392;
                 
-                jp = (a-(b*sumatoria)+(c*Math.pow(a,2))-(d*edad));
+                sumatoria = this.getPectoral()+this.getMuslo_ant()+this.getAbdomen();
+                densidad = (a-(b*sumatoria)+(c*Math.pow(a,2))-(d*edad));
             }                
-        //}  
+        }
+        if(densidad > 0) {
+            porcentaje = ((457/densidad)-414.2);
+        }   
+        this.setDensidad(densidad);
+        this.setPorcentaje(porcentaje);
+            
     }
 }
