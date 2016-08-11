@@ -209,7 +209,7 @@ public class FisioterapiaDto implements java.io.Serializable  {
         double sumatoria = 0;
         double densidad = 0;
         double porcentaje = 0;
-        double edad = 0;
+        double edad = this.getClienteDto().getPersonaDto().calcularEdad();
         if(this.getClienteDto().getPersonaDto().getGenero() == EGenero.MASCULINO.getId()) { //Hombre
             if(this.getPectoral() > 0 && this.getMuslo_ant() >0 && this.getAbdomen() > 0) {
                 double a = 1.1093800;
@@ -227,15 +227,17 @@ public class FisioterapiaDto implements java.io.Serializable  {
                 double c = 0.0000023;
                 double d = 0.0001392;
                 
-                sumatoria = this.getPectoral()+this.getMuslo_ant()+this.getAbdomen();
+                sumatoria = this.getTriceps()+this.getMuslo_ant()+this.getSiliaco();
                 densidad = (a-(b*sumatoria)+(c*Math.pow(a,2))-(d*edad));
             }                
         }
         if(densidad > 0) {
-            porcentaje = ((457/densidad)-414.2);
-        }   
-        this.setDensidad(densidad);
-        this.setPorcentaje(porcentaje);
-            
+            porcentaje = ((457/densidad)-414.2);            
+        }  
+        BigDecimal porc = new BigDecimal(porcentaje);
+        BigDecimal dens = new BigDecimal(densidad);
+        
+        this.setDensidad(dens.setScale(3, RoundingMode.HALF_UP).doubleValue());
+        this.setPorcentaje(porc.setScale(3, RoundingMode.HALF_UP).doubleValue());            
     }
 }

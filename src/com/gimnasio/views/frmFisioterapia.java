@@ -68,7 +68,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
         jLabel13 = new javax.swing.JLabel();
         txtDensidad_grasa = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        txtPorcentaje_grasa1 = new javax.swing.JTextField();
+        txtPorcentaje_grasa = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         txtMMII = new javax.swing.JTextField();
@@ -298,6 +298,11 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
         txtTriceps.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtTriceps.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTriceps.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtTricepsFocusLost(evt);
+            }
+        });
         txtTriceps.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTricepsActionPerformed(evt);
@@ -318,6 +323,11 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
         txtPectoral.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtPectoral.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtPectoral.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtPectoralFocusLost(evt);
+            }
+        });
         txtPectoral.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPectoralActionPerformed(evt);
@@ -338,6 +348,11 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
         txtMuslo_ant.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtMuslo_ant.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtMuslo_ant.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtMuslo_antFocusLost(evt);
+            }
+        });
         txtMuslo_ant.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMuslo_antActionPerformed(evt);
@@ -354,6 +369,11 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
         txtSiliaco.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtSiliaco.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtSiliaco.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtSiliacoFocusLost(evt);
+            }
+        });
         txtSiliaco.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSiliacoActionPerformed(evt);
@@ -374,6 +394,11 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
         txtAbdomen.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtAbdomen.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtAbdomen.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtAbdomenFocusLost(evt);
+            }
+        });
         txtAbdomen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtAbdomenActionPerformed(evt);
@@ -413,20 +438,20 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("Densidad");
 
-        txtPorcentaje_grasa1.setEditable(false);
-        txtPorcentaje_grasa1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtPorcentaje_grasa1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtPorcentaje_grasa1.addActionListener(new java.awt.event.ActionListener() {
+        txtPorcentaje_grasa.setEditable(false);
+        txtPorcentaje_grasa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtPorcentaje_grasa.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtPorcentaje_grasa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPorcentaje_grasa1ActionPerformed(evt);
+                txtPorcentaje_grasaActionPerformed(evt);
             }
         });
-        txtPorcentaje_grasa1.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtPorcentaje_grasa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtPorcentaje_grasa1KeyReleased(evt);
+                txtPorcentaje_grasaKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtPorcentaje_grasa1KeyTyped(evt);
+                txtPorcentaje_grasaKeyTyped(evt);
             }
         });
 
@@ -465,7 +490,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtDensidad_grasa, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPorcentaje_grasa1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPorcentaje_grasa, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(49, 49, 49))
         );
@@ -503,7 +528,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtPorcentaje_grasa1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtPorcentaje_grasa, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -980,6 +1005,23 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
     
     /**
      * 
+     */
+    public void getPorcentajeGrasa(){
+        this.fisioterapiaDto.getJacksonPollock();        
+        if(this.fisioterapiaDto.getDensidad() > 0 ) {
+            this.txtDensidad_grasa.setText(String.valueOf(this.fisioterapiaDto.getDensidad()));
+        } else {
+            this.txtDensidad_grasa.setText("");
+        }
+        if(this.fisioterapiaDto.getPorcentaje() > 0) {
+            this.txtPorcentaje_grasa.setText(String.valueOf(this.fisioterapiaDto.getPorcentaje()));
+        } else {
+            this.txtPorcentaje_grasa.setText("");
+        }
+    }
+    
+    /**
+     * 
      * @param evt 
      */
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -1060,17 +1102,87 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
         this.getTestFlexibilidad();
     }//GEN-LAST:event_txtTest_tresFocusLost
 
-    private void txtPorcentaje_grasa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorcentaje_grasa1ActionPerformed
+    private void txtPorcentaje_grasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorcentaje_grasaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPorcentaje_grasa1ActionPerformed
+    }//GEN-LAST:event_txtPorcentaje_grasaActionPerformed
 
-    private void txtPorcentaje_grasa1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPorcentaje_grasa1KeyReleased
+    private void txtPorcentaje_grasaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPorcentaje_grasaKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPorcentaje_grasa1KeyReleased
+    }//GEN-LAST:event_txtPorcentaje_grasaKeyReleased
 
-    private void txtPorcentaje_grasa1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPorcentaje_grasa1KeyTyped
+    private void txtPorcentaje_grasaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPorcentaje_grasaKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPorcentaje_grasa1KeyTyped
+    }//GEN-LAST:event_txtPorcentaje_grasaKeyTyped
+
+    /**
+     * 
+     * @param evt 
+     */
+    private void txtTricepsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTricepsFocusLost
+        // TODO add your handling code here:
+        double tricep = 0;
+        if(!Util.getVacio(this.txtTriceps.getText())) {
+            tricep = Double.valueOf(this.txtTriceps.getText());
+        }
+        this.fisioterapiaDto.setTriceps(tricep);
+        this.getPorcentajeGrasa();
+    }//GEN-LAST:event_txtTricepsFocusLost
+
+    /**
+     * 
+     * @param evt 
+     */
+    private void txtSiliacoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSiliacoFocusLost
+        // TODO add your handling code here:
+        double siliaco = 0;
+        if(!Util.getVacio(this.txtSiliaco.getText())) {
+            siliaco = Double.valueOf(this.txtSiliaco.getText());
+        }
+        this.fisioterapiaDto.setSiliaco(siliaco);
+        this.getPorcentajeGrasa();
+    }//GEN-LAST:event_txtSiliacoFocusLost
+
+    /**
+     * 
+     * @param evt 
+     */
+    private void txtPectoralFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPectoralFocusLost
+        // TODO add your handling code here:
+        double pectoral = 0;
+        if(!Util.getVacio(this.txtPectoral.getText())) {
+            pectoral = Double.valueOf(this.txtPectoral.getText());
+        }
+        this.fisioterapiaDto.setPectoral(pectoral);
+        this.getPorcentajeGrasa();
+    }//GEN-LAST:event_txtPectoralFocusLost
+
+    /**
+     * 
+     * @param evt 
+     */
+    private void txtAbdomenFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtAbdomenFocusLost
+        // TODO add your handling code here:
+        double abdomen = 0;
+        if(!Util.getVacio(this.txtAbdomen.getText())) {
+            abdomen = Double.valueOf(this.txtAbdomen.getText());
+        }
+        this.fisioterapiaDto.setAbdomen(abdomen);
+        this.getPorcentajeGrasa();
+    }//GEN-LAST:event_txtAbdomenFocusLost
+
+    /**
+     * 
+     * @param evt 
+     */
+    private void txtMuslo_antFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMuslo_antFocusLost
+        // TODO add your handling code here:
+        double muslo = 0;
+        if(!Util.getVacio(this.txtMuslo_ant.getText())) {
+            muslo = Double.valueOf(this.txtMuslo_ant.getText());
+        }
+        this.fisioterapiaDto.setMuslo_ant(muslo);
+        this.getPorcentajeGrasa();
+    }//GEN-LAST:event_txtMuslo_antFocusLost
     
     /**
      * 
@@ -1115,7 +1227,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
     private javax.swing.JTextArea txtObservaciones;
     private javax.swing.JTextField txtPectoral;
     private javax.swing.JTextField txtPeso;
-    private javax.swing.JTextField txtPorcentaje_grasa1;
+    private javax.swing.JTextField txtPorcentaje_grasa;
     private javax.swing.JTextField txtPromedio_flexibilidad;
     private javax.swing.JTextField txtSiliaco;
     private javax.swing.JTextField txtTalla;
