@@ -218,17 +218,17 @@ public class FisioterapiaDto implements java.io.Serializable  {
                 double d = 0.0002574;
                 
                 sumatoria = this.getPectoral()+this.getMuslo_ant()+this.getAbdomen();                
-                densidad = (a-(b*sumatoria)+(c*Math.pow(a,2))-(d*edad));
+                densidad = (a-(b*sumatoria)+(c*Math.pow(sumatoria,2))-(d*edad));
             }                
         } else if(this.getClienteDto().getPersonaDto().getGenero() == EGenero.FEMENIMO.getId()) {//mujer
             if(this.getTriceps()> 0 && this.getMuslo_ant() >0 && this.getSiliaco() > 0) {
-                double a = 1.0994921;
+                double a = 1.099421;
                 double b = 0.0009929;
                 double c = 0.0000023;
                 double d = 0.0001392;
                 
                 sumatoria = this.getTriceps()+this.getMuslo_ant()+this.getSiliaco();
-                densidad = (a-(b*sumatoria)+(c*Math.pow(a,2))-(d*edad));
+                densidad = (a-b*(sumatoria)+c*Math.pow(sumatoria,2)-d*(edad));
             }                
         }
         if(densidad > 0) {
@@ -238,6 +238,6 @@ public class FisioterapiaDto implements java.io.Serializable  {
         BigDecimal dens = new BigDecimal(densidad);
         
         this.setDensidad(dens.setScale(3, RoundingMode.HALF_UP).doubleValue());
-        this.setPorcentaje(porc.setScale(3, RoundingMode.HALF_UP).doubleValue());            
+        this.setPorcentaje(porc.setScale(1, RoundingMode.HALF_UP).doubleValue());            
     }
 }
