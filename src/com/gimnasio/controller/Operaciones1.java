@@ -208,19 +208,26 @@ public class Operaciones1 {
      * 
      * @param nombres
      * @param apellidos
-     * @param Documento
+     * @param documento
      * @return
      * @throws SQLException 
      */
-    public List<TablaDto> getClientesDatosTablaDto(String nombres, String apellidos, String Documento) throws SQLException {
+    public List<TablaDto> getClientesDatosTablaDto(String nombres, String apellidos, String documento) throws SQLException {
         List<TablaDto> listTable = new ArrayList();
-        /*List<ClienteDto> listClientes = this.getProductosDatosDto(idProducto);
-        listProductos.stream().map((producto) -> new TablaDto(
-                String.valueOf(producto.getId()),
-                Util.getQuitaNULL(producto.getNombre()),
-                String.valueOf(producto.getPrecio()))).forEach((tabla) -> {
+        //"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"
+        List<ClienteDto> listClientes = this.model.getDatosClientes(nombres, apellidos, documento);
+        listClientes.stream().map((cliente) -> new TablaDto(
+                String.valueOf(cliente.getPersonaDto().getNumeroIdentificacion()),
+                Util.getQuitaNULL(cliente.getPersonaDto().getPrimerNombre()+" "+cliente.getPersonaDto().getSegundoNombre()),
+                Util.getQuitaNULL(cliente.getPersonaDto().getPrimerApellido()+" "+cliente.getPersonaDto().getSegundoApellido()),
+                String.valueOf(cliente.getPersonaDto().calcularEdad()),
+                Util.getQuitaNULL(EGenero.getResult(cliente.getPersonaDto().getGenero()).getNombre()),
+                String.valueOf(cliente.getPersonaDto().getMovil()),
+                String.valueOf(cliente.getPersonaDto().getTelefono()),
+                String.valueOf(cliente.getPersonaDto().getEmail())
+                )).forEach((tabla) -> {
                     listTable.add(tabla);
-                });*/
+                });
         return listTable;
     }
 

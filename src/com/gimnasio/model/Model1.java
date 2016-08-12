@@ -145,26 +145,62 @@ public class Model1 {
     
     /**
      * 
+     * @param nombres
+     * @param apellidos
      * @param idDescuentos
+     * @param documento
      * @return
      * @throws SQLException 
      */
-    public List<ClienteDto> getDatosClientes(String idDescuentos) throws SQLException {
+    public List<ClienteDto> getDatosClientes(String nombres, String apellidos, String documento) throws SQLException {
         List<ClienteDto> list = new ArrayList();
         try (Statement stat = this.conexion.getConexion().createStatement()) {
             String sql = "SELECT "
-                           + ""
-                           + " FROM clientes "
-                           + " INNER JOIN ";
-            if (!Util.getVacio(idDescuentos)) {
-                sql += " AND id=" + idDescuentos;
-                
+                            + "cl.id as id_cliente, "
+                            + "ps.id, "
+                            + "ps.primer_nombre, "
+                            + "ps.segundo_nombre, "
+                            + "ps.primer_apeliido, "
+                            + "ps.segundo_apellido, "
+                            + "ps.numero_identificacion, "
+                            + "ps.genero,"
+                            + "ps.fecha_nacimiento, "
+                            + "ps.movil, "
+                            + "ps.telefono, "
+                            + "ps.email"
+                            + " FROM clientes cl"
+                            + " INNER JOIN personas ps"
+                            + " ON cl.persona_id = ps.id "
+                            + " WHERE 1=1";                            
+            if (!Util.getVacio(nombres)) {
+                sql += " AND CONCAT(ps.primer_nombre,' ',ps.segundo_nombre) LIKE %"+nombres+"% ";                
             }
-            sql += " ORDER BY id ASC ";
+            if (!Util.getVacio(apellidos)) {
+                sql += " AND CONCAT(ps.primer_apellido,' ',ps.segundo_apellido) LIKE %"+apellidos+"% ";                
+            }
+            if (!Util.getVacio(documento)) {
+                sql += " AND ps.numero_identificacion LIKE %"+documento+"% ";                
+            }
+            sql += " ORDER BY ps.id ASC ";
             ResultSet res = stat.executeQuery(sql);
             while (res.next()) {
                 ClienteDto dto = new ClienteDto();
-                               
+                PersonaDto persona = new PersonaDto();
+                dto.setId(res.getLong("id_cliente"));
+                
+                persona.setId(res.getLong("id"));
+                persona.setPrimerNombre(res.getString("primer_nombre"));
+                persona.setSegundoNombre(res.getString("segundo_nombre"));
+                persona.setPrimerApellido(res.getString("primer_apeliido"));
+                persona.setSegundoApellido(res.getString("segundo_apeliido"));
+                persona.setNumeroIdentificacion(res.getString("numero_identificacion"));
+                persona.setFechaNacimiento(res.getString("fecha_nocimiento"));
+                persona.setGenero(res.getShort("genero"));
+                persona.setMovil(res.getString("movil"));
+                persona.setTelefono(res.getString("telefono"));
+                persona.setEmail(res.getString("email"));
+                
+                dto.setPersonaDto(persona);
                 list.add(dto);
             }
         }
