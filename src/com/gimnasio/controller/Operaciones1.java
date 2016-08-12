@@ -201,6 +201,9 @@ public class Operaciones1 {
         if(fisioterapia.getPeso()>0){}else{
             listMessages.add("<li>INDICE DE MASA CORPORAL: Talla</li>");
         }
+        if(listMessages.size() < 1) {
+            
+        }
         return listMessages;
     }
     
@@ -229,6 +232,14 @@ public class Operaciones1 {
                     listTable.add(tabla);
                 });
         return listTable;
+    }
+    
+    
+    public FisioterapiaDto getFisioterapiaDto(String documento) throws SQLException{        
+        //"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"
+        FisioterapiaDto fisioterapia;
+        fisioterapia = this.model.getFisioterapiaDto(documento);
+        return fisioterapia;
     }
 
     public Model1 getModel() {

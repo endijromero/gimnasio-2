@@ -13,6 +13,7 @@ import java.awt.Font;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -20,10 +21,10 @@ import javax.swing.JOptionPane;
  *
  * @author rodolfo
  */
-public class frmFisioterapia extends javax.swing.JInternalFrame {
+public final class frmFisioterapia extends javax.swing.JInternalFrame {
 
     private final Operaciones1 operacion;
-    private final FisioterapiaDto fisioterapiaDto;    
+    private FisioterapiaDto fisioterapiaDto;    
     /**
      * Creates new form frmFisioterapia
      * @param documento
@@ -31,7 +32,73 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
     public frmFisioterapia(String documento) {
         initComponents();
         this.operacion = new Operaciones1();
-        this.fisioterapiaDto = new FisioterapiaDto();
+        try {            
+            this.getAsignarFisioterapia(documento);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmFisioterapia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * 
+     * @param documento 
+     * @throws java.sql.SQLException 
+     */
+    public void getAsignarFisioterapia(String documento) throws SQLException {
+        
+        this.fisioterapiaDto = this.operacion.getFisioterapiaDto(documento);
+        
+        this.txtMMSS.setText(String.valueOf(fisioterapiaDto.getTest_mmss()));
+        this.txtMMII.setText(String.valueOf(fisioterapiaDto.getTest_mmii()));
+        
+        this.txtTest_uno.setText(String.valueOf(fisioterapiaDto.getTest_uno()));
+        this.txtTest_dos.setText(String.valueOf(fisioterapiaDto.getTest_dos()));
+        this.txtTest_tres.setText(String.valueOf(fisioterapiaDto.getTest_tres()));
+        this.getTestFlexibilidad();
+        
+        this.txtTriceps.setText(String.valueOf(fisioterapiaDto.getTriceps()));
+        this.txtSiliaco.setText(String.valueOf(fisioterapiaDto.getSiliaco()));
+        this.txtAbdomen.setText(String.valueOf(fisioterapiaDto.getAbdomen()));
+        this.txtMuslo_ant.setText(String.valueOf(fisioterapiaDto.getMuslo_ant()));
+        this.txtPectoral.setText(String.valueOf(fisioterapiaDto.getPectoral()));
+        this.getPorcentajeGrasa();
+        
+        this.txtPeso.setText(String.valueOf(fisioterapiaDto.getPeso()));
+        this.txtTalla.setText(String.valueOf(fisioterapiaDto.getTalla()));
+        this.getIMC();
+        
+        this.txtObservaciones.setText(fisioterapiaDto.getObservaciones());
+        
+        this.lblNombre.setText(this.fisioterapiaDto.getClienteDto().getPersonaDto().getNombreCompleto());
+        
+        if(this.fisioterapiaDto.getClienteDto().getPersonaDto().getEdad() > 0) {            
+            this.lblEdad.setText(String.valueOf(this.fisioterapiaDto.getClienteDto().getPersonaDto().getEdad()));
+        }
+    }
+    
+    /**
+     * 
+     */
+    public void setLLenarFisiterapiaDto(){
+        
+        this.fisioterapiaDto.setTest_mmss(!Util.getVacio(this.txtMMSS.getText()) ? Double.valueOf(this.txtMMSS.getText()) : 0);
+        this.fisioterapiaDto.setTest_mmii(!Util.getVacio(this.txtMMII.getText()) ? Double.valueOf(this.txtMMII.getText()) : 0);        
+        
+        this.fisioterapiaDto.setTest_uno(!Util.getVacio(this.txtTest_uno.getText()) ? Double.valueOf(this.txtTest_uno.getText()) : 0);
+        this.fisioterapiaDto.setTest_dos(!Util.getVacio(this.txtTest_dos.getText()) ? Double.valueOf(this.txtTest_dos.getText()) :0 );  
+        this.fisioterapiaDto.setTest_tres(!Util.getVacio(this.txtTest_tres.getText()) ? Double.valueOf(this.txtTest_tres.getText()): 0);                 
+        
+        this.fisioterapiaDto.setTriceps(!Util.getVacio(this.txtTriceps.getText()) ? Double.valueOf(this.txtTriceps.getText()) : 0 );
+        this.fisioterapiaDto.setSiliaco(!Util.getVacio(this.txtSiliaco.getText()) ? Double.valueOf(this.txtSiliaco.getText()) : 0 );        
+        this.fisioterapiaDto.setAbdomen(!Util.getVacio(this.txtAbdomen.getText()) ? Double.valueOf(this.txtAbdomen.getText()) : 0); 
+        this.fisioterapiaDto.setMuslo_ant(!Util.getVacio(this.txtMuslo_ant.getText()) ? Double.valueOf(this.txtMuslo_ant.getText()) :0 );
+        this.fisioterapiaDto.setPectoral(!Util.getVacio(this.txtPectoral.getText()) ? Double.valueOf(this.txtPectoral.getText()) : 0);               
+        
+        this.fisioterapiaDto.setPeso(!Util.getVacio(this.txtPeso.getText()) ?  Double.valueOf(this.txtPeso.getText()) : 0 );
+        this.fisioterapiaDto.setTalla(!Util.getVacio(this.txtTalla.getText()) ? Double.valueOf(this.txtTalla.getText()) :0 );    
+        
+        this.fisioterapiaDto.setObservaciones(this.txtObservaciones.getText()); 
+
     }
 
     /**
@@ -44,6 +111,10 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        lblEdad = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         txtMMSS = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -89,15 +160,49 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CLIENTE", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
+        jLabel20.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel20.setText("Nombre");
+
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel21.setText("Edad");
+
+        lblNombre.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblNombre.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+
+        lblEdad.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblEdad.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 391, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblEdad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 81, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21)
+                    .addComponent(lblEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TEST DE MMSS", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
@@ -127,7 +232,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(100, Short.MAX_VALUE)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtMMSS, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -735,7 +840,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -747,9 +852,9 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -1027,6 +1132,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
      */
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
+        this.setLLenarFisiterapiaDto();
         List<String> listMessage = this.operacion.setGuardarFisioterapia(this.fisioterapiaDto);
         if (listMessage.size() < 1) {
             
@@ -1185,12 +1291,7 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
         this.getPorcentajeGrasa();
     }//GEN-LAST:event_txtMuslo_antFocusLost
     
-    /**
-     * 
-     */
-    public void setLLenarFisiterapiaDto(){
-        
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
@@ -1204,6 +1305,8 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1219,6 +1322,8 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblEdad;
+    private javax.swing.JLabel lblNombre;
     private javax.swing.JTextField txtAbdomen;
     private javax.swing.JTextField txtDensidad_grasa;
     private javax.swing.JTextField txtIMC;
