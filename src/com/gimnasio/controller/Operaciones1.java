@@ -222,9 +222,9 @@ public class Operaciones1 {
                 Util.getQuitaNULL(cliente.getPersonaDto().getPrimerApellido()+" "+Util.getQuitaNULL(cliente.getPersonaDto().getSegundoApellido())),
                 String.valueOf(cliente.getPersonaDto().calcularEdad()),
                 Util.getQuitaNULL(EGenero.getResult(cliente.getPersonaDto().getGenero()).getNombre()),
-                String.valueOf(cliente.getPersonaDto().getMovil()),
-                String.valueOf(cliente.getPersonaDto().getTelefono()),
-                String.valueOf(cliente.getPersonaDto().getEmail())
+                String.valueOf(Util.getQuitaNULL(cliente.getPersonaDto().getMovil())),
+                String.valueOf(Util.getQuitaNULL(cliente.getPersonaDto().getTelefono())),
+                String.valueOf(Util.getQuitaNULL(cliente.getPersonaDto().getEmail()))
                 )).forEach((tabla) -> {
                     listTable.add(tabla);
                 });
