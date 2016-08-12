@@ -16,7 +16,7 @@ import javax.swing.JTextArea;
 public class Conexion {
 
     private List<String> listSql;
-    private Connection conexion;
+    private static Connection conexion;
 
     private String host;
     private String user;
@@ -25,14 +25,16 @@ public class Conexion {
 
     public Conexion() {
         try {
-            File archivo = new File("conexion.txt");
-            FileReader fr = new FileReader(archivo);
-            BufferedReader br = new BufferedReader(fr);
+            File file;
+            FileReader fr;
+            BufferedReader br;
 
+            file = new File("conexion.txt");
+            fr = new FileReader(file);
+            br = new BufferedReader(fr);
             String linea = br.readLine();
             br.close();
             fr.close();
-            archivo = null;
 
             String[] partes = linea.split(";");
             this.host = partes[0];
@@ -47,10 +49,10 @@ public class Conexion {
 
     public void connect() {
         try {
-            if (this.conexion == null) {
+            if (Conexion.conexion == null) {
                 Class.forName("com.mysql.jdbc.Driver");
-                this.conexion = DriverManager.getConnection("jdbc:mysql://" + this.host + "/" + this.dataBase, this.user, this.password);
-                this.conexion.setAutoCommit(false);
+                Conexion.conexion = DriverManager.getConnection("jdbc:mysql://" + this.host + "/" + this.dataBase, this.user, this.password);
+                Conexion.conexion.setAutoCommit(false);
             }
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println(e);
@@ -59,7 +61,7 @@ public class Conexion {
 
     public void close() {
         try {
-            this.conexion.close();
+            Conexion.conexion.close();
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -67,7 +69,7 @@ public class Conexion {
 
     public void commt() {
         try {
-            this.conexion.commit();
+            Conexion.conexion.commit();
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -75,7 +77,7 @@ public class Conexion {
 
     public void rollback() {
         try {
-            this.conexion.rollback();
+            Conexion.conexion.rollback();
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -88,13 +90,13 @@ public class Conexion {
         if (text != null) {
             text.setText("Se afectaran " + total + " Registros de la base de datos\n" + text.getText());
             try {
-                Thread.currentThread().sleep(2000);
+                Thread.sleep(2000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         try {
-            stat = this.conexion.createStatement();
+            stat = Conexion.conexion.createStatement();
             for (String sql : this.listSql) {
                 try {
                     stat.executeUpdate(sql);
@@ -134,7 +136,7 @@ public class Conexion {
     }
 
     public void setConexion(Connection conexion) {
-        this.conexion = conexion;
+        Conexion.conexion = conexion;
     }
 
     public String getHost() {

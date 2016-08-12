@@ -34,13 +34,14 @@ public class frmClientes extends javax.swing.JInternalFrame {
 
     /**
      *
-     * @throws java.lang.Exception
      * @tutorial Creates new form frmCliente
      * @param padre
+     * @param operacion
+     * @throws java.lang.Exception
      */
-    public frmClientes(frmPrincipal padre) throws Exception {
+    public frmClientes(frmPrincipal padre, Operaciones operacion) throws Exception {
         initComponents();
-        this.operacion = new Operaciones();
+        this.operacion = operacion;
         this.clienteDto = new ClienteDto();
         this.padre = padre;
 

@@ -20,7 +20,6 @@ public class Operaciones {
     private Conexion conexion;
 
     public Operaciones() {
-
         this.conexion = new Conexion();
         this.conexion.connect();
         this.model = new Model();

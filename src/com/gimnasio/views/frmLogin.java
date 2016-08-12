@@ -154,6 +154,7 @@ public class frmLogin extends javax.swing.JFrame {
                     frmPrincipal principal = new frmPrincipal();
                     principal.setUsuarioSessionDto(userDto);
                     principal.setTitle("Sistem GymStreet");
+                    principal.setOperacion(operacion);
                     principal.setVisible(true);
                     this.setVisible(false);
                 }

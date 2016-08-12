@@ -5,6 +5,7 @@
  */
 package com.gimnasio.views;
 
+import com.gimnasio.controller.Operaciones;
 import com.gimnasio.model.UsuarioDto;
 import com.gimnasio.util.Util;
 import java.sql.SQLException;
@@ -34,6 +35,8 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmClientes clienteView;
     private frmUsuarios usuarioView;
 
+    private Operaciones operacion;
+
     /**
      * Creates new form frmPrincipal
      */
@@ -52,7 +55,6 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.pagosView = null;
         this.registrarPagosView = null;
         frmPrincipal.fisitorepiaView = null;
-        this.usuarioSessionDto = new UsuarioDto();
     }
 
     /**
@@ -230,7 +232,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void setCrearPaquetes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCrearPaquetes
         if (this.paqueteView == null) {
             try {
-                this.paqueteView = new frmPaquetes(this);
+                this.paqueteView = new frmPaquetes(this, this.operacion);
                 frmPrincipal.jdstPrincipal.add(this.paqueteView);
                 this.paqueteView.setTitle("Formulario para el registro de paquetes");
                 this.paqueteView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
@@ -357,7 +359,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private void setRegistrarClientes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRegistrarClientes
         if (this.clienteView == null) {
             try {
-                this.clienteView = new frmClientes(this);
+                this.clienteView = new frmClientes(this, operacion);
                 this.clienteView.setTitle("Formulario para el registro de clientes");
                 this.clienteView.setSize(this.getWidth(), this.getHeight() - 1);
                 this.clienteView.setUsuarioSessionDto(this.usuarioSessionDto);
@@ -381,7 +383,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.buscarClienteView = new frmBuscarCliente("2");
         frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
-        
+
         this.buscarClienteView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
         this.buscarClienteView.setResizable(true);
         this.buscarClienteView.setClosable(true);
@@ -483,6 +485,14 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     public void setUsuarioView(frmUsuarios usuarioView) {
         this.usuarioView = usuarioView;
+    }
+
+    public Operaciones getOperacion() {
+        return operacion;
+    }
+
+    public void setOperacion(Operaciones operacion) {
+        this.operacion = operacion;
     }
 
     /**

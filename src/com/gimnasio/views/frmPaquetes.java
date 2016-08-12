@@ -30,11 +30,12 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
     /**
      *
      * @param padre
+     * @param operacion
      * @throws SQLException
      */
-    public frmPaquetes(frmPrincipal padre) throws SQLException {
+    public frmPaquetes(frmPrincipal padre, Operaciones operacion) throws SQLException {
         initComponents();
-        this.operacion = new Operaciones();
+        this.operacion = operacion;
         this.paqueteDto = new PaqueteDto();
 
         this.headTable = new String[]{"Id", "Nombre", "Precio", "Tiquetera", "Diaz de aplazamiento"};
