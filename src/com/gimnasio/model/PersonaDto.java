@@ -44,6 +44,31 @@ public class PersonaDto implements java.io.Serializable {
         this.fechaNacimiento = "1990-01-03";
     }
 
+    /**
+     *
+     * @return
+     */
+    public double getEdad() {
+        double age = 0;
+        try {
+            Calendar birth = new GregorianCalendar();
+            Calendar today = new GregorianCalendar();
+            int factor = 0;
+            Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(this.getFechaNacimiento()); //Date();//  
+            Date currentDate = new Date(); //current date
+            birth.setTime(birthDate);
+            today.setTime(currentDate);
+            double mes_act = today.get(Calendar.MONTH);
+            double mes_nac = birth.get(Calendar.MONTH);
+            double ano = today.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
+            age = ano + ((mes_act - mes_nac) / 12);
+        } catch (ParseException e) {
+
+        }
+        BigDecimal edad = new BigDecimal(age);
+        return edad.setScale(1, RoundingMode.HALF_UP).doubleValue();
+    }
+
     public String getNombreCompleto() {
         String nombre = "";
         if (!Util.getVacio(this.primerNombre)) {
@@ -234,30 +259,4 @@ public class PersonaDto implements java.io.Serializable {
     public void setUrlHuella(String urlHuella) {
         this.urlHuella = urlHuella;
     }
-
-    /**
-     *
-     * @return
-     */
-    public double getEdad() {
-        double age = 0;
-        try {
-            Calendar birth = new GregorianCalendar();
-            Calendar today = new GregorianCalendar();
-            int factor = 0;
-            Date birthDate = new SimpleDateFormat("yyyy-MM-dd").parse(this.getFechaNacimiento()); //Date();//  
-            Date currentDate = new Date(); //current date
-            birth.setTime(birthDate);
-            today.setTime(currentDate);
-            double mes_act = today.get(Calendar.MONTH);
-            double mes_nac = birth.get(Calendar.MONTH);
-            double ano = today.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
-            age = ano + ((mes_act - mes_nac) / 12);
-        } catch (ParseException e) {
-
-        }
-        BigDecimal edad = new BigDecimal(age);
-        return edad.setScale(1, RoundingMode.HALF_UP).doubleValue();
-    }
-
 }
