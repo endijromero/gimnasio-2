@@ -11,6 +11,7 @@ import com.gimnasio.model.enums.EGenero;
 import com.gimnasio.util.Util;
 import com.google.common.base.Joiner;
 import java.awt.Font;
+import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -31,6 +32,9 @@ public class frmClientes extends javax.swing.JInternalFrame {
     private final ClienteDto clienteDto;
     private final frmPrincipal padre;
     private Operaciones operacion;
+
+    private String rutaHuellas = "huellas/";
+    private String extension = ".fpt";
 
     /**
      *
@@ -111,11 +115,15 @@ public class frmClientes extends javax.swing.JInternalFrame {
         lblDireccion = new javax.swing.JLabel();
         txtDireccion = new javax.swing.JTextField();
         txtFecha_nacimiento = new com.toedter.calendar.JDateChooser();
-        panelVisor_eventos = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtVisor = new javax.swing.JTextArea();
 
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                setCloseIframeCliente(evt);
+            }
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
@@ -123,13 +131,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
             public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
-            }
-            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
-                setCloseIframeCliente(evt);
             }
         });
 
@@ -555,29 +556,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        panelVisor_eventos.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        txtVisor.setColumns(20);
-        txtVisor.setRows(5);
-        jScrollPane1.setViewportView(txtVisor);
-
-        javax.swing.GroupLayout panelVisor_eventosLayout = new javax.swing.GroupLayout(panelVisor_eventos);
-        panelVisor_eventos.setLayout(panelVisor_eventosLayout);
-        panelVisor_eventosLayout.setHorizontalGroup(
-            panelVisor_eventosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelVisor_eventosLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-        );
-        panelVisor_eventosLayout.setVerticalGroup(
-            panelVisor_eventosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelVisor_eventosLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-        );
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -586,12 +564,9 @@ public class frmClientes extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(panelVisor_eventos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
         jPanel1Layout.setVerticalGroup(
@@ -600,9 +575,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panelVisor_eventos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(66, 66, 66))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -620,7 +593,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -628,8 +601,15 @@ public class frmClientes extends javax.swing.JInternalFrame {
 
     private void setCapturarHuella(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCapturarHuella
         setLlenarClienteDto();
-        frmHuella frm = new frmHuella(this.operacion, this.padre, true, this.clienteDto, Short.parseShort("1"), this);
-        frm.setVisible(true);
+        if (!Util.getVacio(this.clienteDto.getPersonaDto().getNumeroIdentificacion())) {
+            frmHuella frm = new frmHuella(this.operacion, this.padre, true, this.clienteDto, Short.parseShort("1"), this);
+            frm.setVisible(true);
+        } else {
+            JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ul><li>Debe ingresar los datos del cliente para capturar la huella</li></ul></html>");
+            label.setFont(new Font("Consolas", Font.PLAIN, 12));
+            JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
+
+        }
     }//GEN-LAST:event_setCapturarHuella
 
     private void btnFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFotoActionPerformed
@@ -724,6 +704,12 @@ public class frmClientes extends javax.swing.JInternalFrame {
 
     private void setCloseIframeCliente(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_setCloseIframeCliente
         this.padre.setClienteView(null);
+        if (this.clienteDto.getPersonaDto().getHuellaDactilar().length > 0) {
+            File file = new File(this.rutaHuellas + this.clienteDto.getPersonaDto().getNumeroIdentificacion() + this.extension);
+            if (file.exists()) {
+                file.delete();
+            }
+        }
     }//GEN-LAST:event_setCloseIframeCliente
 
     private void setValidateSoloLetras(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_setValidateSoloLetras
@@ -763,7 +749,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblBarrio;
     private javax.swing.JLabel lblDireccion;
@@ -782,7 +767,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
     private javax.swing.JTextArea log;
     private javax.swing.JPanel panelFoto;
     private javax.swing.JPanel panelHuella;
-    private javax.swing.JPanel panelVisor_eventos;
     private javax.swing.JRadioButton rbtFemenino;
     private javax.swing.ButtonGroup rbtGenero;
     private javax.swing.JRadioButton rbtMasculino;
@@ -798,6 +782,5 @@ public class frmClientes extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtPrimer_nombre;
     private javax.swing.JTextField txtSegundo_apellido;
     private javax.swing.JTextField txtSegundo_nombre;
-    private javax.swing.JTextArea txtVisor;
     // End of variables declaration//GEN-END:variables
 }

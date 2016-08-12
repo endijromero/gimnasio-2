@@ -42,12 +42,11 @@ public class frmLogin extends javax.swing.JFrame {
     private void initComponents() {
 
         txtUser = new javax.swing.JTextField();
-        txtCancelar = new javax.swing.JButton();
-        btnLogin = new javax.swing.JButton();
         txtPassword = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -67,37 +66,7 @@ public class frmLogin extends javax.swing.JFrame {
             }
         });
         getContentPane().add(txtUser);
-        txtUser.setBounds(110, 170, 160, 30);
-
-        txtCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/sign-error-icon.png"))); // NOI18N
-        txtCancelar.setBorder(null);
-        txtCancelar.setBorderPainted(false);
-        txtCancelar.setContentAreaFilled(false);
-        txtCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        txtCancelar.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/sign-error-icon.png"))); // NOI18N
-        txtCancelar.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/sign-error-icon-2.png"))); // NOI18N
-        txtCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCancelarActionPerformed(evt);
-            }
-        });
-        getContentPane().add(txtCancelar);
-        txtCancelar.setBounds(220, 270, 50, 50);
-
-        btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/sign-check-icon.png"))); // NOI18N
-        btnLogin.setBorder(null);
-        btnLogin.setBorderPainted(false);
-        btnLogin.setContentAreaFilled(false);
-        btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnLogin.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/sign-check-icon.png"))); // NOI18N
-        btnLogin.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/sign-check-icon-2.png"))); // NOI18N
-        btnLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoginActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnLogin);
-        btnLogin.setBounds(110, 270, 50, 50);
+        txtUser.setBounds(100, 170, 180, 30);
 
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,23 +74,34 @@ public class frmLogin extends javax.swing.JFrame {
             }
         });
         getContentPane().add(txtPassword);
-        txtPassword.setBounds(110, 230, 160, 30);
+        txtPassword.setBounds(100, 230, 180, 30);
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/gym-icon.png"))); // NOI18N
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(130, 20, 130, 120);
+        jLabel4.setBounds(120, 20, 130, 120);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Contraseña");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(110, 210, 70, 20);
+        jLabel2.setBounds(100, 210, 70, 20);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Usuario");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(110, 150, 45, 20);
+        jLabel3.setBounds(100, 150, 45, 20);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/sign.png"))); // NOI18N
+        jButton1.setText("Ingresar");
+        jButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1);
+        jButton1.setBounds(100, 280, 120, 40);
 
         jLabel1.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/textura.jpg"))); // NOI18N
@@ -138,11 +118,6 @@ public class frmLogin extends javax.swing.JFrame {
     private void txtUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserActionPerformed
 
     }//GEN-LAST:event_txtUserActionPerformed
-
-    private void txtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCancelarActionPerformed
-        this.txtUser.setText("");
-        this.txtPassword.setText("");
-    }//GEN-LAST:event_txtCancelarActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         if (this.txtUser.getText().equals("") || this.txtPassword.getText().equals("")) {
@@ -207,12 +182,11 @@ public class frmLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnLogin;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JButton txtCancelar;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtUser;
     // End of variables declaration//GEN-END:variables

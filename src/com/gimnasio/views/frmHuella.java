@@ -33,8 +33,11 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import com.gimnasio.util.Util;
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +82,9 @@ public class frmHuella extends javax.swing.JDialog {
     private frmClientes frmCliente;
     private frmUsuarios frmUsuario;
 
+    private String rutaHuellas = "huellas/";
+    private String extension = ".fpt";
+
     public frmHuella(Operaciones operacion, javax.swing.JFrame parent, boolean modal, ClienteDto cliDto, short tipoProceso, frmClientes frmCliente) {
         super(parent, modal);
         initComponents();
@@ -88,9 +94,11 @@ public class frmHuella extends javax.swing.JDialog {
             this.listTemplates = new ArrayList();
             this.listClientesHuellas = this.operacion.getClienteDatos(null);
             for (ClienteDto dto : this.listClientesHuellas) {
-                DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate();
-                referenceTemplate.deserialize(dto.getPersonaDto().getHuellaDactilar());
-                dto.getPersonaDto().setTemplateHuella(referenceTemplate);
+                if (dto.getPersonaDto().getHuellaDactilar() != null) {
+                    DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate();
+                    referenceTemplate.deserialize(dto.getPersonaDto().getHuellaDactilar());
+                    dto.getPersonaDto().setTemplateHuella(referenceTemplate);
+                }
             }
         } catch (SQLException | IllegalArgumentException e) {
             System.err.println(e.getMessage());
@@ -372,6 +380,8 @@ public class frmHuella extends javax.swing.JDialog {
         lblCodigo = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         lblEstudiante = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtVisor = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -390,6 +400,7 @@ public class frmHuella extends javax.swing.JDialog {
         lblIndiceDerecho.setText("Huella dactilar");
         lblIndiceDerecho.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
+        btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/add.png"))); // NOI18N
         btnGuardar.setText("Asignar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -397,6 +408,7 @@ public class frmHuella extends javax.swing.JDialog {
             }
         });
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/cancel.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -413,36 +425,45 @@ public class frmHuella extends javax.swing.JDialog {
         lblEstudiante.setText("Nombre del cliente");
         lblEstudiante.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
+        txtVisor.setColumns(20);
+        txtVisor.setFont(new java.awt.Font("Consolas", 0, 10)); // NOI18N
+        txtVisor.setRows(5);
+        jScrollPane1.setViewportView(txtVisor);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblEstudiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnCancelar))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(btnGuardar)
+                            .addComponent(jLabel1)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnCancelar))
-                        .addComponent(lblIndiceDerecho, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 15, Short.MAX_VALUE))
+                            .addComponent(lblCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(lblEstudiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(lblIndiceDerecho, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 130, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane1)
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -453,7 +474,9 @@ public class frmHuella extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
                     .addComponent(btnCancelar))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 25, Short.MAX_VALUE))
         );
 
         pack();
@@ -479,8 +502,32 @@ public class frmHuella extends javax.swing.JDialog {
     }//GEN-LAST:event_getCerrarPanel
 
     private void setAsignarHuella(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setAsignarHuella
-
-        this.clienteDto.getPersonaDto().setHuellaDactilar(this.template.serialize());
+        boolean reemplaza = true;
+        File file = new File(this.rutaHuellas + this.clienteDto.getPersonaDto().getNumeroIdentificacion() + this.extension);
+        if (file.exists()) {
+            int choice = JOptionPane.showConfirmDialog(this,
+                    String.format("La huella para el cliente \"%1$s\" realmente existe.\nDesea reemplazarla?", this.clienteDto.getPersonaDto().getNombreCompleto()),
+                    "Información de captura de huella",
+                    JOptionPane.YES_NO_CANCEL_OPTION);
+            if (choice == JOptionPane.NO_OPTION) {
+                reemplaza = false;
+            } else if (choice == JOptionPane.CANCEL_OPTION) {
+                reemplaza = false;
+            }
+        }
+        if (reemplaza) {
+            try {
+                FileOutputStream stream;
+                stream = new FileOutputStream(file);
+                stream.write(this.template.serialize());
+                stream.close();
+                this.clienteDto.getPersonaDto().setHuellaDactilar(this.template.serialize());
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(frmHuella.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(frmHuella.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         Reclutador.clear();
         this.dispose();
         this.btnGuardar.setEnabled(false);
@@ -499,8 +546,10 @@ public class frmHuella extends javax.swing.JDialog {
     private javax.swing.JButton btnGuardar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCodigo;
     private javax.swing.JLabel lblEstudiante;
     private javax.swing.JLabel lblIndiceDerecho;
+    private javax.swing.JTextArea txtVisor;
     // End of variables declaration//GEN-END:variables
 }
