@@ -26,8 +26,9 @@ public class frmFisioterapia extends javax.swing.JInternalFrame {
     private final FisioterapiaDto fisioterapiaDto;    
     /**
      * Creates new form frmFisioterapia
+     * @param documento
      */
-    public frmFisioterapia() {
+    public frmFisioterapia(String documento) {
         initComponents();
         this.operacion = new Operaciones1();
         this.fisioterapiaDto = new FisioterapiaDto();

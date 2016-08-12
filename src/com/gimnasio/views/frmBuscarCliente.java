@@ -248,7 +248,10 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
     
     private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
         // TODO add your handling code here:
-        if(evt.getClickCount() == 2) {
+        if(evt.getClickCount() == 2) {            
+            int fila = this.tblClientes.getSelectedRow();
+            TablaDto dto = (TablaDto) this.table.getData().get(fila);
+            String documento = dto.getDato1();                                                     
             if(this.tipo.equals("1")) {
             /*
             frmPrincipal.frmCliente = new frmCliente();
@@ -258,8 +261,8 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
             frmPrincipal.frmCliente.setClosable(true);            
             frmPrincipal.frmCliente.setVisible(true);
             */
-            }else if(this.tipo.equals("2")){
-                frmPrincipal.fisitorepiaView = new frmFisioterapia();
+            }else if(this.tipo.equals("2")){//fisioterapia
+                frmPrincipal.fisitorepiaView = new frmFisioterapia(documento);
                 frmPrincipal.jdstPrincipal.add(frmPrincipal.fisitorepiaView);
                 frmPrincipal.fisitorepiaView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
                 frmPrincipal.fisitorepiaView.setResizable(true);
