@@ -218,8 +218,8 @@ public class Operaciones1 {
         List<ClienteDto> listClientes = this.model.getDatosClientes(nombres, apellidos, documento);
         listClientes.stream().map((cliente) -> new TablaDto(
                 String.valueOf(cliente.getPersonaDto().getNumeroIdentificacion()),
-                Util.getQuitaNULL(cliente.getPersonaDto().getPrimerNombre()+" "+cliente.getPersonaDto().getSegundoNombre()),
-                Util.getQuitaNULL(cliente.getPersonaDto().getPrimerApellido()+" "+cliente.getPersonaDto().getSegundoApellido()),
+                Util.getQuitaNULL(cliente.getPersonaDto().getPrimerNombre()+" "+Util.getQuitaNULL(cliente.getPersonaDto().getSegundoNombre())),
+                Util.getQuitaNULL(cliente.getPersonaDto().getPrimerApellido()+" "+Util.getQuitaNULL(cliente.getPersonaDto().getSegundoApellido())),
                 String.valueOf(cliente.getPersonaDto().calcularEdad()),
                 Util.getQuitaNULL(EGenero.getResult(cliente.getPersonaDto().getGenero()).getNombre()),
                 String.valueOf(cliente.getPersonaDto().getMovil()),

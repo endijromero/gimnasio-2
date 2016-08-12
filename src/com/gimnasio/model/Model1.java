@@ -160,7 +160,7 @@ public class Model1 {
                             + "ps.id, "
                             + "ps.primer_nombre, "
                             + "ps.segundo_nombre, "
-                            + "ps.primer_apeliido, "
+                            + "ps.primer_apellido, "
                             + "ps.segundo_apellido, "
                             + "ps.numero_identificacion, "
                             + "ps.genero,"
@@ -173,13 +173,13 @@ public class Model1 {
                             + " ON cl.persona_id = ps.id "
                             + " WHERE 1=1";                            
             if (!Util.getVacio(nombres)) {
-                sql += " AND CONCAT(ps.primer_nombre,' ',ps.segundo_nombre) LIKE %"+nombres+"% ";                
+                sql += " AND UPPER(CONCAT(ps.primer_nombre,' ',COALESCE(ps.segundo_nombre,''))) LIKE '%"+nombres.toUpperCase()+"%' ";                
             }
             if (!Util.getVacio(apellidos)) {
-                sql += " AND CONCAT(ps.primer_apellido,' ',ps.segundo_apellido) LIKE %"+apellidos+"% ";                
+                sql += " AND UPPER(CONCAT(ps.primer_apellido,' ',COALESCE(ps.segundo_apellido,''))) LIKE '%"+apellidos.toUpperCase()+"%' ";                
             }
             if (!Util.getVacio(documento)) {
-                sql += " AND ps.numero_identificacion LIKE %"+documento+"% ";                
+                sql += " AND ps.numero_identificacion LIKE '%"+documento+"%' ";                
             }
             sql += " ORDER BY ps.id ASC ";
             ResultSet res = stat.executeQuery(sql);
@@ -191,10 +191,10 @@ public class Model1 {
                 persona.setId(res.getLong("id"));
                 persona.setPrimerNombre(res.getString("primer_nombre"));
                 persona.setSegundoNombre(res.getString("segundo_nombre"));
-                persona.setPrimerApellido(res.getString("primer_apeliido"));
-                persona.setSegundoApellido(res.getString("segundo_apeliido"));
+                persona.setPrimerApellido(res.getString("primer_apellido"));
+                persona.setSegundoApellido(res.getString("segundo_apellido"));
                 persona.setNumeroIdentificacion(res.getString("numero_identificacion"));
-                persona.setFechaNacimiento(res.getString("fecha_nocimiento"));
+                persona.setFechaNacimiento(res.getString("fecha_nacimiento"));
                 persona.setGenero(res.getShort("genero"));
                 persona.setMovil(res.getString("movil"));
                 persona.setTelefono(res.getString("telefono"));

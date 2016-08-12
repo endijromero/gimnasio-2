@@ -13,6 +13,8 @@ import com.gimnasio.model.TablaModelo;
 import com.gimnasio.util.Util;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -59,6 +61,8 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
+        lblResultado = new javax.swing.JLabel();
+        lblCantidad_clientes = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtNombres = new javax.swing.JTextField();
@@ -96,20 +100,37 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tblClientes);
 
+        lblResultado.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblResultado.setText("Resultados");
+
+        lblCantidad_clientes.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        lblCantidad_clientes.setText("0");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblResultado)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblCantidad_clientes, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1121, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblResultado)
+                    .addComponent(lblCantidad_clientes))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(144, Short.MAX_VALUE))
         );
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -152,7 +173,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
                 .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(187, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,7 +209,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -199,24 +220,28 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
         if(Util.getVacio(this.txtNombres.getText()) && Util.getVacio(this.txtApellidos.getText()) && Util.getVacio(this.txtDocumento.getText())) {
             JOptionPane.showMessageDialog(null, "Debe Aplicar por lo menos uno de los filtros", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
         } else {        
-            
+            this.setConsultarTableClientes();
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     /**
      * 
-     * @throws SQLException 
      */
-    public void setConsultarTableClientes() throws SQLException {
+    public void setConsultarTableClientes(){
         
-        List<TablaDto> lista = this.operacion.getDescuentosDatosTablaDto(null);
-        this.table.getData().clear();
-        //this.lblCantidad_descuentos.setText(String.valueOf(lista.size()));
-        lista.stream().forEach((dto) -> {
-            this.table.setAgregar(dto);
-        });
-        this.tblClientes.setDefaultRenderer(Object.class, new MiRender(this.table));
-        this.tblClientes.repaint();
+        List<TablaDto> lista;
+        try {
+            lista = this.operacion.getClientesDatosTablaDto(this.txtNombres.getText(), this.txtApellidos.getText(),this.txtDocumento.getText());
+            this.table.getData().clear();
+            this.lblCantidad_clientes.setText(String.valueOf(lista.size()));
+            lista.stream().forEach((dto) -> {
+                this.table.setAgregar(dto);
+            });
+            this.tblClientes.setDefaultRenderer(Object.class, new MiRender(this.table));
+            this.tblClientes.repaint();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmBuscarCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }        
     }
     
     
@@ -254,6 +279,8 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblCantidad_clientes;
+    private javax.swing.JLabel lblResultado;
     private javax.swing.JTable tblClientes;
     private javax.swing.JTextField txtApellidos;
     private javax.swing.JTextField txtDocumento;
