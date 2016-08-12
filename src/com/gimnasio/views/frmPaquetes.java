@@ -7,6 +7,7 @@ import com.gimnasio.model.TablaDto;
 import com.gimnasio.model.TablaModelo;
 import com.gimnasio.model.enums.ESiNo;
 import com.gimnasio.util.Util;
+import com.google.common.base.Joiner;
 import java.awt.Font;
 import java.sql.SQLException;
 import java.util.List;
@@ -344,12 +345,16 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
             if (!Util.getVacio(this.txtDias_aplazamiento.getText())) {
                 this.paqueteDto.setDiasAplazamiento(Short.parseShort(this.txtDias_aplazamiento.getText()));
             }
-            boolean guarda = this.operacion.setGuardarPaquete(this.paqueteDto);
-            if (guarda) {
-                JLabel label = new JLabel("<html>Los datos para el paquete: <b>" + this.paqueteDto.getNombre() + "</b>, fueron guardados correctamente</html>");
-                label.setFont(new Font("serif", Font.PLAIN, 14));
+            List<String> listMessage = this.operacion.setGuardarPaquete(this.paqueteDto);
+            if (listMessage.size() < 1) {
+                JLabel label = new JLabel("<html>El plan <b>" + this.paqueteDto.getNombre().toUpperCase() + "</b> se ha guardado correctamente</html>");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
                 JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
                 this.setConsultarTablePaquetes();
+            } else {
+                JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol>" + Joiner.on("\n").join(listMessage) + "</ol></html>");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
             }
         } catch (SQLException ex) {
             Logger.getLogger(frmPaquetes.class.getName()).log(Level.SEVERE, null, ex);

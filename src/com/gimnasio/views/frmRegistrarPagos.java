@@ -5,6 +5,7 @@
  */
 package com.gimnasio.views;
 
+import com.gimnasio.controller.Operaciones;
 import com.gimnasio.model.ClienteDto;
 import javax.swing.JOptionPane;
 
@@ -15,12 +16,19 @@ import javax.swing.JOptionPane;
 public class frmRegistrarPagos extends javax.swing.JInternalFrame {
 
     protected ClienteDto clienteDto;
+    protected Operaciones operacion;
 
     /**
      * Creates new form frmPagos
+     *
+     * @param operacion
+     * @param clienteDto
      */
-    public frmRegistrarPagos() {
+    public frmRegistrarPagos(Operaciones operacion, ClienteDto clienteDto) {
         initComponents();
+        this.operacion = operacion;
+        this.clienteDto = clienteDto;
+
     }
 
     public ClienteDto getClienteDto() {

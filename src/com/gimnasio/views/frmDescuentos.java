@@ -5,13 +5,8 @@
  */
 package com.gimnasio.views;
 
-import com.gimnasio.controller.Operaciones;
-import com.gimnasio.controller.Operaciones1;
-import com.gimnasio.model.DescuentoDto;
-import com.gimnasio.model.MiRender;
-import com.gimnasio.model.TablaDto;
-import com.gimnasio.model.TablaModelo;
-import com.gimnasio.model.enums.ESiNo;
+import com.gimnasio.controller.*;
+import com.gimnasio.model.*;
 import java.awt.Font;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -30,18 +25,21 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
     private final frmPrincipal padre;
     private final String[] headTable;
     private final TablaModelo table;
-    private final Operaciones1 operacion;
+    private final Operaciones operacion;
     private final DescuentoDto descuentoDto;
+
     /**
      * Creates new form frmDescuentos
+     *
      * @param padre
+     * @param operacion
      * @throws java.sql.SQLException
      */
-    public frmDescuentos(frmPrincipal padre) throws SQLException {
+    public frmDescuentos(frmPrincipal padre, Operaciones operacion) throws SQLException {
         initComponents();
         this.descuentoDto = new DescuentoDto();
-        this.operacion = new Operaciones1();
-        
+        this.operacion = operacion;
+
         this.headTable = new String[]{"Id", "Nombre", "Porcentaje"};
         int widthColumna[] = {50, 200, 100};
         this.table = new TablaModelo(this.headTable);
@@ -55,10 +53,12 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
         this.setConsultarTableDescuentos();
         this.setLimpiar();
     }
-    
-    
+
+    /**
+     *
+     * @throws SQLException
+     */
     public void setConsultarTableDescuentos() throws SQLException {
-        
         List<TablaDto> lista = this.operacion.getDescuentosDatosTablaDto(null);
         this.table.getData().clear();
         this.lblCantidad_descuentos.setText(String.valueOf(lista.size()));
@@ -68,7 +68,7 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
         this.tblDescuentos.setDefaultRenderer(Object.class, new MiRender(this.table));
         this.tblDescuentos.repaint();
     }
-    
+
     public void setLimpiar() {
         this.txtNombre_descuento.setText("");
         this.txtPorcentaje.setText("");
@@ -98,23 +98,30 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
         lblResultado = new javax.swing.JLabel();
         lblCantidad_descuentos = new javax.swing.JLabel();
 
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                setCloseIframeDescuento(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
+
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "AGREGAR", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
         jPanel1.setMaximumSize(new java.awt.Dimension(500, 500));
 
-        txtNombre_descuento.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNombre_descuentoActionPerformed(evt);
-            }
-        });
-
-        txtPorcentaje.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPorcentajeActionPerformed(evt);
-            }
-        });
         txtPorcentaje.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                validarSoloNumero(evt);
+                setValidarSoloNumero(evt);
             }
         });
 
@@ -123,7 +130,7 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
+                setGuardarDescuento(evt);
             }
         });
 
@@ -186,7 +193,7 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
         ));
         tblDescuentos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                editarDescuento(evt);
+                setEditarDescuento(evt);
             }
         });
         jScrollPane1.setViewportView(tblDescuentos);
@@ -248,70 +255,73 @@ public final class frmDescuentos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNombre_descuentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombre_descuentoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNombre_descuentoActionPerformed
-
-    private void txtPorcentajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorcentajeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPorcentajeActionPerformed
-
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
+    private void setGuardarDescuento(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setGuardarDescuento
         try {
-            if(! this.txtNombre_descuento.getText().equals("") && ! this.txtPorcentaje.getText().equals("")) {
-                boolean guarda = false;
-                if(! this.txtNombre_descuento.getText().equals(this.descuentoDto.getNombre())){
-                    guarda = true;
-                    this.descuentoDto.setNombre(this.txtNombre_descuento.getText());
-                }
-                BigDecimal porcentaje = new BigDecimal(this.txtPorcentaje.getText());
-                if(this.descuentoDto.getPorcentaje() != porcentaje) {
-                    guarda = true;                
-                    this.descuentoDto.setPorcentaje(porcentaje);
-                }
-                if(guarda) {
-                    boolean save =this.operacion.setSaveUpdateDescuentos(this.descuentoDto);
-                    if(save) {
-                        JLabel label = new JLabel("<html>Los datos para el Descuento: <b>" + this.descuentoDto.getNombre() + "</b>, fueron guardados correctamente</html>");
-                        label.setFont(new Font("serif", Font.PLAIN, 14));
-                        JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
-                        this.setConsultarTableDescuentos();
-                        this.setLimpiar();
+            if (!this.txtNombre_descuento.getText().equals("") && !this.txtPorcentaje.getText().equals("")) {
+                if (Double.parseDouble(this.txtPorcentaje.getText()) > 0) {
+                    boolean guarda = false;
+                    if (!this.txtNombre_descuento.getText().equals(this.descuentoDto.getNombre())) {
+                        guarda = true;
+                        this.descuentoDto.setNombre(this.txtNombre_descuento.getText());
                     }
+                    BigDecimal porcentaje = new BigDecimal(this.txtPorcentaje.getText());
+                    if (this.descuentoDto.getPorcentaje() != porcentaje) {
+                        guarda = true;
+                        this.descuentoDto.setPorcentaje(porcentaje);
+                    }
+                    if (guarda) {
+                        boolean save = this.operacion.setSaveUpdateDescuentos(this.descuentoDto);
+                        if (save) {
+                            JLabel label = new JLabel("<html>Los datos para el Descuento: <b>" + this.descuentoDto.getNombre() + "</b>, fueron guardados correctamente</html>");
+                            label.setFont(new Font("consolas", Font.PLAIN, 14));
+                            JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
+                            this.setConsultarTableDescuentos();
+                            this.setLimpiar();
+                        }
+                    }
+                } else {
+                    JLabel label = new JLabel("El porcentaje debe ser mayor a 0");
+                    label.setFont(new Font("consolas", Font.PLAIN, 14));
+                    JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Debe ingresar Nombre y Porcentaje", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
+                JLabel label = new JLabel("Debe ingresar Nombre y Porcentaje");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
             }
         } catch (SQLException ex) {
             Logger.getLogger(frmPaquetes.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnGuardarActionPerformed
+    }//GEN-LAST:event_setGuardarDescuento
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
-    private void validarSoloNumero(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_validarSoloNumero
-        // TODO add your handling code here:                                   
+    private void setValidarSoloNumero(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_setValidarSoloNumero
         char c = evt.getKeyChar();
         if (Character.isLetter(c)) {
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(this, "Ingresa solo numeros", "Error de datos", JOptionPane.WARNING_MESSAGE);
-        }    
-    }//GEN-LAST:event_validarSoloNumero
+            JLabel label = new JLabel("Ingrese solo numeros");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Error de datos", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_setValidarSoloNumero
 
-    private void editarDescuento(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editarDescuento
-        // TODO add your handling code here:
-        if(evt.getClickCount() == 2){
+    private void setEditarDescuento(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setEditarDescuento
+        if (evt.getClickCount() == 2) {
             int fila = this.tblDescuentos.getSelectedRow();
             TablaDto dto = (TablaDto) this.table.getData().get(fila);
             this.descuentoDto.setId(Integer.parseInt(dto.getDato1()));
             this.txtNombre_descuento.setText(dto.getDato2());
-            this.txtPorcentaje.setText(dto.getDato3());                        
+            this.txtPorcentaje.setText(dto.getDato3());
         }
-    }//GEN-LAST:event_editarDescuento
+    }//GEN-LAST:event_setEditarDescuento
+
+    private void setCloseIframeDescuento(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_setCloseIframeDescuento
+        this.padre.setDescuentoView(null);
+    }//GEN-LAST:event_setCloseIframeDescuento
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;

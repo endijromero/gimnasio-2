@@ -7,11 +7,9 @@ package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones;
 import com.gimnasio.controller.Operaciones1;
-import com.gimnasio.model.ClienteDto;
 import com.gimnasio.model.ComboDto;
 import com.gimnasio.model.ComboModel;
 import com.gimnasio.model.ProductoDto;
-import com.gimnasio.model.TablaDto;
 import com.gimnasio.model.UsuarioDto;
 import java.awt.Font;
 import java.sql.SQLException;
@@ -27,42 +25,46 @@ import javax.swing.JOptionPane;
  * @author rodolfo
  */
 public class frmCafeteria extends javax.swing.JInternalFrame {
+
     private final ComboModel comboProductos;
-    private final Operaciones1 operacion;
+    private final Operaciones operacion;
     private List<ProductoDto> listaProductos;
     private double precio;
     private UsuarioDto usuarioDto;
-    
-    
+
     /**
      * Creates new form frmCafeteria
+     *
+     * @param operacion
      * @param usuario
      */
-    public frmCafeteria(){
+    public frmCafeteria(Operaciones operacion) {
         initComponents();
-        this.operacion = new Operaciones1();
-        this.comboProductos = new ComboModel();        
-        
+        this.operacion = operacion;
+        this.comboProductos = new ComboModel();
+
         this.comboProductos.getLista().clear();
         this.listaProductos = new ArrayList<>();
-        try {            
+        try {
             this.listaProductos = this.operacion.getProductosDatosDto(null);
             this.comboProductos.getLista().addAll(this.operacion.getProductosDatosComboDto());
-            this.cmbProducto.setModel(this.comboProductos);                       
+            this.cmbProducto.setModel(this.comboProductos);
         } catch (SQLException ex) {
             Logger.getLogger(frmCafeteria.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     /**
-     * 
+     *
      */
-    public void setLimpiar(){        
-        this.txtTotal_pagar.setText("");                
+    public void setLimpiar() {
+        this.txtTotal_pagar.setText("");
         this.txtCantidad.setText("1");
         this.cmbProducto.setSelectedIndex(-1);
         this.cmbProducto.repaint();
-    };
+    }
+
+    ;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -234,21 +236,22 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-        if(! this.txtCantidad.getText().equals("") && ! this.txtTotal_pagar.getText().equals("") && this.cmbProducto.getSelectedItem() != null) {
+        if (!this.txtCantidad.getText().equals("") && !this.txtTotal_pagar.getText().equals("") && this.cmbProducto.getSelectedItem() != null) {
             ComboDto select = (ComboDto) this.cmbProducto.getSelectedItem();
             int id = Integer.valueOf(select.getCodigo());
             boolean save = this.operacion.setSaveUpdateCafeteria(id, this.usuarioDto.getId(), this.txtCantidad.getText(), this.txtTotal_pagar.getText());
-            if(save) {
-                JLabel label = new JLabel("<html>Los datos para el Descuento: <b>" + select.getDescripcion() + "</b>, fueron guardados correctamente</html>");
-                label.setFont(new Font("serif", Font.PLAIN, 14));
+            if (save) {
+                JLabel label = new JLabel("<html>El pago para el producto: <b>" + select.getDescripcion() + "</b>, se guardó correctamente</html>");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
                 JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
-                //this.setConsultarTableDescuentos();
                 this.setLimpiar();
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Debe Selecionar un Producto y Cantidad", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
+            JLabel label = new JLabel("Debe Selecionar un Producto y Cantidad");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void cmbProductoPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_cmbProductoPopupMenuWillBecomeVisible
@@ -258,16 +261,16 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
     private void SelectOpcion(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_SelectOpcion
         // TODO add your handling code here:    
         int id = 0;
-        
-        if(this.cmbProducto.getSelectedIndex() > -1) {
+
+        if (this.cmbProducto.getSelectedIndex() > -1) {
             ComboDto select = (ComboDto) this.cmbProducto.getSelectedItem();
             id = Integer.valueOf(select.getCodigo());
         }
-        if(id > 0) {
+        if (id > 0) {
             for (ProductoDto producto : this.listaProductos) {
-                if(id == producto.getId()) {
-                    this.precio = producto.getPrecio();                    
-                    if(!this.txtCantidad.getText().equals("")) {
+                if (id == producto.getId()) {
+                    this.precio = producto.getPrecio();
+                    if (!this.txtCantidad.getText().equals("")) {
                         double valor = this.precio * Double.parseDouble(this.txtCantidad.getText());
                         this.txtTotal_pagar.setText(String.valueOf(valor));
                     }
@@ -277,8 +280,8 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_SelectOpcion
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyTyped
         // TODO add your handling code here:
@@ -287,16 +290,16 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
             getToolkit().beep();
             evt.consume();
             JOptionPane.showMessageDialog(this, "Ingresa solo numeros", "Error de datos", JOptionPane.WARNING_MESSAGE);
-        } 
+        }
     }//GEN-LAST:event_txtCantidadKeyTyped
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyReleased
         // TODO add your handling code here:
-        if(this.txtCantidad.getText().equals("") || Integer.valueOf(this.txtCantidad.getText()) < 1) {
+        if (this.txtCantidad.getText().equals("") || Integer.valueOf(this.txtCantidad.getText()) < 1) {
             //JOptionPane.showMessageDialog(this, "este no es un valor valido", "Error de datos", JOptionPane.WARNING_MESSAGE);
             this.txtCantidad.setText("");
         } else {
@@ -306,10 +309,10 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCantidadKeyReleased
 
     /**
-     * 
-     * @param usuarioDto 
+     *
+     * @param usuarioDto
      */
-    public void setUsuarioDto(UsuarioDto usuarioDto){
+    public void setUsuarioDto(UsuarioDto usuarioDto) {
         this.usuarioDto = usuarioDto;
     }
 

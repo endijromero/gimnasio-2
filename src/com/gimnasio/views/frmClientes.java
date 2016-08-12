@@ -17,6 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -698,10 +700,9 @@ public class frmClientes extends javax.swing.JInternalFrame {
             setLlenarClienteDto();
             List<String> listMessage = this.operacion.setGuardarCliente(this.clienteDto, true);
             if (listMessage.size() < 1 && this.clienteDto.getId() > 0) {
-                frmPrincipal.frmRegistrarPagos = new frmRegistrarPagos();
+                frmPrincipal.frmRegistrarPagos = new frmRegistrarPagos(operacion, clienteDto);
                 frmPrincipal.jdstPrincipal.add(frmPrincipal.frmRegistrarPagos);
-                frmPrincipal.frmRegistrarPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-                frmPrincipal.frmRegistrarPagos.setClienteDto(this.clienteDto);
+                frmPrincipal.frmRegistrarPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);                  
                 frmPrincipal.frmRegistrarPagos.setResizable(true);
                 frmPrincipal.frmRegistrarPagos.setClosable(true);
                 frmPrincipal.frmRegistrarPagos.setVisible(true);
@@ -748,7 +749,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_setValidaSoloNumeros
 
     private void setValidaEmail(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_setValidaEmail
-        // TODO add your handling code here:
+        setValidaEmail(evt.paramString());
     }//GEN-LAST:event_setValidaEmail
 
     private void setValidarNumeroDocumento(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_setValidarNumeroDocumento
@@ -765,9 +766,22 @@ public class frmClientes extends javax.swing.JInternalFrame {
                 Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
     }//GEN-LAST:event_setValidarNumeroDocumento
-
+    /**
+     * Valida si es correcta la dirección de correo electrónica dada.
+     *
+     * @param email
+     * @return true si es correcta o false si no lo es.
+     */
+    protected static boolean setValidaEmail(String email) {
+        boolean valido = false;
+        Pattern patronEmail = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)(\\.[A-Za-z]{2,})$");
+        Matcher mEmail = patronEmail.matcher(email.toLowerCase());
+        if (mEmail.matches()) {
+            valido = true;
+        }
+        return valido;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFoto;

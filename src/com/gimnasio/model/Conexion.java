@@ -67,7 +67,7 @@ public class Conexion {
         }
     }
 
-    public void commt() {
+    public void commit() {
         try {
             Conexion.conexion.commit();
         } catch (SQLException ex) {

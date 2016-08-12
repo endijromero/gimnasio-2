@@ -5,6 +5,7 @@
  */
 package com.gimnasio.views;
 
+import com.gimnasio.controller.Operaciones;
 import com.gimnasio.controller.Operaciones1;
 import com.gimnasio.model.MiRender;
 import com.gimnasio.model.ProductoDto;
@@ -24,22 +25,23 @@ import javax.swing.JOptionPane;
  */
 public final class frmProductos extends javax.swing.JInternalFrame {
 
+    private final ProductoDto productoDto;
+    private final Operaciones operacion;
     private final frmPrincipal padre;
     private final String[] headTable;
     private final TablaModelo table;
-    private final Operaciones1 operacion;
-    private final ProductoDto productoDto;
 
     /**
      * Creates new form frmProductos
      *
      * @param padre
+     * @param operacion
      * @throws java.sql.SQLException
      */
-    public frmProductos(frmPrincipal padre) throws SQLException {
+    public frmProductos(frmPrincipal padre, Operaciones operacion) throws SQLException {
         initComponents();
         this.padre = padre;
-        this.operacion = new Operaciones1();
+        this.operacion = operacion;
         this.productoDto = new ProductoDto();
         this.headTable = new String[]{"Id", "Nombre", "Precio"};
         int widthColumna[] = {50, 200, 100};
@@ -113,6 +115,24 @@ public final class frmProductos extends javax.swing.JInternalFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 100, Short.MAX_VALUE)
         );
+
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                setCloseIframeProducto(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "AGREGAR", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
         jPanel1.setMaximumSize(new java.awt.Dimension(500, 500));
@@ -288,31 +308,38 @@ public final class frmProductos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_setValidaSoloNumero
 
     private void setGuardarProducto(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setGuardarProducto
-        // TODO add your handling code here:
         try {
             if (!this.txtNombre_producto.getText().equals("") && !this.txtPrecio.getText().equals("")) {
-                boolean guarda = false;
-                if (!this.txtNombre_producto.getText().equals(this.productoDto.getNombre())) {
-                    guarda = true;
-                    this.productoDto.setNombre(this.txtNombre_producto.getText());
-                }
-                Double precio = new Double(this.txtPrecio.getText());
-                if (this.productoDto.getPrecio() != precio) {
-                    guarda = true;
-                    this.productoDto.setPrecio(precio);
-                }
-                if (guarda) {
-                    boolean save = this.operacion.setSaveUpdateProductos(this.productoDto);
-                    if (save) {
-                        JLabel label = new JLabel("<html>Los datos para el producto: <b>" + this.productoDto.getNombre() + "</b>, fueron guardados correctamente</html>");
-                        label.setFont(new Font("serif", Font.PLAIN, 14));
-                        JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
-                        this.setConsultarTableDescuentos();
-                        this.setLimpiar();
+                if (Double.parseDouble(this.txtPrecio.getText()) > 0) {
+                    boolean guarda = false;
+                    if (!this.txtNombre_producto.getText().equals(this.productoDto.getNombre())) {
+                        guarda = true;
+                        this.productoDto.setNombre(this.txtNombre_producto.getText());
                     }
+                    Double precio = new Double(this.txtPrecio.getText());
+                    if (this.productoDto.getPrecio() != precio) {
+                        guarda = true;
+                        this.productoDto.setPrecio(precio);
+                    }
+                    if (guarda) {
+                        boolean save = this.operacion.setSaveUpdateProductos(this.productoDto);
+                        if (save) {
+                            JLabel label = new JLabel("<html>Los datos para el producto: <b>" + this.productoDto.getNombre() + "</b>, fueron guardados correctamente</html>");
+                            label.setFont(new Font("consolas", Font.PLAIN, 14));
+                            JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
+                            this.setConsultarTableDescuentos();
+                            this.setLimpiar();
+                        }
+                    }
+                } else {
+                    JLabel label = new JLabel("El precio del producto debe ser mayor a 0");
+                    label.setFont(new Font("consolas", Font.PLAIN, 14));
+                    JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Debe ingresar Nombre y Precio", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
+                JLabel label = new JLabel("Debe ingresar Nombre y Precio");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
             }
         } catch (SQLException ex) {
             Logger.getLogger(frmPaquetes.class.getName()).log(Level.SEVERE, null, ex);
@@ -331,6 +358,10 @@ public final class frmProductos extends javax.swing.JInternalFrame {
             this.txtPrecio.setText(dto.getDato3());
         }
     }//GEN-LAST:event_setEditarProducto
+
+    private void setCloseIframeProducto(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_setCloseIframeProducto
+        this.padre.setProductoView(null);
+    }//GEN-LAST:event_setCloseIframeProducto
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

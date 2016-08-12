@@ -5,7 +5,7 @@
  */
 package com.gimnasio.views;
 
-import com.gimnasio.controller.Operaciones1;
+import com.gimnasio.controller.Operaciones;
 import com.gimnasio.model.FisioterapiaDto;
 import com.gimnasio.model.enums.EGenero;
 import com.gimnasio.util.Util;
@@ -24,90 +24,92 @@ import javax.swing.JOptionPane;
  */
 public final class frmFisioterapia extends javax.swing.JInternalFrame {
 
-    private final Operaciones1 operacion;
-    private FisioterapiaDto fisioterapiaDto;    
+    private final Operaciones operacion;
+    private FisioterapiaDto fisioterapiaDto;
+
     /**
      * Creates new form frmFisioterapia
+     *
+     * @param operacion
      * @param documento
      */
-    public frmFisioterapia(String documento) {
+    public frmFisioterapia(Operaciones operacion, String documento) {
         initComponents();
-        this.operacion = new Operaciones1();
-        try {            
+        this.operacion = operacion;
+        try {
             this.getAsignarFisioterapia(documento);
         } catch (SQLException ex) {
             Logger.getLogger(frmFisioterapia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
-     * 
-     * @param documento 
-     * @throws java.sql.SQLException 
+     *
+     * @param documento
+     * @throws java.sql.SQLException
      */
     public void getAsignarFisioterapia(String documento) throws SQLException {
-        
         this.fisioterapiaDto = this.operacion.getFisioterapiaDto(documento);
-        
+
         this.txtMMSS.setText(String.valueOf(fisioterapiaDto.getTest_mmss()));
         this.txtMMII.setText(String.valueOf(fisioterapiaDto.getTest_mmii()));
-        
+
         this.txtTest_uno.setText(String.valueOf(fisioterapiaDto.getTest_uno()));
         this.txtTest_dos.setText(String.valueOf(fisioterapiaDto.getTest_dos()));
         this.txtTest_tres.setText(String.valueOf(fisioterapiaDto.getTest_tres()));
         this.getTestFlexibilidad();
-        
+
         this.txtTriceps.setText(String.valueOf(fisioterapiaDto.getTriceps()));
         this.txtSiliaco.setText(String.valueOf(fisioterapiaDto.getSiliaco()));
         this.txtAbdomen.setText(String.valueOf(fisioterapiaDto.getAbdomen()));
         this.txtMuslo_ant.setText(String.valueOf(fisioterapiaDto.getMuslo_ant()));
         this.txtPectoral.setText(String.valueOf(fisioterapiaDto.getPectoral()));
         this.getPorcentajeGrasa();
-        
+
         this.txtPeso.setText(String.valueOf(fisioterapiaDto.getPeso()));
         this.txtTalla.setText(String.valueOf(fisioterapiaDto.getTalla()));
         this.getIMC();
-        
+
         this.txtObservaciones.setText(fisioterapiaDto.getObservaciones());
-        
+
         this.lblNombre.setText(this.fisioterapiaDto.getClienteDto().getPersonaDto().getNombreCompleto());
         this.lblDocumento.setText(this.fisioterapiaDto.getClienteDto().getPersonaDto().getNumeroIdentificacion());
-        
-        if(this.fisioterapiaDto.getClienteDto().getPersonaDto().getEdad() > 0) {            
+
+        if (this.fisioterapiaDto.getClienteDto().getPersonaDto().getEdad() > 0) {
             this.lblEdad.setText(String.valueOf(this.fisioterapiaDto.getClienteDto().getPersonaDto().getEdad()));
         }
-        
-        if(this.fisioterapiaDto.getClienteDto().getPersonaDto().getGenero() == EGenero.FEMENIMO.getId()) {
+
+        if (this.fisioterapiaDto.getClienteDto().getPersonaDto().getGenero() == EGenero.FEMENIMO.getId()) {
             this.txtPectoral.setEditable(false);
             this.txtAbdomen.setEditable(false);
-        }else if(this.fisioterapiaDto.getClienteDto().getPersonaDto().getGenero() == EGenero.MASCULINO.getId()) {
+        } else if (this.fisioterapiaDto.getClienteDto().getPersonaDto().getGenero() == EGenero.MASCULINO.getId()) {
             this.txtTriceps.setEditable(false);
             this.txtSiliaco.setEditable(false);
         }
     }
-    
+
     /**
-     * 
+     *
      */
-    public void setLLenarFisiterapiaDto(){
-        
+    public void setLLenarFisiterapiaDto() {
+
         this.fisioterapiaDto.setTest_mmss(!Util.getVacio(this.txtMMSS.getText()) ? Double.valueOf(this.txtMMSS.getText()) : 0);
-        this.fisioterapiaDto.setTest_mmii(!Util.getVacio(this.txtMMII.getText()) ? Double.valueOf(this.txtMMII.getText()) : 0);        
-        
+        this.fisioterapiaDto.setTest_mmii(!Util.getVacio(this.txtMMII.getText()) ? Double.valueOf(this.txtMMII.getText()) : 0);
+
         this.fisioterapiaDto.setTest_uno(!Util.getVacio(this.txtTest_uno.getText()) ? Double.valueOf(this.txtTest_uno.getText()) : 0);
-        this.fisioterapiaDto.setTest_dos(!Util.getVacio(this.txtTest_dos.getText()) ? Double.valueOf(this.txtTest_dos.getText()) :0 );  
-        this.fisioterapiaDto.setTest_tres(!Util.getVacio(this.txtTest_tres.getText()) ? Double.valueOf(this.txtTest_tres.getText()): 0);                 
-        
-        this.fisioterapiaDto.setTriceps(!Util.getVacio(this.txtTriceps.getText()) ? Double.valueOf(this.txtTriceps.getText()) : 0 );
-        this.fisioterapiaDto.setSiliaco(!Util.getVacio(this.txtSiliaco.getText()) ? Double.valueOf(this.txtSiliaco.getText()) : 0 );        
-        this.fisioterapiaDto.setAbdomen(!Util.getVacio(this.txtAbdomen.getText()) ? Double.valueOf(this.txtAbdomen.getText()) : 0); 
-        this.fisioterapiaDto.setMuslo_ant(!Util.getVacio(this.txtMuslo_ant.getText()) ? Double.valueOf(this.txtMuslo_ant.getText()) :0 );
-        this.fisioterapiaDto.setPectoral(!Util.getVacio(this.txtPectoral.getText()) ? Double.valueOf(this.txtPectoral.getText()) : 0);               
-        
-        this.fisioterapiaDto.setPeso(!Util.getVacio(this.txtPeso.getText()) ?  Double.valueOf(this.txtPeso.getText()) : 0 );
-        this.fisioterapiaDto.setTalla(!Util.getVacio(this.txtTalla.getText()) ? Double.valueOf(this.txtTalla.getText()) :0 );    
-        
-        this.fisioterapiaDto.setObservaciones(this.txtObservaciones.getText()); 
+        this.fisioterapiaDto.setTest_dos(!Util.getVacio(this.txtTest_dos.getText()) ? Double.valueOf(this.txtTest_dos.getText()) : 0);
+        this.fisioterapiaDto.setTest_tres(!Util.getVacio(this.txtTest_tres.getText()) ? Double.valueOf(this.txtTest_tres.getText()) : 0);
+
+        this.fisioterapiaDto.setTriceps(!Util.getVacio(this.txtTriceps.getText()) ? Double.valueOf(this.txtTriceps.getText()) : 0);
+        this.fisioterapiaDto.setSiliaco(!Util.getVacio(this.txtSiliaco.getText()) ? Double.valueOf(this.txtSiliaco.getText()) : 0);
+        this.fisioterapiaDto.setAbdomen(!Util.getVacio(this.txtAbdomen.getText()) ? Double.valueOf(this.txtAbdomen.getText()) : 0);
+        this.fisioterapiaDto.setMuslo_ant(!Util.getVacio(this.txtMuslo_ant.getText()) ? Double.valueOf(this.txtMuslo_ant.getText()) : 0);
+        this.fisioterapiaDto.setPectoral(!Util.getVacio(this.txtPectoral.getText()) ? Double.valueOf(this.txtPectoral.getText()) : 0);
+
+        this.fisioterapiaDto.setPeso(!Util.getVacio(this.txtPeso.getText()) ? Double.valueOf(this.txtPeso.getText()) : 0);
+        this.fisioterapiaDto.setTalla(!Util.getVacio(this.txtTalla.getText()) ? Double.valueOf(this.txtTalla.getText()) : 0);
+
+        this.fisioterapiaDto.setObservaciones(this.txtObservaciones.getText());
 
     }
 
@@ -919,7 +921,7 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
 
     private void txtMMSSKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMMSSKeyReleased
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_txtMMSSKeyReleased
 
     private void validarSoloNumero(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_validarSoloNumero
@@ -1079,7 +1081,7 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
 
     private void txtPesoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesoKeyReleased
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_txtPesoKeyReleased
 
     private void txtPesoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesoKeyTyped
@@ -1112,47 +1114,47 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
     private void txtIMCKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIMCKeyTyped
         // TODO add your handling code here:
     }//GEN-LAST:event_txtIMCKeyTyped
-    
+
     /**
-     * 
+     *
      */
     public void getIMC() {
         double imc = this.fisioterapiaDto.setCalcularIMC();
-        if(imc > 0) {            
+        if (imc > 0) {
             this.txtIMC.setText(String.valueOf(imc));
-        }        
+        }
     }
-    
+
     /**
-     * 
+     *
      */
-    public void getTestFlexibilidad(){
+    public void getTestFlexibilidad() {
         double test = this.fisioterapiaDto.setCalculaTesFlexibilidad();
-        if(test >0 ) {
+        if (test > 0) {
             this.txtPromedio_flexibilidad.setText(String.valueOf(test));
         }
     }
-    
+
     /**
-     * 
+     *
      */
-    public void getPorcentajeGrasa(){
-        this.fisioterapiaDto.getJacksonPollock();        
-        if(this.fisioterapiaDto.getDensidad() > 0 ) {
+    public void getPorcentajeGrasa() {
+        this.fisioterapiaDto.getJacksonPollock();
+        if (this.fisioterapiaDto.getDensidad() > 0) {
             this.txtDensidad_grasa.setText(String.valueOf(this.fisioterapiaDto.getDensidad()));
         } else {
             this.txtDensidad_grasa.setText("");
         }
-        if(this.fisioterapiaDto.getPorcentaje() > 0) {
+        if (this.fisioterapiaDto.getPorcentaje() > 0) {
             this.txtPorcentaje_grasa.setText(String.valueOf(this.fisioterapiaDto.getPorcentaje()));
         } else {
             this.txtPorcentaje_grasa.setText("");
         }
     }
-    
+
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
@@ -1160,11 +1162,11 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
         List<String> listMessage = this.operacion.setGuardarFisioterapia(this.fisioterapiaDto);
         if (listMessage.size() < 1) {
             JLabel label = new JLabel("<html>Los datos del cliente: <b>" + this.fisioterapiaDto.getClienteDto().getPersonaDto().getNombreCompleto() + "</b>, fueron guardados correctamente</html>");
-            label.setFont(new Font("serif", Font.PLAIN, 14));
-            JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);            
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ul>" + Joiner.on("\n").join(listMessage) + "</ul></html>");
-            label.setFont(new Font("verdana", Font.PLAIN, 14));
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
             JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -1172,7 +1174,7 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
     private void txtPesoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPesoFocusLost
         // TODO add your handling code here:
         double peso = 0;
-        if(!Util.getVacio(this.txtPeso.getText())) {
+        if (!Util.getVacio(this.txtPeso.getText())) {
             peso = Double.valueOf(this.txtPeso.getText());
         }
         this.fisioterapiaDto.setPeso(peso);
@@ -1180,27 +1182,27 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtPesoFocusLost
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void txtTallaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTallaFocusLost
         // TODO add your handling code here:
         double talla = 0;
-        if(!Util.getVacio(this.txtTalla.getText())) {
+        if (!Util.getVacio(this.txtTalla.getText())) {
             talla = Double.valueOf(this.txtTalla.getText());
         }
         this.fisioterapiaDto.setTalla(talla);
         this.getIMC();
     }//GEN-LAST:event_txtTallaFocusLost
-    
+
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void txtTest_unoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTest_unoFocusLost
         // TODO add your handling code here:
         double test = 0;
-        if(!Util.getVacio(this.txtTest_uno.getText())) {
+        if (!Util.getVacio(this.txtTest_uno.getText())) {
             test = Double.valueOf(this.txtTest_uno.getText());
         }
         this.fisioterapiaDto.setTest_uno(test);
@@ -1208,27 +1210,27 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtTest_unoFocusLost
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void txtTest_dosFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTest_dosFocusLost
         // TODO add your handling code here:
         double test = 0;
-        if(!Util.getVacio(this.txtTest_dos.getText())) {
+        if (!Util.getVacio(this.txtTest_dos.getText())) {
             test = Double.valueOf(this.txtTest_dos.getText());
         }
         this.fisioterapiaDto.setTest_dos(test);
         this.getTestFlexibilidad();
     }//GEN-LAST:event_txtTest_dosFocusLost
-    
+
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void txtTest_tresFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTest_tresFocusLost
         // TODO add your handling code here:
         double test = 0;
-        if(!Util.getVacio(this.txtTest_tres.getText())) {
+        if (!Util.getVacio(this.txtTest_tres.getText())) {
             test = Double.valueOf(this.txtTest_tres.getText());
         }
         this.fisioterapiaDto.setTest_tres(test);
@@ -1248,13 +1250,13 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtPorcentaje_grasaKeyTyped
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void txtTricepsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTricepsFocusLost
         // TODO add your handling code here:
         double tricep = 0;
-        if(!Util.getVacio(this.txtTriceps.getText())) {
+        if (!Util.getVacio(this.txtTriceps.getText())) {
             tricep = Double.valueOf(this.txtTriceps.getText());
         }
         this.fisioterapiaDto.setTriceps(tricep);
@@ -1262,13 +1264,13 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtTricepsFocusLost
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void txtSiliacoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSiliacoFocusLost
         // TODO add your handling code here:
         double siliaco = 0;
-        if(!Util.getVacio(this.txtSiliaco.getText())) {
+        if (!Util.getVacio(this.txtSiliaco.getText())) {
             siliaco = Double.valueOf(this.txtSiliaco.getText());
         }
         this.fisioterapiaDto.setSiliaco(siliaco);
@@ -1276,13 +1278,13 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtSiliacoFocusLost
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void txtPectoralFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPectoralFocusLost
         // TODO add your handling code here:
         double pectoral = 0;
-        if(!Util.getVacio(this.txtPectoral.getText())) {
+        if (!Util.getVacio(this.txtPectoral.getText())) {
             pectoral = Double.valueOf(this.txtPectoral.getText());
         }
         this.fisioterapiaDto.setPectoral(pectoral);
@@ -1290,13 +1292,13 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtPectoralFocusLost
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void txtAbdomenFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtAbdomenFocusLost
         // TODO add your handling code here:
         double abdomen = 0;
-        if(!Util.getVacio(this.txtAbdomen.getText())) {
+        if (!Util.getVacio(this.txtAbdomen.getText())) {
             abdomen = Double.valueOf(this.txtAbdomen.getText());
         }
         this.fisioterapiaDto.setAbdomen(abdomen);
@@ -1304,20 +1306,19 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtAbdomenFocusLost
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void txtMuslo_antFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMuslo_antFocusLost
         // TODO add your handling code here:
         double muslo = 0;
-        if(!Util.getVacio(this.txtMuslo_ant.getText())) {
+        if (!Util.getVacio(this.txtMuslo_ant.getText())) {
             muslo = Double.valueOf(this.txtMuslo_ant.getText());
         }
         this.fisioterapiaDto.setMuslo_ant(muslo);
         this.getPorcentajeGrasa();
     }//GEN-LAST:event_txtMuslo_antFocusLost
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;

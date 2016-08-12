@@ -156,12 +156,14 @@ public class frmPagos extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         if(evt.getClickCount() == 2) {
             //JOptionPane.showMessageDialog(null, "doble clik", "", JOptionPane.WARNING_MESSAGE); 
-            frmPrincipal.frmRegistrarPagos = new frmRegistrarPagos();
-            frmPrincipal.jdstPrincipal.add(frmPrincipal.frmRegistrarPagos);
-            frmPrincipal.frmRegistrarPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-            frmPrincipal.frmRegistrarPagos.setResizable(true);
-            frmPrincipal.frmRegistrarPagos.setClosable(true);            
-            frmPrincipal.frmRegistrarPagos.setVisible(true);
+            /*
+                frmPrincipal.frmRegistrarPagos = new frmRegistrarPagos();
+                frmPrincipal.jdstPrincipal.add(frmPrincipal.frmRegistrarPagos);
+                frmPrincipal.frmRegistrarPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                frmPrincipal.frmRegistrarPagos.setResizable(true);
+                frmPrincipal.frmRegistrarPagos.setClosable(true);            
+                frmPrincipal.frmRegistrarPagos.setVisible(true);
+            */
             
             //this.setVisible(false);
         }

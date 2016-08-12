@@ -5,11 +5,11 @@
  */
 package com.gimnasio.views;
 
-import com.gimnasio.controller.Operaciones1;
-import com.gimnasio.model.DescuentoDto;
+import com.gimnasio.controller.Operaciones;
 import com.gimnasio.model.MiRender;
 import com.gimnasio.model.TablaDto;
 import com.gimnasio.model.TablaModelo;
+import com.gimnasio.model.UsuarioDto;
 import com.gimnasio.util.Util;
 import java.sql.SQLException;
 import java.util.List;
@@ -23,30 +23,58 @@ import javax.swing.JOptionPane;
  */
 public class frmBuscarCliente extends javax.swing.JInternalFrame {
 
-    private final String tipo;
-    
+    private UsuarioDto usuarioSessionDto;
     private final String[] headTable;
     private final TablaModelo table;
-    private final Operaciones1 operacion;    
+    protected Operaciones operacion;
+    protected frmPrincipal padre;
+    private final String tipo;
+
     /**
      * Creates new form frmCliente
+     *
+     * @param operacion
      * @param tipo
      */
-    public frmBuscarCliente(String tipo) {
+    public frmBuscarCliente(Operaciones operacion, String tipo) {
         initComponents();
+
+        this.operacion = operacion;
         this.tipo = tipo;
-        
-        this.operacion = new Operaciones1();
-        
+
         this.headTable = new String[]{"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"};
         int widthColumna[] = {100, 200, 200, 50, 50, 100, 100, 200};
         this.table = new TablaModelo(this.headTable);
         this.tblClientes.setModel(this.table);
-        
+
         int columnas = this.tblClientes.getColumnCount();
         for (int i = 0; i < columnas; i++) {
             this.tblClientes.getColumnModel().getColumn(i).setPreferredWidth(widthColumna[i]);
-        } 
+        }
+    }
+
+    /**
+     *
+     * @param padre
+     * @param operacion
+     * @param tipo
+     */
+    public frmBuscarCliente(frmPrincipal padre, Operaciones operacion, String tipo) {
+        initComponents();
+
+        this.operacion = operacion;
+        this.padre = padre;
+        this.tipo = tipo;
+
+        this.headTable = new String[]{"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"};
+        int widthColumna[] = {100, 200, 200, 50, 50, 100, 100, 200};
+        this.table = new TablaModelo(this.headTable);
+        this.tblClientes.setModel(this.table);
+
+        int columnas = this.tblClientes.getColumnCount();
+        for (int i = 0; i < columnas; i++) {
+            this.tblClientes.getColumnModel().getColumn(i).setPreferredWidth(widthColumna[i]);
+        }
     }
 
     /**
@@ -72,6 +100,24 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
         txtDocumento = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
 
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                setCloseIframeBusquedaCliente(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
+
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "LISTA DE CLIENTES", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
         tblClientes.setModel(new javax.swing.table.DefaultTableModel(
@@ -95,7 +141,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
         });
         tblClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblClientesMouseClicked(evt);
+                setClienteProceso(evt);
             }
         });
         jScrollPane1.setViewportView(tblClientes);
@@ -179,15 +225,16 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel4)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2)
+                        .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
@@ -217,21 +264,17 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
-        if(Util.getVacio(this.txtNombres.getText()) && Util.getVacio(this.txtApellidos.getText()) && Util.getVacio(this.txtDocumento.getText())) {
+        if (Util.getVacio(this.txtNombres.getText()) && Util.getVacio(this.txtApellidos.getText()) && Util.getVacio(this.txtDocumento.getText())) {
             JOptionPane.showMessageDialog(null, "Debe Aplicar por lo menos uno de los filtros", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
-        } else {        
+        } else {
             this.setConsultarTableClientes();
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    /**
-     * 
-     */
-    public void setConsultarTableClientes(){
-        
+    public void setConsultarTableClientes() {
         List<TablaDto> lista;
         try {
-            lista = this.operacion.getClientesDatosTablaDto(this.txtNombres.getText(), this.txtApellidos.getText(),this.txtDocumento.getText());
+            lista = this.operacion.getClientesDatosTablaDto(this.txtNombres.getText(), this.txtApellidos.getText(), this.txtDocumento.getText());
             this.table.getData().clear();
             this.lblCantidad_clientes.setText(String.valueOf(lista.size()));
             lista.stream().forEach((dto) -> {
@@ -241,37 +284,56 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
             this.tblClientes.repaint();
         } catch (SQLException ex) {
             Logger.getLogger(frmBuscarCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
     }
-    
-    
-    
-    private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
+
+
+    private void setClienteProceso(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setClienteProceso
         // TODO add your handling code here:
-        if(evt.getClickCount() == 2) {            
+        if (evt.getClickCount() == 2) {
             int fila = this.tblClientes.getSelectedRow();
             TablaDto dto = (TablaDto) this.table.getData().get(fila);
-            String documento = dto.getDato1();                                                     
-            if(this.tipo.equals("1")) {
+            String documento = dto.getDato1();
+            if (this.tipo.equals("1")) {
                 /*
-                frmPrincipal.frmCliente = new frmCliente();
-                frmPrincipal.jdstPrincipal.add(frmPrincipal.frmCliente);
-                frmPrincipal.frmCliente.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-                frmPrincipal.frmCliente.setResizable(true);
-                frmPrincipal.frmCliente.setClosable(true);            
-                frmPrincipal.frmCliente.setVisible(true);
-                */
-            }else if(this.tipo.equals("2")){//fisioterapia
-                frmPrincipal.fisitorepiaView = new frmFisioterapia(documento);
+                 frmPrincipal.frmCliente = new frmCliente();
+                 frmPrincipal.jdstPrincipal.add(frmPrincipal.frmCliente);
+                 frmPrincipal.frmCliente.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                 frmPrincipal.frmCliente.setResizable(true);
+                 frmPrincipal.frmCliente.setClosable(true);            
+                 frmPrincipal.frmCliente.setVisible(true);
+                 */
+            } else if (this.tipo.equals("2")) {//fisioterapia
+                frmPrincipal.fisitorepiaView = new frmFisioterapia(this.operacion, documento);
                 frmPrincipal.jdstPrincipal.add(frmPrincipal.fisitorepiaView);
                 frmPrincipal.fisitorepiaView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
                 frmPrincipal.fisitorepiaView.setResizable(true);
-                frmPrincipal.fisitorepiaView.setClosable(true);            
+                frmPrincipal.fisitorepiaView.setClosable(true);
                 frmPrincipal.fisitorepiaView.setVisible(true);
             }
             //this.setVisible(false);
         }
-    }//GEN-LAST:event_tblClientesMouseClicked
+    }//GEN-LAST:event_setClienteProceso
+
+    private void setCloseIframeBusquedaCliente(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_setCloseIframeBusquedaCliente
+        switch (Integer.parseInt(this.tipo)) {
+            case 1: {
+            }
+            break;
+            case 2: {
+                this.padre.setBuscarClienteView(null);
+            }
+            break;
+        }
+    }//GEN-LAST:event_setCloseIframeBusquedaCliente
+
+    public UsuarioDto getUsuarioSessionDto() {
+        return usuarioSessionDto;
+    }
+
+    public void setUsuarioSessionDto(UsuarioDto usuarioSessionDto) {
+        this.usuarioSessionDto = usuarioSessionDto;
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
