@@ -7,6 +7,7 @@ package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones1;
 import com.gimnasio.model.FisioterapiaDto;
+import com.gimnasio.model.enums.EGenero;
 import com.gimnasio.util.Util;
 import com.google.common.base.Joiner;
 import java.awt.Font;
@@ -70,9 +71,18 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
         this.txtObservaciones.setText(fisioterapiaDto.getObservaciones());
         
         this.lblNombre.setText(this.fisioterapiaDto.getClienteDto().getPersonaDto().getNombreCompleto());
+        this.lblDocumento.setText(this.fisioterapiaDto.getClienteDto().getPersonaDto().getNumeroIdentificacion());
         
         if(this.fisioterapiaDto.getClienteDto().getPersonaDto().getEdad() > 0) {            
             this.lblEdad.setText(String.valueOf(this.fisioterapiaDto.getClienteDto().getPersonaDto().getEdad()));
+        }
+        
+        if(this.fisioterapiaDto.getClienteDto().getPersonaDto().getGenero() == EGenero.FEMENIMO.getId()) {
+            this.txtPectoral.setEditable(false);
+            this.txtAbdomen.setEditable(false);
+        }else if(this.fisioterapiaDto.getClienteDto().getPersonaDto().getGenero() == EGenero.MASCULINO.getId()) {
+            this.txtTriceps.setEditable(false);
+            this.txtSiliaco.setEditable(false);
         }
     }
     
@@ -115,6 +125,8 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
         jLabel21 = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
         lblEdad = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        lblDocumento = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         txtMMSS = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -162,11 +174,11 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
 
         jLabel20.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel20.setText("Nombre");
+        jLabel20.setText("Nombre:");
 
         jLabel21.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel21.setText("Edad");
+        jLabel21.setText("Edad:");
 
         lblNombre.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblNombre.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -174,35 +186,47 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
         lblEdad.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         lblEdad.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
+        jLabel22.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel22.setText("Documento:");
+
+        lblDocumento.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblDocumento.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblEdad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(lblDocumento, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
+                    .addComponent(lblEdad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                    .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel22)
+                    .addComponent(lblDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
                     .addComponent(lblEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addGap(6, 6, 6))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TEST DE MMSS", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
@@ -840,7 +864,7 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -865,7 +889,7 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(0, 3, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1135,7 +1159,9 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
         this.setLLenarFisiterapiaDto();
         List<String> listMessage = this.operacion.setGuardarFisioterapia(this.fisioterapiaDto);
         if (listMessage.size() < 1) {
-            
+            JLabel label = new JLabel("<html>Los datos del cliente: <b>" + this.fisioterapiaDto.getClienteDto().getPersonaDto().getNombreCompleto() + "</b>, fueron guardados correctamente</html>");
+            label.setFont(new Font("serif", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);            
         } else {
             JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ul>" + Joiner.on("\n").join(listMessage) + "</ul></html>");
             label.setFont(new Font("verdana", Font.PLAIN, 14));
@@ -1307,6 +1333,7 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1322,6 +1349,7 @@ public final class frmFisioterapia extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblDocumento;
     private javax.swing.JLabel lblEdad;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JTextField txtAbdomen;

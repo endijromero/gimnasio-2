@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -280,6 +282,40 @@ public class Model1 {
             fisioterapia.setClienteDto(dto);
         }
         return fisioterapia;
+    }
+    
+    /**
+     * 
+     * @param fisioterapia
+     * @return 
+     */
+    public boolean getSaveFisioterapia(FisioterapiaDto fisioterapia)  throws SQLException {
+        PreparedStatement stat = null;      
+        try {
+            stat = this.conexion.getConexion().prepareStatement("UPDATE clientes SET peso = ?, talla =?, muslo_ant =?, triceps =?, pectoral =?, siliaco =?, abdomen =?, test_mmss =?, test_mmii =?, test_uno=?, test_dos =?, test_tres =?, observaciones =? WHERE id =? ");
+            stat.setDouble(1, fisioterapia.getPeso());
+            stat.setDouble(2, fisioterapia.getTalla());  
+            stat.setDouble(3, fisioterapia.getMuslo_ant());
+            stat.setDouble(4, fisioterapia.getTriceps());
+            stat.setDouble(5, fisioterapia.getPectoral());
+            stat.setDouble(6, fisioterapia.getSiliaco());
+            stat.setDouble(7, fisioterapia.getAbdomen());
+            stat.setDouble(8, fisioterapia.getTest_mmss());
+            stat.setDouble(9, fisioterapia.getTest_mmii());
+            stat.setDouble(10, fisioterapia.getTest_uno());
+            stat.setDouble(11, fisioterapia.getTest_dos());
+            stat.setDouble(12, fisioterapia.getTest_tres());
+            stat.setString(13, fisioterapia.getObservaciones());
+            stat.setLong(14,fisioterapia.getClienteDto().getId());
+            stat.execute();
+            stat.close();
+        } catch (SQLException ex) {
+            this.conexion.rollback();
+            Logger.getLogger(SQLException.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            this.conexion.commt();
+        }
+        return true;
     }
 
     public List<Object> getListPersist() {

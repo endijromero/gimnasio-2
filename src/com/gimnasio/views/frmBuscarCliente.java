@@ -253,14 +253,14 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
             TablaDto dto = (TablaDto) this.table.getData().get(fila);
             String documento = dto.getDato1();                                                     
             if(this.tipo.equals("1")) {
-            /*
-            frmPrincipal.frmCliente = new frmCliente();
-            frmPrincipal.jdstPrincipal.add(frmPrincipal.frmCliente);
-            frmPrincipal.frmCliente.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-            frmPrincipal.frmCliente.setResizable(true);
-            frmPrincipal.frmCliente.setClosable(true);            
-            frmPrincipal.frmCliente.setVisible(true);
-            */
+                /*
+                frmPrincipal.frmCliente = new frmCliente();
+                frmPrincipal.jdstPrincipal.add(frmPrincipal.frmCliente);
+                frmPrincipal.frmCliente.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                frmPrincipal.frmCliente.setResizable(true);
+                frmPrincipal.frmCliente.setClosable(true);            
+                frmPrincipal.frmCliente.setVisible(true);
+                */
             }else if(this.tipo.equals("2")){//fisioterapia
                 frmPrincipal.fisitorepiaView = new frmFisioterapia(documento);
                 frmPrincipal.jdstPrincipal.add(frmPrincipal.fisitorepiaView);

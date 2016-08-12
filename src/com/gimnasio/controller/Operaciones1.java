@@ -202,7 +202,11 @@ public class Operaciones1 {
             listMessages.add("<li>INDICE DE MASA CORPORAL: Talla</li>");
         }
         if(listMessages.size() < 1) {
-            
+            try {
+                this.model.getSaveFisioterapia(fisioterapia);
+            } catch (SQLException ex) {
+                Logger.getLogger(Operaciones1.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return listMessages;
     }
