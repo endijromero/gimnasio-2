@@ -54,7 +54,7 @@ public class frmLogin extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFocusCycleRoot(false);
         setLocation(new java.awt.Point(300, 400));
-        setMinimumSize(new java.awt.Dimension(360, 370));
+        setMinimumSize(new java.awt.Dimension(360, 390));
         setResizable(false);
         getContentPane().setLayout(null);
 
@@ -106,8 +106,8 @@ public class frmLogin extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/textura.jpg"))); // NOI18N
         jLabel1.setToolTipText("Usuario");
-        jLabel1.setMaximumSize(new java.awt.Dimension(500, 200));
-        jLabel1.setMinimumSize(new java.awt.Dimension(500, 200));
+        jLabel1.setMaximumSize(new java.awt.Dimension(520, 200));
+        jLabel1.setMinimumSize(new java.awt.Dimension(520, 200));
         jLabel1.setName(""); // NOI18N
         getContentPane().add(jLabel1);
         jLabel1.setBounds(0, 0, 360, 370);
