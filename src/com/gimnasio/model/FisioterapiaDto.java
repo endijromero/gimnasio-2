@@ -209,7 +209,7 @@ public class FisioterapiaDto implements java.io.Serializable  {
         double sumatoria = 0;
         double densidad = 0;
         double porcentaje = 0;
-        double edad = this.getClienteDto().getPersonaDto().calcularEdad();
+        double edad = this.getClienteDto().getPersonaDto().getEdad();
         if(this.getClienteDto().getPersonaDto().getGenero() == EGenero.MASCULINO.getId()) { //Hombre
             if(this.getPectoral() > 0 && this.getMuslo_ant() >0 && this.getAbdomen() > 0) {
                 double a = 1.1093800;

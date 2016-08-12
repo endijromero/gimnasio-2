@@ -220,7 +220,7 @@ public class Operaciones1 {
                 String.valueOf(cliente.getPersonaDto().getNumeroIdentificacion()),
                 Util.getQuitaNULL(cliente.getPersonaDto().getPrimerNombre()+" "+Util.getQuitaNULL(cliente.getPersonaDto().getSegundoNombre())),
                 Util.getQuitaNULL(cliente.getPersonaDto().getPrimerApellido()+" "+Util.getQuitaNULL(cliente.getPersonaDto().getSegundoApellido())),
-                String.valueOf(cliente.getPersonaDto().calcularEdad()),
+                String.valueOf(cliente.getPersonaDto().getEdad()),
                 Util.getQuitaNULL(EGenero.getResult(cliente.getPersonaDto().getGenero()).getNombre()),
                 String.valueOf(Util.getQuitaNULL(cliente.getPersonaDto().getMovil())),
                 String.valueOf(Util.getQuitaNULL(cliente.getPersonaDto().getTelefono())),
