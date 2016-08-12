@@ -8,8 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -410,7 +408,7 @@ public class Model {
                         + "direccion = ?, barrio = ?, "
                         + "telefono = ?, movil = ?, "
                         + "email = ?, huella_dactilar = ?, "
-                        + "foto_perfil = ? "
+                        + "foto_perfil = ?,fecha_modificacion=NOW() "
                         + "WHERE id=? ");
                 stat.setString(1, clienteDto.getPersonaDto().getPrimerNombre());
                 stat.setString(2, clienteDto.getPersonaDto().getSegundoNombre());
@@ -440,7 +438,7 @@ public class Model {
                         + "direccion, barrio, "
                         + "telefono, movil, "
                         + "email, huella_dactilar, "
-                        + "foto_perfil)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                        + "foto_perfil, fecha_registro)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, NOW())", Statement.RETURN_GENERATED_KEYS);
                 stat.setString(1, clienteDto.getPersonaDto().getPrimerNombre());
                 stat.setString(2, clienteDto.getPersonaDto().getSegundoNombre());
                 stat.setString(3, clienteDto.getPersonaDto().getPrimerApellido());

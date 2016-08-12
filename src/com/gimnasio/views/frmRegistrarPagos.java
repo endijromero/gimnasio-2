@@ -7,6 +7,7 @@ package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones;
 import com.gimnasio.model.ClienteDto;
+import com.gimnasio.model.UsuarioDto;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,6 +16,7 @@ import javax.swing.JOptionPane;
  */
 public class frmRegistrarPagos extends javax.swing.JInternalFrame {
 
+    protected UsuarioDto usuarioSessionDto;
     protected ClienteDto clienteDto;
     protected Operaciones operacion;
 
@@ -29,14 +31,6 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         this.operacion = operacion;
         this.clienteDto = clienteDto;
 
-    }
-
-    public ClienteDto getClienteDto() {
-        return clienteDto;
-    }
-
-    public void setClienteDto(ClienteDto clienteDto) {
-        this.clienteDto = clienteDto;
     }
 
     /**
@@ -317,6 +311,21 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
     private void txtPrecio_baseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecio_baseActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPrecio_baseActionPerformed
+    public ClienteDto getClienteDto() {
+        return clienteDto;
+    }
+
+    public void setClienteDto(ClienteDto clienteDto) {
+        this.clienteDto = clienteDto;
+    }
+
+    public UsuarioDto getUsuarioSessionDto() {
+        return usuarioSessionDto;
+    }
+
+    public void setUsuarioSessionDto(UsuarioDto usuarioSessionDto) {
+        this.usuarioSessionDto = usuarioSessionDto;
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
