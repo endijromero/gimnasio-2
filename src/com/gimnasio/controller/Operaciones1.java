@@ -1,6 +1,7 @@
 package com.gimnasio.controller;
 
 import com.gimnasio.model.*;
+import com.gimnasio.model.enums.EGenero;
 import com.gimnasio.util.Util;
 import com.gimnasio.views.frmPrincipal;
 import java.sql.SQLException;
@@ -28,6 +29,12 @@ public class Operaciones1 {
         this.model.setConexion(this.conexion);
     }
     
+    /**
+     * 
+     * @param idDescuento
+     * @return
+     * @throws SQLException 
+     */
     public List<TablaDto> getDescuentosDatosTablaDto(String idDescuento) throws SQLException {
         List<TablaDto> listTable = new ArrayList();
         List<DescuentoDto> listDescuentos = this.model.getDatosDescuentos(idDescuento);
@@ -168,23 +175,23 @@ public class Operaciones1 {
             listMessages.add("<li>TEST DE FLEXIBILIDAD: Test tres</li>");
         }      
         
-        //if(fisioterapia.getPersonaDto()->getGenero() == (short)1) { Mujer
-        if(fisioterapia.getTriceps()>0){}else{
-            listMessages.add("<li>PORCENTAJE DE GRASA: Triceps</li>");    
+        if( fisioterapia.getClienteDto().getPersonaDto().getGenero() == EGenero.FEMENIMO.getId() ) { //HOMBRE
+            if(fisioterapia.getTriceps()>0){}else{
+                listMessages.add("<li>PORCENTAJE DE GRASA: Triceps</li>");    
+            }
+            if(fisioterapia.getSiliaco()>0){}else{
+                listMessages.add("<li>PORCENTAJE DE GRASA: Siliaco</li>");    
+            }
         }
-        if(fisioterapia.getSiliaco()>0){}else{
-            listMessages.add("<li>PORCENTAJE DE GRASA: Siliaco</li>");    
-        }
-        //}
         
-        //if(fisioterapia.getPersonaDto()->getGenero() == (short)1) { HOMBRE
+        if( fisioterapia.getClienteDto().getPersonaDto().getGenero() == EGenero.MASCULINO.getId() ) { //HOMBRE
             if(fisioterapia.getPectoral()>0){}else{
                 listMessages.add("<li>PORCENTAJE DE GRASA: Pectoral</li>");    
             }               
             if(fisioterapia.getAbdomen()>0){}else{
                 listMessages.add("<li>PORCENTAJE DE GRASA: Abdomen</li>");    
             }
-        //}
+        }
         if(fisioterapia.getMuslo_ant()>0){}else{
             listMessages.add("<li>PORCENTAJE DE GRASA: Muslo-ant</li>");    
         }
@@ -195,6 +202,26 @@ public class Operaciones1 {
             listMessages.add("<li>INDICE DE MASA CORPORAL: Talla</li>");
         }
         return listMessages;
+    }
+    
+    /**
+     * 
+     * @param nombres
+     * @param apellidos
+     * @param Documento
+     * @return
+     * @throws SQLException 
+     */
+    public List<TablaDto> getClientesDatosTablaDto(String nombres, String apellidos, String Documento) throws SQLException {
+        List<TablaDto> listTable = new ArrayList();
+        /*List<ClienteDto> listClientes = this.getProductosDatosDto(idProducto);
+        listProductos.stream().map((producto) -> new TablaDto(
+                String.valueOf(producto.getId()),
+                Util.getQuitaNULL(producto.getNombre()),
+                String.valueOf(producto.getPrecio()))).forEach((tabla) -> {
+                    listTable.add(tabla);
+                });*/
+        return listTable;
     }
 
     public Model1 getModel() {
@@ -211,6 +238,10 @@ public class Operaciones1 {
 
     public void setConexion(Conexion conexion) {
         this.conexion = conexion;
+    }
+
+    private short getGenero() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

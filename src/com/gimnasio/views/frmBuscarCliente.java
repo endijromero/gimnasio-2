@@ -5,6 +5,16 @@
  */
 package com.gimnasio.views;
 
+import com.gimnasio.controller.Operaciones1;
+import com.gimnasio.model.DescuentoDto;
+import com.gimnasio.model.MiRender;
+import com.gimnasio.model.TablaDto;
+import com.gimnasio.model.TablaModelo;
+import com.gimnasio.util.Util;
+import java.sql.SQLException;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author rodolfo
@@ -12,6 +22,10 @@ package com.gimnasio.views;
 public class frmBuscarCliente extends javax.swing.JInternalFrame {
 
     private final String tipo;
+    
+    private final String[] headTable;
+    private final TablaModelo table;
+    private final Operaciones1 operacion;    
     /**
      * Creates new form frmCliente
      * @param tipo
@@ -19,6 +33,18 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
     public frmBuscarCliente(String tipo) {
         initComponents();
         this.tipo = tipo;
+        
+        this.operacion = new Operaciones1();
+        
+        this.headTable = new String[]{"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"};
+        int widthColumna[] = {100, 200, 200, 50, 50, 100, 100, 200};
+        this.table = new TablaModelo(this.headTable);
+        this.tblClientes.setModel(this.table);
+        
+        int columnas = this.tblClientes.getColumnCount();
+        for (int i = 0; i < columnas; i++) {
+            this.tblClientes.getColumnModel().getColumn(i).setPreferredWidth(widthColumna[i]);
+        } 
     }
 
     /**
@@ -32,16 +58,19 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablaClientes = new javax.swing.JTable();
+        tblClientes = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        txtBuscar = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox();
+        txtNombres = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
+        txtApellidos = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtDocumento = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "LISTA DE CLIENTES", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
-        tablaClientes.setModel(new javax.swing.table.DefaultTableModel(
+        tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null, null, null, null},
@@ -60,12 +89,12 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tablaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaClientesMouseClicked(evt);
+                tblClientesMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tablaClientes);
+        jScrollPane1.setViewportView(tblClientes);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -85,9 +114,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("Nombre");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLabel2.setText("Nombres");
 
         btnBuscar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Zoom-icon.png"))); // NOI18N
@@ -98,6 +125,14 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel3.setText("Apellidos");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel4.setText("Documento");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -106,22 +141,32 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(55, 55, 55)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51)
+                .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(406, Short.MAX_VALUE))
+                .addContainerGap(187, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
@@ -151,9 +196,32 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
+        if(Util.getVacio(this.txtNombres.getText()) && Util.getVacio(this.txtApellidos.getText()) && Util.getVacio(this.txtDocumento.getText())) {
+            JOptionPane.showMessageDialog(null, "Debe Aplicar por lo menos uno de los filtros", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else {        
+            
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void tablaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaClientesMouseClicked
+    /**
+     * 
+     * @throws SQLException 
+     */
+    public void setConsultarTableClientes() throws SQLException {
+        
+        List<TablaDto> lista = this.operacion.getDescuentosDatosTablaDto(null);
+        this.table.getData().clear();
+        //this.lblCantidad_descuentos.setText(String.valueOf(lista.size()));
+        lista.stream().forEach((dto) -> {
+            this.table.setAgregar(dto);
+        });
+        this.tblClientes.setDefaultRenderer(Object.class, new MiRender(this.table));
+        this.tblClientes.repaint();
+    }
+    
+    
+    
+    private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
         // TODO add your handling code here:
         if(evt.getClickCount() == 2) {
             if(this.tipo.equals("1")) {
@@ -175,17 +243,20 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
             }
             //this.setVisible(false);
         }
-    }//GEN-LAST:event_tablaClientesMouseClicked
+    }//GEN-LAST:event_tblClientesMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tablaClientes;
-    private javax.swing.JTextField txtBuscar;
+    private javax.swing.JTable tblClientes;
+    private javax.swing.JTextField txtApellidos;
+    private javax.swing.JTextField txtDocumento;
+    private javax.swing.JTextField txtNombres;
     // End of variables declaration//GEN-END:variables
 }

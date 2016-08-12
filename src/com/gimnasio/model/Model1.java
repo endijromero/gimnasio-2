@@ -118,6 +118,16 @@ public class Model1 {
         return true;
     }
     
+    /**
+     * 
+     * @param idProducto
+     * @param idUsuario
+     * @param cantidad
+     * @param valor_total
+     * @param fecha
+     * @return
+     * @throws SQLException 
+     */
     public boolean setGuardarCafeteria(int idProducto, long idUsuario, String cantidad, String valor_total, Date fecha) throws SQLException {
         PreparedStatement stat = null;
         
@@ -131,6 +141,34 @@ public class Model1 {
         stat.execute();
         stat.close();
         return true;
+    }
+    
+    /**
+     * 
+     * @param idDescuentos
+     * @return
+     * @throws SQLException 
+     */
+    public List<ClienteDto> getDatosClientes(String idDescuentos) throws SQLException {
+        List<ClienteDto> list = new ArrayList();
+        try (Statement stat = this.conexion.getConexion().createStatement()) {
+            String sql = "SELECT "
+                           + ""
+                           + " FROM clientes "
+                           + " INNER JOIN ";
+            if (!Util.getVacio(idDescuentos)) {
+                sql += " AND id=" + idDescuentos;
+                
+            }
+            sql += " ORDER BY id ASC ";
+            ResultSet res = stat.executeQuery(sql);
+            while (res.next()) {
+                ClienteDto dto = new ClienteDto();
+                               
+                list.add(dto);
+            }
+        }
+        return list;
     }
 
     public List<Object> getListPersist() {
