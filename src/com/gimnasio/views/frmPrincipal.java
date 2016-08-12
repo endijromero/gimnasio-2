@@ -333,6 +333,7 @@ public class frmPrincipal extends javax.swing.JFrame {
             this.buscarClienteView = new frmBuscarCliente(this, operacion, "1");
             frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
             this.buscarClienteView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+            this.buscarClienteView.setUsuarioSessionDto(usuarioSessionDto);
             this.buscarClienteView.setResizable(true);
             this.buscarClienteView.setClosable(true);
             this.buscarClienteView.setVisible(true);

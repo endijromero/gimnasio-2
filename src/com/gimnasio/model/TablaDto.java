@@ -77,8 +77,7 @@ public class TablaDto {
         this.dato6 = dato6;
         this.dato7 = dato7;
     }
-        
-    
+
     public TablaDto(String dato1, String dato2, String dato3, String dato4, String dato5, String dato6, String dato7, String dato8) {
         this.dato1 = dato1;
         this.dato2 = dato2;
@@ -89,7 +88,7 @@ public class TablaDto {
         this.dato7 = dato7;
         this.dato8 = dato8;
     }
-    
+
     public TablaDto(String dato1, String dato2, String dato3, String dato4, String dato5, String dato6, String dato7, String dato8, String dato9) {
         this.dato1 = dato1;
         this.dato2 = dato2;
@@ -101,19 +100,11 @@ public class TablaDto {
         this.dato8 = dato8;
         this.dato9 = dato9;
     }
-    
+
     public TablaDto(String dato1, String dato2, String dato3) {
         this.dato1 = dato1;
         this.dato2 = dato2;
-        this.dato3 = dato3;       
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
+        this.dato3 = dato3;
     }
 
     public String getDato1() {
@@ -171,4 +162,29 @@ public class TablaDto {
     public void setDato7(String dato7) {
         this.dato7 = dato7;
     }
+
+    public String getDato8() {
+        return dato8;
+    }
+
+    public void setDato8(String dato8) {
+        this.dato8 = dato8;
+    }
+
+    public String getDato9() {
+        return dato9;
+    }
+
+    public void setDato9(String dato9) {
+        this.dato9 = dato9;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
 }

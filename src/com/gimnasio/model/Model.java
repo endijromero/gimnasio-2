@@ -350,7 +350,8 @@ public class Model {
      */
     public List<ClienteDto> getClienteDatos(String idCliente, String numeroDocuemnto) throws SQLException {
         List<ClienteDto> list = new ArrayList();
-        Statement stat = this.conexion.getConexion().createStatement();
+        Statement stat;
+        stat = this.conexion.getConexion().createStatement();
         String sql = "SELECT cli.*, per.* FROM clientes cli INNER JOIN personas per ON cli.persona_id=per.id WHERE 1 ";
         if (!Util.getVacio(idCliente)) {
             sql += " AND cli.id=" + idCliente;
@@ -363,7 +364,7 @@ public class Model {
         while (res.next()) {
             ClienteDto dto = new ClienteDto();
             dto.setId(res.getLong("id"));
-            dto.getPersonaDto().setId(res.getLong("id_persona"));
+            dto.getPersonaDto().setId(res.getLong("persona_id"));
             dto.getPersonaDto().setPrimerNombre(res.getString("primer_nombre"));
             dto.getPersonaDto().setSegundoNombre(res.getString("segundo_nombre"));
             dto.getPersonaDto().setPrimerApellido(res.getString("primer_apellido"));

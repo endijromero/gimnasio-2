@@ -295,14 +295,17 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
             TablaDto dto = (TablaDto) this.table.getData().get(fila);
             String documento = dto.getDato1();
             if (this.tipo.equals("1")) {
-                /*
-                 frmPrincipal.frmCliente = new frmCliente();
-                 frmPrincipal.jdstPrincipal.add(frmPrincipal.frmCliente);
-                 frmPrincipal.frmCliente.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-                 frmPrincipal.frmCliente.setResizable(true);
-                 frmPrincipal.frmCliente.setClosable(true);            
-                 frmPrincipal.frmCliente.setVisible(true);
-                 */
+                try {
+                    frmPrincipal.frmCliente = new frmClientes(this.padre, operacion, documento);
+                    frmPrincipal.jdstPrincipal.add(frmPrincipal.frmCliente);
+                    frmPrincipal.frmCliente.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                    frmPrincipal.frmCliente.setUsuarioSessionDto(usuarioSessionDto);
+                    frmPrincipal.frmCliente.setResizable(true);
+                    frmPrincipal.frmCliente.setClosable(true);
+                    frmPrincipal.frmCliente.setVisible(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(frmBuscarCliente.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } else if (this.tipo.equals("2")) {//fisioterapia
                 frmPrincipal.fisitorepiaView = new frmFisioterapia(this.operacion, documento);
                 frmPrincipal.jdstPrincipal.add(frmPrincipal.fisitorepiaView);
@@ -318,6 +321,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
     private void setCloseIframeBusquedaCliente(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_setCloseIframeBusquedaCliente
         switch (Integer.parseInt(this.tipo)) {
             case 1: {
+                this.padre.setBuscarClienteView(null);
             }
             break;
             case 2: {

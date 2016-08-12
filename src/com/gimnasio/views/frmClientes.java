@@ -13,7 +13,9 @@ import com.google.common.base.Joiner;
 import java.awt.Font;
 import java.io.File;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,6 +62,76 @@ public class frmClientes extends javax.swing.JInternalFrame {
         this.comboEstadosCiviles.getLista().clear();
         this.comboEstadosCiviles.getLista().addAll(this.operacion.getEstadosCiviles());
         this.cmbEstado_civil.setModel(this.comboEstadosCiviles);
+    }
+
+    /**
+     *
+     * @tutorial Creates new form frmCliente
+     * @param padre
+     * @param operacion
+     * @param numeroDocumento
+     * @throws java.lang.Exception
+     */
+    public frmClientes(frmPrincipal padre, Operaciones operacion, String numeroDocumento) throws Exception {
+        initComponents();
+        this.operacion = operacion;
+        this.padre = padre;
+
+        this.comboTipoDocumentos = new ComboModel();
+        this.comboTipoDocumentos.getLista().clear();
+        this.comboTipoDocumentos.getLista().addAll(this.operacion.getTipoDocumentos());
+        this.cmbTipo_documento.setModel(this.comboTipoDocumentos);
+
+        this.comboEstadosCiviles = new ComboModel();
+        this.comboEstadosCiviles.getLista().clear();
+        this.comboEstadosCiviles.getLista().addAll(this.operacion.getEstadosCiviles());
+        this.cmbEstado_civil.setModel(this.comboEstadosCiviles);
+
+        List<ClienteDto> listClientes = this.operacion.getClienteDatos(null, numeroDocumento);
+
+        ClienteDto clientDto = new ClienteDto();
+        for (ClienteDto cliDto : listClientes) {
+            if (cliDto.getPersonaDto().getNumeroIdentificacion().equals(numeroDocumento)) {
+                clientDto = cliDto;
+                break;
+            }
+        }
+        this.clienteDto = clientDto;
+        this.setCargarDatosClientes();
+    }
+
+    /**
+     * @tutorial Method Description: llena la información del cliente en el
+     * formulario
+     * @author Eminson Mendoza ~~ emimaster16@gmail.com
+     * @date 08/07/2016
+     */
+    public final void setCargarDatosClientes() {
+        try {
+            this.txtPrimer_nombre.setText(clienteDto.getPersonaDto().getPrimerNombre());
+            this.txtSegundo_nombre.setText(clienteDto.getPersonaDto().getSegundoNombre());
+            this.txtPrimer_apellido.setText(clienteDto.getPersonaDto().getPrimerApellido());
+            this.txtSegundo_apellido.setText(clienteDto.getPersonaDto().getSegundoApellido());
+            this.cmbTipo_documento.setSelectedIndex(clienteDto.getPersonaDto().getTipoIdentificacion());
+            this.txtDocumento.setText(clienteDto.getPersonaDto().getNumeroIdentificacion());
+            this.txtLugar_expedicion.setText(clienteDto.getPersonaDto().getLugarExpedicion());
+            if (clienteDto.getPersonaDto().getGenero() == EGenero.MASCULINO.getId()) {
+                this.rbtMasculino.setSelected(true);
+            }
+            if (clienteDto.getPersonaDto().getGenero() == EGenero.FEMENIMO.getId()) {
+                this.rbtFemenino.setSelected(true);
+            }
+            this.cmbEstado_civil.setSelectedIndex(clienteDto.getPersonaDto().getEstadoCivil());
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(clienteDto.getPersonaDto().getFechaNacimiento());
+            this.txtFecha_nacimiento.setDate(date);
+            this.txtDireccion.setText(clienteDto.getPersonaDto().getDireccion());
+            this.txtBarrio.setText(clienteDto.getPersonaDto().getBarrio());
+            this.txtFijo.setText(clienteDto.getPersonaDto().getTelefono());
+            this.txtMovil.setText(clienteDto.getPersonaDto().getMovil());
+            this.txtEmail.setText(clienteDto.getPersonaDto().getEmail());
+        } catch (ParseException ex) {
+            Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
@@ -618,7 +690,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
                 JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol><li>Debe ingresar los datos del cliente <br>para realizar el proceso de captura de la huella</li></ol></html>");
                 label.setFont(new Font("consolas", Font.PLAIN, 14));
                 JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
-
             }
         } catch (SQLException ex) {
             Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
@@ -702,7 +773,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
             if (listMessage.size() < 1 && this.clienteDto.getId() > 0) {
                 frmPrincipal.frmRegistrarPagos = new frmRegistrarPagos(operacion, clienteDto);
                 frmPrincipal.jdstPrincipal.add(frmPrincipal.frmRegistrarPagos);
-                frmPrincipal.frmRegistrarPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);                  
+                frmPrincipal.frmRegistrarPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
                 frmPrincipal.frmRegistrarPagos.setResizable(true);
                 frmPrincipal.frmRegistrarPagos.setClosable(true);
                 frmPrincipal.frmRegistrarPagos.setVisible(true);
