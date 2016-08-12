@@ -66,7 +66,7 @@ public class frmLogin extends javax.swing.JFrame {
             }
         });
         getContentPane().add(txtUser);
-        txtUser.setBounds(100, 170, 180, 30);
+        txtUser.setBounds(100, 190, 180, 30);
 
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -74,23 +74,23 @@ public class frmLogin extends javax.swing.JFrame {
             }
         });
         getContentPane().add(txtPassword);
-        txtPassword.setBounds(100, 230, 180, 30);
+        txtPassword.setBounds(100, 250, 180, 30);
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/gym-icon.png"))); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/logo.PNG"))); // NOI18N
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(120, 20, 130, 120);
+        jLabel4.setBounds(110, 10, 150, 150);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Contraseña");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(100, 210, 70, 20);
+        jLabel2.setBounds(100, 230, 70, 20);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText("Usuario");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(100, 150, 45, 20);
+        jLabel3.setBounds(100, 170, 45, 20);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/sign.png"))); // NOI18N
         jButton1.setText("Ingresar");
@@ -101,7 +101,7 @@ public class frmLogin extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1);
-        jButton1.setBounds(100, 280, 120, 40);
+        jButton1.setBounds(130, 300, 120, 40);
 
         jLabel1.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/textura.jpg"))); // NOI18N
@@ -110,7 +110,7 @@ public class frmLogin extends javax.swing.JFrame {
         jLabel1.setMinimumSize(new java.awt.Dimension(500, 200));
         jLabel1.setName(""); // NOI18N
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(0, 0, 360, 350);
+        jLabel1.setBounds(0, 0, 360, 370);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
