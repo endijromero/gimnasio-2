@@ -605,8 +605,8 @@ public class frmClientes extends javax.swing.JInternalFrame {
             frmHuella frm = new frmHuella(this.operacion, this.padre, true, this.clienteDto, Short.parseShort("1"), this);
             frm.setVisible(true);
         } else {
-            JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ul><li>Debe ingresar los datos del cliente para capturar la huella</li></ul></html>");
-            label.setFont(new Font("Consolas", Font.PLAIN, 12));
+            JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol><li>Debe ingresar los datos del cliente <br>para realizar el proceso de captura de la huella</li></ol></html>");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
             JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
 
         }
@@ -693,8 +693,8 @@ public class frmClientes extends javax.swing.JInternalFrame {
                 frmPrincipal.frmRegistrarPagos.setClosable(true);
                 frmPrincipal.frmRegistrarPagos.setVisible(true);
             } else {
-                JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ul>" + Joiner.on("\n").join(listMessage) + "</ul></html>");
-                label.setFont(new Font("verdana", Font.PLAIN, 14));
+                JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol>" + Joiner.on("\n").join(listMessage) + "</ol></html>");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
                 JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
             }
         } catch (SQLException ex) {
@@ -717,7 +717,9 @@ public class frmClientes extends javax.swing.JInternalFrame {
         if (Character.isDigit(c)) {
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(this, "Ingrese solo letras", "Error de datos", JOptionPane.WARNING_MESSAGE);
+            JLabel label = new JLabel("Solo esta permitido el ingreso de letras");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Error de ingreso de datos", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_setValidateSoloLetras
 
@@ -726,9 +728,10 @@ public class frmClientes extends javax.swing.JInternalFrame {
         if (Character.isLetter(c)) {
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(this, "Ingrese solo números", "Error de datos", JOptionPane.WARNING_MESSAGE);
+            JLabel label = new JLabel("Solo esta permitido el ingreso de números");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Error de ingreso de datos", JOptionPane.WARNING_MESSAGE);
         }
-
     }//GEN-LAST:event_setValidaSoloNumeros
 
     private void setValidaEmail(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_setValidaEmail
