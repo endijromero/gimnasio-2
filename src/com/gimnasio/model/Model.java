@@ -119,9 +119,7 @@ public class Model {
                 fisioterapia.setTest_mmii(res.getDouble("test_mmii"));
                 fisioterapia.setTest_mmss(res.getDouble("test_mmss"));
                 fisioterapia.setObservaciones(res.getString("observaciones"));
-
                 dto.setId(res.getLong("id_cliente"));
-
                 persona.setId(res.getLong("id"));
                 persona.setPrimerNombre(res.getString("primer_nombre"));
                 persona.setSegundoNombre(res.getString("segundo_nombre"));
