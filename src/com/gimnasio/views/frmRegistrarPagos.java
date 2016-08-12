@@ -5,7 +5,7 @@
  */
 package com.gimnasio.views;
 
-import com.gimnasio.controller.Principal;
+import com.gimnasio.model.ClienteDto;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,11 +14,21 @@ import javax.swing.JOptionPane;
  */
 public class frmRegistrarPagos extends javax.swing.JInternalFrame {
 
+    protected ClienteDto clienteDto;
+
     /**
      * Creates new form frmPagos
      */
     public frmRegistrarPagos() {
         initComponents();
+    }
+
+    public ClienteDto getClienteDto() {
+        return clienteDto;
+    }
+
+    public void setClienteDto(ClienteDto clienteDto) {
+        this.clienteDto = clienteDto;
     }
 
     /**

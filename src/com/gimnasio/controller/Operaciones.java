@@ -26,30 +26,47 @@ public class Operaciones {
         this.model.setConexion(this.conexion);
     }
 
+    public boolean setValidaDocumentoCliene(String idPersona, String numeroDocuemnto) throws SQLException {
+        boolean correcto = true;
+        List<ClienteDto> listClientes = this.model.getClienteDatos(null, numeroDocuemnto);
+        for (ClienteDto dto : listClientes) {
+            if (!idPersona.equals(dto.getPersonaDto().getId()) && numeroDocuemnto.equals(dto.getPersonaDto().getNumeroIdentificacion())) {
+                correcto = false;
+                break;
+            }
+        }
+        return correcto;
+    }
+
+    public List<ClienteDto> getClienteDatos(String idCliente) throws SQLException {
+        List<ClienteDto> list = this.model.getClienteDatos(idCliente, null);
+        return list;
+    }
+
     /**
      * @tutorial Method Description: consulta los datos del cliente
      * @author Eminson Mendoza ~~ emimaster16@gmail.com
      * @date 09/07/2016
      * @param idCliente
+     * @param numeroDocuemnto
      * @throws java.sql.SQLException
      * @return
      */
-    public List<ClienteDto> getClienteDatos(String idCliente) throws SQLException {
-        List<ClienteDto> list = this.model.getClienteDatos(idCliente);
+    public List<ClienteDto> getClienteDatos(String idCliente, String numeroDocuemnto) throws SQLException {
+        List<ClienteDto> list = this.model.getClienteDatos(idCliente, numeroDocuemnto);
         return list;
     }
 
     /**
-     *
-     **
      * @tutorial Method Description: valida que la informacion este correcta
      * @author Eminson Mendoza ~~ emimaster16@gmail.com
      * @date 08/07/2016
      * @param clienteDto
+     * @param guarda
      * @return
      * @throws SQLException
      */
-    public List<String> setGuardarCliente(ClienteDto clienteDto) throws SQLException {
+    public List<String> setGuardarCliente(ClienteDto clienteDto, boolean guarda) throws SQLException {
         List<String> listMessages = new ArrayList();
         if (Util.getVacio(clienteDto.getPersonaDto().getPrimerNombre())) {
             listMessages.add("<li>Primer nombre</li>");
@@ -81,10 +98,10 @@ public class Operaciones {
         if (Util.getVacio(clienteDto.getPersonaDto().getBarrio())) {
             listMessages.add("<li>Barrio domicilio</li>");
         }
-        if (clienteDto.getPersonaDto().getHuellaDactilar() == null) {
-            listMessages.add("<li>Huella dactilar</li>");
+        if (clienteDto.getPersonaDto().getHuellaDactilar() == null && guarda) {//HABILITAR CUANDO SE TENGA EL HUELLERO
+            // listMessages.add("<li>Huella dactilar</li>");
         }
-        if (listMessages.size() < 1) {
+        if (listMessages.size() < 1 && guarda) {
             this.model.setGuardarCliente(clienteDto);
         }
         return listMessages;

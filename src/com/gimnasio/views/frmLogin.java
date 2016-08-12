@@ -110,7 +110,7 @@ public class frmLogin extends javax.swing.JFrame {
         jLabel1.setMinimumSize(new java.awt.Dimension(500, 200));
         jLabel1.setName(""); // NOI18N
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(0, 0, 360, 340);
+        jLabel1.setBounds(0, 0, 360, 350);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

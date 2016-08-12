@@ -285,6 +285,11 @@ public class frmClientes extends javax.swing.JInternalFrame {
             }
         });
 
+        txtDocumento.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                setValidarNumeroDocumento(evt);
+            }
+        });
         txtDocumento.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 setValidaSoloNumeros(evt);
@@ -406,7 +411,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         lblDireccion.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblDireccion.setText("Dirección");
 
-        txtFecha_nacimiento.setDateFormatString("yyyy-mm-dd ");
+        txtFecha_nacimiento.setDateFormatString("yyyy-MM-dd");
         txtFecha_nacimiento.setMaxSelectableDate(new java.util.Date(253370786466000L));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -600,16 +605,23 @@ public class frmClientes extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setCapturarHuella(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCapturarHuella
-        setLlenarClienteDto();
-        if (!Util.getVacio(this.clienteDto.getPersonaDto().getNumeroIdentificacion())) {
-            frmHuella frm = new frmHuella(this.operacion, this.padre, true, this.clienteDto, Short.parseShort("1"), this);
-            frm.setVisible(true);
-        } else {
-            JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol><li>Debe ingresar los datos del cliente <br>para realizar el proceso de captura de la huella</li></ol></html>");
-            label.setFont(new Font("consolas", Font.PLAIN, 14));
-            JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
+        try {
+            setLlenarClienteDto();
+            List<String> listMessage;
+            listMessage = this.operacion.setGuardarCliente(this.clienteDto, false);
+            if (listMessage.size() < 1) {
+                frmHuella frm = new frmHuella(this.operacion, this.padre, true, this.clienteDto, Short.parseShort("1"), this);
+                frm.setVisible(true);
+            } else {
+                JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol><li>Debe ingresar los datos del cliente <br>para realizar el proceso de captura de la huella</li></ol></html>");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
 
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_setCapturarHuella
 
     private void btnFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFotoActionPerformed
@@ -684,11 +696,12 @@ public class frmClientes extends javax.swing.JInternalFrame {
     private void setGuardarCliente(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setGuardarCliente
         try {
             setLlenarClienteDto();
-            List<String> listMessage = this.operacion.setGuardarCliente(this.clienteDto);
-            if (listMessage.size() < 1) {
+            List<String> listMessage = this.operacion.setGuardarCliente(this.clienteDto, true);
+            if (listMessage.size() < 1 && this.clienteDto.getId() > 0) {
                 frmPrincipal.frmRegistrarPagos = new frmRegistrarPagos();
                 frmPrincipal.jdstPrincipal.add(frmPrincipal.frmRegistrarPagos);
                 frmPrincipal.frmRegistrarPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                frmPrincipal.frmRegistrarPagos.setClienteDto(this.clienteDto);
                 frmPrincipal.frmRegistrarPagos.setResizable(true);
                 frmPrincipal.frmRegistrarPagos.setClosable(true);
                 frmPrincipal.frmRegistrarPagos.setVisible(true);
@@ -704,7 +717,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
 
     private void setCloseIframeCliente(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_setCloseIframeCliente
         this.padre.setClienteView(null);
-        if (this.clienteDto.getPersonaDto().getHuellaDactilar().length > 0) {
+        if (this.clienteDto.getPersonaDto().getHuellaDactilar() != null) {
             File file = new File(this.rutaHuellas + this.clienteDto.getPersonaDto().getNumeroIdentificacion() + this.extension);
             if (file.exists()) {
                 file.delete();
@@ -737,6 +750,23 @@ public class frmClientes extends javax.swing.JInternalFrame {
     private void setValidaEmail(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_setValidaEmail
         // TODO add your handling code here:
     }//GEN-LAST:event_setValidaEmail
+
+    private void setValidarNumeroDocumento(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_setValidarNumeroDocumento
+        setLlenarClienteDto();
+        if (!Util.getVacio(this.clienteDto.getPersonaDto().getNumeroIdentificacion())) {
+            try {
+                boolean correcto = this.operacion.setValidaDocumentoCliene(String.valueOf(this.clienteDto.getPersonaDto().getId()), this.clienteDto.getPersonaDto().getNumeroIdentificacion());
+                if (!correcto) {
+                    JLabel label = new JLabel("El cliente con número de documento: <b>" + this.clienteDto.getPersonaDto().getNumeroIdentificacion() + "</b> ya se encuentra registrado");
+                    label.setFont(new Font("consolas", Font.PLAIN, 14));
+                    JOptionPane.showMessageDialog(this, label, "Cliente registrado", JOptionPane.WARNING_MESSAGE);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }//GEN-LAST:event_setValidarNumeroDocumento
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
