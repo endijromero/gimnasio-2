@@ -492,10 +492,14 @@ public class Operaciones {
         if (listUsuarios.size() > 0) {
             user = listUsuarios.get(0);
             if (Util.getEncriptarMD5(password).equals(user.getPassword())) {
-                return user;
+                return listUsuarios.get(0);
             } else {
+                user = new UsuarioDto();
                 JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrecta", "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrecta", "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
+
         }
         return user;
     }
