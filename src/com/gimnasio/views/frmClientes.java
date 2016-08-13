@@ -29,7 +29,7 @@ import javax.swing.JOptionPane;
  * @author rodolfo
  */
 public class frmClientes extends javax.swing.JInternalFrame {
-
+    
     private final ComboModel comboTipoDocumentos;
     private final ComboModel comboEstadosCiviles;
     private List<ComboDto> listTipoDocumentos;
@@ -38,7 +38,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
     private final ClienteDto clienteDto;
     private final frmPrincipal padre;
     private Operaciones operacion;
-
+    
     private String rutaHuellas = "huellas/";
     private String extension = ".fpt";
 
@@ -54,7 +54,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         this.operacion = operacion;
         this.clienteDto = new ClienteDto();
         this.padre = padre;
-
+        
         ComboDto inicio;
         this.comboTipoDocumentos = new ComboModel();
         this.comboTipoDocumentos.getLista().clear();
@@ -64,7 +64,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         this.comboTipoDocumentos.getLista().addAll(this.listTipoDocumentos);
         this.comboTipoDocumentos.setSelectedItem(inicio);
         this.cmbTipo_documento.setModel(this.comboTipoDocumentos);
-
+        
         this.comboEstadosCiviles = new ComboModel();
         this.comboEstadosCiviles.getLista().clear();
         this.listEstadosCiviles = this.operacion.getEstadosCiviles();
@@ -87,7 +87,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         initComponents();
         this.operacion = operacion;
         this.padre = padre;
-
+        
         ComboDto inicio;
         this.comboTipoDocumentos = new ComboModel();
         this.comboTipoDocumentos.getLista().clear();
@@ -97,7 +97,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         this.comboTipoDocumentos.getLista().addAll(this.listTipoDocumentos);
         this.comboTipoDocumentos.setSelectedItem(inicio);
         this.cmbTipo_documento.setModel(this.comboTipoDocumentos);
-
+        
         this.comboEstadosCiviles = new ComboModel();
         this.comboEstadosCiviles.getLista().clear();
         this.listEstadosCiviles = this.operacion.getEstadosCiviles();
@@ -106,7 +106,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         this.comboEstadosCiviles.getLista().addAll(this.listEstadosCiviles);
         this.comboEstadosCiviles.setSelectedItem(inicio);
         this.cmbEstado_civil.setModel(this.comboEstadosCiviles);
-
+        
         ClienteDto clientDto = new ClienteDto();
         List<ClienteDto> listClientes = this.operacion.getClienteDatos(null, numeroDocumento);
         for (ClienteDto cliDto : listClientes) {
@@ -151,7 +151,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         } catch (ParseException ex) {
             Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
 
     /**
@@ -720,19 +720,19 @@ public class frmClientes extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_btnFotoActionPerformed
-
+    
     public Operaciones getOperacion() {
         return operacion;
     }
-
+    
     public void setOperacion(Operaciones operacion) {
         this.operacion = operacion;
     }
-
+    
     public UsuarioDto getUsuarioSessionDto() {
         return usuarioSessionDto;
     }
-
+    
     public void setUsuarioSessionDto(UsuarioDto usuarioSessionDto) {
         this.usuarioSessionDto = usuarioSessionDto;
     }
@@ -800,6 +800,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
                     frmPrincipal.frmRegistrarPagos = new frmRegistrarPagos(this, operacion, clienteDto);
                     frmPrincipal.frmRegistrarPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
                     frmPrincipal.jdstPrincipal.add(frmPrincipal.frmRegistrarPagos);
+                    frmPrincipal.frmRegistrarPagos.setTipoViene("1");
                     frmPrincipal.frmRegistrarPagos.setUsuarioSessionDto(usuarioSessionDto);
                     frmPrincipal.frmRegistrarPagos.setResizable(true);
                     frmPrincipal.frmRegistrarPagos.setClosable(true);
