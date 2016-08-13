@@ -22,6 +22,35 @@ public class Model {
 
     }
 
+    public boolean setGuardaPagoPaqueteCliente(ClientePaqueteDto clientePaqueteDto) throws SQLException {
+        boolean correcto;
+        try {
+            PreparedStatement stat;
+            stat = this.conexion.getConexion().prepareStatement("INSERT INTO cliente_paquete (cliente_id, paquete_id, descuento_id, numero_dias, precio_base, valor_total,yn_activo,fecha_inicia_paquete,fecha_finaliza_paquete,usuario_id,fecha_registro,fecha_modificacion) "
+                    + "VALUES (?,?,?,?,?,?,?,?,?,?,NOW(),NOW())");
+            stat.setLong(1, clientePaqueteDto.getClienteId());
+            stat.setLong(2, clientePaqueteDto.getPaqueteId());
+            stat.setLong(3, clientePaqueteDto.getDescuentoId());
+            stat.setShort(4, clientePaqueteDto.getNumeroDias());
+            stat.setDouble(5, clientePaqueteDto.getPrecioBase());
+            stat.setDouble(6, clientePaqueteDto.getValorTotal());
+            stat.setShort(7, clientePaqueteDto.getYnActivo());
+            stat.setString(8, clientePaqueteDto.getFechaIniciaPaquete());
+            stat.setString(9, clientePaqueteDto.getFechaFinalizaPaquete());
+            stat.setLong(10, clientePaqueteDto.getUsuarioId());
+            correcto = stat.execute();
+            stat.close();
+        } catch (SQLException ex) {
+            correcto = false;
+            this.conexion.rollback();
+            throw ex;
+        } finally {
+            correcto = true;
+            this.conexion.commit();
+        }
+        return correcto;
+    }
+
     /**
      *
      * @param fisioterapia

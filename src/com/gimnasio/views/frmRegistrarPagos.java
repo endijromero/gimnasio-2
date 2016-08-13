@@ -7,10 +7,21 @@ package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones;
 import com.gimnasio.model.ClienteDto;
+import com.gimnasio.model.ClientePaqueteDto;
 import com.gimnasio.model.ComboDto;
 import com.gimnasio.model.ComboModel;
 import com.gimnasio.model.UsuarioDto;
+import com.gimnasio.model.enums.ESiNo;
+import com.gimnasio.util.Util;
+import com.google.common.base.Joiner;
+import java.awt.Font;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,14 +30,15 @@ import javax.swing.JOptionPane;
  */
 public class frmRegistrarPagos extends javax.swing.JInternalFrame {
 
-    protected UsuarioDto usuarioSessionDto;
-    protected ClienteDto clienteDto;
-    protected Operaciones operacion;
-    
     private List<ComboDto> listComboDescuentos;
     private List<ComboDto> listComboPaquetes;
     private final ComboModel comboDescuentos;
     private final ComboModel comboPaquetes;
+
+    protected ClientePaqueteDto clientePaqueteDto;
+    protected UsuarioDto usuarioSessionDto;
+    protected ClienteDto clienteDto;
+    protected Operaciones operacion;
 
     /**
      * Creates new form frmPagos
@@ -37,6 +49,8 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
      */
     public frmRegistrarPagos(Operaciones operacion, ClienteDto clienteDto) throws Exception {
         initComponents();
+
+        this.clientePaqueteDto = new ClientePaqueteDto();
         this.operacion = operacion;
         this.clienteDto = clienteDto;
 
@@ -49,8 +63,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         this.comboPaquetes.getLista().addAll(this.listComboPaquetes);
         this.comboPaquetes.setSelectedItem(inicio);
         this.cmbPaquete.setModel(this.comboPaquetes);
-        
-        
+
         this.comboDescuentos = new ComboModel();
         this.comboDescuentos.getLista().clear();
         this.listComboPaquetes = this.operacion.getDescuentosEnumerado();
@@ -59,7 +72,12 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         this.comboDescuentos.getLista().addAll(this.listComboPaquetes);
         this.comboDescuentos.setSelectedItem(inicio);
         this.cmbDescuento.setModel(this.comboDescuentos);
+        this.panelTiquetera.setVisible(false);
 
+        if (!Util.getVacio(clienteDto.getPersonaDto().getNombreCompleto())) {
+            this.lblNombre_cliente.setText(clienteDto.getPersonaDto().getNombreCompleto());
+            this.lblDocumento_cliente.setText(clienteDto.getPersonaDto().getNumeroIdentificacion());
+        }
     }
 
     /**
@@ -74,24 +92,24 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         jPanel6 = new javax.swing.JPanel();
         btnGuardar = new javax.swing.JButton();
         cmbPaquete = new javax.swing.JComboBox();
-        jLabel4 = new javax.swing.JLabel();
+        lblPaquete = new javax.swing.JLabel();
         cmbDescuento = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
         panelTiquetera = new javax.swing.JPanel();
         txtDias_tiquetera = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        lblTiquetera = new javax.swing.JLabel();
         panelCliente = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
+        lblNombre_cliente = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         panelFoto = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
+        lblDocumento_cliente = new javax.swing.JLabel();
         txtTolal_pagar = new javax.swing.JTextField();
         txtPrecio_base = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
+        lblPrecio_base = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        txtFecha_inicio = new com.toedter.calendar.JDateChooser();
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PAGOS", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
@@ -100,37 +118,46 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
+                setRegistrarPagoPlan(evt);
             }
         });
 
         cmbPaquete.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbPaquete.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                setVerificaPaqueteTiquetera(evt);
+            }
+        });
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setText("Paquete");
+        lblPaquete.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblPaquete.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblPaquete.setText("Plan");
 
         cmbDescuento.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbDescuento.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                setCalculaDescuento(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel5.setText("Descuento");
 
-        txtDias_tiquetera.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDias_tiqueteraActionPerformed(evt);
+        txtDias_tiquetera.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                setValidaDiasTiquetera(evt);
+            }
+        });
+        txtDias_tiquetera.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                setValidaSoloNumeros(evt);
             }
         });
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText("Numero de días");
-
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel8.setText("Fecha de Inicio");
-
-        jDateChooser1.setPreferredSize(new java.awt.Dimension(6, 20));
+        lblTiquetera.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblTiquetera.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTiquetera.setText("Numero de días");
 
         javax.swing.GroupLayout panelTiqueteraLayout = new javax.swing.GroupLayout(panelTiquetera);
         panelTiquetera.setLayout(panelTiqueteraLayout);
@@ -138,14 +165,9 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             panelTiqueteraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(panelTiqueteraLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtDias_tiquetera))
-            .addGroup(panelTiqueteraLayout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(lblTiquetera)
+                .addGap(5, 5, 5)
+                .addComponent(txtDias_tiquetera, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE))
         );
         panelTiqueteraLayout.setVerticalGroup(
             panelTiqueteraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,21 +175,15 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                 .addGap(0, 0, 0)
                 .addGroup(panelTiqueteraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDias_tiquetera, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addGap(15, 15, 15)
-                .addGroup(panelTiqueteraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelTiqueteraLayout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addGap(0, 11, Short.MAX_VALUE))
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, 0))
+                    .addComponent(lblTiquetera))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         panelCliente.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Nombre del Cliente Seleccionado");
+        lblNombre_cliente.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblNombre_cliente.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNombre_cliente.setText("Nombre del Cliente Seleccionado");
 
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -209,9 +225,9 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("Nombre del Cliente Seleccionado");
+        lblDocumento_cliente.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblDocumento_cliente.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblDocumento_cliente.setText("Nombre del Cliente Seleccionado");
 
         javax.swing.GroupLayout panelClienteLayout = new javax.swing.GroupLayout(panelCliente);
         panelCliente.setLayout(panelClienteLayout);
@@ -219,10 +235,10 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelClienteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lblNombre_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(panelClienteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lblDocumento_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(panelClienteLayout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -234,25 +250,39 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel7)
+                .addComponent(lblNombre_cliente)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel12)
+                .addComponent(lblDocumento_cliente)
                 .addContainerGap(92, Short.MAX_VALUE))
         );
 
-        txtPrecio_base.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPrecio_baseActionPerformed(evt);
+        txtTolal_pagar.setEditable(false);
+
+        txtPrecio_base.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                setCalculaValorTotalConPrecioBase(evt);
+            }
+        });
+        txtPrecio_base.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                setValidaSoloNumeros(evt);
             }
         });
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("Precio Base");
+        lblPrecio_base.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblPrecio_base.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblPrecio_base.setText("Precio Base");
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel10.setText("Total a pagar");
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel8.setText("Fecha de Inicio");
+
+        txtFecha_inicio.setDateFormatString("yyyy-MM-dd");
+        txtFecha_inicio.setPreferredSize(new java.awt.Dimension(6, 20));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -262,25 +292,29 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(panelCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(lblPrecio_base)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtPrecio_base, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtTolal_pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnGuardar)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(lblPaquete)
+                        .addGap(5, 5, 5)
                         .addComponent(cmbPaquete, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(5, 5, 5)
                         .addComponent(cmbDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(panelTiquetera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelTiquetera, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtFecha_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(30, 30, 30))
         );
         jPanel6Layout.setVerticalGroup(
@@ -291,7 +325,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cmbPaquete, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
+                            .addComponent(lblPaquete))
                         .addGap(15, 15, 15)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cmbDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -299,17 +333,21 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                         .addGap(15, 15, 15)
                         .addComponent(panelTiquetera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(15, 15, 15)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtFecha_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(15, 15, 15)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtPrecio_base, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9))
+                            .addComponent(lblPrecio_base))
                         .addGap(15, 15, 15)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtTolal_pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(20, 20, 20)
                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(panelCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -332,18 +370,183 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
-        JOptionPane.showMessageDialog(null, "Datos Guardados con exíto", "", JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_btnGuardarActionPerformed
+    private void setRegistrarPagoPlan(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRegistrarPagoPlan
+        List<String> listMessages = new ArrayList();
+        ComboDto comboPaq = (ComboDto) this.cmbPaquete.getSelectedItem();
+        ComboDto comboDes = (ComboDto) this.cmbDescuento.getSelectedItem();
+        if (Util.getVacio(comboPaq.getCodigo())) {
+            listMessages.add("<li>" + this.lblPaquete.getText() + "</li>");
+        }
+        if (!Util.getVacio(comboPaq.getCodigo())) {
+            if (!Util.getVacio(comboPaq.getAuxiliar()) && (comboPaq.getAuxiliar().equals(String.valueOf(ESiNo.SI.getId())))) {
+                if (this.txtDias_tiquetera.getText().equals("")) {
+                    listMessages.add("<li>" + this.lblTiquetera.getText() + "</li>");
+                }
+            }
+        }
+        if (this.txtFecha_inicio.getDate() == null) {
+            listMessages.add("<li>Fecha inicio del " + this.lblPaquete.getText().toLowerCase() + "</li>");
+        }
+        if (this.txtPrecio_base.getText().equals("")) {
+            listMessages.add("<li>" + this.lblPrecio_base.getText() + "</li>");
+        }
 
-    private void txtDias_tiqueteraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDias_tiqueteraActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDias_tiqueteraActionPerformed
+        if (listMessages.size() > 0) {
+            JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol>" + Joiner.on("\n").join(listMessages) + "</ol></html>");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
+        } else {
+            this.clientePaqueteDto.setClienteId(this.clienteDto.getId());
+            this.clientePaqueteDto.setPaqueteId(new Long(comboPaq.getCodigo()));
+            if (!Util.getVacio(comboDes.getCodigo())) {
+                this.clientePaqueteDto.setDescuentoId(new Long(comboDes.getCodigo()));
+            }
+            if (!Util.getVacio(comboPaq.getAuxiliar()) && (comboPaq.getAuxiliar().equals(String.valueOf(ESiNo.SI.getId())))) {
+                this.clientePaqueteDto.setNumeroDias(Short.parseShort(this.txtDias_tiquetera.getText()));
+            }
+            this.clientePaqueteDto.setPrecioBase(Double.parseDouble(this.txtPrecio_base.getText()));
+            this.clientePaqueteDto.setValorTotal(Double.parseDouble(this.txtTolal_pagar.getText()));
+            this.clientePaqueteDto.setYnActivo(ESiNo.SI.getId());
+            if (this.txtFecha_inicio.getDate() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String fechaNacimiento = sdf.format(this.txtFecha_inicio.getDate().getTime());
+                this.clientePaqueteDto.setFechaIniciaPaquete(fechaNacimiento);
+            }
+            this.clientePaqueteDto.setFechaFinalizaPaquete(title);
+            this.clientePaqueteDto.setUsuarioId(this.usuarioSessionDto.getId());
+            try {
+                boolean correct = this.operacion.setGuardaPagoPaqueteCliente(this.clientePaqueteDto);
+                if (correct) {
+                    JLabel label = new JLabel("El pago se ha realizado correctamente");
+                    label.setFont(new Font("consolas", Font.PLAIN, 14));
+                    JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(frmRegistrarPagos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_setRegistrarPagoPlan
+    /**
+     *
+     * @param evt
+     */
+    private void setVerificaPaqueteTiquetera(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_setVerificaPaqueteTiquetera
+        Double valorTotal = 0.0;
+        ComboDto comboPaq = (ComboDto) this.cmbPaquete.getSelectedItem();
+        ComboDto comboDes = (ComboDto) this.cmbDescuento.getSelectedItem();
+        if (!Util.getVacio(comboPaq.getCodigo())) {
+            valorTotal += Double.parseDouble(comboPaq.getAssistant());
+            if (!Util.getVacio(comboPaq.getAuxiliar()) && (comboPaq.getAuxiliar().equals(String.valueOf(ESiNo.SI.getId())))) {
+                this.panelTiquetera.setVisible(true);
+            } else {
+                this.panelTiquetera.setVisible(false);
+            }
+            if (!this.txtDias_tiquetera.getText().equals("")) {
+                int diasTiquetera = Short.parseShort(this.txtDias_tiquetera.getText());
+                valorTotal = (diasTiquetera * valorTotal);
+            }
+            if (!Util.getVacio(comboDes.getCodigo())) {
+                double descuento = Double.parseDouble(comboDes.getAuxiliar());
+                if (descuento > 100) {
+                    valorTotal -= descuento;
+                } else {
+                    descuento = descuento / 100;
+                    descuento = valorTotal * descuento;
+                    valorTotal -= descuento;
+                }
+            }
+        } else {
+            this.panelTiquetera.setVisible(false);
+        }
+        this.txtPrecio_base.setText(valorTotal.toString());
+        this.txtTolal_pagar.setText(valorTotal.toString());
+    }//GEN-LAST:event_setVerificaPaqueteTiquetera
+    /**
+     *
+     * @param evt
+     */
+    private void setValidaDiasTiquetera(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_setValidaDiasTiquetera
+        if (!this.txtDias_tiquetera.getText().equals("")) {
+            int diasTiquetera = Short.parseShort(this.txtDias_tiquetera.getText());
+            if (diasTiquetera > 30) {
+                JLabel label = new JLabel("El valor para el numero de dias de tiquetera no puede exceder los 30 días");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
+            } else if (diasTiquetera < 1) {
+                JLabel label = new JLabel("El valor para el número de dias de tiquetera no puede ser menor a 1");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
+            } else {
+                Double valorTotal = 0.0;
+                ComboDto comboPaq = (ComboDto) this.cmbPaquete.getSelectedItem();
+                ComboDto comboDes = (ComboDto) this.cmbDescuento.getSelectedItem();
+                valorTotal += Double.parseDouble(comboPaq.getAssistant());
+                valorTotal = (diasTiquetera * valorTotal);
+                if (!Util.getVacio(comboDes.getCodigo())) {
+                    double descuento = Double.parseDouble(comboDes.getAuxiliar());
+                    if (descuento > 100) {
+                        valorTotal -= descuento;
+                    } else {
+                        descuento = descuento / 100;
+                        descuento = valorTotal * descuento;
+                        valorTotal -= descuento;
+                    }
+                }
+                this.txtPrecio_base.setText(valorTotal.toString());
+                this.txtTolal_pagar.setText(valorTotal.toString());
+            }
+        }
+    }//GEN-LAST:event_setValidaDiasTiquetera
 
-    private void txtPrecio_baseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecio_baseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPrecio_baseActionPerformed
+    private void setValidaSoloNumeros(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_setValidaSoloNumeros
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+            JLabel label = new JLabel("Solo esta permitido el ingreso de números");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Error de ingreso de datos", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_setValidaSoloNumeros
+
+    private void setCalculaDescuento(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_setCalculaDescuento
+        setVerificaPaqueteTiquetera(evt);
+    }//GEN-LAST:event_setCalculaDescuento
+
+    private void setCalculaValorTotalConPrecioBase(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_setCalculaValorTotalConPrecioBase
+        if (!this.txtPrecio_base.getText().equals("")) {
+            double precioBase = Double.parseDouble(this.txtPrecio_base.getText());
+            if (precioBase > 1000) {
+                Double valorTotal = 0.0;
+                ComboDto comboPaq = (ComboDto) this.cmbPaquete.getSelectedItem();
+                ComboDto comboDes = (ComboDto) this.cmbDescuento.getSelectedItem();
+                if (!Util.getVacio(comboPaq.getCodigo())) {
+                    valorTotal += precioBase;
+                    if (!this.txtDias_tiquetera.getText().equals("")) {
+                        int diasTiquetera = Short.parseShort(this.txtDias_tiquetera.getText());
+                        valorTotal = (diasTiquetera * valorTotal);
+                    }
+                    if (!Util.getVacio(comboDes.getCodigo())) {
+                        double descuento = Double.parseDouble(comboDes.getAuxiliar());
+                        if (descuento > 100) {
+                            valorTotal -= descuento;
+                        } else {
+                            descuento = descuento / 100;
+                            descuento = valorTotal * descuento;
+                            valorTotal -= descuento;
+                        }
+                    }
+                }
+                this.txtPrecio_base.setText(valorTotal.toString());
+                this.txtTolal_pagar.setText(valorTotal.toString());
+            } else {
+                JLabel label = new JLabel("El precio base no debe ser inferior a 1000 pesos");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Error de ingreso de datos", JOptionPane.WARNING_MESSAGE);
+                this.txtPrecio_base.setText("");
+            }
+        }
+    }//GEN-LAST:event_setCalculaValorTotalConPrecioBase
     public ClienteDto getClienteDto() {
         return clienteDto;
     }
@@ -365,22 +568,22 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox cmbDescuento;
     private javax.swing.JComboBox cmbPaquete;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JLabel lblDocumento_cliente;
+    private javax.swing.JLabel lblNombre_cliente;
+    private javax.swing.JLabel lblPaquete;
+    private javax.swing.JLabel lblPrecio_base;
+    private javax.swing.JLabel lblTiquetera;
     private javax.swing.JPanel panelCliente;
     private javax.swing.JPanel panelFoto;
     private javax.swing.JPanel panelTiquetera;
     private javax.swing.JTextField txtDias_tiquetera;
+    private com.toedter.calendar.JDateChooser txtFecha_inicio;
     private javax.swing.JTextField txtPrecio_base;
     private javax.swing.JTextField txtTolal_pagar;
     // End of variables declaration//GEN-END:variables

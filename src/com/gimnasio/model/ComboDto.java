@@ -13,6 +13,7 @@ public class ComboDto {
     private String codigo;
     private String descripcion;
     private String auxiliar;
+    private String assistant;
 
     public ComboDto(String codigo, String descripcion) {
         this.codigo = codigo;
@@ -23,6 +24,13 @@ public class ComboDto {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.auxiliar = auxiliar;
+    }
+
+    public ComboDto(String codigo, String descripcion, String auxiliar, String assistant) {
+        this.codigo = codigo;
+        this.descripcion = descripcion;
+        this.auxiliar = auxiliar;
+        this.assistant = assistant;
     }
 
     public String getCodigo() {
@@ -47,6 +55,14 @@ public class ComboDto {
 
     public void setAuxiliar(String auxiliar) {
         this.auxiliar = auxiliar;
+    }
+
+    public String getAssistant() {
+        return assistant;
+    }
+
+    public void setAssistant(String assistant) {
+        this.assistant = assistant;
     }
 
     @Override

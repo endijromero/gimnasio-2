@@ -30,6 +30,10 @@ public class Operaciones {
         this.model.setConexion(this.conexion);
     }
 
+    public boolean setGuardaPagoPaqueteCliente(ClientePaqueteDto clientePaqueteDto) throws SQLException {
+        return this.model.setGuardaPagoPaqueteCliente(clientePaqueteDto);
+    }
+
     /**
      *
      * @return List
@@ -54,7 +58,7 @@ public class Operaciones {
         List<ComboDto> lista = new ArrayList();
         List<PaqueteDto> listPaquetes = this.model.getPaquetesDatos(null);
         for (PaqueteDto paquete : listPaquetes) {
-            ComboDto dto = new ComboDto(String.valueOf(paquete.getId()), paquete.getNombre(), String.valueOf(paquete.getYnTiquetera()));
+            ComboDto dto = new ComboDto(String.valueOf(paquete.getId()), paquete.getNombre(), String.valueOf(paquete.getYnTiquetera()), String.valueOf(paquete.getPrecioBase()));
             lista.add(dto);
         }
         return lista;
