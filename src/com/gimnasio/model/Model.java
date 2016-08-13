@@ -67,7 +67,7 @@ public class Model {
         boolean correcto;
         try {
             String sql = "";
-            if (clientePaqueteDto.getId() > 0) {
+            if (clientePaqueteDto.getId() != null && clientePaqueteDto.getId() > 0) {
                 sql = "UPDATE  cliente_paquete  SET "
                         + "cliente_id = '" + clientePaqueteDto.getClienteId() + "', paquete_id = '" + clientePaqueteDto.getPaqueteId() + "', ";
                 if (clientePaqueteDto.getDescuentoId() != null) {
@@ -266,7 +266,7 @@ public class Model {
             if (!Util.getVacio(documento)) {
                 sql += " AND ps.numero_identificacion LIKE '%" + documento + "%' ";
             }
-            sql += " ORDER BY ps.id ASC ";
+            sql += " ORDER BY ps.fecha_registro DESC, ps.primer_nombre, ps.segundo_nombre, ps.primer_apellido,ps.segundo_apellido ";
             ResultSet res = stat.executeQuery(sql);
             while (res.next()) {
                 ClienteDto dto = new ClienteDto();

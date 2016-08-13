@@ -871,7 +871,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_setValidarNumeroDocumento
 
     private void setValidaEmail(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_setValidaEmail
-        if (!setValidaEmail(this.txtEmail.getText())) {
+        if (!setValidaEmail(this.txtEmail.getText().toLowerCase())) {
             JLabel label = new JLabel("<html>El correo ingresado: <b>" + this.txtEmail.getText() + "</b> no es correcto</html>");
             label.setFont(new Font("consolas", Font.PLAIN, 14));
             JOptionPane.showMessageDialog(this, label, "Error de ingreso de datos", JOptionPane.WARNING_MESSAGE);
