@@ -24,7 +24,7 @@ import javax.swing.JOptionPane;
  * @author rodolfo
  */
 public final class frmPaquetes extends javax.swing.JInternalFrame {
-
+    
     private List<ComboDto> listComboTipoPlan;
     private final ComboModel comboTipoPlan;
     private final frmPrincipal padre;
@@ -43,7 +43,7 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
         initComponents();
         this.operacion = operacion;
         this.paqueteDto = new PaqueteDto();
-
+        
         ComboDto inicio;
         this.comboTipoPlan = new ComboModel();
         this.comboTipoPlan.getLista().clear();
@@ -53,12 +53,12 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
         this.comboTipoPlan.getLista().addAll(this.listComboTipoPlan);
         this.comboTipoPlan.setSelectedItem(inicio);
         this.cmbTipo_plan.setModel(this.comboTipoPlan);
-
+        
         this.headTable = new String[]{"Id", "Nombre", "Tipo", "Precio", "Tiquetera", "Diaz de aplazamiento"};
         int widthColumna[] = {50, 200, 100, 100, 100, 150};
         this.table = new TablaModelo(this.headTable);
         this.tblPaquetes.setModel(this.table);
-
+        
         this.padre = padre;
         int columnas = this.tblPaquetes.getColumnCount();
         for (int i = 0; i < columnas; i++) {
@@ -82,7 +82,7 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
         this.tblPaquetes.setDefaultRenderer(Object.class, new MiRender(this.table));
         this.tblPaquetes.repaint();
     }
-
+    
     private void setCleanFormulario() {
         this.paqueteDto.setId(0);
         this.txtNombre_paquete.setText(null);
@@ -92,11 +92,11 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
         this.cmbTipo_plan.repaint();
         this.rbtTiqutera.setSelected(false);
     }
-
+    
     public Operaciones getOperacion() {
         return operacion;
     }
-
+    
     public void setOperacion(Operaciones operacion) {
         this.operacion = operacion;
     }
@@ -394,6 +394,8 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
                 this.paqueteDto.setTipo(Short.parseShort(comboTipo.getCodigo()));
                 if (!this.txtDias_aplazamiento.getText().equals("")) {
                     this.paqueteDto.setDiasAplazamiento(Short.parseShort(this.txtDias_aplazamiento.getText()));
+                } else {
+                    this.paqueteDto.setDiasAplazamiento(Short.parseShort("0"));
                 }
                 boolean correct = this.operacion.setGuardarPaquete(this.paqueteDto);
                 if (correct) {
@@ -419,7 +421,7 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
             try {
                 int fila = this.tblPaquetes.getSelectedRow();
                 TablaDto tableDto = (TablaDto) this.table.getData().get(fila);
-
+                
                 PaqueteDto dto = new PaqueteDto();
                 List<PaqueteDto> lista = this.operacion.getPaquetesDatos(tableDto.getDato1());
                 if (lista.size() > 0) {
