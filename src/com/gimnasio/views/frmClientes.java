@@ -29,7 +29,7 @@ import javax.swing.JOptionPane;
  * @author rodolfo
  */
 public class frmClientes extends javax.swing.JInternalFrame {
-
+    
     private final ComboModel comboTipoDocumentos;
     private final ComboModel comboEstadosCiviles;
     private List<ComboDto> listTipoDocumentos;
@@ -38,7 +38,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
     private final ClienteDto clienteDto;
     private final frmPrincipal padre;
     private Operaciones operacion;
-
+    
     private String rutaHuellas = "huellas/";
     private String extension = ".fpt";
 
@@ -54,7 +54,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         this.operacion = operacion;
         this.clienteDto = new ClienteDto();
         this.padre = padre;
-
+        
         ComboDto inicio;
         this.comboTipoDocumentos = new ComboModel();
         this.comboTipoDocumentos.getLista().clear();
@@ -64,7 +64,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         this.comboTipoDocumentos.getLista().addAll(this.listTipoDocumentos);
         this.comboTipoDocumentos.setSelectedItem(inicio);
         this.cmbTipo_documento.setModel(this.comboTipoDocumentos);
-
+        
         this.comboEstadosCiviles = new ComboModel();
         this.comboEstadosCiviles.getLista().clear();
         this.listEstadosCiviles = this.operacion.getEstadosCiviles();
@@ -87,7 +87,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         initComponents();
         this.operacion = operacion;
         this.padre = padre;
-
+        
         ComboDto inicio;
         this.comboTipoDocumentos = new ComboModel();
         this.comboTipoDocumentos.getLista().clear();
@@ -97,7 +97,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         this.comboTipoDocumentos.getLista().addAll(this.listTipoDocumentos);
         this.comboTipoDocumentos.setSelectedItem(inicio);
         this.cmbTipo_documento.setModel(this.comboTipoDocumentos);
-
+        
         this.comboEstadosCiviles = new ComboModel();
         this.comboEstadosCiviles.getLista().clear();
         this.listEstadosCiviles = this.operacion.getEstadosCiviles();
@@ -106,7 +106,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         this.comboEstadosCiviles.getLista().addAll(this.listEstadosCiviles);
         this.comboEstadosCiviles.setSelectedItem(inicio);
         this.cmbEstado_civil.setModel(this.comboEstadosCiviles);
-
+        
         ClienteDto clientDto = new ClienteDto();
         List<ClienteDto> listClientes = this.operacion.getClienteDatos(null, numeroDocumento);
         for (ClienteDto cliDto : listClientes) {
@@ -151,7 +151,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         } catch (ParseException ex) {
             Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
     }
 
     /**
@@ -720,19 +720,19 @@ public class frmClientes extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_btnFotoActionPerformed
-
+    
     public Operaciones getOperacion() {
         return operacion;
     }
-
+    
     public void setOperacion(Operaciones operacion) {
         this.operacion = operacion;
     }
-
+    
     public UsuarioDto getUsuarioSessionDto() {
         return usuarioSessionDto;
     }
-
+    
     public void setUsuarioSessionDto(UsuarioDto usuarioSessionDto) {
         this.usuarioSessionDto = usuarioSessionDto;
     }
@@ -753,14 +753,14 @@ public class frmClientes extends javax.swing.JInternalFrame {
         if (!Util.getVacio(cmbTipoDocumento.getCodigo())) {
             clienteDto.getPersonaDto().setTipoIdentificacion(Short.parseShort(cmbTipoDocumento.getCodigo()));
         } else {
-            clienteDto.getPersonaDto().setTipoIdentificacion(Short.parseShort(""));
+            clienteDto.getPersonaDto().setTipoIdentificacion(Short.parseShort("0"));
         }
         clienteDto.getPersonaDto().setNumeroIdentificacion(this.txtDocumento.getText());
         clienteDto.getPersonaDto().setLugarExpedicion(this.txtLugar_expedicion.getText());
         if (!Util.getVacio(cmbEstadoCivil.getCodigo())) {
             clienteDto.getPersonaDto().setEstadoCivil(Short.parseShort(cmbEstadoCivil.getCodigo()));
         } else {
-            clienteDto.getPersonaDto().setEstadoCivil(Short.parseShort(""));
+            clienteDto.getPersonaDto().setEstadoCivil(Short.parseShort("0"));
         }
         if (this.rbtFemenino.isSelected()) {
             clienteDto.getPersonaDto().setGenero(EGenero.FEMENIMO.getId());
@@ -795,7 +795,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         try {
             setLlenarClienteDto();
             List<String> listMessage = this.operacion.setGuardarCliente(this.clienteDto, true);
-            if (listMessage.size() < 1 && this.clienteDto.getId() > 0) {
+            if (listMessage.size() < 1 && (this.clienteDto.getId() != null && this.clienteDto.getId() > 0)) {
                 try {
                     frmPrincipal.frmRegistrarPagos = new frmRegistrarPagos(operacion, clienteDto);
                     frmPrincipal.frmRegistrarPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
@@ -859,9 +859,10 @@ public class frmClientes extends javax.swing.JInternalFrame {
             try {
                 boolean correcto = this.operacion.setValidaDocumentoCliene(String.valueOf(this.clienteDto.getPersonaDto().getId()), this.clienteDto.getPersonaDto().getNumeroIdentificacion());
                 if (!correcto) {
-                    JLabel label = new JLabel("El cliente con número de documento: <b>" + this.clienteDto.getPersonaDto().getNumeroIdentificacion() + "</b> ya se encuentra registrado");
+                    JLabel label = new JLabel("<html>El cliente con número de documento: <b>" + this.clienteDto.getPersonaDto().getNumeroIdentificacion() + "</b> ya se encuentra registrado</html>");
                     label.setFont(new Font("consolas", Font.PLAIN, 14));
                     JOptionPane.showMessageDialog(this, label, "Cliente registrado", JOptionPane.WARNING_MESSAGE);
+                    this.txtDocumento.setText(null);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);

@@ -7,8 +7,10 @@ package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones;
 import com.gimnasio.model.ClienteDto;
+import com.gimnasio.model.ComboDto;
 import com.gimnasio.model.ComboModel;
 import com.gimnasio.model.UsuarioDto;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,8 +22,11 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
     protected UsuarioDto usuarioSessionDto;
     protected ClienteDto clienteDto;
     protected Operaciones operacion;
-    private final ComboModel comboPaquetes;
+    
+    private List<ComboDto> listComboDescuentos;
+    private List<ComboDto> listComboPaquetes;
     private final ComboModel comboDescuentos;
+    private final ComboModel comboPaquetes;
 
     /**
      * Creates new form frmPagos
@@ -35,15 +40,26 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         this.operacion = operacion;
         this.clienteDto = clienteDto;
 
+        ComboDto inicio;
         this.comboPaquetes = new ComboModel();
         this.comboPaquetes.getLista().clear();
-        this.comboPaquetes.getLista().addAll(this.operacion.getPaquetesEnumerado());
+        this.listComboPaquetes = this.operacion.getPaquetesEnumerado();
+        inicio = new ComboDto("", "-------------");
+        this.listComboPaquetes.add(0, inicio);
+        this.comboPaquetes.getLista().addAll(this.listComboPaquetes);
+        this.comboPaquetes.setSelectedItem(inicio);
         this.cmbPaquete.setModel(this.comboPaquetes);
-
+        
+        
         this.comboDescuentos = new ComboModel();
         this.comboDescuentos.getLista().clear();
-        this.comboDescuentos.getLista().addAll(this.operacion.getDescuentosEnumerado());
+        this.listComboPaquetes = this.operacion.getDescuentosEnumerado();
+        inicio = new ComboDto("", "-------------");
+        this.listComboPaquetes.add(0, inicio);
+        this.comboDescuentos.getLista().addAll(this.listComboPaquetes);
+        this.comboDescuentos.setSelectedItem(inicio);
         this.cmbDescuento.setModel(this.comboDescuentos);
+
     }
 
     /**
@@ -64,8 +80,8 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         panelTiquetera = new javax.swing.JPanel();
         txtDias_tiquetera = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        txtFecha_inicio = new javax.swing.JFormattedTextField();
         jLabel8 = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         panelCliente = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -114,10 +130,12 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel8.setText("Fecha de Inicio");
 
+        jDateChooser1.setPreferredSize(new java.awt.Dimension(6, 20));
+
         javax.swing.GroupLayout panelTiqueteraLayout = new javax.swing.GroupLayout(panelTiquetera);
         panelTiquetera.setLayout(panelTiqueteraLayout);
         panelTiqueteraLayout.setHorizontalGroup(
-            panelTiqueteraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            panelTiqueteraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(panelTiqueteraLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel6)
@@ -127,20 +145,22 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                 .addContainerGap(24, Short.MAX_VALUE)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtFecha_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         panelTiqueteraLayout.setVerticalGroup(
             panelTiqueteraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTiqueteraLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addGroup(panelTiqueteraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDias_tiquetera, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addGap(18, 18, 18)
-                .addGroup(panelTiqueteraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFecha_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(15, 15, 15)
+                .addGroup(panelTiqueteraLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelTiqueteraLayout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(0, 11, Short.MAX_VALUE))
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
         );
 
         panelCliente.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -272,17 +292,17 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cmbPaquete, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4))
-                        .addGap(26, 26, 26)
+                        .addGap(15, 15, 15)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cmbDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(15, 15, 15)
                         .addComponent(panelTiquetera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(15, 15, 15)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtPrecio_base, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9))
-                        .addGap(18, 18, 18)
+                        .addGap(15, 15, 15)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtTolal_pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10))
@@ -306,7 +326,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -345,6 +365,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox cmbDescuento;
     private javax.swing.JComboBox cmbPaquete;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
@@ -360,7 +381,6 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
     private javax.swing.JPanel panelFoto;
     private javax.swing.JPanel panelTiquetera;
     private javax.swing.JTextField txtDias_tiquetera;
-    private javax.swing.JFormattedTextField txtFecha_inicio;
     private javax.swing.JTextField txtPrecio_base;
     private javax.swing.JTextField txtTolal_pagar;
     // End of variables declaration//GEN-END:variables

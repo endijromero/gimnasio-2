@@ -438,7 +438,8 @@ public class Model {
                         + "direccion, barrio, "
                         + "telefono, movil, "
                         + "email, huella_dactilar, "
-                        + "foto_perfil, fecha_registro)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, NOW())", Statement.RETURN_GENERATED_KEYS);
+                        + "foto_perfil, fecha_registro, "
+                        + "fecha_modificacion) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW())", Statement.RETURN_GENERATED_KEYS);
                 stat.setString(1, clienteDto.getPersonaDto().getPrimerNombre());
                 stat.setString(2, clienteDto.getPersonaDto().getSegundoNombre());
                 stat.setString(3, clienteDto.getPersonaDto().getPrimerApellido());
@@ -459,7 +460,7 @@ public class Model {
                 if (stat.executeUpdate() > 0) {
                     res = stat.getGeneratedKeys();
                     if (res.next()) {
-                        correcto = stat.execute();
+                        correcto = true;
                         clienteDto.getPersonaDto().setId(res.getLong(1));
                     }
                 }
