@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
  * @author rodolfo
  */
 public class frmBuscarCliente extends javax.swing.JInternalFrame {
-
+    
     private UsuarioDto usuarioSessionDto;
     private final String[] headTable;
     private final TablaModelo table;
@@ -31,21 +31,21 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
     private final String tipo;
 
     /**
-     * 
+     *
      * @param operacion
-     * @param tipo 
+     * @param tipo
      */
     public frmBuscarCliente(Operaciones operacion, String tipo) {
         initComponents();
-
+        
         this.operacion = operacion;
         this.tipo = tipo;
-
+        
         this.headTable = new String[]{"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"};
         int widthColumna[] = {100, 200, 200, 50, 50, 100, 100, 200};
         this.table = new TablaModelo(this.headTable);
         this.tblClientes.setModel(this.table);
-
+        
         int columnas = this.tblClientes.getColumnCount();
         for (int i = 0; i < columnas; i++) {
             this.tblClientes.getColumnModel().getColumn(i).setPreferredWidth(widthColumna[i]);
@@ -60,16 +60,16 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
      */
     public frmBuscarCliente(frmPrincipal padre, Operaciones operacion, String tipo) {
         initComponents();
-
+        
         this.operacion = operacion;
         this.padre = padre;
         this.tipo = tipo;
-
+        
         this.headTable = new String[]{"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"};
         int widthColumna[] = {100, 200, 200, 50, 50, 100, 100, 200};
         this.table = new TablaModelo(this.headTable);
         this.tblClientes.setModel(this.table);
-
+        
         int columnas = this.tblClientes.getColumnCount();
         for (int i = 0; i < columnas; i++) {
             this.tblClientes.getColumnModel().getColumn(i).setPreferredWidth(widthColumna[i]);
@@ -273,7 +273,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
             this.setConsultarTableClientes();
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
-
+    
     public void setConsultarTableClientes() {
         List<TablaDto> lista;
         try {
@@ -329,6 +329,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
                         frmPrincipal.jdstPrincipal.add(frmPagos);
                         frmPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
                         frmPagos.setUsuarioSessionDto(usuarioSessionDto);
+                        frmPagos.setTipoViene(this.tipo);
                         frmPagos.setResizable(true);
                         frmPagos.setClosable(true);
                         frmPagos.setVisible(true);
@@ -357,7 +358,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
             break;
         }
     }//GEN-LAST:event_setCloseIframeBusquedaCliente
-
+    
     public UsuarioDto getUsuarioSessionDto() {
         return usuarioSessionDto;
     }

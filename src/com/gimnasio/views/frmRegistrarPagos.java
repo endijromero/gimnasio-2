@@ -44,6 +44,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
     protected Operaciones operacion;
 
     private frmClientes clientePadre;
+    protected String tipoViene;
 
     /**
      * Creates new form frmPagos
@@ -502,8 +503,13 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                         JLabel label = new JLabel("El pago se ha realizado correctamente");
                         label.setFont(new Font("consolas", Font.PLAIN, 14));
                         JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
-                        this.clientePadre.setVisible(false);
-                        this.setVisible(false);
+                        if (Short.parseShort(this.tipoViene) == 1) {
+                            this.clientePadre.setVisible(false);
+                            this.setVisible(false);
+                        } else {
+                            this.setVisible(false);
+                        }
+
                     }
                 } catch (Exception ex) {
                     JLabel label = new JLabel("El pago NO se ha realizado correctamente");
@@ -701,6 +707,14 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
 
     public void setUsuarioSessionDto(UsuarioDto usuarioSessionDto) {
         this.usuarioSessionDto = usuarioSessionDto;
+    }
+
+    public String getTipoViene() {
+        return tipoViene;
+    }
+
+    public void setTipoViene(String tipoViene) {
+        this.tipoViene = tipoViene;
     }
 
 
