@@ -853,9 +853,13 @@ public class frmClientes extends javax.swing.JInternalFrame {
         setLlenarClienteDto();
         if (!Util.getVacio(this.clienteDto.getPersonaDto().getNumeroIdentificacion())) {
             try {
-                boolean correcto = this.operacion.setValidaDocumentoCliene(String.valueOf(this.clienteDto.getPersonaDto().getId()), this.clienteDto.getPersonaDto().getNumeroIdentificacion());
+                String idPersona = "";
+                if (this.clienteDto.getPersonaDto().getId() != null) {
+                    idPersona = this.clienteDto.getPersonaDto().getId().toString();
+                }
+                boolean correcto = this.operacion.setValidaDocumentoCliene(idPersona, this.clienteDto.getPersonaDto().getNumeroIdentificacion());
                 if (!correcto) {
-                    JLabel label = new JLabel("<html>El cliente con número de documento: <b>" + this.txtDocumento.getText() + "</b> ya se encuentra registrado</html>");
+                    JLabel label = new JLabel("<html>El cliente con número de documento: <b>" + this.clienteDto.getPersonaDto().getNumeroIdentificacion() + "</b> ya se encuentra registrado</html>");
                     label.setFont(new Font("consolas", Font.PLAIN, 14));
                     JOptionPane.showMessageDialog(this, label, "Error de ingreso de datos", JOptionPane.WARNING_MESSAGE);
                     this.txtDocumento.setText(null);

@@ -39,7 +39,7 @@ public class Operaciones {
         List<ComboDto> lista = new ArrayList();
         List<DescuentoDto> listDescuentos = this.model.getDatosDescuentos(null);
         for (DescuentoDto descuento : listDescuentos) {
-            ComboDto dto = new ComboDto(String.valueOf(descuento.getId()), String.valueOf(descuento.getPorcentaje()));
+            ComboDto dto = new ComboDto(String.valueOf(descuento.getId()), descuento.getNombre(), String.valueOf(descuento.getPorcentaje()));
             lista.add(dto);
         }
         return lista;
@@ -54,7 +54,7 @@ public class Operaciones {
         List<ComboDto> lista = new ArrayList();
         List<PaqueteDto> listPaquetes = this.model.getPaquetesDatos(null);
         for (PaqueteDto paquete : listPaquetes) {
-            ComboDto dto = new ComboDto(String.valueOf(paquete.getId()), paquete.getNombre());
+            ComboDto dto = new ComboDto(String.valueOf(paquete.getId()), paquete.getNombre(), String.valueOf(paquete.getYnTiquetera()));
             lista.add(dto);
         }
         return lista;
@@ -294,9 +294,16 @@ public class Operaciones {
         boolean correcto = true;
         List<ClienteDto> listClientes = this.model.getClienteDatos(null, numeroDocuemnto);
         for (ClienteDto dto : listClientes) {
-            if (Integer.parseInt(idPersona) != dto.getPersonaDto().getId().intValue() && numeroDocuemnto.equals(dto.getPersonaDto().getNumeroIdentificacion())) {
-                correcto = false;
-                break;
+            if (!Util.getVacio(idPersona)) {
+                if (!idPersona.equals(String.valueOf(dto.getPersonaDto().getId())) && numeroDocuemnto.equals(dto.getPersonaDto().getNumeroIdentificacion())) {
+                    correcto = false;
+                    break;
+                }
+            } else {
+                if (numeroDocuemnto.equals(dto.getPersonaDto().getNumeroIdentificacion())) {
+                    correcto = false;
+                    break;
+                }
             }
         }
         return correcto;
