@@ -523,6 +523,23 @@ public class Operaciones {
         }
         return listTable;
     }
+    
+    /**
+     * 
+     * @param documento
+     * @return 
+     */
+    public ClientePaqueteDto getPaqueteactivoCliente(String documento) {        
+        ClientePaqueteDto paquete = new ClientePaqueteDto();
+        //Date currentDate = new Date();
+        try {
+            paquete = this.model.getPaqueteActivo(documento);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return paquete;
+    }
 
     public Model getModel() {
         return model;
