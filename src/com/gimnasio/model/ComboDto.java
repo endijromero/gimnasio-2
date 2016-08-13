@@ -12,10 +12,17 @@ public class ComboDto {
 
     private String codigo;
     private String descripcion;
+    private String auxiliar;
 
     public ComboDto(String codigo, String descripcion) {
         this.codigo = codigo;
         this.descripcion = descripcion;
+    }
+
+    public ComboDto(String codigo, String descripcion, String auxiliar) {
+        this.codigo = codigo;
+        this.descripcion = descripcion;
+        this.auxiliar = auxiliar;
     }
 
     public String getCodigo() {
@@ -32,6 +39,14 @@ public class ComboDto {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getAuxiliar() {
+        return auxiliar;
+    }
+
+    public void setAuxiliar(String auxiliar) {
+        this.auxiliar = auxiliar;
     }
 
     @Override

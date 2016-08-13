@@ -32,6 +32,8 @@ public class frmClientes extends javax.swing.JInternalFrame {
 
     private final ComboModel comboTipoDocumentos;
     private final ComboModel comboEstadosCiviles;
+    private List<ComboDto> listTipoDocumentos;
+    private List<ComboDto> listEstadosCiviles;
     private UsuarioDto usuarioSessionDto;
     private final ClienteDto clienteDto;
     private final frmPrincipal padre;
@@ -53,14 +55,23 @@ public class frmClientes extends javax.swing.JInternalFrame {
         this.clienteDto = new ClienteDto();
         this.padre = padre;
 
+        ComboDto inicio;
         this.comboTipoDocumentos = new ComboModel();
         this.comboTipoDocumentos.getLista().clear();
-        this.comboTipoDocumentos.getLista().addAll(this.operacion.getTipoDocumentos());
+        this.listTipoDocumentos = this.operacion.getTipoDocumentos();
+        inicio = new ComboDto("", "-------------");
+        this.listTipoDocumentos.add(0, inicio);
+        this.comboTipoDocumentos.getLista().addAll(this.listTipoDocumentos);
+        this.comboTipoDocumentos.setSelectedItem(inicio);
         this.cmbTipo_documento.setModel(this.comboTipoDocumentos);
 
         this.comboEstadosCiviles = new ComboModel();
         this.comboEstadosCiviles.getLista().clear();
-        this.comboEstadosCiviles.getLista().addAll(this.operacion.getEstadosCiviles());
+        this.listEstadosCiviles = this.operacion.getEstadosCiviles();
+        inicio = new ComboDto("", "-------------");
+        this.listEstadosCiviles.add(0, inicio);
+        this.comboEstadosCiviles.getLista().addAll(this.listEstadosCiviles);
+        this.comboEstadosCiviles.setSelectedItem(inicio);
         this.cmbEstado_civil.setModel(this.comboEstadosCiviles);
     }
 
@@ -77,19 +88,27 @@ public class frmClientes extends javax.swing.JInternalFrame {
         this.operacion = operacion;
         this.padre = padre;
 
+        ComboDto inicio;
         this.comboTipoDocumentos = new ComboModel();
         this.comboTipoDocumentos.getLista().clear();
-        this.comboTipoDocumentos.getLista().addAll(this.operacion.getTipoDocumentos());
+        this.listTipoDocumentos = this.operacion.getTipoDocumentos();
+        inicio = new ComboDto("", "-------------");
+        this.listTipoDocumentos.add(0, inicio);
+        this.comboTipoDocumentos.getLista().addAll(this.listTipoDocumentos);
+        this.comboTipoDocumentos.setSelectedItem(inicio);
         this.cmbTipo_documento.setModel(this.comboTipoDocumentos);
 
         this.comboEstadosCiviles = new ComboModel();
         this.comboEstadosCiviles.getLista().clear();
-        this.comboEstadosCiviles.getLista().addAll(this.operacion.getEstadosCiviles());
+        this.listEstadosCiviles = this.operacion.getEstadosCiviles();
+        inicio = new ComboDto("", "-------------");
+        this.listEstadosCiviles.add(0, inicio);
+        this.comboEstadosCiviles.getLista().addAll(this.listEstadosCiviles);
+        this.comboEstadosCiviles.setSelectedItem(inicio);
         this.cmbEstado_civil.setModel(this.comboEstadosCiviles);
 
-        List<ClienteDto> listClientes = this.operacion.getClienteDatos(null, numeroDocumento);
-
         ClienteDto clientDto = new ClienteDto();
+        List<ClienteDto> listClientes = this.operacion.getClienteDatos(null, numeroDocumento);
         for (ClienteDto cliDto : listClientes) {
             if (cliDto.getPersonaDto().getNumeroIdentificacion().equals(numeroDocumento)) {
                 clientDto = cliDto;
@@ -733,11 +752,15 @@ public class frmClientes extends javax.swing.JInternalFrame {
         clienteDto.getPersonaDto().setSegundoApellido(this.txtSegundo_apellido.getText());
         if (!Util.getVacio(cmbTipoDocumento.getCodigo())) {
             clienteDto.getPersonaDto().setTipoIdentificacion(Short.parseShort(cmbTipoDocumento.getCodigo()));
+        } else {
+            clienteDto.getPersonaDto().setTipoIdentificacion(Short.parseShort(""));
         }
         clienteDto.getPersonaDto().setNumeroIdentificacion(this.txtDocumento.getText());
         clienteDto.getPersonaDto().setLugarExpedicion(this.txtLugar_expedicion.getText());
         if (!Util.getVacio(cmbEstadoCivil.getCodigo())) {
             clienteDto.getPersonaDto().setEstadoCivil(Short.parseShort(cmbEstadoCivil.getCodigo()));
+        } else {
+            clienteDto.getPersonaDto().setEstadoCivil(Short.parseShort(""));
         }
         if (this.rbtFemenino.isSelected()) {
             clienteDto.getPersonaDto().setGenero(EGenero.FEMENIMO.getId());
@@ -749,6 +772,8 @@ public class frmClientes extends javax.swing.JInternalFrame {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             String fechaNacimiento = sdf.format(this.txtFecha_nacimiento.getDate().getTime());
             clienteDto.getPersonaDto().setFechaNacimiento(fechaNacimiento);
+        } else {
+            clienteDto.getPersonaDto().setFechaNacimiento(null);
         }
         clienteDto.getPersonaDto().setDireccion(this.txtDireccion.getText());
         clienteDto.getPersonaDto().setBarrio(this.txtBarrio.getText());
@@ -771,13 +796,17 @@ public class frmClientes extends javax.swing.JInternalFrame {
             setLlenarClienteDto();
             List<String> listMessage = this.operacion.setGuardarCliente(this.clienteDto, true);
             if (listMessage.size() < 1 && this.clienteDto.getId() > 0) {
-                frmPrincipal.frmRegistrarPagos = new frmRegistrarPagos(operacion, clienteDto);                
-                frmPrincipal.frmRegistrarPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-                frmPrincipal.jdstPrincipal.add(frmPrincipal.frmRegistrarPagos);
-                frmPrincipal.frmRegistrarPagos.setUsuarioSessionDto(usuarioSessionDto);
-                frmPrincipal.frmRegistrarPagos.setResizable(true);
-                frmPrincipal.frmRegistrarPagos.setClosable(true);
-                frmPrincipal.frmRegistrarPagos.setVisible(true);
+                try {
+                    frmPrincipal.frmRegistrarPagos = new frmRegistrarPagos(operacion, clienteDto);
+                    frmPrincipal.frmRegistrarPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                    frmPrincipal.jdstPrincipal.add(frmPrincipal.frmRegistrarPagos);
+                    frmPrincipal.frmRegistrarPagos.setUsuarioSessionDto(usuarioSessionDto);
+                    frmPrincipal.frmRegistrarPagos.setResizable(true);
+                    frmPrincipal.frmRegistrarPagos.setClosable(true);
+                    frmPrincipal.frmRegistrarPagos.setVisible(true);
+                } catch (Exception ex) {
+                    Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } else {
                 JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol>" + Joiner.on("\n").join(listMessage) + "</ol></html>");
                 label.setFont(new Font("consolas", Font.PLAIN, 14));

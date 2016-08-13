@@ -7,6 +7,7 @@ package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones;
 import com.gimnasio.model.ClienteDto;
+import com.gimnasio.model.ComboModel;
 import com.gimnasio.model.UsuarioDto;
 import javax.swing.JOptionPane;
 
@@ -19,18 +20,30 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
     protected UsuarioDto usuarioSessionDto;
     protected ClienteDto clienteDto;
     protected Operaciones operacion;
+    private final ComboModel comboPaquetes;
+    private final ComboModel comboDescuentos;
 
     /**
      * Creates new form frmPagos
      *
      * @param operacion
      * @param clienteDto
+     * @throws java.lang.Exception
      */
-    public frmRegistrarPagos(Operaciones operacion, ClienteDto clienteDto) {
+    public frmRegistrarPagos(Operaciones operacion, ClienteDto clienteDto) throws Exception {
         initComponents();
         this.operacion = operacion;
         this.clienteDto = clienteDto;
 
+        this.comboPaquetes = new ComboModel();
+        this.comboPaquetes.getLista().clear();
+        this.comboPaquetes.getLista().addAll(this.operacion.getPaquetesEnumerado());
+        this.cmbPaquete.setModel(this.comboPaquetes);
+
+        this.comboDescuentos = new ComboModel();
+        this.comboDescuentos.getLista().clear();
+        this.comboDescuentos.getLista().addAll(this.operacion.getDescuentosEnumerado());
+        this.cmbDescuento.setModel(this.comboDescuentos);
     }
 
     /**
@@ -46,7 +59,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         btnGuardar = new javax.swing.JButton();
         cmbPaquete = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
-        cmbDescuentos = new javax.swing.JComboBox();
+        cmbDescuento = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
         panelTiquetera = new javax.swing.JPanel();
         txtDias_tiquetera = new javax.swing.JTextField();
@@ -81,7 +94,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("Paquete");
 
-        cmbDescuentos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbDescuento.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -246,7 +259,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbDescuentos, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cmbDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(panelTiquetera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30))
         );
@@ -261,7 +274,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                             .addComponent(jLabel4))
                         .addGap(26, 26, 26)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbDescuentos, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(panelTiquetera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -330,7 +343,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JComboBox cmbDescuentos;
+    private javax.swing.JComboBox cmbDescuento;
     private javax.swing.JComboBox cmbPaquete;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;

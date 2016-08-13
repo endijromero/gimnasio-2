@@ -35,7 +35,7 @@ public enum ETipoDocumento {
 
                 @Override
                 public short getId() {
-                    return 2;
+                    return 3;
                 }
             },
     NUIP {
@@ -46,7 +46,7 @@ public enum ETipoDocumento {
 
                 @Override
                 public short getId() {
-                    return 2;
+                    return 4;
                 }
             };
 

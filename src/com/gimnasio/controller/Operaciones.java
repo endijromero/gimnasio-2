@@ -32,6 +32,36 @@ public class Operaciones {
 
     /**
      *
+     * @return List
+     * @throws Exception
+     */
+    public List<ComboDto> getDescuentosEnumerado() throws Exception {
+        List<ComboDto> lista = new ArrayList();
+        List<DescuentoDto> listDescuentos = this.model.getDatosDescuentos(null);
+        for (DescuentoDto descuento : listDescuentos) {
+            ComboDto dto = new ComboDto(String.valueOf(descuento.getId()), String.valueOf(descuento.getPorcentaje()));
+            lista.add(dto);
+        }
+        return lista;
+    }
+
+    /**
+     *
+     * @return List
+     * @throws Exception
+     */
+    public List<ComboDto> getPaquetesEnumerado() throws Exception {
+        List<ComboDto> lista = new ArrayList();
+        List<PaqueteDto> listPaquetes = this.model.getPaquetesDatos(null);
+        for (PaqueteDto paquete : listPaquetes) {
+            ComboDto dto = new ComboDto(String.valueOf(paquete.getId()), paquete.getNombre());
+            lista.add(dto);
+        }
+        return lista;
+    }
+
+    /**
+     *
      * @param fisioterapia
      * @return
      */
@@ -264,7 +294,7 @@ public class Operaciones {
         boolean correcto = true;
         List<ClienteDto> listClientes = this.model.getClienteDatos(null, numeroDocuemnto);
         for (ClienteDto dto : listClientes) {
-            if (!idPersona.equals(dto.getPersonaDto().getId()) && numeroDocuemnto.equals(dto.getPersonaDto().getNumeroIdentificacion())) {
+            if (Integer.parseInt(idPersona) != dto.getPersonaDto().getId().intValue() && numeroDocuemnto.equals(dto.getPersonaDto().getNumeroIdentificacion())) {
                 correcto = false;
                 break;
             }
@@ -308,7 +338,7 @@ public class Operaciones {
         if (Util.getVacio(clienteDto.getPersonaDto().getPrimerApellido())) {
             listMessages.add("<li>Primer appelido</li>");
         }
-        if (Util.getVacio(String.valueOf(clienteDto.getPersonaDto().getTipoIdentificacion()))) {
+        if (Util.getVacio(String.valueOf(clienteDto.getPersonaDto().getTipoIdentificacion())) || clienteDto.getPersonaDto().getTipoIdentificacion() == 0) {
             listMessages.add("<li>Tipo documento</li>");
         }
         if (Util.getVacio(clienteDto.getPersonaDto().getNumeroIdentificacion())) {
