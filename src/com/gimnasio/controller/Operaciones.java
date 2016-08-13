@@ -76,7 +76,7 @@ public class Operaciones {
         List<ComboDto> lista = new ArrayList();
         List<DescuentoDto> listDescuentos = this.model.getDatosDescuentos(null);
         for (DescuentoDto descuento : listDescuentos) {
-            ComboDto dto = new ComboDto(String.valueOf(descuento.getId()), descuento.getNombre(), String.valueOf(descuento.getPorcentaje()));
+            ComboDto dto = new ComboDto(String.valueOf(descuento.getId()), descuento.getNombre() + " - " + String.valueOf(descuento.getPorcentaje()) + "%", String.valueOf(descuento.getPorcentaje()));
             lista.add(dto);
         }
         return lista;
