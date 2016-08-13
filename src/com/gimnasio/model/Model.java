@@ -22,31 +22,88 @@ public class Model {
 
     }
 
+    /**
+     *
+     * @param idCliente
+     * @param documento
+     * @return
+     * @throws java.sql.SQLException
+     */
+    public ClientePaqueteDto getPaqueteActivoCliente(String idCliente, String documento) throws SQLException {
+        ClientePaqueteDto paquete = new ClientePaqueteDto();
+        Statement stat = this.conexion.getConexion().createStatement();
+        //, pqt.precio_base
+        String sql = "SELECT cp.* FROM cliente_paquete cp "
+                + " INNER JOIN clientes cl "
+                + " ON cp.cliente_id = cl.id "
+                + " INNER JOIN personas per "
+                + " ON cl.persona_id = per.id "
+                + " INNER JOIN paquetes pqt "
+                + " ON cp.paquete_id = pqt.id "
+                + "WHERE DATE_FORMAT(NOW(), '%Y-%m-%d') BETWEEN fecha_inicia_paquete AND fecha_finaliza_paquete ";
+        if (!Util.getVacio(idCliente)) {
+            sql += " AND cl.id =" + idCliente + "";
+        }
+        if (!Util.getVacio(documento)) {
+            sql += " AND per.numero_identificacion ='" + documento + "'";
+        }
+        ResultSet res = stat.executeQuery(sql);
+        while (res.next()) {
+            paquete.setId(res.getLong("id"));
+            paquete.setClienteId(res.getLong("cliente_id"));
+            paquete.setPaqueteId(res.getLong("paquete_id"));
+            paquete.setDescuentoId(res.getLong("descuento_id"));
+            paquete.setValorTotal(res.getDouble("valor_total"));
+            paquete.setPrecioBase(res.getDouble("precio_base"));
+            paquete.setEstado(res.getShort("estado"));
+            paquete.setFechaIniciaPaquete(res.getString("fecha_inicia_paquete"));
+            paquete.setFechaFinalizaPaquete(res.getString("fecha_finaliza_paquete"));
+        }
+        stat.close();
+        return paquete;
+    }
+
     public boolean setGuardaPagoPaqueteCliente(ClientePaqueteDto clientePaqueteDto) throws SQLException {
         boolean correcto;
         try {
-            String sql = "INSERT INTO `cliente_paquete` "
-                    + "(`cliente_id`, `paquete_id`, ";
-            if (clientePaqueteDto.getDescuentoId() != null) {
-                sql += "`descuento_id`, ";
+            String sql = "";
+            if (clientePaqueteDto.getId() > 0) {
+                sql = "UPDATE  cliente_paquete  SET "
+                        + "cliente_id = '" + clientePaqueteDto.getClienteId() + "', paquete_id = '" + clientePaqueteDto.getPaqueteId() + "', ";
+                if (clientePaqueteDto.getDescuentoId() != null) {
+                    sql += "descuento_id ='" + (clientePaqueteDto.getDescuentoId() == null ? "" : clientePaqueteDto.getDescuentoId()) + "', ";
+                }
+                sql += "numero_dias_tiquetera = '" + clientePaqueteDto.getNumeroDiasTiquetera() + "',  "
+                        + "precio_base = '" + clientePaqueteDto.getPrecioBase() + "', valor_total = '" + clientePaqueteDto.getValorTotal() + "', "
+                        + "estado = '" + clientePaqueteDto.getEstado() + "', fecha_inicia_paquete = '" + clientePaqueteDto.getFechaIniciaPaquete() + "', "
+                        + "fecha_finaliza_paquete = '" + clientePaqueteDto.getFechaFinalizaPaquete() + "', usuario_id = '" + clientePaqueteDto.getUsuarioId() + "', "
+                        + "fecha_modificacion = NOW() "
+                        + "WHERE id = '" + clientePaqueteDto.getId() + "' ;";
+            } else {
+                sql = "INSERT INTO cliente_paquete "
+                        + "(cliente_id, paquete_id, ";
+                if (clientePaqueteDto.getDescuentoId() != null) {
+                    sql += "descuento_id, ";
+                }
+                sql += "numero_dias_tiquetera, "
+                        + "precio_base, valor_total, "
+                        + "estado, fecha_inicia_paquete, "
+                        + "fecha_finaliza_paquete, usuario_id, "
+                        + "fecha_registro, fecha_modificacion )  "
+                        + "VALUES ('" + clientePaqueteDto.getClienteId() + "','" + clientePaqueteDto.getPaqueteId() + "',";
+                if (clientePaqueteDto.getDescuentoId() != null) {
+                    sql += "'" + (clientePaqueteDto.getDescuentoId() == null ? "" : clientePaqueteDto.getDescuentoId()) + "',";
+                }
+                sql += "'" + clientePaqueteDto.getNumeroDiasTiquetera() + "',"
+                        + "'" + clientePaqueteDto.getPrecioBase() + "',"
+                        + "'" + clientePaqueteDto.getValorTotal() + "',"
+                        + "'" + clientePaqueteDto.getEstado() + "',"
+                        + "'" + clientePaqueteDto.getFechaIniciaPaquete() + "',"
+                        + "'" + clientePaqueteDto.getFechaFinalizaPaquete() + "',"
+                        + "'" + clientePaqueteDto.getUsuarioId() + "',"
+                        + "NOW(), NOW())";
+
             }
-            sql += "`numero_dias_tiquetera`, "
-                    + "`precio_base`, `valor_total`, "
-                    + "`estado`, `fecha_inicia_paquete`, "
-                    + "`fecha_finaliza_paquete`, `usuario_id`, "
-                    + "`fecha_registro`, `fecha_modificacion` )  "
-                    + "VALUES ('" + clientePaqueteDto.getClienteId() + "','" + clientePaqueteDto.getClienteId() + "',";
-            if (clientePaqueteDto.getDescuentoId() != null) {
-                sql += "'" + (clientePaqueteDto.getDescuentoId() == null ? "" : clientePaqueteDto.getDescuentoId()) + "',";
-            }
-            sql += "'" + clientePaqueteDto.getNumeroDiasTiquetera() + "',"
-                    + "'" + clientePaqueteDto.getPrecioBase() + "',"
-                    + "'" + clientePaqueteDto.getValorTotal() + "',"
-                    + "'" + clientePaqueteDto.getEstado() + "',"
-                    + "'" + clientePaqueteDto.getFechaIniciaPaquete() + "',"
-                    + "'" + clientePaqueteDto.getFechaFinalizaPaquete() + "',"
-                    + "'" + clientePaqueteDto.getUsuarioId() + "',"
-                    + "NOW(), NOW())";
             Statement stat = this.conexion.getConexion().createStatement();
             stat.execute(sql);
             stat.close();
@@ -686,42 +743,6 @@ public class Model {
         }
         stat.close();
         return list;
-    }
-    
-    /**
-     * 
-     * @param documento
-     * @return 
-     * @throws java.sql.SQLException 
-     */
-    public ClientePaqueteDto getPaqueteActivo(String documento) throws SQLException  {
-        ClientePaqueteDto paquete = new ClientePaqueteDto();
-        Statement stat = this.conexion.getConexion().createStatement();
-        String sql = "SELECT cp.*, pqt.precio_base FROM cliente_paquete cp "
-                        + " INNER JOIN clientes cl "
-                        + " ON cp.cliente_id = cl.id "
-                        + " INNER JOIN personas per "
-                        + " ON cl.persona_id = per.id "
-                        + " INNER JOIN paquetes pqt "
-                        + " ON cp.paquete_id = pqt.id "
-                        + "WHERE NOW() BETWEEN fecha_inicia_paquete AND fecha_finaliza_paquete ";
-        if (! Util.getVacio(documento)) {
-            sql += " AND per.numero_identificacion ='"+documento+"'";
-        }        
-        ResultSet res = stat.executeQuery(sql);
-        while (res.next()) {           
-            paquete.setId(res.getLong("id"));
-            paquete.setClienteId(res.getLong("cliente_id"));
-            paquete.setPaqueteId(res.getLong("paquete_id"));
-            paquete.setDescuentoId(res.getLong("descuento_id"));
-            paquete.setValorTotal(res.getDouble("valor_total"));
-            paquete.setPrecioBase(res.getDouble("precio_base"));
-            paquete.setEstado(res.getShort("estado"));
-            paquete.setFechaIniciaPaquete(res.getString("fecha_inicia_paquete"));
-            paquete.setFechaFinalizaPaquete(res.getString("fecha_finaliza_paquete"));                  
-        }
-        stat.close();
-        return paquete;
     }
 
     public List<Object> getListPersist() {

@@ -10,7 +10,6 @@ import com.gimnasio.model.ClienteDto;
 import com.gimnasio.model.ClientePaqueteDto;
 import com.gimnasio.model.ComboDto;
 import com.gimnasio.model.ComboModel;
-import com.gimnasio.model.PagoDto;
 import com.gimnasio.model.UsuarioDto;
 import com.gimnasio.model.enums.EEstadPlan;
 import com.gimnasio.model.enums.ESiNo;
@@ -56,28 +55,31 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
      */
     public frmRegistrarPagos(frmClientes frmCliente, Operaciones operacion, ClienteDto clienteDto) throws Exception {
         initComponents();
-
         this.clientePaqueteDto = new ClientePaqueteDto();
-        //this.clientePaqueteDto = this.operacion.getPagosCliente();
         this.clientePadre = frmCliente;
-        this.operacion = operacion;
         this.clienteDto = clienteDto;
-
+        this.operacion = operacion;
         this.setInitCombos();
         this.panelTiquetera.setVisible(false);
-
         if (!Util.getVacio(clienteDto.getPersonaDto().getNombreCompleto())) {
-            this.lblNombre_cliente.setText(clienteDto.getPersonaDto().getNombreCompleto());
+            this.clientePaqueteDto = this.operacion.getPaqueteActivoCliente(String.valueOf(this.clienteDto.getId()), null);
             this.lblDocumento_cliente.setText(clienteDto.getPersonaDto().getNumeroIdentificacion());
-        }         
+            this.lblNombre_cliente.setText(clienteDto.getPersonaDto().getNombreCompleto());
+            if (this.clientePaqueteDto.getId() != null) {
+                this.setAsignarValores();
+            }
+        }
     }
 
+    /**
+     *
+     * @param operacion
+     * @param documento
+     * @throws Exception
+     */
     public frmRegistrarPagos(Operaciones operacion, String documento) throws Exception {
         initComponents();
-        
         this.operacion = operacion;
-        this.clientePaqueteDto = this.operacion.getPaqueteactivoCliente(documento);        
-
         List<ClienteDto> listCliente = this.operacion.getClienteDatos(null, documento);
         if (listCliente.size() > 0) {
             ClienteDto clienteTemp = new ClienteDto();
@@ -89,14 +91,18 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             }
             this.clienteDto = clienteTemp;
         }
-        
-        this.setInitCombos();
-        this.panelTiquetera.setVisible(false);
-        if (!Util.getVacio(clienteDto.getPersonaDto().getNombreCompleto())) {
-            this.lblNombre_cliente.setText(clienteDto.getPersonaDto().getNombreCompleto());
-            this.lblDocumento_cliente.setText(clienteDto.getPersonaDto().getNumeroIdentificacion());
+        if (this.clienteDto.getId() != null) {
+            this.clientePaqueteDto = this.operacion.getPaqueteActivoCliente(String.valueOf(this.clienteDto.getId()), null);
+            setInitCombos();
+            this.panelTiquetera.setVisible(false);
+            if (!Util.getVacio(clienteDto.getPersonaDto().getNombreCompleto())) {
+                this.lblNombre_cliente.setText(clienteDto.getPersonaDto().getNombreCompleto());
+                this.lblDocumento_cliente.setText(clienteDto.getPersonaDto().getNumeroIdentificacion());
+            }
+            if (this.clientePaqueteDto.getId() > 0) {
+                setAsignarValores();
+            }
         }
-        this.setAsignarValores();
     }
 
     public void setInitCombos() {
@@ -124,25 +130,34 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             Logger.getLogger(frmRegistrarPagos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
-     * 
+     *
      */
     public void setAsignarValores() {
-        if(this.clientePaqueteDto.getPaqueteId() > 0 ) {
-            this.cmbPaquete.setSelectedIndex(this.clientePaqueteDto.getPaqueteId().intValue());
-            this.cmbPaquete.repaint();
+        try {
+            if (this.clientePaqueteDto.getPaqueteId() > 0) {
+                this.cmbPaquete.setSelectedIndex(Integer.parseInt(this.clientePaqueteDto.getPaqueteId().toString()));
+                this.cmbPaquete.repaint();
+            }
+            if (this.clientePaqueteDto.getDescuentoId() > 0) {
+                this.cmbDescuento.setSelectedIndex(Integer.parseInt(this.clientePaqueteDto.getDescuentoId().toString()));
+                this.cmbDescuento.repaint();
+            }
+            if (this.clientePaqueteDto.getNumeroDiasTiquetera() > 0) {
+                this.txtDias_tiquetera.setText(String.valueOf(this.clientePaqueteDto.getNumeroDiasTiquetera()));
+            }
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(clientePaqueteDto.getFechaIniciaPaquete());
+            this.txtFecha_inicio.setDate(date);
+            if (this.clientePaqueteDto.getPrecioBase() > 0) {
+                this.txtPrecio_base.setText(String.valueOf(this.clientePaqueteDto.getPrecioBase()));
+            }
+            if (this.clientePaqueteDto.getValorTotal() > 0) {
+                this.txtTolal_pagar.setText(String.valueOf(this.clientePaqueteDto.getValorTotal()));
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(frmRegistrarPagos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(this.clientePaqueteDto.getDescuentoId()> 0 ) {
-            this.cmbDescuento.setSelectedIndex(this.clientePaqueteDto.getDescuentoId().intValue());
-            this.cmbDescuento.repaint();
-        }        
-        if(this.clientePaqueteDto.getPrecioBase() > 0) {
-            this.txtPrecio_base.setText(String.valueOf(this.clientePaqueteDto.getPrecioBase()));
-        } 
-        if(this.clientePaqueteDto.getValorTotal() > 0) {
-            this.txtTolal_pagar.setText(String.valueOf(this.clientePaqueteDto.getValorTotal()));
-        } 
     }
 
     /**

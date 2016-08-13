@@ -523,22 +523,16 @@ public class Operaciones {
         }
         return listTable;
     }
-    
+
     /**
-     * 
+     *
+     * @param idCliente
      * @param documento
-     * @return 
+     * @return
      */
-    public ClientePaqueteDto getPaqueteactivoCliente(String documento) {        
-        ClientePaqueteDto paquete = new ClientePaqueteDto();
-        //Date currentDate = new Date();
-        try {
-            paquete = this.model.getPaqueteActivo(documento);
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return paquete;
+    public ClientePaqueteDto getPaqueteActivoCliente(String idCliente, String documento) throws SQLException {
+        return this.model.getPaqueteActivoCliente(idCliente, documento);
+
     }
 
     public Model getModel() {
