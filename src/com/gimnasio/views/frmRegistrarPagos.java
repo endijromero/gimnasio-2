@@ -89,6 +89,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             }
             this.clienteDto = clienteTemp;
         }
+        
         this.setInitCombos();
         this.panelTiquetera.setVisible(false);
         if (!Util.getVacio(clienteDto.getPersonaDto().getNombreCompleto())) {

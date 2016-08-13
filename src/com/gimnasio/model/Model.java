@@ -691,7 +691,6 @@ public class Model {
     /**
      * 
      * @param documento
-     * @param fechaActual
      * @return 
      * @throws java.sql.SQLException 
      */
