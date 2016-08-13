@@ -1,6 +1,8 @@
 package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones;
+import com.gimnasio.model.ComboDto;
+import com.gimnasio.model.ComboModel;
 import com.gimnasio.model.MiRender;
 import com.gimnasio.model.PaqueteDto;
 import com.gimnasio.model.TablaDto;
@@ -10,6 +12,7 @@ import com.gimnasio.util.Util;
 import com.google.common.base.Joiner;
 import java.awt.Font;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,10 +25,12 @@ import javax.swing.JOptionPane;
  */
 public final class frmPaquetes extends javax.swing.JInternalFrame {
 
+    private List<ComboDto> listComboTipoPlan;
+    private final ComboModel comboTipoPlan;
     private final frmPrincipal padre;
     private final String[] headTable;
     private final TablaModelo table;
-    private final PaqueteDto paqueteDto;
+    private PaqueteDto paqueteDto;
     private Operaciones operacion;
 
     /**
@@ -34,13 +39,23 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
      * @param operacion
      * @throws SQLException
      */
-    public frmPaquetes(frmPrincipal padre, Operaciones operacion) throws SQLException {
+    public frmPaquetes(frmPrincipal padre, Operaciones operacion) throws Exception {
         initComponents();
         this.operacion = operacion;
         this.paqueteDto = new PaqueteDto();
 
-        this.headTable = new String[]{"Id", "Nombre", "Precio", "Tiquetera", "Diaz de aplazamiento"};
-        int widthColumna[] = {50, 200, 100, 100, 150};
+        ComboDto inicio;
+        this.comboTipoPlan = new ComboModel();
+        this.comboTipoPlan.getLista().clear();
+        this.listComboTipoPlan = this.operacion.getTipoPlanEnumerado();
+        inicio = new ComboDto("", "-------------");
+        this.listComboTipoPlan.add(0, inicio);
+        this.comboTipoPlan.getLista().addAll(this.listComboTipoPlan);
+        this.comboTipoPlan.setSelectedItem(inicio);
+        this.cmbTipo_plan.setModel(this.comboTipoPlan);
+
+        this.headTable = new String[]{"Id", "Nombre", "Tipo", "Precio", "Tiquetera", "Diaz de aplazamiento"};
+        int widthColumna[] = {50, 200, 100, 100, 100, 150};
         this.table = new TablaModelo(this.headTable);
         this.tblPaquetes.setModel(this.table);
 
@@ -73,6 +88,8 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
         this.txtNombre_paquete.setText(null);
         this.txtDias_aplazamiento.setText(null);
         this.txtPrecio.setText(null);
+        this.cmbTipo_plan.setSelectedIndex(0);
+        this.cmbTipo_plan.repaint();
         this.rbtTiqutera.setSelected(false);
     }
 
@@ -106,6 +123,8 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
         rbtTiqutera = new javax.swing.JRadioButton();
         txtDias_aplazamiento = new javax.swing.JTextField();
         lblPrecio1 = new javax.swing.JLabel();
+        lblPrecio2 = new javax.swing.JLabel();
+        cmbTipo_plan = new javax.swing.JComboBox();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPaquetes = new javax.swing.JTable();
@@ -191,30 +210,35 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
         lblPrecio1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblPrecio1.setText("Aplazamiento");
 
+        lblPrecio2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblPrecio2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblPrecio2.setText("Tipo");
+
+        cmbTipo_plan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(50, 50, 50)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnGuardar)
+                    .addComponent(rbtTiqutera)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(72, 72, 72)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblPrecio, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblNombre_paquete, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblNombre_paquete, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblPrecio2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtPrecio)
-                            .addComponent(txtNombre_paquete, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(rbtTiqutera, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblPrecio1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtDias_aplazamiento, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(cmbTipo_plan, 0, 213, Short.MAX_VALUE)
+                            .addComponent(txtNombre_paquete)
+                            .addComponent(txtPrecio)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblPrecio1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtDias_aplazamiento, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(91, 91, 91))
         );
         jPanel1Layout.setVerticalGroup(
@@ -224,19 +248,23 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNombre_paquete, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblNombre_paquete))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(15, 15, 15)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbTipo_plan, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPrecio2))
+                .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPrecio))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(15, 15, 15)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDias_aplazamiento, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPrecio1))
-                .addGap(18, 18, 18)
+                .addGap(15, 15, 15)
                 .addComponent(rbtTiqutera)
-                .addGap(18, 18, 18)
+                .addGap(15, 15, 15)
                 .addComponent(btnGuardar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "LISTA DE PAQUETES", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
@@ -287,7 +315,7 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 725, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(lblResultado)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -322,9 +350,9 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -337,26 +365,50 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
 
     private void setGuardarPaquete(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setGuardarPaquete
         try {
-            this.paqueteDto.setNombre(this.txtNombre_paquete.getText());
-            if (!Util.getVacio(this.txtPrecio.getText())) {
-                this.paqueteDto.setPrecioBase(Double.parseDouble(this.txtPrecio.getText()));
+            ComboDto comboTipo = (ComboDto) this.cmbTipo_plan.getSelectedItem();
+            List<String> listMessages = new ArrayList();
+            if (this.txtNombre_paquete.getText().equals("")) {
+                listMessages.add("<li>Nombre del paquete</li>");
             }
-            this.paqueteDto.setYnTiquetera(this.rbtTiqutera.isSelected() ? ESiNo.SI.getId() : ESiNo.NO.getId());
-            if (!Util.getVacio(this.txtDias_aplazamiento.getText())) {
-                this.paqueteDto.setDiasAplazamiento(Short.parseShort(this.txtDias_aplazamiento.getText()));
+            if (Util.getVacio(comboTipo.getCodigo())) {
+                listMessages.add("<li>Tipo del paquete</li>");
             }
-            List<String> listMessage = this.operacion.setGuardarPaquete(this.paqueteDto);
-            if (listMessage.size() < 1) {
-                JLabel label = new JLabel("<html>El plan <b>" + this.paqueteDto.getNombre().toUpperCase() + "</b> se ha guardado correctamente</html>");
-                label.setFont(new Font("consolas", Font.PLAIN, 14));
-                JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
-                this.setConsultarTablePaquetes();
+            if (this.txtPrecio.getText().equals("")) {
+                listMessages.add("<li>Precio del paquete</li>");
             } else {
-                JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol>" + Joiner.on("\n").join(listMessage) + "</ol></html>");
+                double precioBase = Double.parseDouble(this.txtPrecio.getText());
+                if (precioBase < 0) {
+                    listMessages.add("<li>El precio base del paquete debe ser mayor a 0</li>");
+                }
+            }
+            if (!this.txtDias_aplazamiento.getText().equals("")) {
+                short dias = Short.parseShort(this.txtDias_aplazamiento.getText());
+                if (dias < 0) {
+                    listMessages.add("<li>Los días de aplazamiento no pueden ser menores que 0</li>");
+                }
+            }
+            if (listMessages.size() < 1) {
+                this.paqueteDto.setNombre(this.txtNombre_paquete.getText());
+                this.paqueteDto.setPrecioBase(Double.parseDouble(this.txtPrecio.getText()));
+                this.paqueteDto.setYnTiquetera(this.rbtTiqutera.isSelected() ? ESiNo.SI.getId() : ESiNo.NO.getId());
+                this.paqueteDto.setTipo(Short.parseShort(comboTipo.getCodigo()));
+                if (!this.txtDias_aplazamiento.getText().equals("")) {
+                    this.paqueteDto.setDiasAplazamiento(Short.parseShort(this.txtDias_aplazamiento.getText()));
+                }
+                boolean correct = this.operacion.setGuardarPaquete(this.paqueteDto);
+                if (correct) {
+                    Util.setShowMessage(this, "<html>El paquete <b>" + this.paqueteDto.getNombre().toUpperCase() + "</b> se ha guardado correctamente</html>", "Información", JOptionPane.INFORMATION_MESSAGE);
+                    this.setConsultarTablePaquetes();
+                } else {
+                    Util.setShowMessage(this, "<html>Error: el paquete <b>" + this.paqueteDto.getNombre().toUpperCase() + "</b> no se guardó</html>", "Alerta de error", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+                JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol>" + Joiner.on("\n").join(listMessages) + "</ol></html>");
                 label.setFont(new Font("consolas", Font.PLAIN, 14));
                 JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
             }
         } catch (SQLException ex) {
+            Util.setShowMessage(this, "<html>Error: el paquete <b>" + this.paqueteDto.getNombre().toUpperCase() + "</b> no se guardó</html>", "Alerta de error", JOptionPane.INFORMATION_MESSAGE);
             Logger.getLogger(frmPaquetes.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -364,13 +416,29 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
 
     private void setEditarPaquete(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setEditarPaquete
         if (evt.getClickCount() == 2) {
-            int fila = this.tblPaquetes.getSelectedRow();
-            TablaDto dto = (TablaDto) this.table.getData().get(fila);
-            this.paqueteDto.setId(Integer.parseInt(dto.getDato1()));
-            this.txtNombre_paquete.setText(dto.getDato2());
-            this.txtPrecio.setText(dto.getDato3());
-            this.rbtTiqutera.setSelected(Integer.parseInt(dto.getDato4()) == ESiNo.SI.getId());
-            this.txtDias_aplazamiento.setText(dto.getDato5());
+            try {
+                int fila = this.tblPaquetes.getSelectedRow();
+                TablaDto tableDto = (TablaDto) this.table.getData().get(fila);
+
+                PaqueteDto dto = new PaqueteDto();
+                List<PaqueteDto> lista = this.operacion.getPaquetesDatos(tableDto.getDato1());
+                if (lista.size() > 0) {
+                    dto = lista.get(0);
+                }
+                this.paqueteDto = dto;
+                this.txtNombre_paquete.setText(this.paqueteDto.getNombre());
+                this.txtPrecio.setText(String.valueOf(this.paqueteDto.getPrecioBase()));
+                this.cmbTipo_plan.setSelectedIndex(this.paqueteDto.getTipo());
+                this.cmbTipo_plan.repaint();
+                this.rbtTiqutera.setSelected(this.paqueteDto.getYnTiquetera() == ESiNo.SI.getId());
+                this.txtDias_aplazamiento.setText(String.valueOf(this.paqueteDto.getDiasAplazamiento()));
+            } catch (SQLException ex) {
+                JLabel label = new JLabel("Error: los datos no se consultaron de forma correcta");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Alerta de error", JOptionPane.ERROR_MESSAGE);
+                //Util.setShowMessage(this, "Error: los datos no se consultaron de forma correcta", "Alerta de error", JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(frmPaquetes.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_setEditarPaquete
 
@@ -379,7 +447,9 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
         if (Character.isLetter(c)) {
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(this, "Ingresa solo numeros", "Error de datos", JOptionPane.WARNING_MESSAGE);
+            JLabel label = new JLabel("Error: Ingrese solo números");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Alerta de error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_setValidaNumero
 
@@ -388,13 +458,16 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
         if (Character.isDigit(c)) {
             getToolkit().beep();
             evt.consume();
-            JOptionPane.showMessageDialog(this, "Ingresa solo letras", "Error de datos", JOptionPane.WARNING_MESSAGE);
+            JLabel label = new JLabel("Error: Ingrese solo letras");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Alerta de error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_setValidaSoloLetras
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JComboBox cmbTipo_plan;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JPanel jPanel1;
@@ -406,6 +479,7 @@ public final class frmPaquetes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblNombre_paquete;
     private javax.swing.JLabel lblPrecio;
     private javax.swing.JLabel lblPrecio1;
+    private javax.swing.JLabel lblPrecio2;
     private javax.swing.JLabel lblResultado;
     private javax.swing.JRadioButton rbtTiqutera;
     private javax.swing.JTable tblPaquetes;

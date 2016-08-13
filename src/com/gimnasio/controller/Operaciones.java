@@ -5,6 +5,7 @@ import com.gimnasio.model.enums.EEstadoCivil;
 import com.gimnasio.model.enums.EGenero;
 import com.gimnasio.model.enums.ESiNo;
 import com.gimnasio.model.enums.ETipoDocumento;
+import com.gimnasio.model.enums.ETipoPlan;
 import com.gimnasio.util.Util;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -39,6 +40,38 @@ public class Operaciones {
      * @return List
      * @throws Exception
      */
+    public List<ComboDto> getTipoPlanEnumerado() throws Exception {
+        List<ComboDto> lista = new ArrayList();
+        for (ETipoPlan tip : ETipoPlan.getValues()) {
+            ComboDto dto = new ComboDto(String.valueOf(tip.getId()), tip.getNombre());
+            lista.add(dto);
+        }
+        return lista;
+    }
+
+    public List<ComboDto> getYnActivo() throws Exception {
+        List<ComboDto> lista = new ArrayList();
+        for (ESiNo tip : ESiNo.getValues()) {
+            ComboDto dto = new ComboDto(String.valueOf(tip.getId()), tip.getNombre());
+            lista.add(dto);
+        }
+        return lista;
+    }
+
+    public List<ComboDto> getEstadosCiviles() throws Exception {
+        List<ComboDto> lista = new ArrayList();
+        for (EEstadoCivil tip : EEstadoCivil.getValues()) {
+            ComboDto dto = new ComboDto(String.valueOf(tip.getId()), tip.getNombre());
+            lista.add(dto);
+        }
+        return lista;
+    }
+
+    /**
+     *
+     * @return List
+     * @throws Exception
+     */
     public List<ComboDto> getDescuentosEnumerado() throws Exception {
         List<ComboDto> lista = new ArrayList();
         List<DescuentoDto> listDescuentos = this.model.getDatosDescuentos(null);
@@ -58,10 +91,14 @@ public class Operaciones {
         List<ComboDto> lista = new ArrayList();
         List<PaqueteDto> listPaquetes = this.model.getPaquetesDatos(null);
         for (PaqueteDto paquete : listPaquetes) {
-            ComboDto dto = new ComboDto(String.valueOf(paquete.getId()), paquete.getNombre(), String.valueOf(paquete.getYnTiquetera()), String.valueOf(paquete.getPrecioBase()));
+            ComboDto dto = new ComboDto(String.valueOf(paquete.getId()), paquete.getNombre(), String.valueOf(paquete.getYnTiquetera()), String.valueOf(paquete.getPrecioBase()), String.valueOf(paquete.getTipo()));
             lista.add(dto);
         }
         return lista;
+    }
+
+    public List<PaqueteDto> getPaquetesDatos(String idPaquete) throws SQLException {
+        return this.model.getPaquetesDatos(idPaquete);
     }
 
     /**
@@ -432,45 +469,14 @@ public class Operaciones {
         return lista;
     }
 
-    public List<ComboDto> getYnActivo() throws Exception {
-        List<ComboDto> lista = new ArrayList();
-        for (ESiNo tip : ESiNo.getValues()) {
-            ComboDto dto = new ComboDto(String.valueOf(tip.getId()), tip.getNombre());
-            lista.add(dto);
-        }
-        return lista;
-    }
-
-    public List<ComboDto> getEstadosCiviles() throws Exception {
-        List<ComboDto> lista = new ArrayList();
-        for (EEstadoCivil tip : EEstadoCivil.getValues()) {
-            ComboDto dto = new ComboDto(String.valueOf(tip.getId()), tip.getNombre());
-            lista.add(dto);
-        }
-        return lista;
-    }
-
     /**
      *
      * @param paquete
      * @return
      * @throws SQLException
      */
-    public List<String> setGuardarPaquete(PaqueteDto paquete) throws SQLException {
-        List<String> listMessages = new ArrayList();
-        if (Util.getVacio(paquete.getNombre())) {
-            listMessages.add("<li>Nombre del paquete</li>");
-        }
-        if (paquete.getPrecioBase() <= 0) {
-            listMessages.add("<li>Precio del paquete</li>");
-        }
-        if (paquete.getDiasAplazamiento() < 0) {
-            listMessages.add("<li>Los días de aplazamiento no pueden ser menores que 0</li>");
-        }
-        if (listMessages.size() < 1) {
-            this.model.setGuardarPaquete(paquete);
-        }
-        return listMessages;
+    public boolean setGuardarPaquete(PaqueteDto paquete) throws SQLException {
+        return this.model.setGuardarPaquete(paquete);
     }
 
     /**
@@ -501,12 +507,15 @@ public class Operaciones {
      * @throws SQLException
      */
     public List<TablaDto> getPaquetesDatosTablaDto(String idPaquete) throws SQLException {
+        String tipoPlan;
         List<TablaDto> listTable = new ArrayList();
         List<PaqueteDto> listPaquetes = this.model.getPaquetesDatos(idPaquete);
         for (PaqueteDto paquete : listPaquetes) {
+            tipoPlan = paquete.getTipo() > 0 ? ETipoPlan.getResult(paquete.getTipo()).getNombre() : null;
             TablaDto tabla = new TablaDto(
                     String.valueOf(paquete.getId()),
                     Util.getQuitaNULL(paquete.getNombre()),
+                    tipoPlan,
                     String.valueOf(paquete.getPrecioBase()),
                     String.valueOf(paquete.getYnTiquetera()),
                     String.valueOf(paquete.getDiasAplazamiento()));

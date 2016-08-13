@@ -31,10 +31,9 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
     private final String tipo;
 
     /**
-     * Creates new form frmCliente
-     *
+     * 
      * @param operacion
-     * @param tipo
+     * @param tipo 
      */
     public frmBuscarCliente(Operaciones operacion, String tipo) {
         initComponents();
@@ -262,6 +261,10 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     *
+     * @param evt
+     */
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         if (Util.getVacio(this.txtNombres.getText()) && Util.getVacio(this.txtApellidos.getText()) && Util.getVacio(this.txtDocumento.getText())) {
@@ -287,37 +290,61 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
         }
     }
 
-
+    /**
+     *
+     * @param evt
+     */
     private void setClienteProceso(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setClienteProceso
-        // TODO add your handling code here:
         if (evt.getClickCount() == 2) {
             int fila = this.tblClientes.getSelectedRow();
             TablaDto dto = (TablaDto) this.table.getData().get(fila);
             String documento = dto.getDato1();
-            if (this.tipo.equals("1")) {
-                try {
-                    frmPrincipal.frmCliente = new frmClientes(this.padre, operacion, documento);
-                    frmPrincipal.jdstPrincipal.add(frmPrincipal.frmCliente);
-                    frmPrincipal.frmCliente.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-                    frmPrincipal.frmCliente.setUsuarioSessionDto(usuarioSessionDto);
-                    frmPrincipal.frmCliente.setResizable(true);
-                    frmPrincipal.frmCliente.setClosable(true);
-                    frmPrincipal.frmCliente.setVisible(true);
-                } catch (Exception ex) {
-                    Logger.getLogger(frmBuscarCliente.class.getName()).log(Level.SEVERE, null, ex);
+            switch (Short.parseShort(this.tipo)) {
+                case 1: {
+                    try {
+                        frmPrincipal.frmCliente = new frmClientes(this.padre, operacion, documento);
+                        frmPrincipal.jdstPrincipal.add(frmPrincipal.frmCliente);
+                        frmPrincipal.frmCliente.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                        frmPrincipal.frmCliente.setUsuarioSessionDto(usuarioSessionDto);
+                        frmPrincipal.frmCliente.setResizable(true);
+                        frmPrincipal.frmCliente.setClosable(true);
+                        frmPrincipal.frmCliente.setVisible(true);
+                    } catch (Exception ex) {
+                        Logger.getLogger(frmBuscarCliente.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            } else if (this.tipo.equals("2")) {//fisioterapia
-                frmPrincipal.fisitorepiaView = new frmFisioterapia(this.operacion, documento);
-                frmPrincipal.jdstPrincipal.add(frmPrincipal.fisitorepiaView);
-                frmPrincipal.fisitorepiaView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-                frmPrincipal.fisitorepiaView.setResizable(true);
-                frmPrincipal.fisitorepiaView.setClosable(true);
-                frmPrincipal.fisitorepiaView.setVisible(true);
+                break;
+                case 2: {
+                    frmPrincipal.fisitorepiaView = new frmFisioterapia(this.operacion, documento);
+                    frmPrincipal.jdstPrincipal.add(frmPrincipal.fisitorepiaView);
+                    frmPrincipal.fisitorepiaView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                    frmPrincipal.fisitorepiaView.setResizable(true);
+                    frmPrincipal.fisitorepiaView.setClosable(true);
+                    frmPrincipal.fisitorepiaView.setVisible(true);
+                }
+                break;
+                case 3: {
+                    try {
+                        frmRegistrarPagos frmPagos = new frmRegistrarPagos(operacion, documento);
+                        frmPrincipal.jdstPrincipal.add(frmPagos);
+                        frmPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                        frmPagos.setUsuarioSessionDto(usuarioSessionDto);
+                        frmPagos.setResizable(true);
+                        frmPagos.setClosable(true);
+                        frmPagos.setVisible(true);
+                    } catch (Exception ex) {
+                        Logger.getLogger(frmBuscarCliente.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
             }
-            //this.setVisible(false);
         }
     }//GEN-LAST:event_setClienteProceso
 
+    /**
+     *
+     * @param evt
+     */
     private void setCloseIframeBusquedaCliente(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_setCloseIframeBusquedaCliente
         switch (Integer.parseInt(this.tipo)) {
             case 1: {
@@ -335,6 +362,10 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
         return usuarioSessionDto;
     }
 
+    /**
+     *
+     * @param usuarioSessionDto
+     */
     public void setUsuarioSessionDto(UsuarioDto usuarioSessionDto) {
         this.usuarioSessionDto = usuarioSessionDto;
     }

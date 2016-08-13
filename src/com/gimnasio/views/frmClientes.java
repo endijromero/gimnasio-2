@@ -797,7 +797,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
             List<String> listMessage = this.operacion.setGuardarCliente(this.clienteDto, true);
             if (listMessage.size() < 1 && (this.clienteDto.getId() != null && this.clienteDto.getId() > 0)) {
                 try {
-                    frmPrincipal.frmRegistrarPagos = new frmRegistrarPagos(operacion, clienteDto);
+                    frmPrincipal.frmRegistrarPagos = new frmRegistrarPagos(this, operacion, clienteDto);
                     frmPrincipal.frmRegistrarPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
                     frmPrincipal.jdstPrincipal.add(frmPrincipal.frmRegistrarPagos);
                     frmPrincipal.frmRegistrarPagos.setUsuarioSessionDto(usuarioSessionDto);

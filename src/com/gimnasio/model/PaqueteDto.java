@@ -8,6 +8,7 @@ public class PaqueteDto implements java.io.Serializable {
 
     private int id;
     private String nombre;
+    private short tipo;
     private double precioBase;
     private short ynTiquetera;
     private short diasAplazamiento;
@@ -50,6 +51,14 @@ public class PaqueteDto implements java.io.Serializable {
 
     public void setDiasAplazamiento(short diasAplazamiento) {
         this.diasAplazamiento = diasAplazamiento;
+    }
+
+    public short getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(short tipo) {
+        this.tipo = tipo;
     }
 
 }

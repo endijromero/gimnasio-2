@@ -8,6 +8,7 @@ import com.digitalpersona.onetouch.DPFPTemplate;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,6 +24,8 @@ import javax.swing.JLabel;
 import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -34,6 +37,18 @@ public class Util {
     private static final char[] CONSTS_HEX = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
     public static final String urlServidor = "";
     public static final int CANTIDAD_DIVIDE_ARRAY = 20;
+
+    public static void setShowMessage(JInternalFrame frm, String message, String alert, int typeMessage) {
+        JLabel label = new JLabel(message);
+        label.setFont(new Font("consolas", Font.PLAIN, 14));
+        JOptionPane.showMessageDialog(frm, label, alert, typeMessage);
+    }
+
+    public static void setShowMessage(JFrame frm, String message, String alert, int typeMessage) {
+        JLabel label = new JLabel(message);
+        label.setFont(new Font("consolas", Font.PLAIN, 14));
+        JOptionPane.showMessageDialog(frm, label, alert, typeMessage);
+    }
 
     public static void setFondoJFrame(JFrame jf, Color color) {
         jf.getContentPane().setBackground(color);

@@ -18,10 +18,11 @@ public class ClientePaqueteDto implements java.io.Serializable {
     private Long paqueteId;
     private Long usuarioId;
 
-    private short numeroDias;
+    private short numeroDiasTiquetera;
+    private short diasUsadosTiquetera;
     private double precioBase;
     private double valorTotal;
-    private short ynActivo;
+    private short estado;
 
     private String fechaIniciaPaquete;
     private String fechaFinalizaPaquete;
@@ -111,14 +112,6 @@ public class ClientePaqueteDto implements java.io.Serializable {
         this.valorTotal = valorTotal;
     }
 
-    public short getYnActivo() {
-        return ynActivo;
-    }
-
-    public void setYnActivo(short ynActivo) {
-        this.ynActivo = ynActivo;
-    }
-
     public String getFechaIniciaPaquete() {
         return fechaIniciaPaquete;
     }
@@ -151,12 +144,20 @@ public class ClientePaqueteDto implements java.io.Serializable {
         this.fechaModificacion = fechaModificacion;
     }
 
-    public short getNumeroDias() {
-        return numeroDias;
+    public short getNumeroDiasTiquetera() {
+        return numeroDiasTiquetera;
     }
 
-    public void setNumeroDias(short numeroDias) {
-        this.numeroDias = numeroDias;
+    public void setNumeroDiasTiquetera(short numeroDiasTiquetera) {
+        this.numeroDiasTiquetera = numeroDiasTiquetera;
+    }
+
+    public short getDiasUsadosTiquetera() {
+        return diasUsadosTiquetera;
+    }
+
+    public void setDiasUsadosTiquetera(short diasUsadosTiquetera) {
+        this.diasUsadosTiquetera = diasUsadosTiquetera;
     }
 
     public double getPrecioBase() {
@@ -165,6 +166,14 @@ public class ClientePaqueteDto implements java.io.Serializable {
 
     public void setPrecioBase(double precioBase) {
         this.precioBase = precioBase;
+    }
+
+    public short getEstado() {
+        return estado;
+    }
+
+    public void setEstado(short estado) {
+        this.estado = estado;
     }
 
 }

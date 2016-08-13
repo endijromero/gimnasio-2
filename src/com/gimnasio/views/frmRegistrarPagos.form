@@ -166,7 +166,7 @@
               <Font name="Tahoma" size="12" style="1"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="4"/>
-            <Property name="text" type="java.lang.String" value="Plan"/>
+            <Property name="text" type="java.lang.String" value="Paquete"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="cmbDescuento">

@@ -241,7 +241,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                 this.paqueteView.setClosable(true);
                 this.paqueteView.setResizable(true);
                 this.paqueteView.setVisible(true);
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
@@ -302,22 +302,13 @@ public class frmPrincipal extends javax.swing.JFrame {
      * @param evt
      */
     private void setRegistrarPagosPlanes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRegistrarPagosPlanes
-        if (this.pagosView == null) {
-            try {
-                this.pagosView = new frmPagos();
-                frmPrincipal.jdstPrincipal.add(this.pagosView);
-                this.pagosView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-                this.pagosView.setResizable(true);
-                this.pagosView.setClosable(true);
-                this.pagosView.setVisible(true);
-            } catch (SQLException ex) {
-                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            JLabel label = new JLabel("El formulario para el registro de planes o paquetes ya se encuentra abierto");
-            label.setFont(new Font("consolas", Font.PLAIN, 14));
-            JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
+        this.buscarClienteView = new frmBuscarCliente(this, this.operacion, "3");
+        frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
+        this.buscarClienteView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+        this.buscarClienteView.setUsuarioSessionDto(usuarioSessionDto);
+        this.buscarClienteView.setResizable(true);
+        this.buscarClienteView.setClosable(true);
+        this.buscarClienteView.setVisible(true);
     }//GEN-LAST:event_setRegistrarPagosPlanes
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
@@ -329,19 +320,13 @@ public class frmPrincipal extends javax.swing.JFrame {
      * @param evt
      */
     private void setBuscarClientes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setBuscarClientes
-        if (this.buscarClienteView == null) {
-            this.buscarClienteView = new frmBuscarCliente(this, operacion, "1");
-            frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
-            this.buscarClienteView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-            this.buscarClienteView.setUsuarioSessionDto(usuarioSessionDto);
-            this.buscarClienteView.setResizable(true);
-            this.buscarClienteView.setClosable(true);
-            this.buscarClienteView.setVisible(true);
-        } else {
-            JLabel label = new JLabel("El formulario para el registro de clientes ya se encuentra abierto");
-            label.setFont(new Font("consolas", Font.PLAIN, 14));
-            JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
+        this.buscarClienteView = new frmBuscarCliente(this, operacion, "1");
+        frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
+        this.buscarClienteView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+        this.buscarClienteView.setUsuarioSessionDto(usuarioSessionDto);
+        this.buscarClienteView.setResizable(true);
+        this.buscarClienteView.setClosable(true);
+        this.buscarClienteView.setVisible(true);
     }//GEN-LAST:event_setBuscarClientes
 
     /**
@@ -396,20 +381,13 @@ public class frmPrincipal extends javax.swing.JFrame {
      * @param evt
      */
     private void setRegistrarDatosFisioterapeuta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRegistrarDatosFisioterapeuta
-        if (this.buscarClienteView == null) {
-            this.buscarClienteView = new frmBuscarCliente(this, this.operacion, "2");
-            frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
-            this.buscarClienteView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-            this.buscarClienteView.setUsuarioSessionDto(usuarioSessionDto);
-            this.buscarClienteView.setResizable(true);
-            this.buscarClienteView.setClosable(true);
-            this.buscarClienteView.setVisible(true);
-        } else {
-            JLabel label = new JLabel("El formulario para el registro de datos físicos del cliente ya se encuentra abierto");
-            label.setFont(new Font("consolas", Font.PLAIN, 14));
-            JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-
+        this.buscarClienteView = new frmBuscarCliente(this, this.operacion, "2");
+        frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
+        this.buscarClienteView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+        this.buscarClienteView.setUsuarioSessionDto(usuarioSessionDto);
+        this.buscarClienteView.setResizable(true);
+        this.buscarClienteView.setClosable(true);
+        this.buscarClienteView.setVisible(true);
     }//GEN-LAST:event_setRegistrarDatosFisioterapeuta
 
     private void setCrearUsuarios(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCrearUsuarios

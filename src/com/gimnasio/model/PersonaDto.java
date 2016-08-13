@@ -40,8 +40,8 @@ public class PersonaDto implements java.io.Serializable {
     private String fechaModificacion;
 
     public PersonaDto() {
-        this.genero = 1;
-        this.fechaNacimiento = "1990-01-03";
+       // this.genero = 1;
+        //this.fechaNacimiento = "1990-01-03";
     }
 
     /**

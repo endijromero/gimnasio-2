@@ -10,14 +10,18 @@ import com.gimnasio.model.ClienteDto;
 import com.gimnasio.model.ClientePaqueteDto;
 import com.gimnasio.model.ComboDto;
 import com.gimnasio.model.ComboModel;
+import com.gimnasio.model.PagoDto;
 import com.gimnasio.model.UsuarioDto;
+import com.gimnasio.model.enums.EEstadPlan;
 import com.gimnasio.model.enums.ESiNo;
 import com.gimnasio.util.Util;
 import com.google.common.base.Joiner;
 import java.awt.Font;
-import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,51 +36,91 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
 
     private List<ComboDto> listComboDescuentos;
     private List<ComboDto> listComboPaquetes;
-    private final ComboModel comboDescuentos;
-    private final ComboModel comboPaquetes;
+    private ComboModel comboDescuentos;
+    private ComboModel comboPaquetes;
 
     protected ClientePaqueteDto clientePaqueteDto;
     protected UsuarioDto usuarioSessionDto;
     protected ClienteDto clienteDto;
     protected Operaciones operacion;
 
+    private frmClientes clientePadre;
+
     /**
      * Creates new form frmPagos
      *
+     * @param frmCliente
      * @param operacion
      * @param clienteDto
      * @throws java.lang.Exception
      */
-    public frmRegistrarPagos(Operaciones operacion, ClienteDto clienteDto) throws Exception {
+    public frmRegistrarPagos(frmClientes frmCliente, Operaciones operacion, ClienteDto clienteDto) throws Exception {
         initComponents();
 
         this.clientePaqueteDto = new ClientePaqueteDto();
+        this.clientePadre = frmCliente;
         this.operacion = operacion;
         this.clienteDto = clienteDto;
 
-        ComboDto inicio;
-        this.comboPaquetes = new ComboModel();
-        this.comboPaquetes.getLista().clear();
-        this.listComboPaquetes = this.operacion.getPaquetesEnumerado();
-        inicio = new ComboDto("", "-------------");
-        this.listComboPaquetes.add(0, inicio);
-        this.comboPaquetes.getLista().addAll(this.listComboPaquetes);
-        this.comboPaquetes.setSelectedItem(inicio);
-        this.cmbPaquete.setModel(this.comboPaquetes);
-
-        this.comboDescuentos = new ComboModel();
-        this.comboDescuentos.getLista().clear();
-        this.listComboPaquetes = this.operacion.getDescuentosEnumerado();
-        inicio = new ComboDto("", "-------------");
-        this.listComboPaquetes.add(0, inicio);
-        this.comboDescuentos.getLista().addAll(this.listComboPaquetes);
-        this.comboDescuentos.setSelectedItem(inicio);
-        this.cmbDescuento.setModel(this.comboDescuentos);
+        this.setInitCombos();
         this.panelTiquetera.setVisible(false);
 
         if (!Util.getVacio(clienteDto.getPersonaDto().getNombreCompleto())) {
             this.lblNombre_cliente.setText(clienteDto.getPersonaDto().getNombreCompleto());
             this.lblDocumento_cliente.setText(clienteDto.getPersonaDto().getNumeroIdentificacion());
+        }
+        List<PagoDto> listPagos = this.operacion.getPagosCliente();
+        
+    }
+
+    public frmRegistrarPagos(Operaciones operacion, String documento) throws Exception {
+        initComponents();
+
+        this.clientePaqueteDto = new ClientePaqueteDto();
+        this.operacion = operacion;
+
+        List<ClienteDto> listCliente = this.operacion.getClienteDatos(null, documento);
+        if (listCliente.size() > 0) {
+            ClienteDto clienteTemp = new ClienteDto();
+            for (ClienteDto cliente : listCliente) {
+                if (documento.equals(cliente.getPersonaDto().getNumeroIdentificacion())) {
+                    clienteTemp = cliente;
+                    break;
+                }
+            }
+            this.clienteDto = clienteTemp;
+        }
+        this.setInitCombos();
+        this.panelTiquetera.setVisible(false);
+        if (!Util.getVacio(clienteDto.getPersonaDto().getNombreCompleto())) {
+            this.lblNombre_cliente.setText(clienteDto.getPersonaDto().getNombreCompleto());
+            this.lblDocumento_cliente.setText(clienteDto.getPersonaDto().getNumeroIdentificacion());
+        }
+    }
+
+    public void setInitCombos() {
+        try {
+            ComboDto inicio;
+            this.comboPaquetes = new ComboModel();
+            this.comboPaquetes.getLista().clear();
+            this.listComboPaquetes = this.operacion.getPaquetesEnumerado();
+            inicio = new ComboDto("", "-------------");
+            this.listComboPaquetes.add(0, inicio);
+            this.comboPaquetes.getLista().addAll(this.listComboPaquetes);
+            this.comboPaquetes.setSelectedItem(inicio);
+            this.cmbPaquete.setModel(this.comboPaquetes);
+
+            this.comboDescuentos = new ComboModel();
+            this.comboDescuentos.getLista().clear();
+            this.listComboPaquetes = this.operacion.getDescuentosEnumerado();
+            inicio = new ComboDto("", "-------------");
+            this.listComboPaquetes.add(0, inicio);
+            this.comboDescuentos.getLista().addAll(this.listComboPaquetes);
+            this.comboDescuentos.setSelectedItem(inicio);
+            this.cmbDescuento.setModel(this.comboDescuentos);
+            this.txtFecha_inicio.setDate(new Date());
+        } catch (Exception ex) {
+            Logger.getLogger(frmRegistrarPagos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -131,7 +175,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
 
         lblPaquete.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblPaquete.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblPaquete.setText("Plan");
+        lblPaquete.setText("Paquete");
 
         cmbDescuento.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbDescuento.addItemListener(new java.awt.event.ItemListener() {
@@ -390,7 +434,6 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         if (this.txtPrecio_base.getText().equals("")) {
             listMessages.add("<li>" + this.lblPrecio_base.getText() + "</li>");
         }
-
         if (listMessages.size() > 0) {
             JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol>" + Joiner.on("\n").join(listMessages) + "</ol></html>");
             label.setFont(new Font("consolas", Font.PLAIN, 14));
@@ -402,30 +445,91 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                 this.clientePaqueteDto.setDescuentoId(new Long(comboDes.getCodigo()));
             }
             if (!Util.getVacio(comboPaq.getAuxiliar()) && (comboPaq.getAuxiliar().equals(String.valueOf(ESiNo.SI.getId())))) {
-                this.clientePaqueteDto.setNumeroDias(Short.parseShort(this.txtDias_tiquetera.getText()));
+                this.clientePaqueteDto.setNumeroDiasTiquetera(Short.parseShort(this.txtDias_tiquetera.getText()));
             }
             this.clientePaqueteDto.setPrecioBase(Double.parseDouble(this.txtPrecio_base.getText()));
             this.clientePaqueteDto.setValorTotal(Double.parseDouble(this.txtTolal_pagar.getText()));
-            this.clientePaqueteDto.setYnActivo(ESiNo.SI.getId());
+            this.clientePaqueteDto.setEstado(EEstadPlan.ACTIVO.getId());
             if (this.txtFecha_inicio.getDate() != null) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaNacimiento = sdf.format(this.txtFecha_inicio.getDate().getTime());
                 this.clientePaqueteDto.setFechaIniciaPaquete(fechaNacimiento);
             }
-            this.clientePaqueteDto.setFechaFinalizaPaquete(title);
             this.clientePaqueteDto.setUsuarioId(this.usuarioSessionDto.getId());
             try {
-                boolean correct = this.operacion.setGuardaPagoPaqueteCliente(this.clientePaqueteDto);
-                if (correct) {
-                    JLabel label = new JLabel("El pago se ha realizado correctamente");
+                try {
+                    if (!Util.getVacio(comboPaq.getAuxiliar()) && (comboPaq.getAuxiliar().equals(String.valueOf(ESiNo.NO.getId())))) {
+                        this.clientePaqueteDto.setFechaFinalizaPaquete(this.setVerificaFechaFinalizaPaquete(comboPaq, comboDes));
+                    }
+                    boolean correct = this.operacion.setGuardaPagoPaqueteCliente(this.clientePaqueteDto);
+                    if (correct) {
+                        JLabel label = new JLabel("El pago se ha realizado correctamente");
+                        label.setFont(new Font("consolas", Font.PLAIN, 14));
+                        JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
+                        this.clientePadre.setVisible(false);
+                        this.setVisible(false);
+                    }
+                } catch (Exception ex) {
+                    JLabel label = new JLabel("El pago NO se ha realizado correctamente");
                     label.setFont(new Font("consolas", Font.PLAIN, 14));
-                    JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, label, "Alerta de error", JOptionPane.ERROR_MESSAGE);
+                    Logger.getLogger(frmRegistrarPagos.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
+                JLabel label = new JLabel("El pago NO se ha realizado correctamente");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Alerta de error", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(frmRegistrarPagos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_setRegistrarPagoPlan
+
+    public String setVerificaFechaFinalizaPaquete(ComboDto comboPaq, ComboDto comboDes) throws Exception {
+        String fechaFinal = "";
+        try {
+            Date fechaInicio = new SimpleDateFormat("yyyy-MM-dd").parse(this.clientePaqueteDto.getFechaIniciaPaquete()); //Date();//
+            SimpleDateFormat fechaTemporal = new SimpleDateFormat("yyyy-MM-dd");
+            Date fechaRetorna = fechaInicio;
+            switch (Short.parseShort(comboPaq.getCoAssistant())) {
+                case 2: {// ETipoPlan.MES
+                    fechaRetorna = sumarRestarHorasFecha(fechaInicio, Calendar.MONTH, 1);
+                }
+                break;
+                case 3: {// ETipoPlan.BIMESTRE
+                    fechaRetorna = sumarRestarHorasFecha(fechaInicio, Calendar.MONTH, 2);
+                }
+                break;
+                case 4: {// ETipoPlan.TRIMETESTRE
+                    fechaRetorna = sumarRestarHorasFecha(fechaInicio, Calendar.MONTH, 3);
+                }
+                break;
+                case 5: {// ETipoPlan.CUATRIMETESTRE
+                    fechaRetorna = sumarRestarHorasFecha(fechaInicio, Calendar.MONTH, 4);
+                }
+                break;
+                case 6: {// ETipoPlan.SEMESTRE
+                    fechaRetorna = sumarRestarHorasFecha(fechaInicio, Calendar.MONTH, 6);
+                }
+                break;
+                case 7: {// ETipoPlan.ANIO
+                    fechaRetorna = sumarRestarHorasFecha(fechaInicio, Calendar.YEAR, 1);
+                }
+                break;
+            }
+            fechaFinal = fechaTemporal.format(fechaRetorna);
+        } catch (ParseException | NumberFormatException ex) {
+            throw ex;
+        }
+        return fechaFinal;
+    }
+
+    public Date sumarRestarHorasFecha(Date fecha, int tipo, int horas) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha); // Configuramos la fecha que se recibe
+        calendar.add(tipo, horas); // numero de horas a añadir, o restar en caso de horas<0
+        return calendar.getTime(); // Devuelve el objeto Date con las nuevas horas añadidas
+    }
+
     /**
      *
      * @param evt
@@ -458,7 +562,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         } else {
             this.panelTiquetera.setVisible(false);
         }
-        this.txtPrecio_base.setText(valorTotal.toString());
+        this.txtPrecio_base.setText(comboPaq.getAssistant());
         this.txtTolal_pagar.setText(valorTotal.toString());
     }//GEN-LAST:event_setVerificaPaqueteTiquetera
     /**
@@ -480,6 +584,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                 Double valorTotal = 0.0;
                 ComboDto comboPaq = (ComboDto) this.cmbPaquete.getSelectedItem();
                 ComboDto comboDes = (ComboDto) this.cmbDescuento.getSelectedItem();
+
                 valorTotal += Double.parseDouble(comboPaq.getAssistant());
                 valorTotal = (diasTiquetera * valorTotal);
                 if (!Util.getVacio(comboDes.getCodigo())) {
@@ -492,7 +597,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                         valorTotal -= descuento;
                     }
                 }
-                this.txtPrecio_base.setText(valorTotal.toString());
+                this.txtPrecio_base.setText(comboPaq.getAssistant());
                 this.txtTolal_pagar.setText(valorTotal.toString());
             }
         }
@@ -532,12 +637,11 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                             valorTotal -= descuento;
                         } else {
                             descuento = descuento / 100;
-                            descuento = valorTotal * descuento;
+                            descuento = precioBase * descuento;
                             valorTotal -= descuento;
                         }
                     }
                 }
-                this.txtPrecio_base.setText(valorTotal.toString());
                 this.txtTolal_pagar.setText(valorTotal.toString());
             } else {
                 JLabel label = new JLabel("El precio base no debe ser inferior a 1000 pesos");
