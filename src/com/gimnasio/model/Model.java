@@ -687,6 +687,43 @@ public class Model {
         stat.close();
         return list;
     }
+    
+    /**
+     * 
+     * @param documento
+     * @param fechaActual
+     * @return 
+     * @throws java.sql.SQLException 
+     */
+    public ClientePaqueteDto getPaqueteActivo(String documento) throws SQLException  {
+        ClientePaqueteDto paquete = new ClientePaqueteDto();
+        Statement stat = this.conexion.getConexion().createStatement();
+        String sql = "SELECT cp.*, pqt.precio_base FROM cliente_paquete cp "
+                        + " INNER JOIN clientes cl "
+                        + " ON cp.cliente_id = cl.id "
+                        + " INNER JOIN personas per "
+                        + " ON cl.persona_id = per.id "
+                        + " INNER JOIN paquetes pqt "
+                        + " ON cp.paquete_id = pqt.id "
+                        + "WHERE NOW() BETWEEN fecha_inicia_paquete AND fecha_finaliza_paquete ";
+        if (! Util.getVacio(documento)) {
+            sql += " AND per.numero_identificacion ='"+documento+"'";
+        }        
+        ResultSet res = stat.executeQuery(sql);
+        while (res.next()) {           
+            paquete.setId(res.getLong("id"));
+            paquete.setClienteId(res.getLong("cliente_id"));
+            paquete.setPaqueteId(res.getLong("paquete_id"));
+            paquete.setDescuentoId(res.getLong("descuento_id"));
+            paquete.setValorTotal(res.getDouble("valor_total"));
+            paquete.setPrecioBase(res.getDouble("precio_base"));
+            paquete.setEstado(res.getShort("estado"));
+            paquete.setFechaIniciaPaquete(res.getString("fecha_inicia_paquete"));
+            paquete.setFechaFinalizaPaquete(res.getString("fecha_finaliza_paquete"));                  
+        }
+        stat.close();
+        return paquete;
+    }
 
     public List<Object> getListPersist() {
         return listPersist;

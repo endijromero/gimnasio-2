@@ -325,7 +325,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
                 break;
                 case 3: {
                     try {
-                        frmRegistrarPagos frmPagos = new frmRegistrarPagos(operacion, documento);
+                        frmRegistrarPagos frmPagos = new frmRegistrarPagos(this.operacion, documento);
                         frmPrincipal.jdstPrincipal.add(frmPagos);
                         frmPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
                         frmPagos.setUsuarioSessionDto(usuarioSessionDto);

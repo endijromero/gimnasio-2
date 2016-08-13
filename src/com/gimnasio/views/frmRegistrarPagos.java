@@ -58,6 +58,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         initComponents();
 
         this.clientePaqueteDto = new ClientePaqueteDto();
+        //this.clientePaqueteDto = this.operacion.getPagosCliente();
         this.clientePadre = frmCliente;
         this.operacion = operacion;
         this.clienteDto = clienteDto;
@@ -68,16 +69,14 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         if (!Util.getVacio(clienteDto.getPersonaDto().getNombreCompleto())) {
             this.lblNombre_cliente.setText(clienteDto.getPersonaDto().getNombreCompleto());
             this.lblDocumento_cliente.setText(clienteDto.getPersonaDto().getNumeroIdentificacion());
-        }
-        List<PagoDto> listPagos = this.operacion.getPagosCliente();
-        
+        }         
     }
 
     public frmRegistrarPagos(Operaciones operacion, String documento) throws Exception {
         initComponents();
-
-        this.clientePaqueteDto = new ClientePaqueteDto();
+        
         this.operacion = operacion;
+        this.clientePaqueteDto = this.operacion.getPaqueteactivoCliente(documento);        
 
         List<ClienteDto> listCliente = this.operacion.getClienteDatos(null, documento);
         if (listCliente.size() > 0) {
@@ -96,6 +95,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             this.lblNombre_cliente.setText(clienteDto.getPersonaDto().getNombreCompleto());
             this.lblDocumento_cliente.setText(clienteDto.getPersonaDto().getNumeroIdentificacion());
         }
+        this.setAsignarValores();
     }
 
     public void setInitCombos() {
@@ -122,6 +122,26 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         } catch (Exception ex) {
             Logger.getLogger(frmRegistrarPagos.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    /**
+     * 
+     */
+    public void setAsignarValores() {
+        if(this.clientePaqueteDto.getPaqueteId() > 0 ) {
+            this.cmbPaquete.setSelectedIndex(this.clientePaqueteDto.getPaqueteId().intValue());
+            this.cmbPaquete.repaint();
+        }
+        if(this.clientePaqueteDto.getDescuentoId()> 0 ) {
+            this.cmbDescuento.setSelectedIndex(this.clientePaqueteDto.getDescuentoId().intValue());
+            this.cmbDescuento.repaint();
+        }        
+        if(this.clientePaqueteDto.getPrecioBase() > 0) {
+            this.txtPrecio_base.setText(String.valueOf(this.clientePaqueteDto.getPrecioBase()));
+        } 
+        if(this.clientePaqueteDto.getValorTotal() > 0) {
+            this.txtTolal_pagar.setText(String.valueOf(this.clientePaqueteDto.getValorTotal()));
+        } 
     }
 
     /**
