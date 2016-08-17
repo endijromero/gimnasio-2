@@ -717,6 +717,9 @@ public class frmClientes extends javax.swing.JInternalFrame {
                     frmPrincipal.frmRegistrarPagos.setClosable(true);
                     frmPrincipal.frmRegistrarPagos.setVisible(true);
                 } catch (Exception ex) {
+                    JLabel label = new JLabel("Se ha presentado un error para registrar el pago del paquete, intente nuevamente");
+                    label.setFont(new Font("consolas", Font.PLAIN, 14));
+                    JOptionPane.showMessageDialog(this, label, "Alerta de error", JOptionPane.ERROR_MESSAGE);
                     Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {

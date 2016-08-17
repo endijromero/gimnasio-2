@@ -11,6 +11,9 @@ import com.gimnasio.model.enums.ESiNo;
 import com.gimnasio.util.Util;
 import com.google.common.base.Joiner;
 import java.awt.Font;
+import java.awt.Image;
+import java.io.File;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -64,8 +68,6 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             if (this.clientePaqueteDto.getId() != null) {
                 this.setAsignarValores();
             }
-        } else {
-
         }
     }
 
@@ -150,8 +152,27 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             if (this.clientePaqueteDto.getValorTotal() > 0) {
                 this.txtTolal_pagar.setText(String.valueOf(this.clientePaqueteDto.getValorTotal()));
             }
+            if (this.clienteDto.getPersonaDto().getFotoPerfil().trim().length() > 0) {
+                File file = new File("fotos/" + this.clienteDto.getPersonaDto().getFotoPerfil());
+                if (file.exists()) {
+                    Image image = new ImageIcon(file.getAbsolutePath()).getImage();
+                    lblFotoPerfil.setIcon(new ImageIcon(image.getScaledInstance(128, 128, Image.SCALE_DEFAULT)));
+                    lblFotoPerfil.repaint();
+                }
+            } else {
+                setNoFile(lblFotoPerfil);
+            }
         } catch (ParseException ex) {
             Logger.getLogger(frmRegistrarPagos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    protected void setNoFile(JLabel lblFoto) {
+        URL filename = getClass().getResource("/com/gimnasio/files/no-file.png");
+        File file = new File(filename.getFile());
+        if (file.exists()) {
+            Image image = new ImageIcon(file.getAbsolutePath()).getImage();
+            Util.setPintarFotoPerfil(image, lblFoto);
         }
     }
 
@@ -177,6 +198,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         lblNombre_cliente = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         panelFoto = new javax.swing.JPanel();
+        lblFotoPerfil = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         lblDocumento_cliente = new javax.swing.JLabel();
         txtTolal_pagar = new javax.swing.JTextField();
@@ -265,15 +287,25 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         panelFoto.setBackground(new java.awt.Color(255, 255, 255));
         panelFoto.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        lblFotoPerfil.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFotoPerfil.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblFotoPerfil.setPreferredSize(new java.awt.Dimension(128, 128));
+
         javax.swing.GroupLayout panelFotoLayout = new javax.swing.GroupLayout(panelFoto);
         panelFoto.setLayout(panelFotoLayout);
         panelFotoLayout.setHorizontalGroup(
             panelFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 133, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFotoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblFotoPerfil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         panelFotoLayout.setVerticalGroup(
             panelFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 147, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFotoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblFotoPerfil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -315,9 +347,9 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(lblDocumento_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(panelClienteLayout.createSequentialGroup()
-                .addGap(48, 48, 48)
+                .addGap(35, 35, 35)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 55, Short.MAX_VALUE))
+                .addGap(0, 35, Short.MAX_VALUE))
         );
         panelClienteLayout.setVerticalGroup(
             panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -510,13 +542,13 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
 
                     }
                 } catch (Exception ex) {
-                    JLabel label = new JLabel("El pago NO se ha realizado correctamente");
+                    JLabel label = new JLabel("Se presentó un error para guardar el proceso de pago del paquete, intente nuevamente");
                     label.setFont(new Font("consolas", Font.PLAIN, 14));
                     JOptionPane.showMessageDialog(this, label, "Alerta de error", JOptionPane.ERROR_MESSAGE);
                     Logger.getLogger(frmRegistrarPagos.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } catch (Exception ex) {
-                JLabel label = new JLabel("El pago NO se ha realizado correctamente");
+                JLabel label = new JLabel("Se presentó un error para guardar el proceso de pago del paquete, intente nuevamente");
                 label.setFont(new Font("consolas", Font.PLAIN, 14));
                 JOptionPane.showMessageDialog(this, label, "Alerta de error", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(frmRegistrarPagos.class.getName()).log(Level.SEVERE, null, ex);
@@ -755,6 +787,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JLabel lblDocumento_cliente;
+    private javax.swing.JLabel lblFotoPerfil;
     private javax.swing.JLabel lblNombre_cliente;
     private javax.swing.JLabel lblPaquete;
     private javax.swing.JLabel lblPrecio_base;

@@ -35,25 +35,25 @@ public class Model {
         try {
             Statement stat;
             stat = this.conexion.getConexion().createStatement();
-            String sql = "SELECT cp.* FROM cliente_paquete cp "
+            String sql = "SELECT cp.id AS idClientePaquete, cp.* FROM cliente_paquete cp "
                     + " INNER JOIN clientes cl "
                     + " ON cp.cliente_id = cl.id "
                     + " INNER JOIN personas per "
                     + " ON cl.persona_id = per.id "
                     + " INNER JOIN paquetes pqt "
                     + " ON cp.paquete_id = pqt.id "
-                    + "WHERE cp.estado=" + EEstadoPlan.ACTIVO.getId() + ""
-                    + "ORDER BY cp.fecha_inicia_paquete DESC "
-                    + "LIMIT 1";
+                    + "WHERE cp.estado=" + EEstadoPlan.ACTIVO.getId() + " ";
             if (!Util.getVacio(idCliente)) {
-                sql += " AND cl.id =" + idCliente + "";
+                sql += " AND cl.id =" + idCliente + " ";
             }
             if (!Util.getVacio(documento)) {
-                sql += " AND per.numero_identificacion ='" + documento + "'";
+                sql += " AND per.numero_identificacion ='" + documento + "' ";
             }
+            sql += "ORDER BY cp.fecha_inicia_paquete DESC ";
+            sql += "LIMIT 1";
             ResultSet res = stat.executeQuery(sql);
             while (res.next()) {
-                paquete.setId(res.getLong("id"));
+                paquete.setId(res.getLong("idClientePaquete"));
                 paquete.setClienteId(res.getLong("cliente_id"));
                 paquete.setPaqueteId(res.getLong("paquete_id"));
                 paquete.setDescuentoId(res.getLong("descuento_id"));
@@ -66,6 +66,7 @@ public class Model {
             stat.close();
         } catch (SQLException e) {
             this.conexion.rollback();
+            throw e;
         } finally {
             this.conexion.commit();
         }
