@@ -80,7 +80,6 @@ public class frmHuella extends javax.swing.JDialog {
     private int cantidadHuellas;
     private short tipoProceso;
     private frmClientes frmCliente;
-    private frmUsuarios frmUsuario;
 
     private String rutaHuellas = "huellas/";
     private String extension = ".fpt";
@@ -142,55 +141,6 @@ public class frmHuella extends javax.swing.JDialog {
         }
     }
 
-    public frmHuella(Operaciones operacion, javax.swing.JFrame parent, boolean modal, UsuarioDto usuarioDto, short tipoProceso, frmUsuarios frmUsuario) {
-        super(parent, modal);
-        initComponents();
-        this.cambia = false;
-        this.operacion = operacion;
-        try {
-            this.listTemplates = new ArrayList();
-            this.listClientesHuellas = new ArrayList(); //this.operacion.getClientesDatos();
-            for (ClienteDto dto : this.listClientesHuellas) {
-                DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(dto.getPersonaDto().getHuellaDactilar());
-                dto.getPersonaDto().setTemplateHuella(referenceTemplate);
-            }
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
-        this.listClientes = (List<List<ClienteDto>>) Util.getDivideArray(this.listClientesHuellas, Util.CANTIDAD_DIVIDE_ARRAY);
-
-        this.frmUsuario = frmUsuario;
-        this.cantidadHuellas = 0;
-        Util.setCentrarJFrame(null, this);
-        this.setResizable(false);
-        this.lblIndiceDerecho.setText(null);
-
-        this.tipoProceso = tipoProceso;
-        this.usuarioDto = usuarioDto;
-
-        if (this.clienteDto.getId() != null) {
-            this.lblCodigo.setText(this.clienteDto.getId().toString());
-        }
-        switch (tipoProceso) {
-            case 1: {
-                this.btnGuardar.setEnabled(false);
-                this.lblEstudiante.setText(this.clienteDto.getPersonaDto().getNombreCompleto());
-            }
-            break;
-            case 2: {
-                this.lblEstudiante.setText(null);
-                this.btnGuardar.setVisible(false);
-            }
-            break;
-            default: {
-                this.lblEstudiante.setText(null);
-                this.btnGuardar.setVisible(false);
-                this.btnCancelar.setText("Cerrar");
-            }
-            break;
-        }
-    }
-
     public void setTemplate(DPFPTemplate template) {
         DPFPTemplate old = this.template;
         this.template = template;
@@ -205,7 +155,6 @@ public class frmHuella extends javax.swing.JDialog {
         if (Lector.isStarted()) {
             Lector.stopCapture();
         }
-        //this.frmCliente.setUsuarioSessionDto(usuarioSessionDto);
     }
 
     public void start() {

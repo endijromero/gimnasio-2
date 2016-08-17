@@ -1,18 +1,16 @@
 package com.gimnasio.controller;
 
 import com.gimnasio.model.*;
-import com.gimnasio.model.enums.EEstadoCivil;
-import com.gimnasio.model.enums.EGenero;
-import com.gimnasio.model.enums.ESiNo;
-import com.gimnasio.model.enums.ETipoDocumento;
-import com.gimnasio.model.enums.ETipoPlan;
+import com.gimnasio.model.enums.*;
 import com.gimnasio.util.Util;
+import java.awt.Font;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -29,6 +27,22 @@ public class Operaciones {
         this.conexion.connect();
         this.model = new Model();
         this.model.setConexion(this.conexion);
+    }
+
+    /**
+     *
+     * @return List
+     */
+    public List<ComboDto> getLimiteConsulta() {
+        List<ComboDto> lista = new ArrayList();
+        lista.add(new ComboDto("20", "20"));
+        lista.add(new ComboDto("50", "50"));
+        lista.add(new ComboDto("100", "100"));
+        lista.add(new ComboDto("200", "200"));
+        lista.add(new ComboDto("500", "500"));
+        lista.add(new ComboDto("1000", "1000"));
+        lista.add(new ComboDto("todos", "Todos"));
+        return lista;
     }
 
     public boolean setGuardaPagoPaqueteCliente(ClientePaqueteDto clientePaqueteDto) throws SQLException {
@@ -52,15 +66,6 @@ public class Operaciones {
     public List<ComboDto> getYnActivo() throws Exception {
         List<ComboDto> lista = new ArrayList();
         for (ESiNo tip : ESiNo.getValues()) {
-            ComboDto dto = new ComboDto(String.valueOf(tip.getId()), tip.getNombre());
-            lista.add(dto);
-        }
-        return lista;
-    }
-
-    public List<ComboDto> getEstadosCiviles() throws Exception {
-        List<ComboDto> lista = new ArrayList();
-        for (EEstadoCivil tip : EEstadoCivil.getValues()) {
             ComboDto dto = new ComboDto(String.valueOf(tip.getId()), tip.getNombre());
             lista.add(dto);
         }
@@ -167,7 +172,7 @@ public class Operaciones {
             try {
                 this.model.getSaveFisioterapia(fisioterapia);
             } catch (SQLException ex) {
-                Logger.getLogger(Operaciones1.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return listMessages;
@@ -195,9 +200,22 @@ public class Operaciones {
      * @throws SQLException
      */
     public List<TablaDto> getClientesDatosTablaDto(String nombres, String apellidos, String documento) throws SQLException {
+        return this.getClientesDatosTablaDto(nombres, apellidos, documento, null);
+    }
+
+    /**
+     *
+     * @param nombres
+     * @param apellidos
+     * @param documento
+     * @param limite
+     * @return
+     * @throws SQLException
+     */
+    public List<TablaDto> getClientesDatosTablaDto(String nombres, String apellidos, String documento, String limite) throws SQLException {
         List<TablaDto> listTable = new ArrayList();
         //"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"
-        List<ClienteDto> listClientes = this.model.getDatosClientes(nombres, apellidos, documento);
+        List<ClienteDto> listClientes = this.model.getDatosClientes(nombres, apellidos, documento, limite);
         listClientes.stream().map((cliente) -> new TablaDto(
                 String.valueOf(cliente.getPersonaDto().getNumeroIdentificacion()),
                 Util.getQuitaNULL(cliente.getPersonaDto().getPrimerNombre() + " " + Util.getQuitaNULL(cliente.getPersonaDto().getSegundoNombre())),
@@ -247,7 +265,7 @@ public class Operaciones {
                 guarda = this.model.setGuardarCafeteria(idProducto, idUsuario, cantidad, valor_total, fecha);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Operaciones1.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
         }
         return guarda;
     }
@@ -392,9 +410,7 @@ public class Operaciones {
         if (Util.getVacio(clienteDto.getPersonaDto().getNumeroIdentificacion())) {
             listMessages.add("<li>Número de documento</li>");
         }
-        if (clienteDto.getPersonaDto().getEstadoCivil() == null) {
-            listMessages.add("<li>Estado civil</li>");
-        }
+
         if (clienteDto.getPersonaDto().getGenero() == 0) {
             listMessages.add("<li>Género</li>");
         }
@@ -432,9 +448,6 @@ public class Operaciones {
         }
         if (Util.getVacio(usuarioDto.getPersonaDto().getNumeroIdentificacion())) {
             listMessages.add("<li>Número de documento</li>");
-        }
-        if (usuarioDto.getPersonaDto().getEstadoCivil() == null) {
-            listMessages.add("<li>Estado civil</li>");
         }
         if (usuarioDto.getPersonaDto().getGenero() == 0) {
             listMessages.add("<li>Género</li>");
@@ -494,12 +507,14 @@ public class Operaciones {
             if (Util.getEncriptarMD5(password).equals(user.getPassword())) {
                 return listUsuarios.get(0);
             } else {
-                user = new UsuarioDto();
-                JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrecta", "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
+                JLabel label = new JLabel("Usuario o contraseña incorrecta");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(null, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrecta", "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
-
+            JLabel label = new JLabel("Usuario o contraseña incorrecta");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(null, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
         }
         return user;
     }
@@ -521,8 +536,9 @@ public class Operaciones {
                     Util.getQuitaNULL(paquete.getNombre()),
                     tipoPlan,
                     String.valueOf(paquete.getPrecioBase()),
-                    String.valueOf(paquete.getYnTiquetera()),
-                    String.valueOf(paquete.getDiasAplazamiento()));
+                    (paquete.getYnTiquetera() == ESiNo.SI.getId() ? "Si" : "No"),
+                    String.valueOf(paquete.getDiasAplazamiento())
+            );
             listTable.add(tabla);
         }
         return listTable;

@@ -35,7 +35,6 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmCafeteria cafeteriaView;
     private frmRegistrarPagos registrarPagosView;
     private frmClientes clienteView;
-    private frmUsuarios usuarioView;
 
     private Operaciones operacion;
 
@@ -242,6 +241,9 @@ public class frmPrincipal extends javax.swing.JFrame {
                 this.paqueteView.setResizable(true);
                 this.paqueteView.setVisible(true);
             } catch (Exception ex) {
+                JLabel label = new JLabel("Error no controlado, intente nuevamente");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
@@ -256,21 +258,18 @@ public class frmPrincipal extends javax.swing.JFrame {
      * @param evt
      */
     private void setCrearPoductos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCrearPoductos
-        if (this.productoView == null) {
-            try {
-                this.productoView = new frmProductos(this, this.operacion);
-                frmPrincipal.jdstPrincipal.add(this.productoView);
-                this.productoView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-                this.productoView.setResizable(true);
-                this.productoView.setClosable(true);
-                this.productoView.setVisible(true);
-            } catch (Exception ex) {
-                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            JLabel label = new JLabel("El formulario para el registro de productos ya se encuentra abierto");
+        try {
+            this.productoView = new frmProductos(this, this.operacion);
+            frmPrincipal.jdstPrincipal.add(this.productoView);
+            this.productoView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+            this.productoView.setResizable(true);
+            this.productoView.setClosable(true);
+            this.productoView.setVisible(true);
+        } catch (Exception ex) {
+            JLabel label = new JLabel("Error no controlado, intente nuevamente");
             label.setFont(new Font("consolas", Font.PLAIN, 14));
-            JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_setCrearPoductos
 
@@ -279,21 +278,18 @@ public class frmPrincipal extends javax.swing.JFrame {
      * @param evt
      */
     private void setCrearDescuentos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCrearDescuentos
-        if (this.descuentoView == null) {
-            try {
-                this.descuentoView = new frmDescuentos(this, this.operacion);
-                frmPrincipal.jdstPrincipal.add(this.descuentoView);
-                this.descuentoView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-                this.descuentoView.setResizable(true);
-                this.descuentoView.setClosable(true);
-                this.descuentoView.setVisible(true);
-            } catch (SQLException ex) {
-                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            JLabel label = new JLabel("El formulario para el registro de descuentos ya se encuentra abierto");
+        try {
+            this.descuentoView = new frmDescuentos(this, this.operacion);
+            frmPrincipal.jdstPrincipal.add(this.descuentoView);
+            this.descuentoView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+            this.descuentoView.setResizable(true);
+            this.descuentoView.setClosable(true);
+            this.descuentoView.setVisible(true);
+        } catch (SQLException ex) {
+            JLabel label = new JLabel("Error no controlado, intente nuevamente");
             label.setFont(new Font("consolas", Font.PLAIN, 14));
-            JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_setCrearDescuentos
 
@@ -334,45 +330,40 @@ public class frmPrincipal extends javax.swing.JFrame {
      * @param evt
      */
     private void setRegistrarPagosProductos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRegistrarPagosProductos
-        if (this.cafeteriaView == null) {
-            try {
-                this.cafeteriaView = new frmCafeteria(this.operacion);
-                this.cafeteriaView.setUsuarioDto(this.usuarioSessionDto);
-                frmPrincipal.jdstPrincipal.add(this.cafeteriaView);
-                this.cafeteriaView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-                this.cafeteriaView.setResizable(true);
-                this.cafeteriaView.setClosable(true);
-                this.cafeteriaView.setVisible(true);
-            } catch (Exception ex) {
-                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            JLabel label = new JLabel("El formulario para el registro de pagos de productos ya se encuentra abierto");
+        try {
+            this.cafeteriaView = new frmCafeteria(this.operacion);
+            this.cafeteriaView.setUsuarioDto(this.usuarioSessionDto);
+            frmPrincipal.jdstPrincipal.add(this.cafeteriaView);
+            this.cafeteriaView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+            this.cafeteriaView.setResizable(true);
+            this.cafeteriaView.setClosable(true);
+            this.cafeteriaView.setVisible(true);
+        } catch (Exception ex) {
+            JLabel label = new JLabel("Error no controlado, intente nuevamente");
             label.setFont(new Font("consolas", Font.PLAIN, 14));
-            JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }//GEN-LAST:event_setRegistrarPagosProductos
     /**
      *
      * @param evt
      */
     private void setRegistrarClientes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRegistrarClientes
-        if (this.clienteView == null) {
-            try {
-                this.clienteView = new frmClientes(this, operacion);
-                this.clienteView.setTitle("Formulario para el registro de clientes");
-                this.clienteView.setSize(this.getWidth(), this.getHeight() - 1);
-                this.clienteView.setUsuarioSessionDto(this.usuarioSessionDto);
-                this.clienteView.setResizable(true);
-                this.clienteView.setClosable(true);
-                this.clienteView.setVisible(true);
-                frmPrincipal.jdstPrincipal.add(this.clienteView);
-            } catch (Exception ex) {
-                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            JOptionPane.showMessageDialog(frmPrincipal.this, "El formulario para el registro de clientes, ya se encuentra abierto", "Mensaje de información", JOptionPane.WARNING_MESSAGE);
+        try {
+            this.clienteView = new frmClientes(this, operacion);
+            this.clienteView.setTitle("Formulario para el registro de clientes");
+            this.clienteView.setSize(this.getWidth(), this.getHeight() - 1);
+            this.clienteView.setUsuarioSessionDto(this.usuarioSessionDto);
+            this.clienteView.setResizable(true);
+            this.clienteView.setClosable(true);
+            this.clienteView.setVisible(true);
+            frmPrincipal.jdstPrincipal.add(this.clienteView);
+        } catch (Exception ex) {
+            JLabel label = new JLabel("Error no controlado, intente nuevamente");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_setRegistrarClientes
 
@@ -391,24 +382,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_setRegistrarDatosFisioterapeuta
 
     private void setCrearUsuarios(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCrearUsuarios
-        if (this.usuarioView == null) {
-            try {
-                this.usuarioView = new frmUsuarios(this);
-                this.usuarioView.setTitle("Formulario para el registro de clientes");
-                this.usuarioView.setSize(this.getWidth(), this.getHeight() - 1);
-                this.usuarioView.setUsuarioSessionDto(this.usuarioSessionDto);
-                this.usuarioView.setResizable(true);
-                this.usuarioView.setClosable(true);
-                this.usuarioView.setVisible(true);
-                frmPrincipal.jdstPrincipal.add(this.usuarioView);
-            } catch (Exception ex) {
-                Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            JLabel label = new JLabel("El formulario para el registro de usuarios ya se encuentra abierto");
-            label.setFont(new Font("consolas", Font.PLAIN, 14));
-            JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
+
     }//GEN-LAST:event_setCrearUsuarios
 
     /**
@@ -439,26 +413,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                frmPrincipal principal = new frmPrincipal();
-                principal.setVisible(true);
-                principal.setLocationRelativeTo(null);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            frmPrincipal principal = new frmPrincipal();
+            principal.setLocationRelativeTo(null);
+            principal.setVisible(true);
         });
-    }
-
-    /**
-     *
-     */
-    public void setPago() {
-        this.buscarClienteView = new frmBuscarCliente(operacion, "3");
-        frmPrincipal.jdstPrincipal.add(this.buscarClienteView);
-        this.buscarClienteView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-        this.buscarClienteView.setUsuarioSessionDto(usuarioSessionDto);
-        this.buscarClienteView.setResizable(true);
-        this.buscarClienteView.setClosable(true);
-        this.buscarClienteView.setVisible(true);
     }
 
     public UsuarioDto getUsuarioSessionDto() {
@@ -507,14 +466,6 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     public void setClienteView(frmClientes clienteView) {
         this.clienteView = clienteView;
-    }
-
-    public frmUsuarios getUsuarioView() {
-        return usuarioView;
-    }
-
-    public void setUsuarioView(frmUsuarios usuarioView) {
-        this.usuarioView = usuarioView;
     }
 
     public frmBuscarCliente getBuscarClienteView() {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones;
@@ -11,7 +6,7 @@ import com.gimnasio.model.ClientePaqueteDto;
 import com.gimnasio.model.ComboDto;
 import com.gimnasio.model.ComboModel;
 import com.gimnasio.model.UsuarioDto;
-import com.gimnasio.model.enums.EEstadPlan;
+import com.gimnasio.model.enums.EEstadoPlan;
 import com.gimnasio.model.enums.ESiNo;
 import com.gimnasio.util.Util;
 import com.google.common.base.Joiner;
@@ -69,6 +64,8 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             if (this.clientePaqueteDto.getId() != null) {
                 this.setAsignarValores();
             }
+        } else {
+
         }
     }
 
@@ -100,13 +97,13 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                 this.lblNombre_cliente.setText(clienteDto.getPersonaDto().getNombreCompleto());
                 this.lblDocumento_cliente.setText(clienteDto.getPersonaDto().getNumeroIdentificacion());
             }
-            if (this.clientePaqueteDto.getId() > 0) {
-                setAsignarValores();
+            if (this.clientePaqueteDto.getId() != null) {
+                this.setAsignarValores();
             }
         }
     }
 
-    public void setInitCombos() {
+    public final void setInitCombos() {
         try {
             ComboDto inicio;
             this.comboPaquetes = new ComboModel();
@@ -132,10 +129,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         }
     }
 
-    /**
-     *
-     */
-    public void setAsignarValores() {
+    public final void setAsignarValores() {
         try {
             if (this.clientePaqueteDto.getPaqueteId() > 0) {
                 this.cmbPaquete.setSelectedIndex(Integer.parseInt(this.clientePaqueteDto.getPaqueteId().toString()));
@@ -451,6 +445,10 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     *
+     * @param evt
+     */
     private void setRegistrarPagoPlan(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRegistrarPagoPlan
         List<String> listMessages = new ArrayList();
         ComboDto comboPaq = (ComboDto) this.cmbPaquete.getSelectedItem();
@@ -486,7 +484,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             }
             this.clientePaqueteDto.setPrecioBase(Double.parseDouble(this.txtPrecio_base.getText()));
             this.clientePaqueteDto.setValorTotal(Double.parseDouble(this.txtTolal_pagar.getText()));
-            this.clientePaqueteDto.setEstado(EEstadPlan.ACTIVO.getId());
+            this.clientePaqueteDto.setEstado(EEstadoPlan.ACTIVO.getId());
             if (this.txtFecha_inicio.getDate() != null) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 String fechaNacimiento = sdf.format(this.txtFecha_inicio.getDate().getTime());
@@ -526,6 +524,13 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_setRegistrarPagoPlan
 
+    /**
+     *
+     * @param comboPaq
+     * @param comboDes
+     * @return
+     * @throws Exception
+     */
     public String setVerificaFechaFinalizaPaquete(ComboDto comboPaq, ComboDto comboDes) throws Exception {
         String fechaFinal = "";
         try {
@@ -565,6 +570,13 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         return fechaFinal;
     }
 
+    /**
+     *
+     * @param fecha
+     * @param tipo
+     * @param horas
+     * @return
+     */
     public Date sumarRestarHorasFecha(Date fecha, int tipo, int horas) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(fecha); // Configuramos la fecha que se recibe
@@ -607,6 +619,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         this.txtPrecio_base.setText(comboPaq.getAssistant());
         this.txtTolal_pagar.setText(valorTotal.toString());
     }//GEN-LAST:event_setVerificaPaqueteTiquetera
+
     /**
      *
      * @param evt
@@ -645,6 +658,10 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_setValidaDiasTiquetera
 
+    /**
+     *
+     * @param evt
+     */
     private void setValidaSoloNumeros(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_setValidaSoloNumeros
         char c = evt.getKeyChar();
         if (Character.isLetter(c)) {
@@ -656,10 +673,18 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_setValidaSoloNumeros
 
+    /**
+     *
+     * @param evt
+     */
     private void setCalculaDescuento(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_setCalculaDescuento
         setVerificaPaqueteTiquetera(evt);
     }//GEN-LAST:event_setCalculaDescuento
 
+    /**
+     *
+     * @param evt
+     */
     private void setCalculaValorTotalConPrecioBase(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_setCalculaValorTotalConPrecioBase
         if (!this.txtPrecio_base.getText().equals("")) {
             double precioBase = Double.parseDouble(this.txtPrecio_base.getText());
@@ -693,6 +718,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_setCalculaValorTotalConPrecioBase
+
     public ClienteDto getClienteDto() {
         return clienteDto;
     }

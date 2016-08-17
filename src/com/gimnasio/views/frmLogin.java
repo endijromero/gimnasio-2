@@ -7,10 +7,14 @@ package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones;
 import com.gimnasio.model.UsuarioDto;
+import java.awt.Font;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import org.jvnet.substance.SubstanceLookAndFeel;
 
 /**
  *
@@ -27,8 +31,8 @@ public class frmLogin extends javax.swing.JFrame {
         initComponents();
         this.operacion = new Operaciones();
         this.setLocationRelativeTo(null);
-        // this.txtUser.setText("emendoza1");
-        // this.txtPassword.setText("1234");
+        this.txtUser.setText("emendoza1");
+        this.txtPassword.setText("1234");
     }
 
     /**
@@ -49,7 +53,7 @@ public class frmLogin extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("LOGIN");
+        setTitle("Bienvenidos a StreetGym");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFocusCycleRoot(false);
         setLocation(new java.awt.Point(300, 400));
@@ -59,19 +63,8 @@ public class frmLogin extends javax.swing.JFrame {
 
         txtUser.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtUser.setToolTipText("Usuario");
-        txtUser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUserActionPerformed(evt);
-            }
-        });
         getContentPane().add(txtUser);
         txtUser.setBounds(100, 190, 180, 30);
-
-        txtPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPasswordActionPerformed(evt);
-            }
-        });
         getContentPane().add(txtPassword);
         txtPassword.setBounds(100, 250, 180, 30);
 
@@ -100,7 +93,7 @@ public class frmLogin extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1);
-        jButton1.setBounds(130, 300, 120, 40);
+        jButton1.setBounds(100, 290, 120, 40);
 
         jLabel1.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/textura.jpg"))); // NOI18N
@@ -114,34 +107,31 @@ public class frmLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserActionPerformed
-
-    }//GEN-LAST:event_txtUserActionPerformed
-
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         if (this.txtUser.getText().equals("") || this.txtPassword.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Debe ingresar un usario y contraseña", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
+            JLabel label = new JLabel("Ingrese usario y contraseña");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
         } else {
             try {
                 UsuarioDto userDto = this.operacion.setValidateIngreso(this.txtUser.getText(), this.txtPassword.getText());
                 if (userDto.getId() != null) {
                     frmPrincipal principal = new frmPrincipal();
                     principal.setUsuarioSessionDto(userDto);
-                    principal.setTitle("Sistem GymStreet");
+                    principal.setTitle("::: StreetGym :::");
                     principal.setOperacion(operacion);
                     principal.setVisible(true);
                     this.setVisible(false);
                 }
             } catch (SQLException ex) {
+                JLabel label = new JLabel("Se presentó un error validando el cliente, intentelo nuevamente");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
     }//GEN-LAST:event_btnLoginActionPerformed
-
-    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPasswordActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,6 +165,12 @@ public class frmLogin extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
+                /*
+                    JFrame.setDefaultLookAndFeelDecorated(true);
+                    SubstanceLookAndFeel.setSkin("org.jvnet.substance.skin.AutumnSkin");
+                    SubstanceLookAndFeel.setCurrentTheme("org.jvnet.substance.theme.SubstanceCremeTheme");
+                    SubstanceLookAndFeel.setCurrentWatermark("org.jvnet.substance.watermark.SubstanceMazeWatermark");
+                */
                 new frmLogin().setVisible(true);
             }
         });

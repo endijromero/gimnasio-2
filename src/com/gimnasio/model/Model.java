@@ -1,5 +1,6 @@
 package com.gimnasio.model;
 
+import com.gimnasio.model.enums.EEstadoPlan;
 import com.gimnasio.util.Util;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,35 +32,43 @@ public class Model {
      */
     public ClientePaqueteDto getPaqueteActivoCliente(String idCliente, String documento) throws SQLException {
         ClientePaqueteDto paquete = new ClientePaqueteDto();
-        Statement stat = this.conexion.getConexion().createStatement();
-        //, pqt.precio_base
-        String sql = "SELECT cp.* FROM cliente_paquete cp "
-                + " INNER JOIN clientes cl "
-                + " ON cp.cliente_id = cl.id "
-                + " INNER JOIN personas per "
-                + " ON cl.persona_id = per.id "
-                + " INNER JOIN paquetes pqt "
-                + " ON cp.paquete_id = pqt.id "
-                + "WHERE DATE_FORMAT(NOW(), '%Y-%m-%d') BETWEEN fecha_inicia_paquete AND fecha_finaliza_paquete ";
-        if (!Util.getVacio(idCliente)) {
-            sql += " AND cl.id =" + idCliente + "";
+        try {
+            Statement stat;
+            stat = this.conexion.getConexion().createStatement();
+            String sql = "SELECT cp.* FROM cliente_paquete cp "
+                    + " INNER JOIN clientes cl "
+                    + " ON cp.cliente_id = cl.id "
+                    + " INNER JOIN personas per "
+                    + " ON cl.persona_id = per.id "
+                    + " INNER JOIN paquetes pqt "
+                    + " ON cp.paquete_id = pqt.id "
+                    + "WHERE cp.estado=" + EEstadoPlan.ACTIVO.getId() + ""
+                    + "ORDER BY cp.fecha_inicia_paquete DESC "
+                    + "LIMIT 1";
+            if (!Util.getVacio(idCliente)) {
+                sql += " AND cl.id =" + idCliente + "";
+            }
+            if (!Util.getVacio(documento)) {
+                sql += " AND per.numero_identificacion ='" + documento + "'";
+            }
+            ResultSet res = stat.executeQuery(sql);
+            while (res.next()) {
+                paquete.setId(res.getLong("id"));
+                paquete.setClienteId(res.getLong("cliente_id"));
+                paquete.setPaqueteId(res.getLong("paquete_id"));
+                paquete.setDescuentoId(res.getLong("descuento_id"));
+                paquete.setValorTotal(res.getDouble("valor_total"));
+                paquete.setPrecioBase(res.getDouble("precio_base"));
+                paquete.setEstado(res.getShort("estado"));
+                paquete.setFechaIniciaPaquete(res.getString("fecha_inicia_paquete"));
+                paquete.setFechaFinalizaPaquete(res.getString("fecha_finaliza_paquete"));
+            }
+            stat.close();
+        } catch (SQLException e) {
+            this.conexion.rollback();
+        } finally {
+            this.conexion.commit();
         }
-        if (!Util.getVacio(documento)) {
-            sql += " AND per.numero_identificacion ='" + documento + "'";
-        }
-        ResultSet res = stat.executeQuery(sql);
-        while (res.next()) {
-            paquete.setId(res.getLong("id"));
-            paquete.setClienteId(res.getLong("cliente_id"));
-            paquete.setPaqueteId(res.getLong("paquete_id"));
-            paquete.setDescuentoId(res.getLong("descuento_id"));
-            paquete.setValorTotal(res.getDouble("valor_total"));
-            paquete.setPrecioBase(res.getDouble("precio_base"));
-            paquete.setEstado(res.getShort("estado"));
-            paquete.setFechaIniciaPaquete(res.getString("fecha_inicia_paquete"));
-            paquete.setFechaFinalizaPaquete(res.getString("fecha_finaliza_paquete"));
-        }
-        stat.close();
         return paquete;
     }
 
@@ -234,29 +243,18 @@ public class Model {
      * @param nombres
      * @param apellidos
      * @param documento
+     * @param limite
      * @return
      * @throws SQLException
      */
-    public List<ClienteDto> getDatosClientes(String nombres, String apellidos, String documento) throws SQLException {
+    public List<ClienteDto> getDatosClientes(String nombres, String apellidos, String documento, String limite) throws SQLException {
         List<ClienteDto> list = new ArrayList();
         try (Statement stat = this.conexion.getConexion().createStatement()) {
-            String sql = "SELECT "
-                    + "cl.id as id_cliente, "
-                    + "ps.id, "
-                    + "ps.primer_nombre, "
-                    + "ps.segundo_nombre, "
-                    + "ps.primer_apellido, "
-                    + "ps.segundo_apellido, "
-                    + "ps.numero_identificacion, "
-                    + "ps.genero,"
-                    + "ps.fecha_nacimiento, "
-                    + "ps.movil, "
-                    + "ps.telefono, "
-                    + "ps.email"
+            String sql = "SELECT cl.*, ps.*, cl.id AS idCliente, ps.id AS idPersona "
                     + " FROM clientes cl"
                     + " INNER JOIN personas ps"
                     + " ON cl.persona_id = ps.id "
-                    + " WHERE 1=1";
+                    + " WHERE 1 ";
             if (!Util.getVacio(nombres)) {
                 sql += " AND UPPER(CONCAT(ps.primer_nombre,' ',COALESCE(ps.segundo_nombre,''))) LIKE '%" + nombres.toUpperCase() + "%' ";
             }
@@ -267,13 +265,15 @@ public class Model {
                 sql += " AND ps.numero_identificacion LIKE '%" + documento + "%' ";
             }
             sql += " ORDER BY ps.fecha_registro DESC, ps.primer_nombre, ps.segundo_nombre, ps.primer_apellido,ps.segundo_apellido ";
+            if (limite != null && !limite.toLowerCase().equals("todos")) {
+                sql += "LIMIT " + limite;
+            }
             ResultSet res = stat.executeQuery(sql);
             while (res.next()) {
                 ClienteDto dto = new ClienteDto();
                 PersonaDto persona = new PersonaDto();
-                dto.setId(res.getLong("id_cliente"));
-
-                persona.setId(res.getLong("id"));
+                dto.setId(res.getLong("idCliente"));
+                persona.setId(res.getLong("idPersona"));
                 persona.setPrimerNombre(res.getString("primer_nombre"));
                 persona.setSegundoNombre(res.getString("segundo_nombre"));
                 persona.setPrimerApellido(res.getString("primer_apellido"));
@@ -284,7 +284,6 @@ public class Model {
                 persona.setMovil(res.getString("movil"));
                 persona.setTelefono(res.getString("telefono"));
                 persona.setEmail(res.getString("email"));
-
                 dto.setPersonaDto(persona);
                 list.add(dto);
             }
@@ -465,14 +464,13 @@ public class Model {
             dto.getPersonaDto().setSegundoApellido(res.getString("segundo_apellido"));
             dto.getPersonaDto().setTipoIdentificacion(res.getShort("tipo_identificacion"));
             dto.getPersonaDto().setNumeroIdentificacion(res.getString("numero_identificacion"));
-            dto.getPersonaDto().setLugarExpedicion(res.getString("lugar_expedicion"));
             dto.getPersonaDto().setGenero(res.getShort("genero"));
-            dto.getPersonaDto().setEstadoCivil(res.getShort("estado_civil"));
             dto.getPersonaDto().setFechaNacimiento(res.getString("fecha_nacimiento"));
             dto.getPersonaDto().setDireccion(res.getString("direccion"));
             dto.getPersonaDto().setBarrio(res.getString("barrio"));
             dto.getPersonaDto().setTelefono(res.getString("telefono"));
             dto.getPersonaDto().setMovil(res.getString("movil"));
+            dto.getPersonaDto().setEmail(res.getString("email"));
             dto.getPersonaDto().setHuellaDactilar(res.getBytes("huella_dactilar"));
             dto.getPersonaDto().setFechaRegistro(res.getString("fecha_registro"));
             dto.getPersonaDto().setFechaModificacion(res.getString("fecha_modificacion"));
@@ -499,8 +497,7 @@ public class Model {
                 stat = this.conexion.getConexion().prepareStatement("UPDATE personas SET primer_nombre = ?, segundo_nombre = ?, "
                         + "primer_apellido = ?, segundo_apellido = ?, "
                         + "tipo_identificacion = ?, numero_identificacion = ?, "
-                        + "lugar_expedicion = ?, genero = ?, "
-                        + "estado_civil = ?, fecha_nacimiento = ?, "
+                        + "genero = ?, fecha_nacimiento = ?, "
                         + "direccion = ?, barrio = ?, "
                         + "telefono = ?, movil = ?, "
                         + "email = ?, huella_dactilar = ?, "
@@ -512,47 +509,42 @@ public class Model {
                 stat.setString(4, clienteDto.getPersonaDto().getSegundoApellido());
                 stat.setShort(5, clienteDto.getPersonaDto().getTipoIdentificacion());
                 stat.setString(6, clienteDto.getPersonaDto().getNumeroIdentificacion());
-                stat.setString(7, clienteDto.getPersonaDto().getLugarExpedicion());
-                stat.setShort(8, clienteDto.getPersonaDto().getGenero());
-                stat.setShort(9, clienteDto.getPersonaDto().getEstadoCivil());
-                stat.setString(10, clienteDto.getPersonaDto().getFechaNacimiento());
-                stat.setString(11, clienteDto.getPersonaDto().getDireccion());
-                stat.setString(12, clienteDto.getPersonaDto().getBarrio());
-                stat.setString(13, clienteDto.getPersonaDto().getTelefono());
-                stat.setString(14, clienteDto.getPersonaDto().getMovil());
-                stat.setString(15, clienteDto.getPersonaDto().getEmail());
-                stat.setBytes(16, clienteDto.getPersonaDto().getHuellaDactilar());
-                stat.setString(17, clienteDto.getPersonaDto().getNumeroIdentificacion() + ".jpg");
-                stat.setLong(18, clienteDto.getPersonaDto().getId());
+                stat.setShort(7, clienteDto.getPersonaDto().getGenero());
+                stat.setString(8, clienteDto.getPersonaDto().getFechaNacimiento());
+                stat.setString(9, clienteDto.getPersonaDto().getDireccion());
+                stat.setString(10, clienteDto.getPersonaDto().getBarrio());
+                stat.setString(11, clienteDto.getPersonaDto().getTelefono());
+                stat.setString(12, clienteDto.getPersonaDto().getMovil());
+                stat.setString(13, clienteDto.getPersonaDto().getEmail());
+                stat.setBytes(14, clienteDto.getPersonaDto().getHuellaDactilar());
+                stat.setString(15, clienteDto.getPersonaDto().getNumeroIdentificacion() + ".jpg");
+                stat.setLong(16, clienteDto.getPersonaDto().getId());
                 correcto = stat.executeUpdate() > 0;
             } else {
                 stat = this.conexion.getConexion().prepareStatement("INSERT INTO personas (primer_nombre, segundo_nombre, "
                         + "primer_apellido, segundo_apellido, "
                         + "tipo_identificacion, numero_identificacion, "
-                        + "lugar_expedicion, genero, "
-                        + "estado_civil, fecha_nacimiento, "
+                        + "genero, fecha_nacimiento, "
                         + "direccion, barrio, "
                         + "telefono, movil, "
                         + "email, huella_dactilar, "
                         + "foto_perfil, fecha_registro, "
-                        + "fecha_modificacion) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW())", Statement.RETURN_GENERATED_KEYS);
+                        + "fecha_modificacion) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW())", Statement.RETURN_GENERATED_KEYS);
                 stat.setString(1, clienteDto.getPersonaDto().getPrimerNombre());
                 stat.setString(2, clienteDto.getPersonaDto().getSegundoNombre());
                 stat.setString(3, clienteDto.getPersonaDto().getPrimerApellido());
                 stat.setString(4, clienteDto.getPersonaDto().getSegundoApellido());
                 stat.setShort(5, clienteDto.getPersonaDto().getTipoIdentificacion());
                 stat.setString(6, clienteDto.getPersonaDto().getNumeroIdentificacion());
-                stat.setString(7, clienteDto.getPersonaDto().getLugarExpedicion());
-                stat.setShort(8, clienteDto.getPersonaDto().getGenero());
-                stat.setShort(9, clienteDto.getPersonaDto().getEstadoCivil());
-                stat.setString(10, clienteDto.getPersonaDto().getFechaNacimiento());
-                stat.setString(11, clienteDto.getPersonaDto().getDireccion());
-                stat.setString(12, clienteDto.getPersonaDto().getBarrio());
-                stat.setString(13, clienteDto.getPersonaDto().getTelefono());
-                stat.setString(14, clienteDto.getPersonaDto().getMovil());
-                stat.setString(15, clienteDto.getPersonaDto().getEmail());
-                stat.setBytes(16, clienteDto.getPersonaDto().getHuellaDactilar());
-                stat.setString(17, clienteDto.getPersonaDto().getNumeroIdentificacion() + ".jpg");
+                stat.setShort(7, clienteDto.getPersonaDto().getGenero());
+                stat.setString(8, clienteDto.getPersonaDto().getFechaNacimiento());
+                stat.setString(9, clienteDto.getPersonaDto().getDireccion());
+                stat.setString(10, clienteDto.getPersonaDto().getBarrio());
+                stat.setString(11, clienteDto.getPersonaDto().getTelefono());
+                stat.setString(12, clienteDto.getPersonaDto().getMovil());
+                stat.setString(13, clienteDto.getPersonaDto().getEmail());
+                stat.setBytes(14, clienteDto.getPersonaDto().getHuellaDactilar());
+                stat.setString(15, clienteDto.getPersonaDto().getNumeroIdentificacion() + ".jpg");
                 if (stat.executeUpdate() > 0) {
                     res = stat.getGeneratedKeys();
                     if (res.next()) {
@@ -606,8 +598,7 @@ public class Model {
             stat = this.conexion.getConexion().prepareStatement("INSERT INTO personas (primer_nombre, segundo_nombre, "
                     + "primer_apellido, segundo_apellido, "
                     + "tipo_identificacion, numero_identificacion, "
-                    + "luga_expedicion, genero, "
-                    + "estado_civil, fecha_nacimiento, "
+                    + "genero, fecha_nacimiento, "
                     + "direccion, barrio, "
                     + "telefono, movil, "
                     + "email, huella_dactilar, "
@@ -620,9 +611,7 @@ public class Model {
         stat.setString(4, usuarioDto.getPersonaDto().getSegundoApellido());
         stat.setShort(5, usuarioDto.getPersonaDto().getTipoIdentificacion());
         stat.setString(6, usuarioDto.getPersonaDto().getNumeroIdentificacion());
-        stat.setString(7, usuarioDto.getPersonaDto().getLugarExpedicion());
         stat.setShort(8, usuarioDto.getPersonaDto().getGenero());
-        stat.setShort(9, usuarioDto.getPersonaDto().getEstadoCivil());
         stat.setString(10, usuarioDto.getPersonaDto().getFechaNacimiento());
         stat.setString(11, usuarioDto.getPersonaDto().getDireccion());
         stat.setString(12, usuarioDto.getPersonaDto().getBarrio());
@@ -697,11 +686,8 @@ public class Model {
             dto.getPersonaDto().setSegundoApellido(res.getString("segundo_apellido"));
             dto.getPersonaDto().setTipoIdentificacion(res.getShort("tipo_identificacion"));
             dto.getPersonaDto().setNumeroIdentificacion(res.getString("tipo_identificacion"));
-            dto.getPersonaDto().setLugarExpedicion(res.getString("tipo_identificacion"));
             dto.getPersonaDto().setGenero(res.getShort("genero"));
-            dto.getPersonaDto().setEstadoCivil(res.getShort("tipo_identificacion"));
             dto.getPersonaDto().setGenero(res.getShort("tipo_identificacion"));
-            dto.getPersonaDto().setEstadoCivil(res.getShort("estado_civil"));
             dto.getPersonaDto().setFechaNacimiento(res.getString("fecha_nacimiento"));
             dto.getPersonaDto().setDireccion(res.getString("direccion"));
             dto.getPersonaDto().setBarrio(res.getString("barrio"));

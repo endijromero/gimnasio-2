@@ -6,15 +6,18 @@
 package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones;
+import com.gimnasio.model.ComboDto;
+import com.gimnasio.model.ComboModel;
 import com.gimnasio.model.MiRender;
 import com.gimnasio.model.TablaDto;
 import com.gimnasio.model.TablaModelo;
 import com.gimnasio.model.UsuarioDto;
-import com.gimnasio.util.Util;
+import java.awt.Font;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,8 +25,10 @@ import javax.swing.JOptionPane;
  * @author rodolfo
  */
 public class frmBuscarCliente extends javax.swing.JInternalFrame {
-    
+
+    private List<ComboDto> listComboLimite;
     private UsuarioDto usuarioSessionDto;
+    private ComboModel comboLimite;
     private final String[] headTable;
     private final TablaModelo table;
     protected Operaciones operacion;
@@ -37,19 +42,20 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
      */
     public frmBuscarCliente(Operaciones operacion, String tipo) {
         initComponents();
-        
+
         this.operacion = operacion;
         this.tipo = tipo;
-        
+
         this.headTable = new String[]{"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"};
         int widthColumna[] = {100, 200, 200, 50, 50, 100, 100, 200};
         this.table = new TablaModelo(this.headTable);
         this.tblClientes.setModel(this.table);
-        
+
         int columnas = this.tblClientes.getColumnCount();
         for (int i = 0; i < columnas; i++) {
             this.tblClientes.getColumnModel().getColumn(i).setPreferredWidth(widthColumna[i]);
         }
+        setInitCombos();
     }
 
     /**
@@ -60,20 +66,33 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
      */
     public frmBuscarCliente(frmPrincipal padre, Operaciones operacion, String tipo) {
         initComponents();
-        
+
         this.operacion = operacion;
         this.padre = padre;
         this.tipo = tipo;
-        
+
         this.headTable = new String[]{"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"};
         int widthColumna[] = {100, 200, 200, 50, 50, 100, 100, 200};
         this.table = new TablaModelo(this.headTable);
         this.tblClientes.setModel(this.table);
-        
+
         int columnas = this.tblClientes.getColumnCount();
         for (int i = 0; i < columnas; i++) {
             this.tblClientes.getColumnModel().getColumn(i).setPreferredWidth(widthColumna[i]);
         }
+        setInitCombos();
+    }
+
+    public final void setInitCombos() {
+        ComboDto inicio;
+        this.comboLimite = new ComboModel();
+        this.comboLimite.getLista().clear();
+        this.listComboLimite = this.operacion.getLimiteConsulta();
+        inicio = new ComboDto("10", "10");
+        this.listComboLimite.add(0, inicio);
+        this.comboLimite.getLista().addAll(this.listComboLimite);
+        this.comboLimite.setSelectedItem(inicio);
+        this.cmbLimite.setModel(this.comboLimite);
     }
 
     /**
@@ -98,6 +117,8 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         txtDocumento = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        lblLimite = new javax.swing.JLabel();
+        cmbLimite = new javax.swing.JComboBox();
 
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -163,7 +184,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblCantidad_clientes, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1121, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -187,7 +208,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
+                setConsultaClientes(evt);
             }
         });
 
@@ -199,26 +220,36 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel4.setText("Documento");
 
+        lblLimite.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblLimite.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblLimite.setText("Límite");
+
+        cmbLimite.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10", "50", "100", "200", "1000", "Todos" }));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(lblLimite)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cmbLimite, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
                 .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -233,7 +264,9 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
                         .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2)
                         .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel3)))
+                        .addComponent(jLabel3)
+                        .addComponent(lblLimite)
+                        .addComponent(cmbLimite, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
@@ -265,19 +298,15 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
      *
      * @param evt
      */
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
-        if (Util.getVacio(this.txtNombres.getText()) && Util.getVacio(this.txtApellidos.getText()) && Util.getVacio(this.txtDocumento.getText())) {
-            JOptionPane.showMessageDialog(null, "Debe Aplicar por lo menos uno de los filtros", "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
-        } else {
-            this.setConsultarTableClientes();
-        }
-    }//GEN-LAST:event_btnBuscarActionPerformed
-    
+    private void setConsultaClientes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setConsultaClientes
+        this.setConsultarTableClientes();
+    }//GEN-LAST:event_setConsultaClientes
+
     public void setConsultarTableClientes() {
         List<TablaDto> lista;
         try {
-            lista = this.operacion.getClientesDatosTablaDto(this.txtNombres.getText(), this.txtApellidos.getText(), this.txtDocumento.getText());
+            ComboDto comboLimite = (ComboDto) this.cmbLimite.getSelectedItem();
+            lista = this.operacion.getClientesDatosTablaDto(this.txtNombres.getText(), this.txtApellidos.getText(), this.txtDocumento.getText(), comboLimite.getCodigo());
             this.table.getData().clear();
             this.lblCantidad_clientes.setText(String.valueOf(lista.size()));
             lista.stream().forEach((dto) -> {
@@ -286,6 +315,9 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
             this.tblClientes.setDefaultRenderer(Object.class, new MiRender(this.table));
             this.tblClientes.repaint();
         } catch (SQLException ex) {
+            JLabel label = new JLabel("Error al consultar los clientes, intente nuevamente");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Alerta de error", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(frmBuscarCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -358,7 +390,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
             break;
         }
     }//GEN-LAST:event_setCloseIframeBusquedaCliente
-    
+
     public UsuarioDto getUsuarioSessionDto() {
         return usuarioSessionDto;
     }
@@ -374,6 +406,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JComboBox cmbLimite;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -381,6 +414,7 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCantidad_clientes;
+    private javax.swing.JLabel lblLimite;
     private javax.swing.JLabel lblResultado;
     private javax.swing.JTable tblClientes;
     private javax.swing.JTextField txtApellidos;

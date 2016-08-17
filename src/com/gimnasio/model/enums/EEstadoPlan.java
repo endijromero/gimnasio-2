@@ -3,7 +3,7 @@ package com.gimnasio.model.enums;
 /**
  * @author Eminson Mendoza Martinez
  */
-public enum EEstadPlan {
+public enum EEstadoPlan {
 
     ACTIVO {
                 @Override
@@ -32,8 +32,8 @@ public enum EEstadPlan {
      * @param val
      * @return
      */
-    public static EEstadPlan getResult(short val) {
-        for (EEstadPlan obj : EEstadPlan.getValues()) {
+    public static EEstadoPlan getResult(short val) {
+        for (EEstadoPlan obj : EEstadoPlan.getValues()) {
             if (obj.getId() == val) {
                 return obj;
             }
@@ -44,8 +44,8 @@ public enum EEstadPlan {
     /**
      * @return
      */
-    public static EEstadPlan[] getValues() {
-        return EEstadPlan.values();
+    public static EEstadoPlan[] getValues() {
+        return EEstadoPlan.values();
     }
 
     public abstract String getNombre();

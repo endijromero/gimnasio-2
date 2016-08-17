@@ -23,9 +23,7 @@ public class PersonaDto implements java.io.Serializable {
     private String segundoApellido;
     private short tipoIdentificacion;
     private String numeroIdentificacion;
-    private String lugarExpedicion;
     private short genero;
-    private Short estadoCivil;
     private String fechaNacimiento;
     private String direccion;
     private String barrio;
@@ -40,7 +38,7 @@ public class PersonaDto implements java.io.Serializable {
     private String fechaModificacion;
 
     public PersonaDto() {
-       // this.genero = 1;
+        // this.genero = 1;
         //this.fechaNacimiento = "1990-01-03";
     }
 
@@ -140,28 +138,12 @@ public class PersonaDto implements java.io.Serializable {
         this.numeroIdentificacion = numeroIdentificacion;
     }
 
-    public String getLugarExpedicion() {
-        return lugarExpedicion;
-    }
-
-    public void setLugarExpedicion(String lugarExpedicion) {
-        this.lugarExpedicion = lugarExpedicion;
-    }
-
     public short getGenero() {
         return genero;
     }
 
     public void setGenero(short genero) {
         this.genero = genero;
-    }
-
-    public Short getEstadoCivil() {
-        return estadoCivil;
-    }
-
-    public void setEstadoCivil(Short estadoCivil) {
-        this.estadoCivil = estadoCivil;
     }
 
     public String getFechaNacimiento() {
