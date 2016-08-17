@@ -342,6 +342,9 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
                         frmPrincipal.frmCliente.setClosable(true);
                         frmPrincipal.frmCliente.setVisible(true);
                     } catch (Exception ex) {
+                        JLabel label = new JLabel("Se ha presentado un error, intente nuevamente");
+                        label.setFont(new Font("consolas", Font.PLAIN, 14));
+                        JOptionPane.showMessageDialog(this, label, "Alerta de error", JOptionPane.ERROR_MESSAGE);
                         Logger.getLogger(frmBuscarCliente.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
@@ -366,6 +369,9 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
                         frmPagos.setClosable(true);
                         frmPagos.setVisible(true);
                     } catch (Exception ex) {
+                        JLabel label = new JLabel("Se ha presentado un error, intente nuevamente");
+                        label.setFont(new Font("consolas", Font.PLAIN, 14));
+                        JOptionPane.showMessageDialog(this, label, "Alerta de error", JOptionPane.ERROR_MESSAGE);
                         Logger.getLogger(frmBuscarCliente.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }

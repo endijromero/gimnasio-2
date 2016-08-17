@@ -1,5 +1,6 @@
 package com.gimnasio.views;
 
+import com.gimnasio.model.ClienteDto;
 import java.awt.BorderLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -8,7 +9,6 @@ import java.awt.event.WindowListener;
 import java.lang.Thread.UncaughtExceptionHandler;
 
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamDiscoveryEvent;
@@ -18,6 +18,8 @@ import com.github.sarxos.webcam.WebcamListener;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamPicker;
 import com.github.sarxos.webcam.WebcamResolution;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -26,7 +28,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  * Proof of concept of how to handle webcam video stream from Java
@@ -36,7 +41,8 @@ import javax.swing.JButton;
 public class WebcamViewer extends JFrame implements ActionListener, Runnable, WebcamListener, WindowListener, UncaughtExceptionHandler, ItemListener, WebcamDiscoveryListener {
 
     private static final long serialVersionUID = 1L;
-
+    protected ClienteDto clienteDto;
+    protected frmClientes frmCliente;
     private Webcam webcam = null;
     private WebcamPanel panel = null;
     private WebcamPicker picker = null;
@@ -48,7 +54,7 @@ public class WebcamViewer extends JFrame implements ActionListener, Runnable, We
         Webcam.addDiscoveryListener(this);
 
         setTitle("Java Webcam Capture POC");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
         addWindowListener(this);
@@ -92,7 +98,7 @@ public class WebcamViewer extends JFrame implements ActionListener, Runnable, We
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new WebcamViewer());
+        // SwingUtilities.invokeLater(new WebcamViewer());
     }
 
     @Override
@@ -210,15 +216,60 @@ public class WebcamViewer extends JFrame implements ActionListener, Runnable, We
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnTomarFoto) {
+            boolean reemplaza = true;
             BufferedImage image = webcam.getImage();
             try {
-                // save image to PNG file
-                ImageIO.write(image, "JPG", new File("test.JPG"));
-                System.out.println("Guardado");
+                String nameFile = "fotos/" + this.getClienteDto().getPersonaDto().getNumeroIdentificacion() + ".JPG";
+                File file = new File(nameFile);
+                if (file.exists()) {
+                    int choice = JOptionPane.showConfirmDialog(this,
+                            String.format("La foto para el cliente \"%1$s\" realmente existe.\nDesea reemplazarla?", this.clienteDto.getPersonaDto().getNombreCompleto()),
+                            "Información de captura de foto",
+                            JOptionPane.YES_NO_CANCEL_OPTION);
+                    if (choice == JOptionPane.NO_OPTION) {
+                        reemplaza = false;
+                    } else if (choice == JOptionPane.CANCEL_OPTION) {
+                        reemplaza = false;
+                    }
+                }
+                if (reemplaza) {
+                    if (ImageIO.write(image, "JPG", file)) {
+                        this.clienteDto.getPersonaDto().setFotoPerfil(file.getName());
+                        ImageIcon imagen = new ImageIcon(this.clienteDto.getPersonaDto().getFotoPerfil());
+                        this.frmCliente.getLblFotoCliente().setIcon(new ImageIcon(
+                                image.getScaledInstance(this.frmCliente.getLblFotoCliente().getWidth(), this.frmCliente.getLblFotoCliente().getHeight(), Image.SCALE_DEFAULT)));
+                        this.frmCliente.getLblFotoCliente().repaint();
+                        webcam.close();
+                        this.setVisible(false);
+                        System.out.println("Guardado");
+                    } else {
+                        JLabel label = new JLabel("La huella no se ha podido guardar por favor verífique si la camara está bien conectada");
+                        label.setFont(new Font("consolas", Font.PLAIN, 14));
+                        JOptionPane.showMessageDialog(this, label, "Alerta de verificación de camara web", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
             } catch (IOException ex) {
+                JLabel label = new JLabel("Se ha presentado un error, intente nuevamente");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Alerta de error", JOptionPane.ERROR_MESSAGE);
                 Logger.getLogger(WebcamViewer.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
+    }
+
+    public ClienteDto getClienteDto() {
+        return clienteDto;
+    }
+
+    public void setClienteDto(ClienteDto clienteDto) {
+        this.clienteDto = clienteDto;
+    }
+
+    public frmClientes getFrmCliente() {
+        return frmCliente;
+    }
+
+    public void setFrmCliente(frmClientes frmCliente) {
+        this.frmCliente = frmCliente;
     }
 }

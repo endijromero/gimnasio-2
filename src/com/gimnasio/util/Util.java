@@ -81,6 +81,12 @@ public class Util {
         jf.repaint();
     }
 
+    public static void setPintarFotoPerfil(Image image, JLabel lblFoto) {
+        lblFoto.setIcon(new ImageIcon(
+                image.getScaledInstance(128, 128, Image.SCALE_DEFAULT)));
+        lblFoto.repaint();
+    }
+
     public static void setDibujarHuella(Image image, JLabel lblHuella, JDialog jf) {
         lblHuella.setIcon(new ImageIcon(
                 image.getScaledInstance(lblHuella.getWidth(), lblHuella.getHeight(), Image.SCALE_DEFAULT)));

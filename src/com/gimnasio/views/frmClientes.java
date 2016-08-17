@@ -11,18 +11,22 @@ import com.gimnasio.model.enums.EGenero;
 import com.gimnasio.util.Util;
 import com.google.common.base.Joiner;
 import java.awt.Font;
+import java.awt.Image;
 import java.io.File;
+import java.net.URL;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -63,6 +67,9 @@ public class frmClientes extends javax.swing.JInternalFrame {
         this.comboTipoDocumentos.getLista().addAll(this.listTipoDocumentos);
         this.comboTipoDocumentos.setSelectedItem(inicio);
         this.cmbTipo_documento.setModel(this.comboTipoDocumentos);
+
+        setNoFile(this.lblFotoCliente);
+        setNoFile(this.lblHuellaDactilar);
     }
 
     /**
@@ -113,13 +120,13 @@ public class frmClientes extends javax.swing.JInternalFrame {
             this.txtPrimer_apellido.setText(clienteDto.getPersonaDto().getPrimerApellido());
             this.txtSegundo_apellido.setText(clienteDto.getPersonaDto().getSegundoApellido());
             this.cmbTipo_documento.setSelectedIndex(clienteDto.getPersonaDto().getTipoIdentificacion());
-            this.txtDocumento.setText(clienteDto.getPersonaDto().getNumeroIdentificacion());            
+            this.txtDocumento.setText(clienteDto.getPersonaDto().getNumeroIdentificacion());
             if (clienteDto.getPersonaDto().getGenero() == EGenero.MASCULINO.getId()) {
                 this.rbtMasculino.setSelected(true);
             }
             if (clienteDto.getPersonaDto().getGenero() == EGenero.FEMENIMO.getId()) {
                 this.rbtFemenino.setSelected(true);
-            }            
+            }
             Date date = new SimpleDateFormat("yyyy-MM-dd").parse(clienteDto.getPersonaDto().getFechaNacimiento());
             this.txtFecha_nacimiento.setDate(date);
             this.txtDireccion.setText(clienteDto.getPersonaDto().getDireccion());
@@ -127,10 +134,43 @@ public class frmClientes extends javax.swing.JInternalFrame {
             this.txtFijo.setText(clienteDto.getPersonaDto().getTelefono());
             this.txtMovil.setText(clienteDto.getPersonaDto().getMovil());
             this.txtEmail.setText(clienteDto.getPersonaDto().getEmail());
-        } catch (ParseException ex) {
+
+            if (this.clienteDto.getPersonaDto().getFotoPerfil().trim().length() > 0) {
+                File file = new File("fotos/" + this.clienteDto.getPersonaDto().getFotoPerfil());
+                if (file.exists()) {
+                    Image image = new ImageIcon(file.getAbsolutePath()).getImage();
+                    Util.setPintarFotoPerfil(image, this.lblFotoCliente);
+                }
+            } else {
+                setNoFile(this.lblFotoCliente);
+            }
+            if (this.clienteDto.getPersonaDto().getHuellaDactilar() != null) {
+                if (Arrays.toString(this.clienteDto.getPersonaDto().getHuellaDactilar()).trim().length() > 0) {
+                    URL filename = getClass().getResource("/com/gimnasio/files/finger-print-128-128.png");
+                    File file = new File(filename.getFile());
+                    if (file.exists()) {
+                        Image image = new ImageIcon(file.getAbsolutePath()).getImage();
+                        Util.setPintarFotoPerfil(image, this.lblHuellaDactilar);
+                    }
+                }
+            } else {
+                setNoFile(this.lblHuellaDactilar);
+            }
+        } catch (Exception ex) {
+            JLabel label = new JLabel("Se ha presentado un error, intente nuevamente");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Alerta de error", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
 
+    protected void setNoFile(JLabel lblFoto) {
+        URL filename = getClass().getResource("/com/gimnasio/files/no-file.png");
+        File file = new File(filename.getFile());
+        if (file.exists()) {
+            Image image = new ImageIcon(file.getAbsolutePath()).getImage();
+            Util.setPintarFotoPerfil(image, lblFoto);
+        }
     }
 
     /**
@@ -145,15 +185,13 @@ public class frmClientes extends javax.swing.JInternalFrame {
         rbtGenero = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        panelFoto = new javax.swing.JPanel();
-        btnFoto = new javax.swing.JButton();
         lblTitulo_foto = new javax.swing.JLabel();
+        lblFotoCliente = new javax.swing.JLabel();
+        btnCapturarFoto = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        panelHuella = new javax.swing.JPanel();
-        btnHuella = new javax.swing.JButton();
         lblTitulo_huella = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        log = new javax.swing.JTextArea();
+        btnCapturarHuella = new javax.swing.JButton();
+        lblHuellaDactilar = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         txtSegundo_nombre = new javax.swing.JTextField();
         txtPrimer_nombre = new javax.swing.JTextField();
@@ -206,137 +244,91 @@ public class frmClientes extends javax.swing.JInternalFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        panelFoto.setBackground(new java.awt.Color(255, 255, 255));
-        panelFoto.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        javax.swing.GroupLayout panelFotoLayout = new javax.swing.GroupLayout(panelFoto);
-        panelFoto.setLayout(panelFotoLayout);
-        panelFotoLayout.setHorizontalGroup(
-            panelFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 133, Short.MAX_VALUE)
-        );
-        panelFotoLayout.setVerticalGroup(
-            panelFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 147, Short.MAX_VALUE)
-        );
-
-        btnFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Camera-icon.png"))); // NOI18N
-        btnFoto.setBorder(null);
-        btnFoto.setBorderPainted(false);
-        btnFoto.setContentAreaFilled(false);
-        btnFoto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnFoto.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Camera-icon.png"))); // NOI18N
-        btnFoto.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Camera-icon-2.png"))); // NOI18N
-        btnFoto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFotoActionPerformed(evt);
-            }
-        });
-
         lblTitulo_foto.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblTitulo_foto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo_foto.setText("Foto");
+
+        lblFotoCliente.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFotoCliente.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblFotoCliente.setPreferredSize(new java.awt.Dimension(128, 128));
+
+        btnCapturarFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/camera-add.png"))); // NOI18N
+        btnCapturarFoto.setText("Tomar Foto");
+        btnCapturarFoto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setCapturarFotoPerfil(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblTitulo_foto, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblFotoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(lblTitulo_foto, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnCapturarFoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(lblTitulo_foto)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnFoto))
+                .addComponent(lblFotoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnCapturarFoto)
+                .addGap(10, 10, 10))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        panelHuella.setBackground(new java.awt.Color(255, 255, 255));
-        panelHuella.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        panelHuella.setPreferredSize(new java.awt.Dimension(137, 151));
-
-        javax.swing.GroupLayout panelHuellaLayout = new javax.swing.GroupLayout(panelHuella);
-        panelHuella.setLayout(panelHuellaLayout);
-        panelHuellaLayout.setHorizontalGroup(
-            panelHuellaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 133, Short.MAX_VALUE)
-        );
-        panelHuellaLayout.setVerticalGroup(
-            panelHuellaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 147, Short.MAX_VALUE)
-        );
-
-        btnHuella.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/sign-check-icon.png"))); // NOI18N
-        btnHuella.setBorder(null);
-        btnHuella.setBorderPainted(false);
-        btnHuella.setContentAreaFilled(false);
-        btnHuella.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnHuella.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/sign-check-icon.png"))); // NOI18N
-        btnHuella.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/sign-check-icon-2.png"))); // NOI18N
-        btnHuella.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setCapturarHuella(evt);
-            }
-        });
 
         lblTitulo_huella.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblTitulo_huella.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo_huella.setText("Huella");
 
-        log.setColumns(20);
-        log.setFont(new java.awt.Font("Monospaced", 0, 10)); // NOI18N
-        log.setRows(5);
-        log.setEnabled(false);
-        jScrollPane3.setViewportView(log);
+        btnCapturarHuella.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/finger-print.png"))); // NOI18N
+        btnCapturarHuella.setText("Capturar Huella");
+        btnCapturarHuella.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setCapturarHuella(evt);
+            }
+        });
+
+        lblHuellaDactilar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblHuellaDactilar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblHuellaDactilar.setPreferredSize(new java.awt.Dimension(128, 128));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
-                        .addComponent(btnHuella, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblTitulo_huella, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(panelHuella, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jScrollPane3)
-                    .addContainerGap()))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnCapturarHuella, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblTitulo_huella, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(lblHuellaDactilar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(lblTitulo_huella)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelHuella, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnHuella))
-            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel3Layout.createSequentialGroup()
-                    .addGap(65, 65, 65)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(66, Short.MAX_VALUE)))
+                .addComponent(lblHuellaDactilar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnCapturarHuella)
+                .addGap(10, 10, 10))
         );
 
         jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -544,7 +536,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPrimer_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSegundo_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -603,9 +595,9 @@ public class frmClientes extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addGap(30, 30, 30)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
@@ -639,30 +631,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void setCapturarHuella(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCapturarHuella
-        try {
-            setLlenarClienteDto();
-            List<String> listMessage;
-            listMessage = this.operacion.setGuardarCliente(this.clienteDto, false);
-            if (listMessage.size() < 1) {
-                frmHuella frm = new frmHuella(this.operacion, this.padre, true, this.clienteDto, Short.parseShort("1"), this);
-                frm.setVisible(true);
-            } else {
-                JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol><li>Debe ingresar los datos del cliente <br>para realizar el proceso de captura de la huella</li></ol></html>");
-                label.setFont(new Font("consolas", Font.PLAIN, 14));
-                JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }//GEN-LAST:event_setCapturarHuella
-
-    private void btnFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFotoActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_btnFotoActionPerformed
-
     public Operaciones getOperacion() {
         return operacion;
     }
@@ -679,6 +647,14 @@ public class frmClientes extends javax.swing.JInternalFrame {
         this.usuarioSessionDto = usuarioSessionDto;
     }
 
+    public JLabel getLblFotoCliente() {
+        return lblFotoCliente;
+    }
+
+    public void setLblFotoCliente(JLabel lblFotoCliente) {
+        this.lblFotoCliente = lblFotoCliente;
+    }
+
     /**
      * @tutorial Method Description: llena la información capturada del
      * ----------------------------- formulario en clienteDto
@@ -686,7 +662,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
      * @date 08/07/2016
      */
     protected void setLlenarClienteDto() {
-        ComboDto cmbTipoDocumento = (ComboDto) this.cmbTipo_documento.getSelectedItem();        
+        ComboDto cmbTipoDocumento = (ComboDto) this.cmbTipo_documento.getSelectedItem();
         clienteDto.getPersonaDto().setPrimerNombre(this.txtPrimer_nombre.getText());
         clienteDto.getPersonaDto().setSegundoNombre(this.txtSegundo_nombre.getText());
         clienteDto.getPersonaDto().setPrimerApellido(this.txtPrimer_apellido.getText());
@@ -696,7 +672,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         } else {
             clienteDto.getPersonaDto().setTipoIdentificacion(Short.parseShort("0"));
         }
-        clienteDto.getPersonaDto().setNumeroIdentificacion(this.txtDocumento.getText());        
+        clienteDto.getPersonaDto().setNumeroIdentificacion(this.txtDocumento.getText());
         if (this.rbtFemenino.isSelected()) {
             clienteDto.getPersonaDto().setGenero(EGenero.FEMENIMO.getId());
         }
@@ -814,6 +790,52 @@ public class frmClientes extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, label, "Error de ingreso de datos", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_setValidaEmail
+
+    /**
+     *
+     * @param evt
+     */
+    private void setCapturarHuella(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCapturarHuella
+        try {
+            setLlenarClienteDto();
+            List<String> listMessage;
+            listMessage = this.operacion.setGuardarCliente(this.clienteDto, false);
+            if (listMessage.size() < 1) {
+                frmHuella frm = new frmHuella(this.operacion, this.padre, true, this.clienteDto, Short.parseShort("1"), this);
+                frm.setVisible(true);
+            } else {
+                JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol><li>Debe ingresar los datos del cliente <br>para realizar el proceso de captura de la huella</li></ol></html>");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_setCapturarHuella
+
+    /**
+     *
+     * @param evt
+     */
+    private void setCapturarFotoPerfil(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCapturarFotoPerfil
+        try {
+            setLlenarClienteDto();
+            List<String> listMessage;
+            listMessage = this.operacion.setGuardarCliente(this.clienteDto, false);
+            if (listMessage.size() < 1) {
+                WebcamViewer webCam = new WebcamViewer();
+                webCam.setClienteDto(this.clienteDto);
+                webCam.setFrmCliente(this);
+                SwingUtilities.invokeLater(webCam);
+            } else {
+                JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol><li>Debe ingresar los datos del cliente <br>para realizar el proceso de captura de la huella</li></ol></html>");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(frmClientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_setCapturarFotoPerfil
     /**
      * Valida si es correcta la dirección de correo electrónica dada.
      *
@@ -827,23 +849,24 @@ public class frmClientes extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnFoto;
+    private javax.swing.JButton btnCapturarFoto;
+    private javax.swing.JButton btnCapturarHuella;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnHuella;
     private javax.swing.JComboBox cmbTipo_documento;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblBarrio;
     private javax.swing.JLabel lblDireccion;
     private javax.swing.JLabel lblDocumento;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblFecha_nacimiento;
     private javax.swing.JLabel lblFijo;
+    private javax.swing.JLabel lblFotoCliente;
     private javax.swing.JLabel lblGenero;
+    private javax.swing.JLabel lblHuellaDactilar;
     private javax.swing.JLabel lblMovil;
     private javax.swing.JLabel lblPrimer_nombre;
     private javax.swing.JLabel lblSegundo_apellido;
@@ -851,9 +874,6 @@ public class frmClientes extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblTipo_documento;
     private javax.swing.JLabel lblTitulo_foto;
     private javax.swing.JLabel lblTitulo_huella;
-    private javax.swing.JTextArea log;
-    private javax.swing.JPanel panelFoto;
-    private javax.swing.JPanel panelHuella;
     private javax.swing.JRadioButton rbtFemenino;
     private javax.swing.ButtonGroup rbtGenero;
     private javax.swing.JRadioButton rbtMasculino;

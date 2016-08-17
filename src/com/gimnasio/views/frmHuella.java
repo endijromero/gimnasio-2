@@ -32,6 +32,7 @@ import java.awt.Image;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import com.gimnasio.util.Util;
+import java.awt.Font;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,7 +45,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
-import javazoom.jl.decoder.JavaLayerException;
+import javax.swing.JLabel;
 import javazoom.jl.player.Player;
 
 /**
@@ -141,12 +142,21 @@ public class frmHuella extends javax.swing.JDialog {
         }
     }
 
+    /**
+     *
+     * @param template
+     */
     public void setTemplate(DPFPTemplate template) {
         DPFPTemplate old = this.template;
         this.template = template;
         firePropertyChange(TEMPLATE_PROPERTY, old, template);
     }
 
+    /**
+     *
+     * @param sample
+     * @return
+     */
     public Image CrearImagenHuella(DPFPSample sample) {
         return DPFPGlobal.getSampleConversionFactory().createImage(sample);
     }
@@ -161,7 +171,7 @@ public class frmHuella extends javax.swing.JDialog {
         if (!this.Lector.isStarted()) {
             Lector.startCapture();
         }
-        //EnviarTexto("Utilizando el Lector de Huella Dactilar ");
+        setEnviarTexto("Utilizando el lector de huella dactilar");
     }
 
     protected void setIniciar() {
@@ -169,8 +179,9 @@ public class frmHuella extends javax.swing.JDialog {
             @Override
             public void dataAcquired(final DPFPDataEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
+                    @Override
                     public void run() {
-                        //EnviarTexto("La Huella Digital ha sido Capturada");
+                        setEnviarTexto("La huella digital ha sido capturada");
                         setProcesarCaptura(e.getSample());
                     }
                 });
@@ -181,8 +192,9 @@ public class frmHuella extends javax.swing.JDialog {
             @Override
             public void readerConnected(final DPFPReaderStatusEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
+                    @Override
                     public void run() {
-                        //EnviarTexto("El Sensor de Huella Digital esta Activado o Conectado");
+                        setEnviarTexto("El sensor de huella digital está activado");
                     }
                 });
             }
@@ -190,8 +202,9 @@ public class frmHuella extends javax.swing.JDialog {
             @Override
             public void readerDisconnected(final DPFPReaderStatusEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
+                    @Override
                     public void run() {
-                        //EnviarTexto("El Sensor de Huella Digital esta Desactivado o no Conectado");
+                        setEnviarTexto("El sensor de huella digital está desactivado");
                     }
                 });
             }
@@ -201,8 +214,9 @@ public class frmHuella extends javax.swing.JDialog {
             @Override
             public void fingerTouched(final DPFPSensorEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
+                    @Override
                     public void run() {
-                        //EnviarTexto("El dedo ha sido colocado sobre el Lector de Huella");
+                        setEnviarTexto("El dedo ha sido colocado sobre el lector de huella");
                     }
                 });
             }
@@ -210,8 +224,9 @@ public class frmHuella extends javax.swing.JDialog {
             @Override
             public void fingerGone(final DPFPSensorEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
+                    @Override
                     public void run() {
-                        //EnviarTexto("El dedo ha sido quitado del Lector de Huella");
+                        setEnviarTexto("El dedo ha sido quitado del lector de huella");
                     }
                 });
             }
@@ -220,12 +235,17 @@ public class frmHuella extends javax.swing.JDialog {
         Lector.addErrorListener(new DPFPErrorAdapter() {
             public void errorReader(final DPFPErrorEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
+                    @Override
                     public void run() {
-                        //EnviarTexto("Error: "+e.getError());
+                        setEnviarTexto("Error: " + e.getError());
                     }
                 });
             }
         });
+    }
+
+    private void setEnviarTexto(String message) {
+        this.txtVisor.setText(message + "\n" + this.txtVisor.getText());
     }
 
     public DPFPFeatureSet setExtraerCaracteristicas(DPFPSample sample, DPFPDataPurpose purpose) {
@@ -251,7 +271,11 @@ public class frmHuella extends javax.swing.JDialog {
                 Image image = CrearImagenHuella(sample);
                 Util.setDibujarHuella(image, this.lblIndiceDerecho, this);
             } catch (DPFPImageQualityException ex) {
-                JOptionPane.showMessageDialog(frmHuella.this, "Las huellas no coinciden, Vuelva a intentarlo", "Error!", JOptionPane.ERROR_MESSAGE);
+                setEnviarTexto("Las huellas no coinciden, vuelva a intentarlo");
+                JLabel label = new JLabel("Las huellas no coinciden, vuelva a intentarlo");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Alerta de error", JOptionPane.ERROR_MESSAGE);
+
                 this.Reclutador.clear();
                 stop();
                 this.btnCancelar.setEnabled(true);
@@ -284,18 +308,10 @@ public class frmHuella extends javax.swing.JDialog {
         } else if (this.tipoProceso == 4) {
             // this.setRegistrarSalida();
         } else if (this.cantidadHuellas == 4) {
-            String ruta = "audios/";
-            try {
-                this.usuarioIncorrecto = new FileInputStream(ruta + "huella.mp3");
-                this.usuarioIncorrectoCache = new BufferedInputStream(this.usuarioIncorrecto);
-                this.playUsuarioIncorrecto = new Player(this.usuarioIncorrectoCache);
-                this.playUsuarioIncorrecto.play();
-                this.playUsuarioIncorrecto.close();
-            } catch (FileNotFoundException | JavaLayerException ex) {
-                this.btnCancelar.setEnabled(true);
-                System.err.println(ex.getMessage() + " Error en los ingresos");
-                Logger.getLogger(frmHuella.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            setEnviarTexto("Huella capturada, clic en Asignar");
+            JLabel label = new JLabel("Huella capturada, clic en Asignar");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Mensaje de alerta", JOptionPane.INFORMATION_MESSAGE);
             this.btnGuardar.setEnabled(true);
         }
         System.gc();
@@ -361,7 +377,7 @@ public class frmHuella extends javax.swing.JDialog {
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
+                setCancelarCapturaHuella(evt);
             }
         });
 
@@ -384,27 +400,26 @@ public class frmHuella extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(86, 86, 86)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCancelar))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(lblCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jLabel3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(lblEstudiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(lblIndiceDerecho, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 130, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblEstudiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblIndiceDerecho, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(86, 86, 86))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(5, 5, 5)
                 .addComponent(jScrollPane1)
-                .addGap(20, 20, 20))
+                .addGap(5, 5, 5))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -431,12 +446,12 @@ public class frmHuella extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+    private void setCancelarCapturaHuella(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCancelarCapturaHuella
         Reclutador.clear();
         stop();
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.dispose();
-    }//GEN-LAST:event_btnCancelarActionPerformed
+    }//GEN-LAST:event_setCancelarCapturaHuella
 
     private void getAbrirPanel(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_getAbrirPanel
         setIniciar();
