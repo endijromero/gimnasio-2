@@ -102,6 +102,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             if (this.clientePaqueteDto.getId() != null) {
                 this.setAsignarValores();
             }
+            this.setAsignatFoto();
         }
     }
 
@@ -131,8 +132,22 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         }
     }
 
+    public final void setAsignatFoto() {
+        if (this.clienteDto.getPersonaDto().getFotoPerfil().trim().length() > 0) {
+            File file = new File("fotos/" + this.clienteDto.getPersonaDto().getFotoPerfil());
+            if (file.exists()) {
+                Image image = new ImageIcon(file.getAbsolutePath()).getImage();
+                lblFotoCliente.setIcon(new ImageIcon(image.getScaledInstance(128, 128, Image.SCALE_DEFAULT)));
+                lblFotoCliente.repaint();
+            }
+        } else {
+            setNoFile(lblFotoCliente);
+        }
+    }
+    
+    
     public final void setAsignarValores() {
-        try {
+        try {            
             if (this.clientePaqueteDto.getPaqueteId() > 0) {
                 this.cmbPaquete.setSelectedIndex(Integer.parseInt(this.clientePaqueteDto.getPaqueteId().toString()));
                 this.cmbPaquete.repaint();
@@ -152,16 +167,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             if (this.clientePaqueteDto.getValorTotal() > 0) {
                 this.txtTolal_pagar.setText(String.valueOf(this.clientePaqueteDto.getValorTotal()));
             }
-            if (this.clienteDto.getPersonaDto().getFotoPerfil().trim().length() > 0) {
-                File file = new File("fotos/" + this.clienteDto.getPersonaDto().getFotoPerfil());
-                if (file.exists()) {
-                    Image image = new ImageIcon(file.getAbsolutePath()).getImage();
-                    lblFotoPerfil.setIcon(new ImageIcon(image.getScaledInstance(128, 128, Image.SCALE_DEFAULT)));
-                    lblFotoPerfil.repaint();
-                }
-            } else {
-                setNoFile(lblFotoPerfil);
-            }
+            
         } catch (ParseException ex) {
             Logger.getLogger(frmRegistrarPagos.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -197,9 +203,8 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         panelCliente = new javax.swing.JPanel();
         lblNombre_cliente = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        panelFoto = new javax.swing.JPanel();
-        lblFotoPerfil = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        lblFotoCliente = new javax.swing.JLabel();
         lblDocumento_cliente = new javax.swing.JLabel();
         txtTolal_pagar = new javax.swing.JTextField();
         txtPrecio_base = new javax.swing.JTextField();
@@ -280,37 +285,16 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
 
         lblNombre_cliente.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblNombre_cliente.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblNombre_cliente.setText("Nombre del Cliente Seleccionado");
 
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        panelFoto.setBackground(new java.awt.Color(255, 255, 255));
-        panelFoto.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        lblFotoPerfil.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblFotoPerfil.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        lblFotoPerfil.setPreferredSize(new java.awt.Dimension(128, 128));
-
-        javax.swing.GroupLayout panelFotoLayout = new javax.swing.GroupLayout(panelFoto);
-        panelFoto.setLayout(panelFotoLayout);
-        panelFotoLayout.setHorizontalGroup(
-            panelFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFotoLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblFotoPerfil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        panelFotoLayout.setVerticalGroup(
-            panelFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFotoLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblFotoPerfil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Foto");
+
+        lblFotoCliente.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFotoCliente.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblFotoCliente.setPreferredSize(new java.awt.Dimension(128, 128));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -319,8 +303,8 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblFotoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -328,13 +312,12 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lblFotoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         lblDocumento_cliente.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblDocumento_cliente.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblDocumento_cliente.setText("Nombre del Cliente Seleccionado");
 
         javax.swing.GroupLayout panelClienteLayout = new javax.swing.GroupLayout(panelCliente);
         panelCliente.setLayout(panelClienteLayout);
@@ -342,25 +325,29 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelClienteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblNombre_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelClienteLayout.createSequentialGroup()
+                        .addComponent(lblDocumento_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelClienteLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblNombre_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
             .addGroup(panelClienteLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblDocumento_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(panelClienteLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
+                .addGap(45, 45, 45)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 35, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         panelClienteLayout.setVerticalGroup(
             panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelClienteLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(lblNombre_cliente)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblDocumento_cliente)
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addComponent(lblNombre_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblDocumento_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         txtTolal_pagar.setEditable(false);
@@ -787,13 +774,12 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JLabel lblDocumento_cliente;
-    private javax.swing.JLabel lblFotoPerfil;
+    private javax.swing.JLabel lblFotoCliente;
     private javax.swing.JLabel lblNombre_cliente;
     private javax.swing.JLabel lblPaquete;
     private javax.swing.JLabel lblPrecio_base;
     private javax.swing.JLabel lblTiquetera;
     private javax.swing.JPanel panelCliente;
-    private javax.swing.JPanel panelFoto;
     private javax.swing.JPanel panelTiquetera;
     private javax.swing.JTextField txtDias_tiquetera;
     private com.toedter.calendar.JDateChooser txtFecha_inicio;
