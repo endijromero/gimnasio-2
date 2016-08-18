@@ -138,7 +138,7 @@ public class Model {
         PreparedStatement stat;
         boolean correcto;
         try {
-            stat = this.conexion.getConexion().prepareStatement("UPDATE clientes SET peso = ?, talla =?, muslo_ant =?, triceps =?, pectoral =?, siliaco =?, abdomen =?, test_mmss =?, test_mmii =?, test_uno=?, test_dos =?, test_tres =?, observaciones =? WHERE id =? ");
+            stat = this.conexion.getConexion().prepareStatement("UPDATE clientes SET peso = ?, talla =?, muslo_ant =?, triceps =?, pectoral =?, siliaco =?, abdomen =?, test_mmss =?, test_mmii =?, test_uno=?, test_dos =?, test_tres =?, frecuencia_cardiaca = ? , tension_arterial = ?, peak_air = ?, observaciones =? WHERE id =? ");
             stat.setDouble(1, fisioterapia.getPeso());
             stat.setDouble(2, fisioterapia.getTalla());
             stat.setDouble(3, fisioterapia.getMuslo_ant());
@@ -151,8 +151,11 @@ public class Model {
             stat.setDouble(10, fisioterapia.getTest_uno());
             stat.setDouble(11, fisioterapia.getTest_dos());
             stat.setDouble(12, fisioterapia.getTest_tres());
-            stat.setString(13, fisioterapia.getObservaciones());
-            stat.setLong(14, fisioterapia.getClienteDto().getId());
+            stat.setDouble(13, fisioterapia.getFrecuencia_cardiaca());
+            stat.setDouble(14, fisioterapia.getTension_arterial());
+            stat.setDouble(15, fisioterapia.getPeak_air());
+            stat.setString(16, fisioterapia.getObservaciones());
+            stat.setLong(17, fisioterapia.getClienteDto().getId());
             stat.execute();
             stat.close();
         } catch (SQLException ex) {
@@ -189,6 +192,9 @@ public class Model {
                     + "cl.test_uno, "
                     + "cl.test_dos, "
                     + "cl.test_tres, "
+                    + "cl.frecuencia_cardiaca, "
+                    + "cl.tension_arterial, "
+                    + "cl.peak_air, "
                     + "cl.observaciones, "
                     + "ps.id, "
                     + "ps.numero_identificacion, "
@@ -222,6 +228,9 @@ public class Model {
                 fisioterapia.setTest_tres(res.getDouble("test_tres"));
                 fisioterapia.setTest_mmii(res.getDouble("test_mmii"));
                 fisioterapia.setTest_mmss(res.getDouble("test_mmss"));
+                fisioterapia.setFrecuencia_cardiaca(res.getDouble("frecuencia_cardiaca"));
+                fisioterapia.setTension_arterial(res.getDouble("tension_arterial"));
+                fisioterapia.setPeak_air(res.getDouble("peak_air"));
                 fisioterapia.setObservaciones(res.getString("observaciones"));
                 dto.setId(res.getLong("id_cliente"));
                 persona.setId(res.getLong("id"));

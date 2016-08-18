@@ -160,6 +160,10 @@ public class Operaciones {
         } else {
             listMessages.add("<li>PORCENTAJE DE GRASA: Muslo-ant</li>");
         }
+        if (fisioterapia.getFrecuencia_cardiaca() > 0) {
+        } else {
+            listMessages.add("<li>INFORMACIÓN CARDIO-RESPIRATORIA: F.C. (rep)</li>");
+        }
         if (fisioterapia.getPeso() > 0) {
         } else {
             listMessages.add("<li>INDICE DE MASA CORPORAL: Peso</li>");

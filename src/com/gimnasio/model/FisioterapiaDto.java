@@ -17,6 +17,10 @@ public class FisioterapiaDto implements java.io.Serializable  {
     private double test_mmss;
     private double test_mmii;
     
+    private double tension_arterial;
+    private double frecuencia_cardiaca;
+    private double peak_air;
+    
     private double test_uno;
     private double test_dos;
     private double test_tres;
@@ -174,7 +178,32 @@ public class FisioterapiaDto implements java.io.Serializable  {
 
     public void setPorcentaje(double porcentaje) {
         this.porcentaje = porcentaje;
-    }        
+    }       
+
+    public double getTension_arterial() {
+        return tension_arterial;
+    }
+
+    public void setTension_arterial(double tension_arterial) {
+        this.tension_arterial = tension_arterial;
+    }
+
+    public double getFrecuencia_cardiaca() {
+        return frecuencia_cardiaca;
+    }
+
+    public void setFrecuencia_cardiaca(double frecuencia_cardiaca) {
+        this.frecuencia_cardiaca = frecuencia_cardiaca;
+    }
+
+    public double getPeak_air() {
+        return peak_air;
+    }
+
+    public void setPeak_air(double peak_air) {
+        this.peak_air = peak_air;
+    }
+    
     
     /**
      * 
