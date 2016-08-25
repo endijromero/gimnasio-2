@@ -7,6 +7,7 @@ import com.digitalpersona.onetouch.DPFPSample;
 import com.digitalpersona.onetouch.DPFPTemplate;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
+import com.gimnasio.views.frmPrincipal;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
@@ -22,10 +23,18 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -204,5 +213,21 @@ public class Util {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
 
+    }
+    
+    /**
+     * 
+     * @param ruta
+     * @param parametros 
+     */
+    public static void generarReportes(String ruta, Map parametros) {
+        try {
+            JasperReport load = (JasperReport) JRLoader.loadObject(Util.class.getResource(ruta));            
+            JasperPrint print = JasperFillManager.fillReport(load, parametros, new JREmptyDataSource());
+            JasperViewer view = new JasperViewer(print);
+            view.show();
+        } catch (Exception e) {
+            
+        }
     }
 }

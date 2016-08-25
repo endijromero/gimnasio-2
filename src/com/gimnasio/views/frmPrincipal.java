@@ -10,11 +10,17 @@ import com.gimnasio.model.UsuarioDto;
 import com.gimnasio.util.Util;
 import java.awt.Font;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 
 /**
  *
@@ -84,6 +90,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         jMenu5 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        menuCierre_caja = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -212,6 +219,16 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/file-powerpoint-icon.png"))); // NOI18N
         jMenu2.setText("Reportes");
+
+        menuCierre_caja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/cash-register-icon.png"))); // NOI18N
+        menuCierre_caja.setText("Cierre de Caja");
+        menuCierre_caja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCierre_cajaActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuCierre_caja);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -385,6 +402,17 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_setCrearUsuarios
 
+    private void menuCierre_cajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCierre_cajaActionPerformed
+        // TODO add your handling code here:
+        String ruta = "/reports/cierre_de_caja.jasper";
+        Map params = new HashMap<>();
+        params.put("PRUEBA", "PRUEBA");
+        
+        Util.generarReportes(ruta, params);
+    }//GEN-LAST:event_menuCierre_cajaActionPerformed
+
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -497,6 +525,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     public static javax.swing.JDesktopPane jdstPrincipal;
     private javax.swing.JMenuItem menuBuscar_cliente;
     private javax.swing.JMenuItem menuCafeteria;
+    private javax.swing.JMenuItem menuCierre_caja;
     private javax.swing.JMenu menuCliente;
     private javax.swing.JMenuItem menuCrear_cliente;
     private javax.swing.JMenuItem menuDescuentos;
