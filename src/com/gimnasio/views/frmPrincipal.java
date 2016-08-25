@@ -404,7 +404,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     private void menuCierre_cajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCierre_cajaActionPerformed
         // TODO add your handling code here:
-        String ruta = "/reports/cierre_de_caja.jasper";
+        String ruta = "cierre_de_caja.jrxml";
         Map params = new HashMap<>();
         params.put("PRUEBA", "PRUEBA");
         

@@ -7,7 +7,9 @@ import com.digitalpersona.onetouch.DPFPSample;
 import com.digitalpersona.onetouch.DPFPTemplate;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
+import com.gimnasio.model.Conexion;
 import com.gimnasio.views.frmPrincipal;
+import com.mysql.jdbc.Connection;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
@@ -30,6 +32,7 @@ import java.util.regex.Pattern;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -222,12 +225,17 @@ public class Util {
      */
     public static void generarReportes(String ruta, Map parametros) {
         try {
-            JasperReport load = (JasperReport) JRLoader.loadObject(Util.class.getResource(ruta));            
-            JasperPrint print = JasperFillManager.fillReport(load, parametros, new JREmptyDataSource());
+            Conexion conexion = new Conexion();
+            String       url     = "E:\\gimnasio\\gimnasio\\src\\com\\gimnasio\\reports\\"+ruta;
+            //String subReportDir = ((HashMap<String, String>) dispatcher.getServletContext().getAttribute("local")).get("SUBREPORT_DIR");
+            JasperReport load =  JasperCompileManager.compileReport(url);
+            //JasperReport load = (JasperReport) JRLoader.loadObject(frmPrincipal.class.getResource(ruta));            
+            JasperPrint print = JasperFillManager.fillReport(load, parametros, conexion.getConexion());
             JasperViewer view = new JasperViewer(print);
             view.show();
         } catch (Exception e) {
-            
+            System.out.println(e);
+
         }
     }
 }
