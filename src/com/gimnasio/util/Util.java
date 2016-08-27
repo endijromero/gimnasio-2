@@ -8,8 +8,6 @@ import com.digitalpersona.onetouch.DPFPTemplate;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import com.gimnasio.model.Conexion;
-import com.gimnasio.views.frmPrincipal;
-import com.mysql.jdbc.Connection;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
@@ -25,18 +23,15 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 /**
