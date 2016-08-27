@@ -3,72 +3,102 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="paquetes" uuid="a605538e-a551-428b-91b2-d6609da80f87">
+		<queryString>
+			<![CDATA[SELECT 
+clp.id,
+coalesce(clp.valor_total,0) as valor_total,
+coalesce(per.primer_nombre,'') as primer_nombre,
+coalesce(per.segundo_nombre,'') as segundo_nombre,
+coalesce(per.primer_apellido,'') AS primer_apellido,
+coalesce(per.segundo_apellido,'') as segundo_apellido,
+coalesce(paq.nombre,'') as nombre,
+coalesce((SELECT sum(clp.valor_total) from cliente_paquete clp),0) as total
+FROM 
+cliente_paquete clp
+INNER JOIN clientes cl
+ON cl.id = clp.cliente_id
+INNER JOIN personas per
+ON per.id = cl.persona_id
+INNER JOIN paquetes paq
+ON paq.id = clp.paquete_id]]>
+		</queryString>
+		<field name="id" class="java.math.BigInteger">
+			<fieldDescription><![CDATA[Id principal]]></fieldDescription>
+		</field>
+		<field name="valor_total" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[Valor total del paquete con descuento]]></fieldDescription>
+		</field>
+		<field name="primer_nombre" class="java.lang.String">
+			<fieldDescription><![CDATA[Primer nombre]]></fieldDescription>
+		</field>
+		<field name="segundo_nombre" class="java.lang.String">
+			<fieldDescription><![CDATA[Segundo Nombre]]></fieldDescription>
+		</field>
+		<field name="primer_apellido" class="java.lang.String">
+			<fieldDescription><![CDATA[Primer apellido]]></fieldDescription>
+		</field>
+		<field name="segundo_apellido" class="java.lang.String">
+			<fieldDescription><![CDATA[Segundo apellido]]></fieldDescription>
+		</field>
+		<field name="nombre" class="java.lang.String">
+			<fieldDescription><![CDATA[Nombre del descuento]]></fieldDescription>
+		</field>
+		<field name="total" class="java.math.BigDecimal"/>
+	</subDataset>
+	<subDataset name="cafeteria" uuid="8ab7aca6-8dca-469c-bf8d-2e9259541b22">
+		<queryString>
+			<![CDATA[SELECT 
+ven.id,
+coalesce(ven.valor_total,0) as valor_total,
+coalesce(prd.nombre,"")as nombre,
+coalesce((SELECT sum(ven.valor_total) FROM producto_ventas),0) as total
+FROM
+producto_ventas ven
+INNER JOIN productos prd
+ON prd.id = ven.productos_id]]>
+		</queryString>
+		<field name="id" class="java.math.BigInteger">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="valor_total" class="java.lang.Double">
+			<fieldDescription><![CDATA[Valor total del paquete con descuento]]></fieldDescription>
+		</field>
+		<field name="nombre" class="java.lang.String">
+			<fieldDescription><![CDATA[Nombre del descuento]]></fieldDescription>
+		</field>
+		<field name="total" class="java.lang.Double"/>
+		<group name="id">
+			<groupExpression><![CDATA[$F{id}]]></groupExpression>
+		</group>
+	</subDataset>
 	<queryString>
-		<![CDATA[select * from personas ]]>
+		<![CDATA[select 1]]>
 	</queryString>
-	<field name="id" class="java.math.BigInteger">
-		<fieldDescription><![CDATA[Id de la persona]]></fieldDescription>
-	</field>
-	<field name="primer_nombre" class="java.lang.String">
-		<fieldDescription><![CDATA[Primer nombre]]></fieldDescription>
-	</field>
-	<field name="segundo_nombre" class="java.lang.String">
-		<fieldDescription><![CDATA[Segundo Nombre]]></fieldDescription>
-	</field>
-	<field name="primer_apellido" class="java.lang.String">
-		<fieldDescription><![CDATA[Primer apellido]]></fieldDescription>
-	</field>
-	<field name="segundo_apellido" class="java.lang.String">
-		<fieldDescription><![CDATA[Segundo apellido]]></fieldDescription>
-	</field>
-	<field name="tipo_identificacion" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Tipo identificación (1. Tarjeta Identidad; 2: Cédula de ciudadanía; 3: Cédula de extranjería)]]></fieldDescription>
-	</field>
-	<field name="numero_identificacion" class="java.lang.String">
-		<fieldDescription><![CDATA[Número de identificacion]]></fieldDescription>
-	</field>
-	<field name="lugar_expedicion" class="java.lang.String">
-		<fieldDescription><![CDATA[Ciudad de expedición]]></fieldDescription>
-	</field>
-	<field name="genero" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Genero (1: Masculino; 2: Femenino)]]></fieldDescription>
-	</field>
-	<field name="estado_civil" class="java.lang.Integer">
-		<fieldDescription><![CDATA[Estado civil (1: Soltero; 2: Casado; 3: Unión Libre; 4: Viudo; 5: Separado; 6: Divorciado)]]></fieldDescription>
-	</field>
-	<field name="fecha_nacimiento" class="java.sql.Date">
-		<fieldDescription><![CDATA[Fecha de nacimiento]]></fieldDescription>
-	</field>
-	<field name="direccion" class="java.lang.String">
-		<fieldDescription><![CDATA[Direción domicilio]]></fieldDescription>
-	</field>
-	<field name="barrio" class="java.lang.String">
-		<fieldDescription><![CDATA[Barrio domicilio]]></fieldDescription>
-	</field>
-	<field name="telefono" class="java.lang.String">
-		<fieldDescription><![CDATA[Teléfono domicilio]]></fieldDescription>
-	</field>
-	<field name="movil" class="java.lang.String">
-		<fieldDescription><![CDATA[Numero móvil o celular]]></fieldDescription>
-	</field>
-	<field name="email" class="java.lang.String">
-		<fieldDescription><![CDATA[Correo electrónico]]></fieldDescription>
-	</field>
-	<field name="url_huella" class="java.lang.String">
-		<fieldDescription><![CDATA[ruta donde se encuentra el archivo de la huella guardada]]></fieldDescription>
-	</field>
-	<field name="huella_dactilar" class="java.lang.Object">
-		<fieldDescription><![CDATA[Huella dactilar]]></fieldDescription>
-	</field>
-	<field name="foto_perfil" class="java.lang.String">
-		<fieldDescription><![CDATA[Foto del perfil]]></fieldDescription>
-	</field>
-	<field name="fecha_registro" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[Fecha registro]]></fieldDescription>
-	</field>
-	<field name="fecha_modificacion" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[Fecha modificación]]></fieldDescription>
-	</field>
+	<field name="1" class="java.lang.Long"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -76,7 +106,7 @@
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="51" splitType="Stretch">
+		<band height="68" splitType="Stretch">
 			<rectangle radius="10">
 				<reportElement x="0" y="0" width="555" height="51" backcolor="#3366FF" uuid="ebc579e1-cf17-4ad3-8e3f-c26180c67d12"/>
 				<graphicElement>
@@ -101,18 +131,216 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch"/>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="227" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="3a369cf6-0f9c-495c-a813-885e2fafeb73"/>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.25" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cliente" ]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="227" y="0" width="169" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="f529af33-435a-48c9-9b74-33c54f068cd8"/>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.25" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Paquete" ]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="396" y="0" width="159" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="bb0e8373-c3f4-4723-922b-78eebfbe809d"/>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.25" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Valor Total" ]]></textFieldExpression>
+			</textField>
+		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch"/>
+		<band height="20" splitType="Stretch">
+			<componentElement>
+				<reportElement key="" x="0" y="0" width="555" height="20" uuid="2bd59ab9-1838-4cca-8177-dd6cb19e8045"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="paquetes" uuid="a5e79e71-3495-40a3-91e3-8a2808a4001e">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="556" uuid="f3b9b2d1-0f55-44d4-a4fa-41fc332b9540">
+						<jr:tableHeader style="table_TH" height="0" rowSpan="1"/>
+						<jr:tableFooter height="18" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="396" height="18" uuid="15c336a2-6bf0-4770-ae79-c46615a639cd"/>
+								<box rightPadding="3"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression><![CDATA["TOTAL"]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="396" y="0" width="160" height="18" uuid="fd627c9c-7501-473a-91d1-a54f1d10a320"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{total}.intValue()]]></textFieldExpression>
+							</textField>
+						</jr:tableFooter>
+						<jr:columnHeader style="table_CH" height="0" rowSpan="1"/>
+						<jr:columnFooter style="table_CH" height="0" rowSpan="1"/>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="227" height="20" uuid="f8df6d88-8e69-485f-846e-904755ab2e96"/>
+								<box leftPadding="2" rightPadding="2">
+									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
+									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{primer_nombre}+" "+$F{segundo_nombre}+" "+$F{primer_apellido}+" "+$F{segundo_apellido}]]></textFieldExpression>
+							</textField>
+							<textField isStretchWithOverflow="true">
+								<reportElement stretchType="RelativeToBandHeight" x="227" y="0" width="169" height="20" uuid="0dcf4618-9b72-4659-a853-10b94a16f70f"/>
+								<box leftPadding="2" rightPadding="2">
+									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
+									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+							</textField>
+							<textField isStretchWithOverflow="true">
+								<reportElement stretchType="RelativeToBandHeight" x="396" y="0" width="159" height="20" uuid="39b07a45-3bca-4133-840b-0b657826dcfe"/>
+								<box leftPadding="2" rightPadding="2">
+									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
+									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{valor_total}.intValue()]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+		<band height="61">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="21" width="396" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="d8d1c27c-1dff-4cb4-9965-ea2f33f3c1bb"/>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.25" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Producto" ]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="396" y="21" width="159" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="775c5fae-7361-4db4-9368-4cdfc53cffb4"/>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.25" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Valor" ]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="9" width="555" height="12" uuid="98a7b64e-9640-4412-8880-75540bd28f02"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Cafeteria]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement key="" x="0" y="41" width="555" height="20" uuid="6515141e-10d4-4f1f-a94d-3ed27dd4bbc3"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="cafeteria" uuid="9429e02d-2b8c-47d9-91eb-44c61043f6fd">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="556" uuid="a5624098-562e-4634-84a3-a7c31ea9f697">
+						<jr:tableHeader style="table_TH" height="0" rowSpan="1"/>
+						<jr:tableFooter height="18" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="396" height="18" uuid="772249f1-138a-4d56-9b27-faaa670956a7"/>
+								<box rightPadding="3"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression><![CDATA["TOTAL"]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="396" y="0" width="160" height="18" uuid="b1946b3d-8f76-4a32-91d0-602329f4af6c"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{total}.intValue()]]></textFieldExpression>
+							</textField>
+						</jr:tableFooter>
+						<jr:columnHeader style="table_CH" height="0" rowSpan="1"/>
+						<jr:columnFooter style="table_CH" height="0" rowSpan="1"/>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="396" height="20" uuid="5965e4c4-8913-467b-93b4-4c3c13cde795"/>
+								<box leftPadding="2" rightPadding="2">
+									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
+									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+							</textField>
+							<textField isStretchWithOverflow="true">
+								<reportElement stretchType="RelativeToBandHeight" x="396" y="0" width="160" height="20" uuid="5e2731ed-8f5b-4b98-9ca5-fe602dc93320"/>
+								<box leftPadding="2" rightPadding="2">
+									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
+									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{valor_total}.intValue()]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+		<band height="50"/>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band height="18" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="12" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="12" uuid="0a554c98-1bb7-4a56-8201-4f114408b5c6"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA["reporte generado por: Sistema De gestión Street Gym"]]></text>
+			</staticText>
+		</band>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</summary>
 </jasperReport>
