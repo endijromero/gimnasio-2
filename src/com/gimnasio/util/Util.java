@@ -233,8 +233,8 @@ public class Util {
             //JasperReport load = (JasperReport) JRLoader.loadObject(frmPrincipal.class.getResource(ruta));            
             JasperPrint print = JasperFillManager.fillReport(load, parametros, conexion.getConexion());
             JasperViewer view = new JasperViewer(print);
-            view.show();
-            conexion.close();
+            view.setVisible(true);
+            //conexion.close();
         } catch (Exception e) {
             System.out.println(e);
 
