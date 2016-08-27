@@ -226,6 +226,7 @@ public class Util {
     public static void generarReportes(String ruta, Map parametros) {
         try {
             Conexion conexion = new Conexion();
+            conexion.connect();
             String       url     = "E:\\gimnasio\\gimnasio\\src\\com\\gimnasio\\reports\\"+ruta;
             //String subReportDir = ((HashMap<String, String>) dispatcher.getServletContext().getAttribute("local")).get("SUBREPORT_DIR");
             JasperReport load =  JasperCompileManager.compileReport(url);
@@ -233,6 +234,7 @@ public class Util {
             JasperPrint print = JasperFillManager.fillReport(load, parametros, conexion.getConexion());
             JasperViewer view = new JasperViewer(print);
             view.show();
+            conexion.close();
         } catch (Exception e) {
             System.out.println(e);
 
