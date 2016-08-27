@@ -3,6 +3,72 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select * from personas ]]>
+	</queryString>
+	<field name="id" class="java.math.BigInteger">
+		<fieldDescription><![CDATA[Id de la persona]]></fieldDescription>
+	</field>
+	<field name="primer_nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[Primer nombre]]></fieldDescription>
+	</field>
+	<field name="segundo_nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[Segundo Nombre]]></fieldDescription>
+	</field>
+	<field name="primer_apellido" class="java.lang.String">
+		<fieldDescription><![CDATA[Primer apellido]]></fieldDescription>
+	</field>
+	<field name="segundo_apellido" class="java.lang.String">
+		<fieldDescription><![CDATA[Segundo apellido]]></fieldDescription>
+	</field>
+	<field name="tipo_identificacion" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Tipo identificación (1. Tarjeta Identidad; 2: Cédula de ciudadanía; 3: Cédula de extranjería)]]></fieldDescription>
+	</field>
+	<field name="numero_identificacion" class="java.lang.String">
+		<fieldDescription><![CDATA[Número de identificacion]]></fieldDescription>
+	</field>
+	<field name="lugar_expedicion" class="java.lang.String">
+		<fieldDescription><![CDATA[Ciudad de expedición]]></fieldDescription>
+	</field>
+	<field name="genero" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Genero (1: Masculino; 2: Femenino)]]></fieldDescription>
+	</field>
+	<field name="estado_civil" class="java.lang.Integer">
+		<fieldDescription><![CDATA[Estado civil (1: Soltero; 2: Casado; 3: Unión Libre; 4: Viudo; 5: Separado; 6: Divorciado)]]></fieldDescription>
+	</field>
+	<field name="fecha_nacimiento" class="java.sql.Date">
+		<fieldDescription><![CDATA[Fecha de nacimiento]]></fieldDescription>
+	</field>
+	<field name="direccion" class="java.lang.String">
+		<fieldDescription><![CDATA[Direción domicilio]]></fieldDescription>
+	</field>
+	<field name="barrio" class="java.lang.String">
+		<fieldDescription><![CDATA[Barrio domicilio]]></fieldDescription>
+	</field>
+	<field name="telefono" class="java.lang.String">
+		<fieldDescription><![CDATA[Teléfono domicilio]]></fieldDescription>
+	</field>
+	<field name="movil" class="java.lang.String">
+		<fieldDescription><![CDATA[Numero móvil o celular]]></fieldDescription>
+	</field>
+	<field name="email" class="java.lang.String">
+		<fieldDescription><![CDATA[Correo electrónico]]></fieldDescription>
+	</field>
+	<field name="url_huella" class="java.lang.String">
+		<fieldDescription><![CDATA[ruta donde se encuentra el archivo de la huella guardada]]></fieldDescription>
+	</field>
+	<field name="huella_dactilar" class="java.lang.Object">
+		<fieldDescription><![CDATA[Huella dactilar]]></fieldDescription>
+	</field>
+	<field name="foto_perfil" class="java.lang.String">
+		<fieldDescription><![CDATA[Foto del perfil]]></fieldDescription>
+	</field>
+	<field name="fecha_registro" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[Fecha registro]]></fieldDescription>
+	</field>
+	<field name="fecha_modificacion" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[Fecha modificación]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -14,7 +80,7 @@
 			<rectangle radius="10">
 				<reportElement x="0" y="0" width="555" height="51" backcolor="#3366FF" uuid="ebc579e1-cf17-4ad3-8e3f-c26180c67d12"/>
 				<graphicElement>
-					<pen lineWidth="0.5" lineColor="#999999"/>
+					<pen lineWidth="0.0" lineColor="#999999"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
