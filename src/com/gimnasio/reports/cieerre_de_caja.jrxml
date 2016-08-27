@@ -27,6 +27,8 @@
 		</box>
 	</style>
 	<subDataset name="paquetes" uuid="a605538e-a551-428b-91b2-d6609da80f87">
+		<parameter name="FECHA_INICIO" class="java.lang.String"/>
+		<parameter name="FECHA_FIN" class="java.lang.String"/>
 		<queryString>
 			<![CDATA[SELECT 
 clp.id,
@@ -36,7 +38,7 @@ coalesce(per.segundo_nombre,'') as segundo_nombre,
 coalesce(per.primer_apellido,'') AS primer_apellido,
 coalesce(per.segundo_apellido,'') as segundo_apellido,
 coalesce(paq.nombre,'') as nombre,
-coalesce((SELECT sum(clp.valor_total) from cliente_paquete clp),0) as total
+coalesce((SELECT sum(clp.valor_total) from cliente_paquete clp WHERE  clp.fecha_registro >= $P{FECHA_INICIO} AND clp.fecha_registro <= $P{FECHA_FIN} ),0) as total
 FROM 
 cliente_paquete clp
 INNER JOIN clientes cl
@@ -44,7 +46,8 @@ ON cl.id = clp.cliente_id
 INNER JOIN personas per
 ON per.id = cl.persona_id
 INNER JOIN paquetes paq
-ON paq.id = clp.paquete_id]]>
+ON paq.id = clp.paquete_id
+WHERE clp.fecha_registro >= $P{FECHA_INICIO} AND clp.fecha_registro <= $P{FECHA_FIN}]]>
 		</queryString>
 		<field name="id" class="java.math.BigInteger">
 			<fieldDescription><![CDATA[Id principal]]></fieldDescription>
@@ -70,22 +73,29 @@ ON paq.id = clp.paquete_id]]>
 		<field name="total" class="java.math.BigDecimal"/>
 	</subDataset>
 	<subDataset name="cafeteria" uuid="8ab7aca6-8dca-469c-bf8d-2e9259541b22">
+		<parameter name="FECHA_INICIO" class="java.lang.String"/>
+		<parameter name="FECHA_FIN" class="java.lang.String"/>
 		<queryString>
 			<![CDATA[SELECT 
 ven.id,
 coalesce(ven.valor_total,0) as valor_total,
+coalesce(ven.cantidad,0) as cantidad,
 coalesce(prd.nombre,"")as nombre,
-coalesce((SELECT sum(ven.valor_total) FROM producto_ventas),0) as total
+coalesce((SELECT sum(ven.valor_total) FROM producto_ventas ven WHERE ven.fecha_registro >= $P{FECHA_INICIO} and  ven.fecha_registro <= $P{FECHA_FIN}),0) as total
 FROM
 producto_ventas ven
 INNER JOIN productos prd
-ON prd.id = ven.productos_id]]>
+ON prd.id = ven.productos_id
+WHERE ven.fecha_registro >= $P{FECHA_INICIO} and  ven.fecha_registro <= $P{FECHA_FIN}]]>
 		</queryString>
 		<field name="id" class="java.math.BigInteger">
 			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
 		<field name="valor_total" class="java.lang.Double">
 			<fieldDescription><![CDATA[Valor total del paquete con descuento]]></fieldDescription>
+		</field>
+		<field name="cantidad" class="java.lang.Double">
+			<fieldDescription><![CDATA[]]></fieldDescription>
 		</field>
 		<field name="nombre" class="java.lang.String">
 			<fieldDescription><![CDATA[Nombre del descuento]]></fieldDescription>
@@ -95,10 +105,15 @@ ON prd.id = ven.productos_id]]>
 			<groupExpression><![CDATA[$F{id}]]></groupExpression>
 		</group>
 	</subDataset>
+	<parameter name="FECHA_INICIO" class="java.lang.String"/>
+	<parameter name="FECHA_FIN" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select 1]]>
+		<![CDATA[select  
+coalesce((SELECT sum(clp.valor_total) from cliente_paquete clp WHERE clp.fecha_registro >= $P{FECHA_INICIO} AND  clp.fecha_registro <= $P{FECHA_FIN}),0) as total_paquetes,
+coalesce((SELECT sum(valor_total) FROM producto_ventas WHERE fecha_registro >= $P{FECHA_INICIO} AND fecha_registro <=$P{FECHA_FIN} ),0) as total_cafeteria]]>
 	</queryString>
-	<field name="1" class="java.lang.Long"/>
+	<field name="total_paquetes" class="java.math.BigDecimal"/>
+	<field name="total_cafeteria" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -106,15 +121,19 @@ ON prd.id = ven.productos_id]]>
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="68" splitType="Stretch">
+		<band height="61" splitType="Stretch">
+			<image>
+				<reportElement x="4" y="0" width="58" height="51" uuid="32a40aaa-98ad-4701-8123-a503b9f55e0b"/>
+				<imageExpression><![CDATA["E:\\gimnasio\\gimnasio\\src\\com\\gimnasio\\files\\logo.PNG"]]></imageExpression>
+			</image>
 			<rectangle radius="10">
-				<reportElement x="0" y="0" width="555" height="51" backcolor="#3366FF" uuid="ebc579e1-cf17-4ad3-8e3f-c26180c67d12"/>
+				<reportElement x="58" y="0" width="497" height="51" backcolor="#3366FF" uuid="ebc579e1-cf17-4ad3-8e3f-c26180c67d12"/>
 				<graphicElement>
 					<pen lineWidth="0.0" lineColor="#999999"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement x="0" y="0" width="258" height="51" forecolor="#FFFFFF" uuid="67ce0f11-8e82-4f9c-b8d2-f37a08e5e884"/>
+				<reportElement x="58" y="0" width="200" height="51" forecolor="#FFFFFF" uuid="67ce0f11-8e82-4f9c-b8d2-f37a08e5e884"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="24"/>
 				</textElement>
@@ -143,7 +162,7 @@ ON prd.id = ven.productos_id]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Cliente" ]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Cliente"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement mode="Opaque" x="227" y="0" width="169" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="f529af33-435a-48c9-9b74-33c54f068cd8"/>
@@ -156,7 +175,7 @@ ON prd.id = ven.productos_id]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Paquete" ]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Paquete"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement mode="Opaque" x="396" y="0" width="159" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="bb0e8373-c3f4-4723-922b-78eebfbe809d"/>
@@ -169,7 +188,7 @@ ON prd.id = ven.productos_id]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Valor Total" ]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Valor Total"]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -178,7 +197,13 @@ ON prd.id = ven.productos_id]]>
 			<componentElement>
 				<reportElement key="" x="0" y="0" width="555" height="20" uuid="2bd59ab9-1838-4cca-8177-dd6cb19e8045"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="paquetes" uuid="a5e79e71-3495-40a3-91e3-8a2808a4001e">
+					<datasetRun subDataset="paquetes" uuid="913ffa01-c5b2-4248-845d-28f0eaf96811">
+						<datasetParameter name="FECHA_INICIO">
+							<datasetParameterExpression><![CDATA[$P{FECHA_INICIO}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="FECHA_FIN">
+							<datasetParameterExpression><![CDATA[$P{FECHA_FIN}]]></datasetParameterExpression>
+						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
 					<jr:column width="556" uuid="f3b9b2d1-0f55-44d4-a4fa-41fc332b9540">
@@ -235,9 +260,9 @@ ON prd.id = ven.productos_id]]>
 				</jr:table>
 			</componentElement>
 		</band>
-		<band height="61">
+		<band height="55">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="21" width="396" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="d8d1c27c-1dff-4cb4-9965-ea2f33f3c1bb"/>
+				<reportElement mode="Opaque" x="0" y="10" width="299" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="d8d1c27c-1dff-4cb4-9965-ea2f33f3c1bb"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
@@ -247,10 +272,10 @@ ON prd.id = ven.productos_id]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Producto" ]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Producto"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="396" y="21" width="159" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="775c5fae-7361-4db4-9368-4cdfc53cffb4"/>
+				<reportElement mode="Opaque" x="396" y="10" width="159" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="775c5fae-7361-4db4-9368-4cdfc53cffb4"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
@@ -260,19 +285,18 @@ ON prd.id = ven.productos_id]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Valor" ]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Valor"]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="0" y="9" width="555" height="12" uuid="98a7b64e-9640-4412-8880-75540bd28f02"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<text><![CDATA[Cafeteria]]></text>
-			</staticText>
 			<componentElement>
-				<reportElement key="" x="0" y="41" width="555" height="20" uuid="6515141e-10d4-4f1f-a94d-3ed27dd4bbc3"/>
+				<reportElement key="" x="0" y="30" width="555" height="20" uuid="6515141e-10d4-4f1f-a94d-3ed27dd4bbc3"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="cafeteria" uuid="9429e02d-2b8c-47d9-91eb-44c61043f6fd">
+					<datasetRun subDataset="cafeteria" uuid="bce1cfb2-71ff-4fe0-bab1-b032d44c6a3b">
+						<datasetParameter name="FECHA_INICIO">
+							<datasetParameterExpression><![CDATA[$P{FECHA_INICIO}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="FECHA_FIN">
+							<datasetParameterExpression><![CDATA[$P{FECHA_FIN}]]></datasetParameterExpression>
+						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
 					<jr:column width="556" uuid="a5624098-562e-4634-84a3-a7c31ea9f697">
@@ -298,36 +322,76 @@ ON prd.id = ven.productos_id]]>
 						<jr:columnFooter style="table_CH" height="0" rowSpan="1"/>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="396" height="20" uuid="5965e4c4-8913-467b-93b4-4c3c13cde795"/>
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="299" height="20" uuid="5965e4c4-8913-467b-93b4-4c3c13cde795"/>
 								<box leftPadding="2" rightPadding="2">
 									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
 								</box>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="10"/>
-								</textElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 							</textField>
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="396" y="0" width="160" height="20" uuid="5e2731ed-8f5b-4b98-9ca5-fe602dc93320"/>
+								<reportElement stretchType="RelativeToBandHeight" x="299" y="0" width="97" height="20" uuid="5e2731ed-8f5b-4b98-9ca5-fe602dc93320"/>
 								<box leftPadding="2" rightPadding="2">
 									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
 								</box>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="10"/>
-								</textElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{cantidad}.intValue()]]></textFieldExpression>
+							</textField>
+							<textField isStretchWithOverflow="true">
+								<reportElement stretchType="RelativeToBandHeight" x="396" y="0" width="160" height="20" uuid="011f5c6c-032d-4957-854e-8ba917ab046f"/>
+								<box leftPadding="2" rightPadding="2">
+									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
+									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{valor_total}.intValue()]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
 				</jr:table>
 			</componentElement>
+			<textField>
+				<reportElement mode="Opaque" x="299" y="10" width="97" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="838ac622-08c5-4916-a1de-3359f1ed79c8"/>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.25" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cantidad"]]></textFieldExpression>
+			</textField>
 		</band>
-		<band height="50"/>
+		<band height="32">
+			<textField>
+				<reportElement x="-1" y="14" width="396" height="18" uuid="c37a0606-5c46-4684-8d93-a77aeeb768bd"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TOTAL"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="395" y="14" width="160" height="18" uuid="418bafea-f2ef-464f-a5fd-2eae8f928e27"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_paquetes}.intValue() + $F{total_cafeteria}.intValue()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="7" width="555" height="1" uuid="83af3d56-0c39-4ca5-b955-b43d1b905b5b"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</graphicElement>
+			</line>
+		</band>
 	</detail>
 	<columnFooter>
-		<band height="18" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
 		<band height="12" splitType="Stretch">

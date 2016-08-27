@@ -10,6 +10,9 @@ import com.gimnasio.model.UsuarioDto;
 import com.gimnasio.util.Util;
 import java.awt.Font;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -406,7 +409,15 @@ public class frmPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         String ruta = "cieerre_de_caja.jrxml";
         Map params = new HashMap<>();
-        params.put("PRUEBA", "PRUEBA");
+        Calendar today = new GregorianCalendar();
+        Date currentDate = new Date();
+        today.setTime(currentDate);
+        
+        String fecha_inicio = String.valueOf(today.get(Calendar.YEAR))+"-"+String.valueOf(today.get(Calendar.MONTH)+1)+"-"+String.valueOf(today.get(Calendar.DAY_OF_MONTH))+" "+"00:00:00";
+        String fecha_fin = String.valueOf(today.get(Calendar.YEAR))+"-"+String.valueOf(today.get(Calendar.MONTH)+1)+"-"+String.valueOf(today.get(Calendar.DAY_OF_MONTH))+" "+"23:59:59";
+        
+        params.put("FECHA_INICIO", fecha_inicio);
+        params.put("FECHA_FIN", fecha_fin);
         
         Util.generarReportes(ruta, params);
     }//GEN-LAST:event_menuCierre_cajaActionPerformed
