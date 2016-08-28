@@ -215,7 +215,6 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         txtFecha_inicio = new com.toedter.calendar.JDateChooser();
-        btnGuardarAsistencia = new javax.swing.JButton();
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PAGOS", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
@@ -379,21 +378,6 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
 
         txtFecha_inicio.setDateFormatString("yyyy-MM-dd");
         txtFecha_inicio.setPreferredSize(new java.awt.Dimension(6, 20));
-        txtFecha_inicio.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                setValidaBotonRegistrarDia(evt);
-            }
-        });
-
-        btnGuardarAsistencia.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnGuardarAsistencia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Hand-Touch-2-icon.png"))); // NOI18N
-        btnGuardarAsistencia.setText("Guardar con asistencia");
-        btnGuardarAsistencia.setEnabled(false);
-        btnGuardarAsistencia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setGuardarAsistenciaRegistroPago(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -422,13 +406,10 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtFecha_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnGuardar)
-                            .addComponent(jLabel10))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtTolal_pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnGuardarAsistencia))))
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTolal_pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(30, 30, 30))
         );
         jPanel6Layout.setVerticalGroup(
@@ -458,10 +439,8 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtTolal_pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnGuardarAsistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(15, 15, 15)
+                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(panelCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
@@ -762,15 +741,6 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_setCalculaValorTotalConPrecioBase
 
-    private void setGuardarAsistenciaRegistroPago(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setGuardarAsistenciaRegistroPago
-        this.setRegistraAsistencia(true);
-        this.setRegistrarPagoPlan(evt);
-    }//GEN-LAST:event_setGuardarAsistenciaRegistroPago
-
-    private void setValidaBotonRegistrarDia(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_setValidaBotonRegistrarDia
-        // TODO add your handling code here:
-    }//GEN-LAST:event_setValidaBotonRegistrarDia
-
     public ClienteDto getClienteDto() {
         return clienteDto;
     }
@@ -806,7 +776,6 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnGuardarAsistencia;
     private javax.swing.JComboBox cmbDescuento;
     private javax.swing.JComboBox cmbPaquete;
     private javax.swing.JLabel jLabel10;
