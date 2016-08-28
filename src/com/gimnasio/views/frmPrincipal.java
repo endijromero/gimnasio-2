@@ -388,7 +388,7 @@ public class frmPrincipal extends javax.swing.JFrame {
      */
     private void setRegistrarClientes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRegistrarClientes
         try {
-            this.clienteView = new frmClientes(this, operacion);
+            this.clienteView = new frmClientes(this, this.operacion);
             this.clienteView.setTitle("Formulario para el registro de clientes");
             this.clienteView.setSize(this.getWidth(), this.getHeight() - 1);
             this.clienteView.setUsuarioSessionDto(this.usuarioSessionDto);

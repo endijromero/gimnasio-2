@@ -2,7 +2,7 @@ package com.gimnasio.model;
 
 import com.gimnasio.model.enums.EEstadoPlan;
 import com.gimnasio.util.Util;
-import java.math.BigInteger;
+import com.google.common.base.Joiner;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,18 +22,19 @@ public class Model {
 
     /**
      *
-     * @param clienteDto
+     * @param paqueteDto
      * @param idUsuario
      * @return
      * @throws SQLException
      */
-    public boolean setInsertarIngresoCliente(ClienteDto clienteDto, BigInteger idUsuario) throws SQLException {
-        boolean correct = false;
+    public boolean setInsertarIngresoCliente(ClientePaqueteDto paqueteDto, Long idUsuario) throws SQLException {
+        boolean correct;
         try {
             Statement stat = this.conexion.getConexion().createStatement();
-            stat.execute("INSERT INTO cliente_ingresos ( cliente_paquete_id, cliente_id, fecha_ingreso, usuario_id )  VALUES ( '" + clienteDto.getClientePaqueteDto().getId() + "', '" + clienteDto.getId() + "', NOW(), '" + idUsuario + "' )");
+            stat.execute("INSERT INTO cliente_ingresos ( cliente_paquete_id, cliente_id, fecha_ingreso, usuario_id )  VALUES ( '" + paqueteDto.getId() + "', '" + paqueteDto.getClienteDto().getId() + "', NOW(), '" + idUsuario + "' )");
             stat.close();
         } catch (SQLException ex) {
+            correct = false;
             this.conexion.rollback();
             throw ex;
         } finally {
@@ -92,14 +93,12 @@ public class Model {
         try {
             Statement stat;
             stat = this.conexion.getConexion().createStatement();
-            String sql = "SELECT cp.id AS idClientePaquete, cp.* FROM cliente_paquete cp "
-                    + " INNER JOIN clientes cl "
-                    + " ON cp.cliente_id = cl.id "
-                    + " INNER JOIN personas per "
-                    + " ON cl.persona_id = per.id "
-                    + " INNER JOIN paquetes pqt "
-                    + " ON cp.paquete_id = pqt.id "
-                    + "WHERE cp.estado=" + EEstadoPlan.ACTIVO.getId() + " ";
+            String sql = "SELECT cp.*, pqt.id AS idPaquete, pqt.nombre AS nombrePaquete, pqt.tipo, pqt.precio_base AS precioBasePaquete, pqt.yn_tiquetera, pqt.dias_aplazamiento "
+                    + " FROM cliente_paquete cp "
+                    + " INNER JOIN clientes cl ON cp.cliente_id = cl.id "
+                    + " INNER JOIN personas per ON cl.persona_id = per.id "
+                    + " INNER JOIN paquetes pqt ON cp.paquete_id = pqt.id "
+                    + " WHERE cp.estado=" + EEstadoPlan.ACTIVO.getId() + " ";
             if (!Util.getVacio(idCliente)) {
                 sql += " AND cl.id =" + idCliente + " ";
             }
@@ -110,15 +109,25 @@ public class Model {
             sql += "LIMIT 1";
             ResultSet res = stat.executeQuery(sql);
             while (res.next()) {
-                paquete.setId(res.getLong("idClientePaquete"));
+                paquete.setId(res.getLong("id"));
                 paquete.setClienteId(res.getLong("cliente_id"));
                 paquete.setPaqueteId(res.getLong("paquete_id"));
                 paquete.setDescuentoId(res.getLong("descuento_id"));
-                paquete.setValorTotal(res.getDouble("valor_total"));
+                paquete.setNumeroDiasTiquetera(res.getShort("numero_dias_tiquetera"));
+                paquete.setDiasUsadosTiquetera(res.getShort("dias_usados_tiquetera"));
+
                 paquete.setPrecioBase(res.getDouble("precio_base"));
+                paquete.setValorTotal(res.getDouble("valor_total"));
                 paquete.setEstado(res.getShort("estado"));
                 paquete.setFechaIniciaPaquete(res.getString("fecha_inicia_paquete"));
                 paquete.setFechaFinalizaPaquete(res.getString("fecha_finaliza_paquete"));
+
+                paquete.getPaqueteDto().setId(res.getInt("idPaquete"));
+                paquete.getPaqueteDto().setNombre(res.getString("nombrePaquete"));
+                paquete.getPaqueteDto().setTipo(res.getShort("tipo"));
+                paquete.getPaqueteDto().setPrecioBase(res.getDouble("precioBasePaquete"));
+                paquete.getPaqueteDto().setYnTiquetera(res.getShort("yn_tiquetera"));
+                paquete.getPaqueteDto().setDiasAplazamiento(res.getShort("dias_aplazamiento"));
             }
             stat.close();
         } catch (SQLException e) {
@@ -148,7 +157,7 @@ public class Model {
                 sql += "numero_dias_tiquetera = '" + clientePaqueteDto.getNumeroDiasTiquetera() + "',  "
                         + "precio_base = '" + clientePaqueteDto.getPrecioBase() + "', valor_total = '" + clientePaqueteDto.getValorTotal() + "', "
                         + "estado = '" + clientePaqueteDto.getEstado() + "', fecha_inicia_paquete = '" + clientePaqueteDto.getFechaIniciaPaquete() + "', "
-                        + "fecha_finaliza_paquete = '" + clientePaqueteDto.getFechaFinalizaPaquete() + "', usuario_id = '" + clientePaqueteDto.getUsuarioId() + "', "
+                        + "fecha_finaliza_paquete = " + (clientePaqueteDto.getFechaFinalizaPaquete() == null ? "NULL" : "'" + clientePaqueteDto.getFechaFinalizaPaquete() + "'") + ", usuario_id = '" + clientePaqueteDto.getUsuarioId() + "', "
                         + "fecha_modificacion = NOW() "
                         + "WHERE id = '" + clientePaqueteDto.getId() + "' ;";
             } else {
@@ -171,7 +180,7 @@ public class Model {
                         + "'" + clientePaqueteDto.getValorTotal() + "',"
                         + "'" + clientePaqueteDto.getEstado() + "',"
                         + "'" + clientePaqueteDto.getFechaIniciaPaquete() + "',"
-                        + "'" + clientePaqueteDto.getFechaFinalizaPaquete() + "',"
+                        + (clientePaqueteDto.getFechaFinalizaPaquete() == null ? "NULL" : "'" + clientePaqueteDto.getFechaFinalizaPaquete() + "'") + ","
                         + "'" + clientePaqueteDto.getUsuarioId() + "',"
                         + "NOW(), NOW())";
 
@@ -316,10 +325,11 @@ public class Model {
      * @param apellidos
      * @param documento
      * @param limite
+     * @param llaves
      * @return
      * @throws SQLException
      */
-    public List<ClienteDto> getDatosClientes(String nombres, String apellidos, String documento, String limite) throws SQLException {
+    public List<ClienteDto> getDatosClientes(String nombres, String apellidos, String documento, String limite, List<String> llaves) throws SQLException {
         List<ClienteDto> list = new ArrayList();
         try (Statement stat = this.conexion.getConexion().createStatement()) {
             String sql = "SELECT cl.*, ps.*, cl.id AS idCliente, ps.id AS idPersona "
@@ -335,6 +345,9 @@ public class Model {
             }
             if (!Util.getVacio(documento)) {
                 sql += " AND ps.numero_identificacion LIKE '%" + documento + "%' ";
+            }
+            if (llaves != null && llaves.size() > 0) {
+                sql += " AND cl.id IN (" + Joiner.on(",").join(llaves) + ")";
             }
             sql += " ORDER BY ps.fecha_registro DESC, ps.primer_nombre, ps.segundo_nombre, ps.primer_apellido,ps.segundo_apellido ";
             if (limite != null && !limite.toLowerCase().equals("todos")) {

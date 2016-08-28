@@ -31,17 +31,17 @@ import javax.swing.JOptionPane;
  * @author rodolfo
  */
 public class frmRegistrarPagos extends javax.swing.JInternalFrame {
-
+    
     private List<ComboDto> listComboDescuentos;
     private List<ComboDto> listComboPaquetes;
     private ComboModel comboDescuentos;
     private ComboModel comboPaquetes;
-
+    
     protected ClientePaqueteDto clientePaqueteDto;
     protected UsuarioDto usuarioSessionDto;
     protected ClienteDto clienteDto;
     protected Operaciones operacion;
-
+    
     private frmClientes clientePadre;
     protected String tipoViene;
     protected boolean registraAsistencia;
@@ -56,7 +56,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
      */
     public frmRegistrarPagos(frmClientes frmCliente, Operaciones operacion, ClienteDto clienteDto) throws Exception {
         initComponents();
-
+        
         this.clientePaqueteDto = new ClientePaqueteDto();
         this.registraAsistencia = false;
         this.clientePadre = frmCliente;
@@ -109,7 +109,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             this.setAsignatFoto();
         }
     }
-
+    
     public final void setInitCombos() {
         try {
             ComboDto inicio;
@@ -121,7 +121,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             this.comboPaquetes.getLista().addAll(this.listComboPaquetes);
             this.comboPaquetes.setSelectedItem(inicio);
             this.cmbPaquete.setModel(this.comboPaquetes);
-
+            
             this.comboDescuentos = new ComboModel();
             this.comboDescuentos.getLista().clear();
             this.listComboPaquetes = this.operacion.getDescuentosEnumerado();
@@ -135,7 +135,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             Logger.getLogger(frmRegistrarPagos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public final void setAsignatFoto() {
         if (this.clienteDto.getPersonaDto().getFotoPerfil().trim().length() > 0) {
             File file = new File("fotos/" + this.clienteDto.getPersonaDto().getFotoPerfil());
@@ -148,7 +148,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             setNoFile(lblFotoCliente);
         }
     }
-
+    
     public final void setAsignarValores() {
         try {
             if (this.clientePaqueteDto.getPaqueteId() > 0) {
@@ -170,12 +170,12 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             if (this.clientePaqueteDto.getValorTotal() > 0) {
                 this.txtTolal_pagar.setText(String.valueOf(this.clientePaqueteDto.getValorTotal()));
             }
-
+            
         } catch (ParseException ex) {
             Logger.getLogger(frmRegistrarPagos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     protected void setNoFile(JLabel lblFoto) {
         URL filename = getClass().getResource("/com/gimnasio/files/no-file.png");
         File file = new File(filename.getFile());
@@ -503,6 +503,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             }
             if (!Util.getVacio(comboPaq.getAuxiliar()) && (comboPaq.getAuxiliar().equals(String.valueOf(ESiNo.SI.getId())))) {
                 this.clientePaqueteDto.setNumeroDiasTiquetera(Short.parseShort(this.txtDias_tiquetera.getText()));
+                this.clientePaqueteDto.setFechaFinalizaPaquete(null);
             }
             this.clientePaqueteDto.setPrecioBase(Double.parseDouble(this.txtPrecio_base.getText()));
             this.clientePaqueteDto.setValorTotal(Double.parseDouble(this.txtTolal_pagar.getText()));
@@ -529,7 +530,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                         } else {
                             this.setVisible(false);
                         }
-
+                        
                     }
                 } catch (Exception ex) {
                     JLabel label = new JLabel("Se presentó un error para guardar el proceso de pago del paquete, intente nuevamente");
@@ -560,6 +561,10 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             SimpleDateFormat fechaTemporal = new SimpleDateFormat("yyyy-MM-dd");
             Date fechaRetorna = fechaInicio;
             switch (Short.parseShort(comboPaq.getCoAssistant())) {
+                case 1: {
+                    //fechaRetorna = sumarRestarHorasFecha(fechaInicio, Calendar.MONTH, 1);
+                }
+                break;
                 case 2: {// ETipoPlan.MES
                     fechaRetorna = sumarRestarHorasFecha(fechaInicio, Calendar.MONTH, 1);
                 }
@@ -661,7 +666,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                 Double valorTotal = 0.0;
                 ComboDto comboPaq = (ComboDto) this.cmbPaquete.getSelectedItem();
                 ComboDto comboDes = (ComboDto) this.cmbDescuento.getSelectedItem();
-
+                
                 valorTotal += Double.parseDouble(comboPaq.getAssistant());
                 valorTotal = (diasTiquetera * valorTotal);
                 if (!Util.getVacio(comboDes.getCodigo())) {
@@ -740,35 +745,35 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_setCalculaValorTotalConPrecioBase
-
+    
     public ClienteDto getClienteDto() {
         return clienteDto;
     }
-
+    
     public void setClienteDto(ClienteDto clienteDto) {
         this.clienteDto = clienteDto;
     }
-
+    
     public UsuarioDto getUsuarioSessionDto() {
         return usuarioSessionDto;
     }
-
+    
     public void setUsuarioSessionDto(UsuarioDto usuarioSessionDto) {
         this.usuarioSessionDto = usuarioSessionDto;
     }
-
+    
     public String getTipoViene() {
         return tipoViene;
     }
-
+    
     public void setTipoViene(String tipoViene) {
         this.tipoViene = tipoViene;
     }
-
+    
     public boolean isRegistraAsistencia() {
         return registraAsistencia;
     }
-
+    
     public void setRegistraAsistencia(boolean registraAsistencia) {
         this.registraAsistencia = registraAsistencia;
     }

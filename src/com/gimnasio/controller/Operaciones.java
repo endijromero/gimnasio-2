@@ -5,7 +5,11 @@ import com.gimnasio.model.enums.*;
 import com.gimnasio.util.Util;
 import java.awt.Font;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -29,10 +33,67 @@ public class Operaciones {
         this.model.setConexion(this.conexion);
     }
 
-    public void setInsertarIngresoCliente(ClienteDto clienteDto) {
+    public boolean setInsertarIngresoCliente(ClienteDto clienteDto, long idUsuario) throws SQLException {
+        boolean correct = false;
         if (clienteDto.getId() > 0 && !clienteDto.getId().equals("")) {
-            
+            ClientePaqueteDto paqueteDto = this.model.getPaqueteActivoCliente(clienteDto.getId().toString(), null);
+            if (paqueteDto.getId() != null && paqueteDto.getId() > 0) {
+                try {
+                    Statement stat = this.conexion.getConexion().createStatement();
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                    Date fechaActual = format.parse(format.format(new Date()));
+                    Date fechaInitPaquete = format.parse(paqueteDto.getFechaIniciaPaquete());
+                    Date fechaFinalPaquete = null;
+                    if (paqueteDto.getFechaFinalizaPaquete() != null) {
+                        fechaFinalPaquete = format.parse(paqueteDto.getFechaFinalizaPaquete());
+                    }
+                    if (paqueteDto.getPaqueteDto().getTipo() == ETipoPlan.DIA.getId()) {
+                        if ((fechaInitPaquete.equals(fechaActual) || fechaInitPaquete.before(fechaActual)) && paqueteDto.getPaqueteDto().getYnTiquetera() == ESiNo.SI.getId()) {
+                            int diasUsados = paqueteDto.getDiasUsadosTiquetera() + 1;
+                            String fechaFinaliza = null;
+                            if (diasUsados == paqueteDto.getNumeroDiasTiquetera()) {
+                                fechaFinaliza = format.format(fechaActual);
+                                stat.execute("UPDATE cliente_paquete  SET dias_usados_tiquetera = '" + diasUsados + "', estado = '" + EEstadoPlan.VENCIDO.getId() + "', fecha_finaliza_paquete = '" + fechaFinaliza + "', usuario_id = '" + idUsuario + "', fecha_modificacion = NOW()  WHERE id = '" + paqueteDto.getId() + "'");
+                                correct = true;
+                            } else {
+                                stat.execute("UPDATE cliente_paquete  SET dias_usados_tiquetera = '" + diasUsados + "', estado = '" + EEstadoPlan.ACTIVO.getId() + "', usuario_id = '" + idUsuario + "', fecha_modificacion = NOW()  WHERE id = '" + paqueteDto.getId() + "'");
+                                correct = true;
+                            }
+                        } else if (fechaFinalPaquete.equals(fechaActual)) {
+                            correct = stat.execute("UPDATE  cliente_paquete  SET estado = '" + EEstadoPlan.VENCIDO.getId() + "', usuario_id = '" + idUsuario + "', fecha_modificacion = NOW()  WHERE id = '" + paqueteDto.getId() + "'");
+                        }
+                    } else if (paqueteDto.getPaqueteDto().getTipo() == ETipoPlan.MES.getId()) {
+
+                    }
+                    if (correct) {
+                        paqueteDto.setClienteDto(clienteDto);
+                        correct = this.model.setInsertarIngresoCliente(paqueteDto, idUsuario);
+                    }
+                    stat.close();
+                } catch (ParseException ex) {
+                    this.conexion.rollback();
+                    Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    this.conexion.commit();
+                }
+            }
+            return correct;
         }
+        return correct;
+    }
+
+    /**
+     *
+     * @param fecha
+     * @param tipo
+     * @param horas
+     * @return
+     */
+    public Date sumarRestarHorasFecha(Date fecha, int tipo, int horas) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha); // Configuramos la fecha que se recibe
+        calendar.add(tipo, horas); // numero de horas a añadir, o restar en caso de horas<0
+        return calendar.getTime(); // Devuelve el objeto Date con las nuevas horas añadidas
     }
 
     /**
@@ -233,8 +294,10 @@ public class Operaciones {
         if (listMessages.size() < 1) {
             try {
                 this.model.getSaveFisioterapia(fisioterapia);
+
             } catch (SQLException ex) {
-                Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Operaciones.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         }
         return listMessages;
@@ -298,7 +361,7 @@ public class Operaciones {
     public List<TablaDto> getClientesDatosTablaDto(String nombres, String apellidos, String documento, String limite, List<String> llaves) throws SQLException {
         List<TablaDto> listTable = new ArrayList();
         //"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"
-        List<ClienteDto> listClientes = this.model.getDatosClientes(nombres, apellidos, documento, limite);
+        List<ClienteDto> listClientes = this.model.getDatosClientes(nombres, apellidos, documento, limite, llaves);
         listClientes.stream().map((cliente) -> new TablaDto(
                 String.valueOf(cliente.getPersonaDto().getNumeroIdentificacion()),
                 Util.getQuitaNULL(cliente.getPersonaDto().getPrimerNombre() + " " + Util.getQuitaNULL(cliente.getPersonaDto().getSegundoNombre())),
@@ -346,9 +409,11 @@ public class Operaciones {
             if (idProducto > 0 && idUsuario > 0 && !cantidad.equals("") && !valor_total.equals("")) {
                 java.util.Date fecha = new Date();
                 guarda = this.model.setGuardarCafeteria(idProducto, idUsuario, cantidad, valor_total, fecha);
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Operaciones.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return guarda;
     }
@@ -632,10 +697,10 @@ public class Operaciones {
      * @param idCliente
      * @param documento
      * @return
+     * @throws java.sql.SQLException
      */
     public ClientePaqueteDto getPaqueteActivoCliente(String idCliente, String documento) throws SQLException {
         return this.model.getPaqueteActivoCliente(idCliente, documento);
-
     }
 
     public Model getModel() {

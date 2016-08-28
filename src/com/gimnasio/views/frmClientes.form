@@ -98,12 +98,14 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblFotoCliente" max="-2" attributes="0"/>
+                          <Component id="btnCapturarFoto" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Component id="lblTitulo_foto" min="-2" pref="129" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblFotoCliente" max="-2" attributes="0"/>
+                                  <Component id="lblTitulo_foto" min="-2" pref="129" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="btnCapturarFoto" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>

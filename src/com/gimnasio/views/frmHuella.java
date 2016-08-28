@@ -276,7 +276,7 @@ public class frmHuella extends javax.swing.JDialog {
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        setEnviarTexto("El dedo ha sido colocado sobre el lector de huella");
+                        // setEnviarTexto("El dedo ha sido colocado sobre el lector de huella");
                     }
                 });
             }
@@ -286,7 +286,7 @@ public class frmHuella extends javax.swing.JDialog {
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        setEnviarTexto("El dedo ha sido quitado del lector de huella");
+                        // setEnviarTexto("El dedo ha sido quitado del lector de huella");
                     }
                 });
             }
@@ -304,8 +304,10 @@ public class frmHuella extends javax.swing.JDialog {
         });
     }
 
-    private void setEnviarTexto(String message) {
-        this.txtVisor.setText(message + "\n" + this.txtVisor.getText());
+    public void setEnviarTexto(String message) {
+        if (message != null) {
+            this.txtVisor.setText(this.txtVisor.getText() + "\n" + message);
+        }
     }
 
     public DPFPFeatureSet setExtraerCaracteristicas(DPFPSample sample, DPFPDataPurpose purpose) {
@@ -360,7 +362,6 @@ public class frmHuella extends javax.swing.JDialog {
                 }
             }
         }
-
         switch (this.tipoProceso) {
             case 1: {
                 if (this.cantidadHuellas == 4) {
@@ -389,8 +390,6 @@ public class frmHuella extends javax.swing.JDialog {
                 this.cambia = false;
                 this.listHilos = new ArrayList();
                 this.btnCancelar.setEnabled(false);
-
-                System.out.println("Cantidad Lista: " + this.listClientes.size());
                 for (List<ClienteDto> lis : this.listClientes) {
                     HiloBusqueda h = new HiloBusqueda(this, this.operacion, this.frmClienteIngreso);
                     h.setFeaturesverificacion(featuresverificacion);
@@ -407,6 +406,7 @@ public class frmHuella extends javax.swing.JDialog {
                 }
             } catch (Exception e) {
                 this.btnCancelar.setEnabled(true);
+                setEnviarTexto("Error al verificar los datos de la huella.");
                 System.err.println("Error al verificar los datos de la huella.");
             } finally {
                 Reclutador.clear();
@@ -492,9 +492,15 @@ public class frmHuella extends javax.swing.JDialog {
         lblEstudiante.setText("Nombre del cliente");
         lblEstudiante.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
+        jScrollPane1.setRequestFocusEnabled(false);
+        jScrollPane1.setVerifyInputWhenFocusTarget(false);
+
+        txtVisor.setEditable(false);
         txtVisor.setColumns(20);
         txtVisor.setFont(new java.awt.Font("Consolas", 0, 10)); // NOI18N
         txtVisor.setRows(5);
+        txtVisor.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        txtVisor.setFocusable(false);
         jScrollPane1.setViewportView(txtVisor);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -517,7 +523,7 @@ public class frmHuella extends javax.swing.JDialog {
                             .addComponent(jLabel3)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(lblEstudiante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addComponent(lblIndiceDerecho, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE))
+                        .addComponent(lblIndiceDerecho, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10))
         );
@@ -540,7 +546,7 @@ public class frmHuella extends javax.swing.JDialog {
                     .addComponent(btnCancelar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 15, Short.MAX_VALUE))
+                .addGap(15, 15, 15))
         );
 
         pack();

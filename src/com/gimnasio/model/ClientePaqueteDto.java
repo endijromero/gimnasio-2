@@ -10,7 +10,7 @@ public class ClientePaqueteDto implements java.io.Serializable {
 
     private ClienteDto clienteDto;
     private DescuentoDto descuentoDto;
-    private PaqueteDto paquetes;
+    private PaqueteDto paqueteDto;
     private UsuarioDto usuarioDto;
 
     private Long clienteId;
@@ -30,6 +30,10 @@ public class ClientePaqueteDto implements java.io.Serializable {
     private String fechaModificacion;
 
     public ClientePaqueteDto() {
+        this.paqueteDto = new PaqueteDto();
+        this.clienteDto = new ClienteDto();
+        this.descuentoDto = new DescuentoDto();
+        this.usuarioDto = new UsuarioDto();
     }
 
     public Long getId() {
@@ -56,12 +60,12 @@ public class ClientePaqueteDto implements java.io.Serializable {
         this.descuentoDto = descuentoDto;
     }
 
-    public PaqueteDto getPaquetes() {
-        return paquetes;
+    public PaqueteDto getPaqueteDto() {
+        return paqueteDto;
     }
 
-    public void setPaquetes(PaqueteDto paquetes) {
-        this.paquetes = paquetes;
+    public void setPaqueteDto(PaqueteDto paqueteDto) {
+        this.paqueteDto = paqueteDto;
     }
 
     public UsuarioDto getUsuarioDto() {

@@ -164,7 +164,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
         }
     }
 
-    protected void setNoFile(JLabel lblFoto) {
+    protected final void setNoFile(JLabel lblFoto) {
         URL filename = getClass().getResource("/com/gimnasio/files/no-file.png");
         File file = new File(filename.getFile());
         if (file.exists()) {

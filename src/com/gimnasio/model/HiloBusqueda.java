@@ -1,18 +1,20 @@
 package com.gimnasio.model;
 
+import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
+import com.digitalpersona.onetouch.verification.DPFPVerification;
 import com.digitalpersona.onetouch.DPFPFeatureSet;
 import com.digitalpersona.onetouch.DPFPGlobal;
-import com.digitalpersona.onetouch.verification.DPFPVerification;
-import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
-import com.gimnasio.controller.Operaciones;
 import com.gimnasio.views.frmClientesIngresos;
+import com.gimnasio.controller.Operaciones;
 import com.gimnasio.views.frmHuella;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.util.List;
-import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.HeadlessException;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import javazoom.jl.player.Player;
+import javax.swing.JLabel;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,7 +25,6 @@ public class HiloBusqueda extends Thread {
     private frmClientesIngresos frmClienteIngreso;
     private DPFPFeatureSet featuresverificacion;
     private List<ClienteDto> listPlantillas;
-    private DPFPVerification Verificador;
     private List<HiloBusqueda> listHilos;
     private UsuarioDto usuarioSessionDto;
     private boolean ingresaAsistencia;
@@ -34,19 +35,25 @@ public class HiloBusqueda extends Thread {
     private boolean continua;
     private frmHuella cerrar;
 
+    /**
+     *
+     * @param cerrar
+     * @param operacion
+     * @param frmClienteIngreso
+     */
     public HiloBusqueda(frmHuella cerrar, Operaciones operacion, frmClientesIngresos frmClienteIngreso) {
         this.frmClienteIngreso = frmClienteIngreso;
         this.operacion = operacion;
+        this.corriendo = true;
         this.cerrar = cerrar;
         this.continua = true;
-        this.corriendo = true;
     }
 
     @Override
     public void run() {
+        DPFPVerificationResult result;
+        DPFPVerification verificator;
         boolean entra = false;
-        DPFPVerificationResult result = null;
-        DPFPVerification verificator = null;
         try {
             verificator = DPFPGlobal.getVerificationFactory().createVerification();
             verificator.setFARRequested(DPFPVerification.LOW_SECURITY_FAR);
@@ -56,6 +63,7 @@ public class HiloBusqueda extends Thread {
                     h.setContinua(false);
                 }
             }
+            this.cerrar.setEnviarTexto("Error al iniciar verificador");
             System.err.println("Error al iniciar verificador");
             verificator = null;
         }
@@ -68,7 +76,6 @@ public class HiloBusqueda extends Thread {
                     if (verificator != null && this.featuresverificacion != null && dto != null && dto.getPersonaDto().getTemplateHuella() != null) {
                         result = verificator.verify(featuresverificacion, dto.getPersonaDto().getTemplateHuella());
                         if (result.isVerified()) {
-                            System.out.println(result.getFalseAcceptRate());
                             entra = true;
                             if (!this.ingresaAsistencia) {
                                 this.lblCodigo.setText(dto.getId().toString());
@@ -101,14 +108,11 @@ public class HiloBusqueda extends Thread {
                         }
                     }
                     this.continua = false;
-                    result = null;
                     System.out.println(e.getMessage() + "Verificacion");
                     break;
                 }
             }
-            result = null;
         }
-
         if (!this.ingresaAsistencia) {
             this.corriendo = false;
             if (entra) {
@@ -150,10 +154,13 @@ public class HiloBusqueda extends Thread {
                 h.setContinua(false);
             }
         }
-        verificator = null;
         System.gc();
     }
 
+    /**
+     *
+     * @param clienteDto
+     */
     public void setGuardaAsistencia(ClienteDto clienteDto) {
         try {
             boolean ingresa = false;
@@ -162,34 +169,32 @@ public class HiloBusqueda extends Thread {
             this.lblEstudiante.setText(clienteDto.getPersonaDto().getNombreCompleto());
             List<ClienteIngresoDto> listIngresos = this.operacion.getClientesIngresosDia(clienteDto.getId().toString());
             if (listIngresos.size() < 1) {
-                ingresa = true;
-                List<TablaDto> listCliente = this.operacion.getClientesDatosTablaDto(null, null, clienteDto.getPersonaDto().getNumeroIdentificacion());
-                this.frmClienteIngreso.setAsignarDatoTabla(listCliente.get(0));
-                this.operacion.setInsertarIngresoCliente(clienteDto);
+                if (this.operacion.setInsertarIngresoCliente(clienteDto, this.getUsuarioSessionDto().getId())) {
+                    ingresa = true;
+                    List<TablaDto> listCliente = this.operacion.getClientesDatosTablaDto(null, null, clienteDto.getPersonaDto().getNumeroIdentificacion());
+                    this.frmClienteIngreso.setAsignarDatoTabla(listCliente.get(0));
+                }
             } else {
                 existe = true;
             }
-
             if (existe) {
-                // alert error registrado
+                JLabel label = new JLabel("El usuario ya cumplió con la rutina para el día de hoy");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this.frmClienteIngreso, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
             } else if (ingresa) {
-                // alert correcto
+                JLabel label = new JLabel("El registro de ingreso se realizó de forma correcta");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this.frmClienteIngreso, label, "Mensaje de Advertencia", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                //JOptionPane.showMessageDialog(this,"El estudiante no se ha identificado.","INCORRECTO!",JOptionPane.ERROR_MESSAGE);                
+                JLabel label = new JLabel("El cliente no cuenta con un paquete o plan activo");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this.frmClienteIngreso, label, "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage() + " guarda asistencia ");
+        } catch (SQLException | HeadlessException e) {
+            Logger.getLogger(HiloBusqueda.class.getName()).log(Level.SEVERE, null, e);
         }
         this.cerrar.start();
         this.cerrar.getBtnCancelar().setEnabled(true);
-    }
-
-    public DPFPVerification getVerificador() {
-        return Verificador;
-    }
-
-    public void setVerificador(DPFPVerification Verificador) {
-        this.Verificador = Verificador;
     }
 
     public List<ClienteDto> getListPlantillas() {
