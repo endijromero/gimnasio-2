@@ -65,7 +65,6 @@ public class Operaciones {
      */
     public List<ComboDto> getListMeses() {
         List<ComboDto> lista = new ArrayList();
-        lista.add(new ComboDto("0", "-------"));
         lista.add(new ComboDto("1", "Enero"));
         lista.add(new ComboDto("2", "Febrero"));
         lista.add(new ComboDto("3", "Marzo"));

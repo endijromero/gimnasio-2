@@ -49,7 +49,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
      *
      * @tutorial Creates new form frmCliente
      * @param padre
-     * @param operacion
+     * @param operacion 
      * @throws java.lang.Exception
      */
     public frmClientes(frmPrincipal padre, Operaciones operacion) throws Exception {
