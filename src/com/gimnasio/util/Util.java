@@ -230,7 +230,7 @@ public class Util {
             // Util.class.getResource(ruta)
             //JasperReport load = (JasperReport) JRLoader.loadObject(fileReport.getAbsolutePath());
             JasperPrint print = JasperFillManager.fillReport(load, parametros, conexion.getConexion());
-            JasperViewer view = new JasperViewer(print);
+            JasperViewer view = new JasperViewer(print,false);
             view.setVisible(true);
             // ya cierto lo quse no se es porque cierra tod la pp igual no se por que hace eso jajja  vbouys a mirar
             conexion.close();
