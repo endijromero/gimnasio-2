@@ -32,6 +32,7 @@ import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 /**
@@ -212,24 +213,27 @@ public class Util {
         return matcher.matches();
 
     }
-    
+
     /**
-     * 
+     *
      * @param ruta
-     * @param parametros 
+     * @param parametros
      */
     public static void generarReportes(String ruta, Map parametros) {
         try {
             Conexion conexion = new Conexion();
             conexion.connect();
-            String       url     = "E:\\gimnasio\\gimnasio\\src\\com\\gimnasio\\reports\\"+ruta;
+            String url = "reports/" + ruta;
+            File fileReport = new File("reports/" + ruta);
             //String subReportDir = ((HashMap<String, String>) dispatcher.getServletContext().getAttribute("local")).get("SUBREPORT_DIR");
-            JasperReport load =  JasperCompileManager.compileReport(url);
-            //JasperReport load = (JasperReport) JRLoader.loadObject(frmPrincipal.class.getResource(ruta));            
+            JasperReport load = JasperCompileManager.compileReport(fileReport.getAbsolutePath());
+            // Util.class.getResource(ruta)
+            //JasperReport load = (JasperReport) JRLoader.loadObject(fileReport.getAbsolutePath());
             JasperPrint print = JasperFillManager.fillReport(load, parametros, conexion.getConexion());
             JasperViewer view = new JasperViewer(print);
             view.setVisible(true);
-            //conexion.close();
+            // ya cierto lo quse no se es porque cierra tod la pp igual no se por que hace eso jajja  vbouys a mirar
+            conexion.close();
         } catch (Exception e) {
             System.out.println(e);
 
