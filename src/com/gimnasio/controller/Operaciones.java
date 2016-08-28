@@ -60,10 +60,16 @@ public class Operaciones {
                                 correct = true;
                             }
                         } else if (fechaFinalPaquete.equals(fechaActual)) {
-                            correct = stat.execute("UPDATE  cliente_paquete  SET estado = '" + EEstadoPlan.VENCIDO.getId() + "', usuario_id = '" + idUsuario + "', fecha_modificacion = NOW()  WHERE id = '" + paqueteDto.getId() + "'");
+                            stat.execute("UPDATE  cliente_paquete  SET estado = '" + EEstadoPlan.VENCIDO.getId() + "', usuario_id = '" + idUsuario + "', fecha_modificacion = NOW()  WHERE id = '" + paqueteDto.getId() + "'");
+                            correct = true;
                         }
-                    } else if (paqueteDto.getPaqueteDto().getTipo() == ETipoPlan.MES.getId()) {
-
+                    } else {
+                        if (fechaFinalPaquete.equals(fechaActual)) {
+                            stat.execute("UPDATE  cliente_paquete  SET estado = '" + EEstadoPlan.VENCIDO.getId() + "', usuario_id = '" + idUsuario + "', fecha_modificacion = NOW()  WHERE id = '" + paqueteDto.getId() + "'");
+                            correct = true;
+                        }
+                        // se pone true porque tiene plazo para que realice el registro diario
+                        correct = true;
                     }
                     if (correct) {
                         paqueteDto.setClienteDto(clienteDto);

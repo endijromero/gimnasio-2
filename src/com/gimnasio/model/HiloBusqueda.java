@@ -6,13 +6,19 @@ import com.digitalpersona.onetouch.DPFPFeatureSet;
 import com.digitalpersona.onetouch.DPFPGlobal;
 import com.gimnasio.views.frmClientesIngresos;
 import com.gimnasio.controller.Operaciones;
+import com.gimnasio.model.enums.ESiNo;
+import com.gimnasio.model.enums.ETipoPlan;
 import com.gimnasio.views.frmHuella;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -182,8 +188,32 @@ public class HiloBusqueda extends Thread {
                 label.setFont(new Font("consolas", Font.PLAIN, 14));
                 JOptionPane.showMessageDialog(this.frmClienteIngreso, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
             } else if (ingresa) {
-                JLabel label = new JLabel("El registro de ingreso se realizó de forma correcta");
-                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                ClientePaqueteDto paqueteDto = this.operacion.getPaqueteActivoCliente(clienteDto.getId().toString(), null);
+                String message = "El registro de ingreso se realizó de forma correcta. <br><br>";
+                if (paqueteDto.getId() != null && paqueteDto.getId() > 0) {
+                    message += "Cliente: <b>" + paqueteDto.getClienteDto().getPersonaDto().getNombreCompleto() + "</b><br>"
+                            + "Plan o paquete: <b>" + paqueteDto.getPaqueteDto().getNombre() + "</b><br>";
+                    if (paqueteDto.getPaqueteDto().getYnTiquetera() == ESiNo.SI.getId()) {
+                        message += "Días tiquetera: <b>" + paqueteDto.getNumeroDiasTiquetera() + "</b><br>";
+                        message += "Días cumplidos: <b>" + paqueteDto.getDiasUsadosTiquetera() + "</b><br>";
+                        message += "Días restantes: <b>" + (paqueteDto.getNumeroDiasTiquetera() - paqueteDto.getDiasUsadosTiquetera()) + "</b><br>";
+                    } else {
+
+                        try {
+                            SimpleDateFormat formateador = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy", new Locale("es", "ES"));
+                            Date fechaTemp = new SimpleDateFormat("yyyy-MM-dd").parse(paqueteDto.getFechaFinalizaPaquete());
+                            String fecha = formateador.format(fechaTemp);
+                            message += "Fecha de finalización: <b>" + fecha + "</b><br>";
+                        } catch (ParseException ex) {
+                            Logger.getLogger(HiloBusqueda.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    }
+                } else {
+                    message += "El plan o paquete vence el día de hoy para el cliente: <b>" + clienteDto.getPersonaDto().getNombreCompleto().toUpperCase() + "</b><br>";
+                }
+                JLabel label = new JLabel("<html>" + message + "</html>");
+                label.setFont(new Font("consolas", Font.PLAIN, 16));
                 JOptionPane.showMessageDialog(this.frmClienteIngreso, label, "Mensaje de Advertencia", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JLabel label = new JLabel("El cliente no cuenta con un paquete o plan activo");
@@ -191,6 +221,9 @@ public class HiloBusqueda extends Thread {
                 JOptionPane.showMessageDialog(this.frmClienteIngreso, label, "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException | HeadlessException e) {
+            JLabel label = new JLabel("Error no controlado, intente nuevamente");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this.frmClienteIngreso, label, "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(HiloBusqueda.class.getName()).log(Level.SEVERE, null, e);
         }
         this.cerrar.start();

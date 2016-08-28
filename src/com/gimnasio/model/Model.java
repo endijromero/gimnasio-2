@@ -93,7 +93,8 @@ public class Model {
         try {
             Statement stat;
             stat = this.conexion.getConexion().createStatement();
-            String sql = "SELECT cp.*, pqt.id AS idPaquete, pqt.nombre AS nombrePaquete, pqt.tipo, pqt.precio_base AS precioBasePaquete, pqt.yn_tiquetera, pqt.dias_aplazamiento "
+            String sql = "SELECT cp.*, pqt.id AS idPaquete, pqt.nombre AS nombrePaquete, pqt.tipo, pqt.precio_base AS precioBasePaquete, pqt.yn_tiquetera, pqt.dias_aplazamiento, "
+                    + " per.id AS idPersona, per.primer_nombre, per.segundo_nombre, per.primer_apellido, per.segundo_apellido "
                     + " FROM cliente_paquete cp "
                     + " INNER JOIN clientes cl ON cp.cliente_id = cl.id "
                     + " INNER JOIN personas per ON cl.persona_id = per.id "
@@ -128,6 +129,13 @@ public class Model {
                 paquete.getPaqueteDto().setPrecioBase(res.getDouble("precioBasePaquete"));
                 paquete.getPaqueteDto().setYnTiquetera(res.getShort("yn_tiquetera"));
                 paquete.getPaqueteDto().setDiasAplazamiento(res.getShort("dias_aplazamiento"));
+
+                paquete.getClienteDto().getPersonaDto().setId(res.getLong("idPersona"));
+                paquete.getClienteDto().getPersonaDto().setPrimerNombre(res.getString("primer_nombre"));
+                paquete.getClienteDto().getPersonaDto().setSegundoNombre(res.getString("segundo_nombre"));
+                paquete.getClienteDto().getPersonaDto().setPrimerApellido(res.getString("primer_apellido"));
+                paquete.getClienteDto().getPersonaDto().setSegundoApellido(res.getString("segundo_apellido"));
+
             }
             stat.close();
         } catch (SQLException e) {
