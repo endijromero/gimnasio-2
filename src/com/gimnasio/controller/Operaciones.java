@@ -45,8 +45,15 @@ public class Operaciones {
         return lista;
     }
 
-    public boolean setGuardaPagoPaqueteCliente(ClientePaqueteDto clientePaqueteDto) throws SQLException {
-        return this.model.setGuardaPagoPaqueteCliente(clientePaqueteDto);
+    /**
+     *
+     * @param clientePaqueteDto
+     * @param registraAsistencia
+     * @return
+     * @throws SQLException
+     */
+    public boolean setGuardaPagoPaqueteCliente(ClientePaqueteDto clientePaqueteDto, boolean registraAsistencia) throws SQLException {
+        return this.model.setGuardaPagoPaqueteCliente(clientePaqueteDto, registraAsistencia);
     }
 
     /**

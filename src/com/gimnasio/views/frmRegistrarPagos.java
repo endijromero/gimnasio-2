@@ -44,6 +44,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
 
     private frmClientes clientePadre;
     protected String tipoViene;
+    protected boolean registraAsistencia;
 
     /**
      * Creates new form frmPagos
@@ -55,7 +56,9 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
      */
     public frmRegistrarPagos(frmClientes frmCliente, Operaciones operacion, ClienteDto clienteDto) throws Exception {
         initComponents();
+
         this.clientePaqueteDto = new ClientePaqueteDto();
+        this.registraAsistencia = false;
         this.clientePadre = frmCliente;
         this.clienteDto = clienteDto;
         this.operacion = operacion;
@@ -79,6 +82,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
      */
     public frmRegistrarPagos(Operaciones operacion, String documento) throws Exception {
         initComponents();
+        this.registraAsistencia = false;
         this.operacion = operacion;
         List<ClienteDto> listCliente = this.operacion.getClienteDatos(null, documento);
         if (listCliente.size() > 0) {
@@ -144,10 +148,9 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             setNoFile(lblFotoCliente);
         }
     }
-    
-    
+
     public final void setAsignarValores() {
-        try {            
+        try {
             if (this.clientePaqueteDto.getPaqueteId() > 0) {
                 this.cmbPaquete.setSelectedIndex(Integer.parseInt(this.clientePaqueteDto.getPaqueteId().toString()));
                 this.cmbPaquete.repaint();
@@ -167,7 +170,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             if (this.clientePaqueteDto.getValorTotal() > 0) {
                 this.txtTolal_pagar.setText(String.valueOf(this.clientePaqueteDto.getValorTotal()));
             }
-            
+
         } catch (ParseException ex) {
             Logger.getLogger(frmRegistrarPagos.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -212,6 +215,7 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         txtFecha_inicio = new com.toedter.calendar.JDateChooser();
+        btnGuardarAsistencia = new javax.swing.JButton();
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PAGOS", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
@@ -326,13 +330,11 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             .addGroup(panelClienteLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelClienteLayout.createSequentialGroup()
-                        .addComponent(lblDocumento_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
-                        .addContainerGap())
+                    .addComponent(lblDocumento_cliente, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelClienteLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(lblNombre_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addComponent(lblNombre_cliente, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
             .addGroup(panelClienteLayout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -377,6 +379,21 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
 
         txtFecha_inicio.setDateFormatString("yyyy-MM-dd");
         txtFecha_inicio.setPreferredSize(new java.awt.Dimension(6, 20));
+        txtFecha_inicio.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                setValidaBotonRegistrarDia(evt);
+            }
+        });
+
+        btnGuardarAsistencia.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnGuardarAsistencia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Hand-Touch-2-icon.png"))); // NOI18N
+        btnGuardarAsistencia.setText("Guardar con asistencia");
+        btnGuardarAsistencia.setEnabled(false);
+        btnGuardarAsistencia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setGuardarAsistenciaRegistroPago(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -392,11 +409,6 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtPrecio_base, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTolal_pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addComponent(lblPaquete)
                         .addGap(5, 5, 5)
                         .addComponent(cmbPaquete, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -408,7 +420,15 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFecha_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtFecha_inicio, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnGuardar)
+                            .addComponent(jLabel10))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtTolal_pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGuardarAsistencia))))
                 .addGap(30, 30, 30))
         );
         jPanel6Layout.setVerticalGroup(
@@ -438,8 +458,10 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtTolal_pagar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10))
-                        .addGap(20, 20, 20)
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGuardarAsistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(panelCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
@@ -497,6 +519,8 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
             this.clientePaqueteDto.setPaqueteId(new Long(comboPaq.getCodigo()));
             if (!Util.getVacio(comboDes.getCodigo())) {
                 this.clientePaqueteDto.setDescuentoId(new Long(comboDes.getCodigo()));
+            } else {
+                this.clientePaqueteDto.setDescuentoId(null);
             }
             if (!Util.getVacio(comboPaq.getAuxiliar()) && (comboPaq.getAuxiliar().equals(String.valueOf(ESiNo.SI.getId())))) {
                 this.clientePaqueteDto.setNumeroDiasTiquetera(Short.parseShort(this.txtDias_tiquetera.getText()));
@@ -515,9 +539,9 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
                     if (!Util.getVacio(comboPaq.getAuxiliar()) && (comboPaq.getAuxiliar().equals(String.valueOf(ESiNo.NO.getId())))) {
                         this.clientePaqueteDto.setFechaFinalizaPaquete(this.setVerificaFechaFinalizaPaquete(comboPaq, comboDes));
                     }
-                    boolean correct = this.operacion.setGuardaPagoPaqueteCliente(this.clientePaqueteDto);
+                    boolean correct = this.operacion.setGuardaPagoPaqueteCliente(this.clientePaqueteDto, this.isRegistraAsistencia());
                     if (correct) {
-                        JLabel label = new JLabel("El pago se ha realizado correctamente");
+                        JLabel label = new JLabel(this.isRegistraAsistencia() ? "El registro para el pago y asistencia del cliente se ha realizado correctamente" : "El registro para el pago se ha realizado correctamente");
                         label.setFont(new Font("consolas", Font.PLAIN, 14));
                         JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
                         if (Short.parseShort(this.tipoViene) == 1) {
@@ -738,6 +762,15 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_setCalculaValorTotalConPrecioBase
 
+    private void setGuardarAsistenciaRegistroPago(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setGuardarAsistenciaRegistroPago
+        this.setRegistraAsistencia(true);
+        this.setRegistrarPagoPlan(evt);
+    }//GEN-LAST:event_setGuardarAsistenciaRegistroPago
+
+    private void setValidaBotonRegistrarDia(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_setValidaBotonRegistrarDia
+        // TODO add your handling code here:
+    }//GEN-LAST:event_setValidaBotonRegistrarDia
+
     public ClienteDto getClienteDto() {
         return clienteDto;
     }
@@ -762,9 +795,18 @@ public class frmRegistrarPagos extends javax.swing.JInternalFrame {
         this.tipoViene = tipoViene;
     }
 
+    public boolean isRegistraAsistencia() {
+        return registraAsistencia;
+    }
+
+    public void setRegistraAsistencia(boolean registraAsistencia) {
+        this.registraAsistencia = registraAsistencia;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnGuardarAsistencia;
     private javax.swing.JComboBox cmbDescuento;
     private javax.swing.JComboBox cmbPaquete;
     private javax.swing.JLabel jLabel10;

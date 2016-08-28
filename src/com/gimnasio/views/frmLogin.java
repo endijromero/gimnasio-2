@@ -29,8 +29,8 @@ public class frmLogin extends javax.swing.JFrame {
         initComponents();
         this.operacion = new Operaciones();
         this.setLocationRelativeTo(null);
-        //this.txtUser.setText("emendoza1");
-        //this.txtPassword.setText("1234");
+        this.txtUser.setText("emendoza1");
+        this.txtPassword.setText("1234");
     }
 
     /**
@@ -164,11 +164,11 @@ public class frmLogin extends javax.swing.JFrame {
             @Override
             public void run() {
                 /*
-                    JFrame.setDefaultLookAndFeelDecorated(true);
-                    SubstanceLookAndFeel.setSkin("org.jvnet.substance.skin.AutumnSkin");
-                    SubstanceLookAndFeel.setCurrentTheme("org.jvnet.substance.theme.SubstanceCremeTheme");
-                    SubstanceLookAndFeel.setCurrentWatermark("org.jvnet.substance.watermark.SubstanceMazeWatermark");
-                */
+                 JFrame.setDefaultLookAndFeelDecorated(true);
+                 SubstanceLookAndFeel.setSkin("org.jvnet.substance.skin.AutumnSkin");
+                 SubstanceLookAndFeel.setCurrentTheme("org.jvnet.substance.theme.SubstanceCremeTheme");
+                 SubstanceLookAndFeel.setCurrentWatermark("org.jvnet.substance.watermark.SubstanceMazeWatermark");
+                 */
                 new frmLogin().setVisible(true);
             }
         });

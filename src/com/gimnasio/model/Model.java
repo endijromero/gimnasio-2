@@ -73,16 +73,21 @@ public class Model {
         return paquete;
     }
 
-    public boolean setGuardaPagoPaqueteCliente(ClientePaqueteDto clientePaqueteDto) throws SQLException {
+    /**
+     *
+     * @param clientePaqueteDto
+     * @param registraAsistencia
+     * @return
+     * @throws SQLException
+     */
+    public boolean setGuardaPagoPaqueteCliente(ClientePaqueteDto clientePaqueteDto, boolean registraAsistencia) throws SQLException {
         boolean correcto;
         try {
             String sql = "";
             if (clientePaqueteDto.getId() != null && clientePaqueteDto.getId() > 0) {
                 sql = "UPDATE  cliente_paquete  SET "
                         + "cliente_id = '" + clientePaqueteDto.getClienteId() + "', paquete_id = '" + clientePaqueteDto.getPaqueteId() + "', ";
-                if (clientePaqueteDto.getDescuentoId() != null) {
-                    sql += "descuento_id ='" + (clientePaqueteDto.getDescuentoId() == null ? "" : clientePaqueteDto.getDescuentoId()) + "', ";
-                }
+                sql += "descuento_id =" + ((clientePaqueteDto.getDescuentoId() == null || clientePaqueteDto.getDescuentoId() == 0) ? "(NULL)" : clientePaqueteDto.getDescuentoId()) + ", ";
                 sql += "numero_dias_tiquetera = '" + clientePaqueteDto.getNumeroDiasTiquetera() + "',  "
                         + "precio_base = '" + clientePaqueteDto.getPrecioBase() + "', valor_total = '" + clientePaqueteDto.getValorTotal() + "', "
                         + "estado = '" + clientePaqueteDto.getEstado() + "', fecha_inicia_paquete = '" + clientePaqueteDto.getFechaIniciaPaquete() + "', "
@@ -116,6 +121,9 @@ public class Model {
             }
             Statement stat = this.conexion.getConexion().createStatement();
             stat.execute(sql);
+            if (registraAsistencia) {
+                sql = "INSER INTO";
+            }
             stat.close();
         } catch (SQLException ex) {
             correcto = false;
