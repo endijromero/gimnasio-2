@@ -29,9 +29,25 @@ public class Operaciones {
         this.model.setConexion(this.conexion);
     }
 
+    public void setInsertarIngresoCliente(ClienteDto clienteDto) {
+        if (clienteDto.getId() > 0 && !clienteDto.getId().equals("")) {
+            
+        }
+    }
+
+    /**
+     *
+     * @param idCliente
+     * @return
+     * @throws SQLException
+     */
+    public List<ClienteIngresoDto> getClientesIngresosDia(String idCliente) throws SQLException {
+        return this.model.getClientesIngresosDia(idCliente);
+    }
+
     public List<TablaDto> getClientesIngresoTableDto() throws SQLException {
         List<TablaDto> result = new ArrayList();
-        List<ClienteIngresoDto> list = this.model.getClientesIngresosDia();
+        List<ClienteIngresoDto> list = this.model.getClientesIngresosDia(null);
         if (list.size() > 0) {
             List<String> llaves = new ArrayList();
             for (ClienteIngresoDto clienteDto : list) {
@@ -58,10 +74,10 @@ public class Operaciones {
         lista.add(new ComboDto("todos", "Todos"));
         return lista;
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public List<ComboDto> getListMeses() {
         List<ComboDto> lista = new ArrayList();
@@ -70,13 +86,13 @@ public class Operaciones {
         lista.add(new ComboDto("3", "Marzo"));
         lista.add(new ComboDto("4", "Abril"));
         lista.add(new ComboDto("5", "Mayo"));
-        lista.add(new ComboDto("6", "Junio"));    
-        lista.add(new ComboDto("7", "Julio"));    
-        lista.add(new ComboDto("8", "Agosto"));    
-        lista.add(new ComboDto("9", "Septiembre"));    
-        lista.add(new ComboDto("10", "Octubre"));    
-        lista.add(new ComboDto("11", "Noviembre"));    
-        lista.add(new ComboDto("12", "Diciembre"));  
+        lista.add(new ComboDto("6", "Junio"));
+        lista.add(new ComboDto("7", "Julio"));
+        lista.add(new ComboDto("8", "Agosto"));
+        lista.add(new ComboDto("9", "Septiembre"));
+        lista.add(new ComboDto("10", "Octubre"));
+        lista.add(new ComboDto("11", "Noviembre"));
+        lista.add(new ComboDto("12", "Diciembre"));
         return lista;
     }
 

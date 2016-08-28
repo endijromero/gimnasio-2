@@ -2,6 +2,7 @@ package com.gimnasio.model;
 
 import com.gimnasio.model.enums.EEstadoPlan;
 import com.gimnasio.util.Util;
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,13 +20,45 @@ public class Model {
     private List<Object> listPersist;
     private Conexion conexion;
 
-    public List<ClienteIngresoDto> getClientesIngresosDia() throws SQLException {
+    /**
+     *
+     * @param clienteDto
+     * @param idUsuario
+     * @return
+     * @throws SQLException
+     */
+    public boolean setInsertarIngresoCliente(ClienteDto clienteDto, BigInteger idUsuario) throws SQLException {
+        boolean correct = false;
+        try {
+            Statement stat = this.conexion.getConexion().createStatement();
+            stat.execute("INSERT INTO cliente_ingresos ( cliente_paquete_id, cliente_id, fecha_ingreso, usuario_id )  VALUES ( '" + clienteDto.getClientePaqueteDto().getId() + "', '" + clienteDto.getId() + "', NOW(), '" + idUsuario + "' )");
+            stat.close();
+        } catch (SQLException ex) {
+            this.conexion.rollback();
+            throw ex;
+        } finally {
+            correct = true;
+            this.conexion.commit();
+        }
+        return correct;
+    }
+
+    /**
+     *
+     * @param idCliente
+     * @return
+     * @throws SQLException
+     */
+    public List<ClienteIngresoDto> getClientesIngresosDia(String idCliente) throws SQLException {
         List<ClienteIngresoDto> listIngresos = new ArrayList();
         try {
             Statement stat;
             ClienteIngresoDto clienteDto;
             stat = this.conexion.getConexion().createStatement();
-            String sql = "SELECT * FROM cliente_ingresos WHERE DATE_FORMAT(fecha_ingreso, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d'); ";
+            String sql = "SELECT * FROM cliente_ingresos WHERE DATE_FORMAT(fecha_ingreso, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d') ";
+            if (!Util.getVacio(idCliente)) {
+                sql += " AND cliente_id = " + idCliente;
+            }
             ResultSet res = stat.executeQuery(sql);
             while (res.next()) {
                 clienteDto = new ClienteIngresoDto();
@@ -105,7 +138,7 @@ public class Model {
      * @throws SQLException
      */
     public boolean setGuardaPagoPaqueteCliente(ClientePaqueteDto clientePaqueteDto, boolean registraAsistencia) throws SQLException {
-        boolean correcto;
+        boolean correct;
         try {
             String sql = "";
             if (clientePaqueteDto.getId() != null && clientePaqueteDto.getId() > 0) {
@@ -145,19 +178,16 @@ public class Model {
             }
             Statement stat = this.conexion.getConexion().createStatement();
             stat.execute(sql);
-            if (registraAsistencia) {
-                sql = "INSER INTO";
-            }
             stat.close();
         } catch (SQLException ex) {
-            correcto = false;
+            correct = false;
             this.conexion.rollback();
             throw ex;
         } finally {
-            correcto = true;
+            correct = true;
             this.conexion.commit();
         }
-        return correcto;
+        return correct;
     }
 
     /**
@@ -168,7 +198,7 @@ public class Model {
      */
     public boolean getSaveFisioterapia(FisioterapiaDto fisioterapia) throws SQLException {
         PreparedStatement stat;
-        boolean correcto;
+        boolean correct;
         try {
             stat = this.conexion.getConexion().prepareStatement("UPDATE clientes SET peso = ?, talla =?, muslo_ant =?, triceps =?, pectoral =?, siliaco =?, abdomen =?, test_mmss =?, test_mmii =?, test_uno=?, test_dos =?, test_tres =?, frecuencia_cardiaca = ? , tension_arterial = ?, peak_air = ?, observaciones =? WHERE id =? ");
             stat.setDouble(1, fisioterapia.getPeso());
@@ -191,14 +221,14 @@ public class Model {
             stat.execute();
             stat.close();
         } catch (SQLException ex) {
-            correcto = false;
+            correct = false;
             this.conexion.rollback();
             throw ex;
         } finally {
-            correcto = true;
+            correct = true;
             this.conexion.commit();
         }
-        return correcto;
+        return correct;
     }
 
     /**
@@ -344,7 +374,7 @@ public class Model {
      * @throws SQLException
      */
     public boolean setGuardarCafeteria(int idProducto, long idUsuario, String cantidad, String valor_total, Date fecha) throws SQLException {
-        boolean correcto = false;
+        boolean correct = false;
         try {
             PreparedStatement stat;
             stat = this.conexion.getConexion().prepareStatement("INSERT INTO producto_ventas (productos_id, cantidad, valor_total, fecha_registro, usuario_id) VALUES (?,?,?,?,?)");
@@ -353,17 +383,17 @@ public class Model {
             stat.setDouble(3, Double.valueOf(valor_total));
             stat.setTimestamp(4, new java.sql.Timestamp(fecha.getTime()));
             stat.setInt(5, (int) idUsuario);
-            correcto = stat.execute();
+            correct = stat.execute();
             stat.close();
         } catch (SQLException ex) {
-            correcto = false;
+            correct = false;
             this.conexion.rollback();
             throw ex;
         } finally {
-            correcto = true;
+            correct = true;
             this.conexion.commit();
         }
-        return correcto;
+        return correct;
     }
 
     /**
@@ -534,7 +564,7 @@ public class Model {
     public void setGuardarCliente(ClienteDto clienteDto) throws SQLException {
         PreparedStatement stat;
         ResultSet res;
-        boolean correcto = false;
+        boolean correct = false;
         try {
             if (clienteDto.getId() != null && !Util.getVacio(String.valueOf(clienteDto.getId()))) {
                 stat = this.conexion.getConexion().prepareStatement("UPDATE personas SET primer_nombre = ?, segundo_nombre = ?, "
@@ -562,7 +592,7 @@ public class Model {
                 stat.setBytes(14, clienteDto.getPersonaDto().getHuellaDactilar());
                 stat.setString(15, clienteDto.getPersonaDto().getFotoPerfil());
                 stat.setLong(16, clienteDto.getPersonaDto().getId());
-                correcto = stat.executeUpdate() > 0;
+                correct = stat.executeUpdate() > 0;
             } else {
                 stat = this.conexion.getConexion().prepareStatement("INSERT INTO personas (primer_nombre, segundo_nombre, "
                         + "primer_apellido, segundo_apellido, "
@@ -591,12 +621,12 @@ public class Model {
                 if (stat.executeUpdate() > 0) {
                     res = stat.getGeneratedKeys();
                     if (res.next()) {
-                        correcto = true;
+                        correct = true;
                         clienteDto.getPersonaDto().setId(res.getLong(1));
                     }
                 }
             }
-            if (correcto) {
+            if (correct) {
                 if (clienteDto.getId() != null && !Util.getVacio(String.valueOf(clienteDto.getId()))) {
                     stat = this.conexion.getConexion().prepareStatement("UPDATE  clientes SET persona_id = ? WHERE id = ?");
                     stat.setLong(1, clienteDto.getPersonaDto().getId());
@@ -608,7 +638,7 @@ public class Model {
                     if (stat.executeUpdate() > 0) {
                         res = stat.getGeneratedKeys();
                         if (res.next()) {
-                            correcto = true;
+                            correct = true;
                             clienteDto.setId(res.getLong(1));
                         }
                     }
@@ -627,7 +657,7 @@ public class Model {
     }
 
     public boolean setGuardarPaquete(PaqueteDto paquete) throws SQLException {
-        boolean correcto = false;
+        boolean correct = false;
         try {
             PreparedStatement stat;
             if (paquete.getId() > 0) {
@@ -641,17 +671,17 @@ public class Model {
             stat.setDouble(3, paquete.getPrecioBase());
             stat.setShort(4, paquete.getYnTiquetera());
             stat.setShort(5, paquete.getDiasAplazamiento());
-            correcto = stat.execute();
+            correct = stat.execute();
             stat.close();
         } catch (SQLException ex) {
-            correcto = false;
+            correct = false;
             this.conexion.rollback();
             throw ex;
         } finally {
-            correcto = true;
+            correct = true;
             this.conexion.commit();
         }
-        return correcto;
+        return correct;
     }
 
     public List<UsuarioDto> getUsuariosDatos(String loggin) throws SQLException {

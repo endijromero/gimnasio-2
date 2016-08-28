@@ -44,8 +44,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 import javazoom.jl.player.Player;
 
 /**
@@ -57,13 +59,15 @@ public class frmHuella extends javax.swing.JDialog {
     private DPFPVerification Verificador = DPFPGlobal.getVerificationFactory().createVerification();
     private DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
     private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
+
     private static String TEMPLATE_PROPERTY = "template";
     private DPFPFeatureSet featuresverificacion;
     private DPFPFeatureSet featuresinscripcion;
     private List<DPFPTemplate> listTemplates;
 
-    private List<List<ClienteDto>> listClientes;
     private List<ClienteDto> listClientesHuellas;
+    private List<List<ClienteDto>> listClientes;
+
     private DPFPTemplate template;
     private Operaciones operacion;
 
@@ -74,16 +78,19 @@ public class frmHuella extends javax.swing.JDialog {
     private FileInputStream registrado;
     private Player playRegistrado;
 
-    private List<HiloBusqueda> listaHilos;
+    private List<HiloBusqueda> listHilos;
     private boolean cambia = false;
     private UsuarioDto usuarioDto;
     private ClienteDto clienteDto;
     private int cantidadHuellas;
     private short tipoProceso;
+    private frmClientesIngresos frmClienteIngreso;
     private frmClientes frmCliente;
 
     private String rutaHuellas = "huellas/";
     private String extension = ".fpt";
+
+    private UsuarioDto usuarioSessionDto;
 
     public frmHuella(Operaciones operacion, javax.swing.JFrame parent, boolean modal, ClienteDto cliDto, short tipoProceso, frmClientes frmCliente) {
         super(parent, modal);
@@ -129,6 +136,59 @@ public class frmHuella extends javax.swing.JDialog {
             }
             break;
             case 2: {
+                this.lblEstudiante.setText(null);
+                this.btnGuardar.setVisible(false);
+            }
+            break;
+            default: {
+                this.lblEstudiante.setText(null);
+                this.btnGuardar.setVisible(false);
+                this.btnCancelar.setText("Cerrar");
+            }
+            break;
+        }
+    }
+
+    public frmHuella(Operaciones operacion, javax.swing.JFrame parent, boolean modal, short tipoProceso, frmClientesIngresos frmClienteIngreso) {
+        super(parent, modal);
+        initComponents();
+        this.cambia = false;
+
+        this.operacion = operacion;
+        this.tipoProceso = tipoProceso;
+        this.clienteDto = new ClienteDto();
+        try {
+            this.listTemplates = new ArrayList();
+            this.listClientesHuellas = this.operacion.getClienteDatos(null);
+            for (ClienteDto dto : this.listClientesHuellas) {
+                if (dto.getPersonaDto().getHuellaDactilar() != null) {
+                    DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate();
+                    referenceTemplate.deserialize(dto.getPersonaDto().getHuellaDactilar());
+                    dto.getPersonaDto().setTemplateHuella(referenceTemplate);
+                }
+            }
+            if (this.listClientesHuellas.size() > 0) {
+                this.listClientes = (List<List<ClienteDto>>) Util.getDivideArray(this.listClientesHuellas, Util.CANTIDAD_DIVIDE_ARRAY);
+            }
+        } catch (SQLException | IllegalArgumentException e) {
+            System.err.println(e.getMessage());
+        }
+        this.frmClienteIngreso = frmClienteIngreso;
+        this.cantidadHuellas = 0;
+        Util.setCentrarJFrame(null, this);
+        this.setResizable(false);
+        this.lblIndiceDerecho.setText(null);
+        if (this.clienteDto.getId() != null) {
+            this.lblCodigo.setText(this.clienteDto.getId().toString());
+        }
+        this.lblEstudiante.setText(this.clienteDto.getPersonaDto().getNombreCompleto());
+        switch (tipoProceso) {
+            case 1: {
+                this.btnGuardar.setEnabled(false);
+            }
+            break;
+            case 2: {
+                this.lblCodigo.setText(null);
                 this.lblEstudiante.setText(null);
                 this.btnGuardar.setVisible(false);
             }
@@ -259,9 +319,10 @@ public class frmHuella extends javax.swing.JDialog {
     }
 
     public void setProcesarCaptura(DPFPSample sample) {
-        this.listaHilos = null;
-        boolean conErrores = false;
-        this.listaHilos = null;
+        boolean sinErrores = true;
+        this.listHilos = null;
+        this.listHilos = null;
+
         featuresinscripcion = setExtraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_ENROLLMENT);
         featuresverificacion = setExtraerCaracteristicas(sample, DPFPDataPurpose.DATA_PURPOSE_VERIFICATION);
         if (featuresinscripcion != null) {
@@ -279,7 +340,7 @@ public class frmHuella extends javax.swing.JDialog {
                 this.Reclutador.clear();
                 stop();
                 this.btnCancelar.setEnabled(true);
-                conErrores = true;
+                sinErrores = false;
                 System.err.println("Error: " + ex.getMessage());
             } finally {
                 this.cantidadHuellas++;
@@ -299,22 +360,63 @@ public class frmHuella extends javax.swing.JDialog {
                 }
             }
         }
-        if (this.tipoProceso == 2) {
-            // this.setBuscarEstudiante(sample);
-        } else if (this.tipoProceso == 3) {
-            if (!conErrores) {
-                // this.setRegistraInasistencia();
+
+        switch (this.tipoProceso) {
+            case 1: {
+                if (this.cantidadHuellas == 4) {
+                    setEnviarTexto("Huella capturada, clic en Asignar");
+                    JLabel label = new JLabel("Huella capturada, clic en Asignar");
+                    label.setFont(new Font("consolas", Font.PLAIN, 14));
+                    JOptionPane.showMessageDialog(this, label, "Mensaje de alerta", JOptionPane.INFORMATION_MESSAGE);
+                    this.btnGuardar.setEnabled(true);
+                }
             }
-        } else if (this.tipoProceso == 4) {
-            // this.setRegistrarSalida();
-        } else if (this.cantidadHuellas == 4) {
-            setEnviarTexto("Huella capturada, clic en Asignar");
-            JLabel label = new JLabel("Huella capturada, clic en Asignar");
-            label.setFont(new Font("consolas", Font.PLAIN, 14));
-            JOptionPane.showMessageDialog(this, label, "Mensaje de alerta", JOptionPane.INFORMATION_MESSAGE);
-            this.btnGuardar.setEnabled(true);
+            break;
+            case 2: {
+                if (sinErrores) {
+                    this.setIdentifyCliente();
+                }
+            }
+            break;
         }
         System.gc();
+    }
+
+    public void setIdentifyCliente() {
+        try {
+            try {
+                stop();
+                this.cambia = false;
+                this.listHilos = new ArrayList();
+                this.btnCancelar.setEnabled(false);
+
+                System.out.println("Cantidad Lista: " + this.listClientes.size());
+                for (List<ClienteDto> lis : this.listClientes) {
+                    HiloBusqueda h = new HiloBusqueda(this, this.operacion, this.frmClienteIngreso);
+                    h.setFeaturesverificacion(featuresverificacion);
+                    h.setUsuarioSessionDto(usuarioSessionDto);
+                    h.setLblEstudiante(this.lblEstudiante);
+                    h.setLblCodigo(this.lblCodigo);
+                    h.setListHilos(this.listHilos);
+                    h.setIngresaAsistencia(true);
+                    h.setListPlantillas(lis);
+                    this.listHilos.add(h);
+                }
+                for (HiloBusqueda h : this.listHilos) {
+                    h.start();
+                }
+            } catch (Exception e) {
+                this.btnCancelar.setEnabled(true);
+                System.err.println("Error al verificar los datos de la huella.");
+            } finally {
+                Reclutador.clear();
+                stop();
+            }
+        } catch (Exception ex) {
+            this.btnCancelar.setEnabled(true);
+            System.err.println(ex.getMessage() + "error al registrar");
+            Logger.getLogger(frmHuella.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public DPFPTemplate getTemplate() {
@@ -484,10 +586,13 @@ public class frmHuella extends javax.swing.JDialog {
                 stream.write(this.template.serialize());
                 stream.close();
                 this.clienteDto.getPersonaDto().setHuellaDactilar(this.template.serialize());
+
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(frmHuella.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(frmHuella.class
+                        .getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                Logger.getLogger(frmHuella.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(frmHuella.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         }
         Reclutador.clear();
@@ -502,6 +607,63 @@ public class frmHuella extends javax.swing.JDialog {
         stop();
 
     }//GEN-LAST:event_setAsignarHuella
+
+    public Operaciones getOperacion() {
+        return operacion;
+    }
+
+    public void setOperacion(Operaciones operacion) {
+        this.operacion = operacion;
+    }
+
+    public UsuarioDto getUsuarioDto() {
+        return usuarioDto;
+    }
+
+    public void setUsuarioDto(UsuarioDto usuarioDto) {
+        this.usuarioDto = usuarioDto;
+    }
+
+    public short getTipoProceso() {
+        return tipoProceso;
+    }
+
+    public void setTipoProceso(short tipoProceso) {
+        this.tipoProceso = tipoProceso;
+    }
+
+    public UsuarioDto getUsuarioSessionDto() {
+        return usuarioSessionDto;
+    }
+
+    public void setUsuarioSessionDto(UsuarioDto usuarioSessionDto) {
+        this.usuarioSessionDto = usuarioSessionDto;
+    }
+
+    public JTextArea getTxtVisor() {
+        return txtVisor;
+    }
+
+    public void setTxtVisor(JTextArea txtVisor) {
+        this.txtVisor = txtVisor;
+    }
+
+    public JButton getBtnCancelar() {
+        return btnCancelar;
+    }
+
+    public void setBtnCancelar(JButton btnCancelar) {
+        this.btnCancelar = btnCancelar;
+    }
+
+    public JButton getBtnGuardar() {
+        return btnGuardar;
+    }
+
+    public void setBtnGuardar(JButton btnGuardar) {
+        this.btnGuardar = btnGuardar;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

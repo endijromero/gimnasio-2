@@ -48,16 +48,15 @@ public class frmPrincipal extends javax.swing.JFrame {
         Util.setCentrarJFrame(this, null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Util.setFuncionesJFrame(this, false);
-
-        this.paqueteView = null;
-        this.descuentoView = null;
-        this.productoView = null;
-        this.buscarClienteView = null;
-        this.clienteView = null;
-        this.pagosView = null;
         this.registrarPagosView = null;
+        this.buscarClienteView = null;
         this.fisitorepiaView = null;
         this.cumpleanosView = null;
+        this.descuentoView = null;
+        this.productoView = null;
+        this.paqueteView = null;
+        this.clienteView = null;
+        this.pagosView = null;
     }
 
     /**
@@ -199,8 +198,8 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Hand-Touch-2-icon.png"))); // NOI18N
         jMenu4.setText("Registro");
-        jMenu4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jMenu4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 setRegistrarClienteIngresos(evt);
             }
         });
@@ -440,11 +439,6 @@ public class frmPrincipal extends javax.swing.JFrame {
         Util.generarReportes(ruta, params);
     }//GEN-LAST:event_menuCierre_cajaActionPerformed
 
-    private void setRegistrarClienteIngresos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRegistrarClienteIngresos
-        this.clientesIngresosView = new frmClientesIngresos(this, operacion);
-        this.clientesIngresosView.setVisible(true);
-    }//GEN-LAST:event_setRegistrarClienteIngresos
-
     /**
      *
      */
@@ -470,6 +464,16 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.cumpleanosView.setClosable(true);
         this.cumpleanosView.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void setRegistrarClienteIngresos(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setRegistrarClienteIngresos
+        this.clientesIngresosView = new frmClientesIngresos(this, operacion);
+        frmPrincipal.jdstPrincipal.add(this.clientesIngresosView);
+        this.clientesIngresosView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+        this.clientesIngresosView.setUsuarioSessionDto(usuarioSessionDto);
+        this.clientesIngresosView.setResizable(true);
+        this.clientesIngresosView.setClosable(true);
+        this.clientesIngresosView.setVisible(true);
+    }//GEN-LAST:event_setRegistrarClienteIngresos
 
     /**
      * @param args the command line arguments
@@ -609,7 +613,6 @@ public class frmPrincipal extends javax.swing.JFrame {
     public void setOperacion(Operaciones operacion) {
         this.operacion = operacion;
     }
-    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
