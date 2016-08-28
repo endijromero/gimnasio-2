@@ -708,14 +708,14 @@ public class frmClientes extends javax.swing.JInternalFrame {
             List<String> listMessage = this.operacion.setGuardarCliente(this.clienteDto, true);
             if (listMessage.size() < 1 && (this.clienteDto.getId() != null && this.clienteDto.getId() > 0)) {
                 try {
-                    frmPrincipal.frmRegistrarPagos = new frmRegistrarPagos(this, operacion, clienteDto);
-                    frmPrincipal.frmRegistrarPagos.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-                    frmPrincipal.jdstPrincipal.add(frmPrincipal.frmRegistrarPagos);
-                    frmPrincipal.frmRegistrarPagos.setTipoViene("1");
-                    frmPrincipal.frmRegistrarPagos.setUsuarioSessionDto(usuarioSessionDto);
-                    frmPrincipal.frmRegistrarPagos.setResizable(true);
-                    frmPrincipal.frmRegistrarPagos.setClosable(true);
-                    frmPrincipal.frmRegistrarPagos.setVisible(true);
+                    frmRegistrarPagos frmPago = new frmRegistrarPagos(this, operacion, clienteDto);
+                    frmPago.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                    frmPrincipal.jdstPrincipal.add(frmPago);
+                    frmPago.setTipoViene("1");
+                    frmPago.setUsuarioSessionDto(usuarioSessionDto);
+                    frmPago.setResizable(true);
+                    frmPago.setClosable(true);
+                    frmPago.setVisible(true);
                 } catch (Exception ex) {
                     JLabel label = new JLabel("Se ha presentado un error para registrar el pago del paquete, intente nuevamente");
                     label.setFont(new Font("consolas", Font.PLAIN, 14));

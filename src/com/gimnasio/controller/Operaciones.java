@@ -29,6 +29,20 @@ public class Operaciones {
         this.model.setConexion(this.conexion);
     }
 
+    public List<TablaDto> getClientesIngresoTableDto() throws SQLException {
+        List<TablaDto> result = new ArrayList();
+        List<ClienteIngresoDto> list = this.model.getClientesIngresosDia();
+        if (list.size() > 0) {
+            List<String> llaves = new ArrayList();
+            for (ClienteIngresoDto clienteDto : list) {
+                llaves.add(clienteDto.getId().toString());
+            }
+            return this.getClientesDatosTablaDto(llaves);
+        }
+
+        return result;
+    }
+
     /**
      *
      * @return List
@@ -196,10 +210,17 @@ public class Operaciones {
      * @throws SQLException
      */
     public FisioterapiaDto getFisioterapiaDto(String documento) throws SQLException {
-        //"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"
-        FisioterapiaDto fisioterapia;
-        fisioterapia = this.model.getFisioterapiaDto(documento);
-        return fisioterapia;
+        return this.model.getFisioterapiaDto(documento);
+    }
+
+    /**
+     *
+     * @param llaves
+     * @return
+     * @throws SQLException
+     */
+    public List<TablaDto> getClientesDatosTablaDto(List<String> llaves) throws SQLException {
+        return this.getClientesDatosTablaDto(null, null, null, null, llaves);
     }
 
     /**
@@ -211,7 +232,7 @@ public class Operaciones {
      * @throws SQLException
      */
     public List<TablaDto> getClientesDatosTablaDto(String nombres, String apellidos, String documento) throws SQLException {
-        return this.getClientesDatosTablaDto(nombres, apellidos, documento, null);
+        return this.getClientesDatosTablaDto(nombres, apellidos, documento, null, null);
     }
 
     /**
@@ -224,6 +245,20 @@ public class Operaciones {
      * @throws SQLException
      */
     public List<TablaDto> getClientesDatosTablaDto(String nombres, String apellidos, String documento, String limite) throws SQLException {
+        return this.getClientesDatosTablaDto(nombres, apellidos, documento, limite, null);
+    }
+
+    /**
+     *
+     * @param nombres
+     * @param apellidos
+     * @param documento
+     * @param limite
+     * @param llaves
+     * @return
+     * @throws SQLException
+     */
+    public List<TablaDto> getClientesDatosTablaDto(String nombres, String apellidos, String documento, String limite, List<String> llaves) throws SQLException {
         List<TablaDto> listTable = new ArrayList();
         //"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"
         List<ClienteDto> listClientes = this.model.getDatosClientes(nombres, apellidos, documento, limite);

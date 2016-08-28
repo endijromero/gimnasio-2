@@ -334,13 +334,14 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
             switch (Short.parseShort(this.tipo)) {
                 case 1: {
                     try {
-                        frmPrincipal.frmCliente = new frmClientes(this.padre, operacion, documento);
-                        frmPrincipal.jdstPrincipal.add(frmPrincipal.frmCliente);
-                        frmPrincipal.frmCliente.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-                        frmPrincipal.frmCliente.setUsuarioSessionDto(usuarioSessionDto);
-                        frmPrincipal.frmCliente.setResizable(true);
-                        frmPrincipal.frmCliente.setClosable(true);
-                        frmPrincipal.frmCliente.setVisible(true);
+                        frmClientes frmCliente = new frmClientes(this.padre, operacion, documento);
+                        frmCliente.setUsuarioSessionDto(usuarioSessionDto);
+                        frmCliente.setResizable(true);
+                        frmCliente.setClosable(true);
+                        frmCliente.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                        frmPrincipal.jdstPrincipal.add(frmCliente);
+                        frmCliente.setVisible(true);
+
                     } catch (Exception ex) {
                         JLabel label = new JLabel("Se ha presentado un error, intente nuevamente");
                         label.setFont(new Font("consolas", Font.PLAIN, 14));
@@ -350,12 +351,14 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
                 }
                 break;
                 case 2: {
-                    frmPrincipal.fisitorepiaView = new frmFisioterapia(this.operacion, documento);
-                    frmPrincipal.jdstPrincipal.add(frmPrincipal.fisitorepiaView);
-                    frmPrincipal.fisitorepiaView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-                    frmPrincipal.fisitorepiaView.setResizable(true);
-                    frmPrincipal.fisitorepiaView.setClosable(true);
-                    frmPrincipal.fisitorepiaView.setVisible(true);
+                    /*
+                     frmPrincipal.fisitorepiaView = new frmFisioterapia(this.operacion, documento);
+                     frmPrincipal.jdstPrincipal.add(frmPrincipal.fisitorepiaView);
+                     frmPrincipal.fisitorepiaView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                     frmPrincipal.fisitorepiaView.setResizable(true);
+                     frmPrincipal.fisitorepiaView.setClosable(true);
+                     frmPrincipal.fisitorepiaView.setVisible(true);
+                     */
                 }
                 break;
                 case 3: {

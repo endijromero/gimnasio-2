@@ -19,8 +19,32 @@ public class Model {
     private List<Object> listPersist;
     private Conexion conexion;
 
-    public Model() {
+    public List<ClienteIngresoDto> getClientesIngresosDia() throws SQLException {
+        List<ClienteIngresoDto> listIngresos = new ArrayList();
+        try {
+            Statement stat;
+            ClienteIngresoDto clienteDto;
+            stat = this.conexion.getConexion().createStatement();
+            String sql = "SELECT * FROM cliente_ingresos WHERE DATE_FORMAT(fecha_ingreso, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d'); ";
+            ResultSet res = stat.executeQuery(sql);
+            while (res.next()) {
+                clienteDto = new ClienteIngresoDto();
+                clienteDto.setId(res.getLong("id"));
+                clienteDto.setClientePaqueteId(res.getLong("cliente_paquete_id"));
+                clienteDto.setClienteId(res.getLong("cliente_id"));
+                clienteDto.setFechaIngreso(res.getString("fecha_ingreso"));
+                clienteDto.setUsuarioId(res.getLong("usuario_id"));
+                listIngresos.add(clienteDto);
+            }
+            stat.close();
+        } catch (SQLException e) {
+            this.conexion.rollback();
+            throw e;
+        } finally {
+            this.conexion.commit();
 
+        }
+        return listIngresos;
     }
 
     /**

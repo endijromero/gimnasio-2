@@ -27,25 +27,20 @@ import javax.swing.JOptionPane;
  */
 public class frmPrincipal extends javax.swing.JFrame {
 
-    static frmRegistrarPagos frmRegistrarPagos;
-    static frmClientes frmCliente;
-    static frmFisioterapia fisitorepiaView;
+    private frmClientesIngresos clientesIngresosView;
+    private frmRegistrarPagos registrarPagosView;
+    private frmBuscarCliente buscarClienteView;
+    private frmFisioterapia fisitorepiaView;
+    private frmDescuentos descuentoView;
+    private frmCafeteria cafeteriaView;
+    private frmProductos productoView;
+    private frmPaquetes paqueteView;
+    private frmClientes clienteView;
+    private frmPagos pagosView;
 
     private UsuarioDto usuarioSessionDto;
-    private frmPaquetes paqueteView;
-    private frmDescuentos descuentoView;
-    private frmProductos productoView;
-    private frmBuscarCliente buscarClienteView;
-    private frmPagos pagosView;
-    private frmCafeteria cafeteriaView;
-    private frmRegistrarPagos registrarPagosView;
-    private frmClientes clienteView;
-
     private Operaciones operacion;
 
-    /**
-     * Creates new form frmPrincipal
-     */
     public frmPrincipal() {
         initComponents();
         this.setSize(1250, 700);
@@ -60,7 +55,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.clienteView = null;
         this.pagosView = null;
         this.registrarPagosView = null;
-        frmPrincipal.fisitorepiaView = null;
+        this.fisitorepiaView = null;
     }
 
     /**
@@ -200,6 +195,11 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Hand-Touch-2-icon.png"))); // NOI18N
         jMenu4.setText("Registro");
+        jMenu4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setRegistrarClienteIngresos(evt);
+            }
+        });
         jMenuBar1.add(jMenu4);
 
         jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/medical-suitecase-icon.png"))); // NOI18N
@@ -408,18 +408,21 @@ public class frmPrincipal extends javax.swing.JFrame {
         Calendar today = new GregorianCalendar();
         Date currentDate = new Date();
         today.setTime(currentDate);
-        
-        String fecha_inicio = String.valueOf(today.get(Calendar.YEAR))+"-"+String.valueOf(today.get(Calendar.MONTH)+1)+"-"+String.valueOf(today.get(Calendar.DAY_OF_MONTH))+" "+"00:00:00";
-        String fecha_fin = String.valueOf(today.get(Calendar.YEAR))+"-"+String.valueOf(today.get(Calendar.MONTH)+1)+"-"+String.valueOf(today.get(Calendar.DAY_OF_MONTH))+" "+"23:59:59";
-        
+
+        String fecha_inicio = String.valueOf(today.get(Calendar.YEAR)) + "-" + String.valueOf(today.get(Calendar.MONTH) + 1) + "-" + String.valueOf(today.get(Calendar.DAY_OF_MONTH)) + " " + "00:00:00";
+        String fecha_fin = String.valueOf(today.get(Calendar.YEAR)) + "-" + String.valueOf(today.get(Calendar.MONTH) + 1) + "-" + String.valueOf(today.get(Calendar.DAY_OF_MONTH)) + " " + "23:59:59";
+
         params.put("FECHA_INICIO", fecha_inicio);
         params.put("FECHA_FIN", fecha_fin);
-        
+
         Util.generarReportes(ruta, params);
     }//GEN-LAST:event_menuCierre_cajaActionPerformed
 
-    
-    
+    private void setRegistrarClienteIngresos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setRegistrarClienteIngresos
+        this.clientesIngresosView = new frmClientesIngresos(this, operacion);
+        this.clientesIngresosView.setVisible(true);
+    }//GEN-LAST:event_setRegistrarClienteIngresos
+
     /**
      * @param args the command line arguments
      */
