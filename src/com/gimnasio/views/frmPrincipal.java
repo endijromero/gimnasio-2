@@ -30,6 +30,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmClientesIngresos clientesIngresosView;
     private frmRegistrarPagos registrarPagosView;
     private frmBuscarCliente buscarClienteView;
+    private frmReporteCumpleanos cumpleanosView;
     private frmFisioterapia fisitorepiaView;
     private frmDescuentos descuentoView;
     private frmCafeteria cafeteriaView;
@@ -37,7 +38,6 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmPaquetes paqueteView;
     private frmClientes clienteView;
     private frmPagos pagosView;
-    private frmReporteCumpleanos cumpleanosView;
 
     private UsuarioDto usuarioSessionDto;
     private Operaciones operacion;
@@ -446,19 +446,19 @@ public class frmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_setRegistrarClienteIngresos
 
     /**
-     * 
+     *
      */
     private void menuClientes_activosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuClientes_activosActionPerformed
         // TODO add your handling code here:
         String ruta = "clientes_activos.jrxml";
-        Map params = new HashMap<>();        
+        Map params = new HashMap<>();
         Util.generarReportes(ruta, params);
 
     }//GEN-LAST:event_menuClientes_activosActionPerformed
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
@@ -506,52 +506,20 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
     }
 
-    public UsuarioDto getUsuarioSessionDto() {
-        return usuarioSessionDto;
+    public frmClientesIngresos getClientesIngresosView() {
+        return clientesIngresosView;
     }
 
-    public void setUsuarioSessionDto(UsuarioDto usuarioSessionDto) {
-        this.usuarioSessionDto = usuarioSessionDto;
+    public void setClientesIngresosView(frmClientesIngresos clientesIngresosView) {
+        this.clientesIngresosView = clientesIngresosView;
     }
 
-    public frmDescuentos getDescuentoView() {
-        return descuentoView;
-    }
-
-    public void setDescuentoView(frmDescuentos descuentoView) {
-        this.descuentoView = descuentoView;
-    }
-
-    public frmPaquetes getPaqueteView() {
-        return paqueteView;
-    }
-
-    public void setPaqueteView(frmPaquetes paqueteView) {
-        this.paqueteView = paqueteView;
-    }
-
-    public frmProductos getProductoView() {
-        return productoView;
-    }
-
-    public void setProductoView(frmProductos productoView) {
-        this.productoView = productoView;
-    }
-
-    public frmRegistrarPagos getPagosView() {
+    public frmRegistrarPagos getRegistrarPagosView() {
         return registrarPagosView;
     }
 
-    public void setPagosView(frmRegistrarPagos registrarPagosView) {
+    public void setRegistrarPagosView(frmRegistrarPagos registrarPagosView) {
         this.registrarPagosView = registrarPagosView;
-    }
-
-    public frmClientes getClienteView() {
-        return clienteView;
-    }
-
-    public void setClienteView(frmClientes clienteView) {
-        this.clienteView = clienteView;
     }
 
     public frmBuscarCliente getBuscarClienteView() {
@@ -562,6 +530,78 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.buscarClienteView = buscarClienteView;
     }
 
+    public frmReporteCumpleanos getCumpleanosView() {
+        return cumpleanosView;
+    }
+
+    public void setCumpleanosView(frmReporteCumpleanos cumpleanosView) {
+        this.cumpleanosView = cumpleanosView;
+    }
+
+    public frmFisioterapia getFisitorepiaView() {
+        return fisitorepiaView;
+    }
+
+    public void setFisitorepiaView(frmFisioterapia fisitorepiaView) {
+        this.fisitorepiaView = fisitorepiaView;
+    }
+
+    public frmDescuentos getDescuentoView() {
+        return descuentoView;
+    }
+
+    public void setDescuentoView(frmDescuentos descuentoView) {
+        this.descuentoView = descuentoView;
+    }
+
+    public frmCafeteria getCafeteriaView() {
+        return cafeteriaView;
+    }
+
+    public void setCafeteriaView(frmCafeteria cafeteriaView) {
+        this.cafeteriaView = cafeteriaView;
+    }
+
+    public frmProductos getProductoView() {
+        return productoView;
+    }
+
+    public void setProductoView(frmProductos productoView) {
+        this.productoView = productoView;
+    }
+
+    public frmPaquetes getPaqueteView() {
+        return paqueteView;
+    }
+
+    public void setPaqueteView(frmPaquetes paqueteView) {
+        this.paqueteView = paqueteView;
+    }
+
+    public frmClientes getClienteView() {
+        return clienteView;
+    }
+
+    public void setClienteView(frmClientes clienteView) {
+        this.clienteView = clienteView;
+    }
+
+    public frmPagos getPagosView() {
+        return pagosView;
+    }
+
+    public void setPagosView(frmPagos pagosView) {
+        this.pagosView = pagosView;
+    }
+
+    public UsuarioDto getUsuarioSessionDto() {
+        return usuarioSessionDto;
+    }
+
+    public void setUsuarioSessionDto(UsuarioDto usuarioSessionDto) {
+        this.usuarioSessionDto = usuarioSessionDto;
+    }
+
     public Operaciones getOperacion() {
         return operacion;
     }
@@ -569,6 +609,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     public void setOperacion(Operaciones operacion) {
         this.operacion = operacion;
     }
+    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
