@@ -37,6 +37,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmPaquetes paqueteView;
     private frmClientes clienteView;
     private frmPagos pagosView;
+    private frmReporteCumpleanos cumpleanosView;
 
     private UsuarioDto usuarioSessionDto;
     private Operaciones operacion;
@@ -56,6 +57,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.pagosView = null;
         this.registrarPagosView = null;
         this.fisitorepiaView = null;
+        this.cumpleanosView = null;
     }
 
     /**
@@ -83,9 +85,10 @@ public class frmPrincipal extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        menuCumpleanos = new javax.swing.JMenu();
         menuCierre_caja = new javax.swing.JMenuItem();
         menuClientes_activos = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -217,8 +220,8 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu5);
 
-        jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/file-powerpoint-icon.png"))); // NOI18N
-        jMenu2.setText("Reportes");
+        menuCumpleanos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/file-powerpoint-icon.png"))); // NOI18N
+        menuCumpleanos.setText("Reportes");
 
         menuCierre_caja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/cash-register-icon.png"))); // NOI18N
         menuCierre_caja.setText("Cierre de Caja");
@@ -227,7 +230,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                 menuCierre_cajaActionPerformed(evt);
             }
         });
-        jMenu2.add(menuCierre_caja);
+        menuCumpleanos.add(menuCierre_caja);
 
         menuClientes_activos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/User-green-icon.png"))); // NOI18N
         menuClientes_activos.setText("Clientes Activos");
@@ -236,9 +239,18 @@ public class frmPrincipal extends javax.swing.JFrame {
                 menuClientes_activosActionPerformed(evt);
             }
         });
-        jMenu2.add(menuClientes_activos);
+        menuCumpleanos.add(menuClientes_activos);
 
-        jMenuBar1.add(jMenu2);
+        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Present-icon.png"))); // NOI18N
+        jMenuItem3.setText("Cumpleaños");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        menuCumpleanos.add(jMenuItem3);
+
+        jMenuBar1.add(menuCumpleanos);
 
         setJMenuBar(jMenuBar1);
 
@@ -433,6 +445,9 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.clientesIngresosView.setVisible(true);
     }//GEN-LAST:event_setRegistrarClienteIngresos
 
+    /**
+     * 
+     */
     private void menuClientes_activosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuClientes_activosActionPerformed
         // TODO add your handling code here:
         String ruta = "clientes_activos.jrxml";
@@ -440,6 +455,21 @@ public class frmPrincipal extends javax.swing.JFrame {
         Util.generarReportes(ruta, params);
 
     }//GEN-LAST:event_menuClientes_activosActionPerformed
+
+    /**
+     * 
+     * @param evt 
+     */
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        this.cumpleanosView = new frmReporteCumpleanos(this, this.operacion, "2");
+        frmPrincipal.jdstPrincipal.add(this.cumpleanosView);
+        this.cumpleanosView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+        this.cumpleanosView.setUsuarioSessionDto(usuarioSessionDto);
+        this.cumpleanosView.setResizable(true);
+        this.cumpleanosView.setClosable(true);
+        this.cumpleanosView.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -543,13 +573,13 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     public static javax.swing.JDesktopPane jdstPrincipal;
     private javax.swing.JMenuItem menuBuscar_cliente;
     private javax.swing.JMenuItem menuCafeteria;
@@ -557,6 +587,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu menuCliente;
     private javax.swing.JMenuItem menuClientes_activos;
     private javax.swing.JMenuItem menuCrear_cliente;
+    private javax.swing.JMenu menuCumpleanos;
     private javax.swing.JMenuItem menuDescuentos;
     private javax.swing.JMenuItem menuPagos;
     private javax.swing.JMenuItem menuPaquetes;
