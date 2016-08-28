@@ -22,6 +22,10 @@ public class ComboModel extends AbstractListModel implements ComboBoxModel {
         this.objeto = new ComboDto(null, null);
     }
 
+    public ComboModel() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public ArrayList getLista() {
         return lista;
     }

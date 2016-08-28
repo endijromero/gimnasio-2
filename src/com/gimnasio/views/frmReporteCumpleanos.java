@@ -27,8 +27,10 @@ import javax.swing.JOptionPane;
 public class frmReporteCumpleanos extends javax.swing.JInternalFrame {
 
     private List<ComboDto> listComboLimite;
+    private List<ComboDto> listComboMeses;
     private UsuarioDto usuarioSessionDto;
     private ComboModel comboLimite;
+    private ComboModel comboMeses;
     private final String[] headTable;
     private final TablaModelo table;
     protected Operaciones operacion;
@@ -38,13 +40,11 @@ public class frmReporteCumpleanos extends javax.swing.JInternalFrame {
     /**
      *
      * @param padre
-     * @param operacion
-     * @param tipo
      */
-    public frmReporteCumpleanos(frmPrincipal padre, Operaciones operacion, String tipo) {
+    public frmReporteCumpleanos(frmPrincipal padre) {
         initComponents();
 
-        this.operacion = operacion;
+        this.operacion = new Operaciones();
         this.padre = padre;        
 
         this.headTable = new String[]{"Documento", "Nombres", "Apellidos", "Fecha Cumpleaños","Edad", "Genero", "Movil", "Fijo", "Correo"};
@@ -55,8 +55,29 @@ public class frmReporteCumpleanos extends javax.swing.JInternalFrame {
         int columnas = this.tblClientes.getColumnCount();
         for (int i = 0; i < columnas; i++) {
             this.tblClientes.getColumnModel().getColumn(i).setPreferredWidth(widthColumna[i]);
-        }
-        
+        }        
+        this.setInitCombos();        
+    }
+    
+    /**
+     * 
+     */
+    public final void setInitCombos() {
+        ComboDto inicio;
+        this.comboLimite = new ComboModel();
+        this.comboLimite.getLista().clear();
+        this.listComboLimite = this.operacion.getLimiteConsulta();
+        inicio = new ComboDto("10", "10");
+        this.listComboLimite.add(0, inicio);
+        this.comboLimite.getLista().addAll(this.listComboLimite);
+        this.comboLimite.setSelectedItem(inicio);
+        this.cmbLimite.setModel(this.comboLimite);
+                
+        this.comboMeses = new ComboModel();
+        this.comboMeses.getLista().clear();
+        this.listComboMeses = this.operacion.getListMeses();
+        this.comboMeses.getLista().addAll(this.listComboLimite);
+        this.cmb_meses.setModel(this.comboMeses);
     }
 
     /**

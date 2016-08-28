@@ -462,7 +462,7 @@ public class frmPrincipal extends javax.swing.JFrame {
      */
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
-        this.cumpleanosView = new frmReporteCumpleanos(this, this.operacion, "2");
+        this.cumpleanosView = new frmReporteCumpleanos(this);
         frmPrincipal.jdstPrincipal.add(this.cumpleanosView);
         this.cumpleanosView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
         this.cumpleanosView.setUsuarioSessionDto(usuarioSessionDto);

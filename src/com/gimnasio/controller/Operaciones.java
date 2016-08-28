@@ -58,6 +58,28 @@ public class Operaciones {
         lista.add(new ComboDto("todos", "Todos"));
         return lista;
     }
+    
+    /**
+     * 
+     * @return 
+     */
+    public List<ComboDto> getListMeses() {
+        List<ComboDto> lista = new ArrayList();
+        lista.add(new ComboDto("0", "-------"));
+        lista.add(new ComboDto("1", "Enero"));
+        lista.add(new ComboDto("2", "Febrero"));
+        lista.add(new ComboDto("3", "Marzo"));
+        lista.add(new ComboDto("4", "Abril"));
+        lista.add(new ComboDto("5", "Mayo"));
+        lista.add(new ComboDto("6", "Junio"));    
+        lista.add(new ComboDto("7", "Julio"));    
+        lista.add(new ComboDto("8", "Agosto"));    
+        lista.add(new ComboDto("9", "Septiembre"));    
+        lista.add(new ComboDto("10", "Octubre"));    
+        lista.add(new ComboDto("11", "Noviembre"));    
+        lista.add(new ComboDto("12", "Diciembre"));  
+        return lista;
+    }
 
     /**
      *
