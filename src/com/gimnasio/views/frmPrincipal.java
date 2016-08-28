@@ -85,6 +85,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         menuCierre_caja = new javax.swing.JMenuItem();
+        menuClientes_activos = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -227,6 +228,15 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(menuCierre_caja);
+
+        menuClientes_activos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/User-green-icon.png"))); // NOI18N
+        menuClientes_activos.setText("Clientes Activos");
+        menuClientes_activos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuClientes_activosActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuClientes_activos);
 
         jMenuBar1.add(jMenu2);
 
@@ -423,6 +433,14 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.clientesIngresosView.setVisible(true);
     }//GEN-LAST:event_setRegistrarClienteIngresos
 
+    private void menuClientes_activosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuClientes_activosActionPerformed
+        // TODO add your handling code here:
+        String ruta = "clientes_activos.jrxml";
+        Map params = new HashMap<>();        
+        Util.generarReportes(ruta, params);
+
+    }//GEN-LAST:event_menuClientes_activosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -537,6 +555,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuCafeteria;
     private javax.swing.JMenuItem menuCierre_caja;
     private javax.swing.JMenu menuCliente;
+    private javax.swing.JMenuItem menuClientes_activos;
     private javax.swing.JMenuItem menuCrear_cliente;
     private javax.swing.JMenuItem menuDescuentos;
     private javax.swing.JMenuItem menuPagos;
