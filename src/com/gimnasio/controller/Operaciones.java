@@ -72,7 +72,7 @@ public class Operaciones {
                         } else {
                             correct = false;
                         }
-                    } else if (fechaInitPaquete.before(fechaActual)) {
+                    } else if (fechaInitPaquete != null && (fechaInitPaquete.before(fechaActual) || fechaInitPaquete.equals(fechaActual))) {
                         if (fechaFinalPaquete.equals(fechaActual)) {
                             stat.execute("UPDATE  cliente_paquete  SET estado = '" + EEstadoPlan.VENCIDO.getId() + "', usuario_id = '" + idUsuario + "', fecha_modificacion = NOW()  WHERE id = '" + paqueteDto.getId() + "'");
                             correct = true;
@@ -365,14 +365,15 @@ public class Operaciones {
     }
 
     /**
-     * 
+     *
      * @param mes
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public List<TablaDto> getClientesDatosTablaDto(String mes) throws SQLException {
         return this.getClientesCumpleanosTablaDto(mes);
     }
+
     /**
      *
      * @param nombres
@@ -403,10 +404,10 @@ public class Operaciones {
     }
 
     /**
-     * 
+     *
      * @param mes
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public List<TablaDto> getClientesCumpleanosTablaDto(String mes) throws SQLException {
         List<TablaDto> listTable = new ArrayList();
@@ -427,6 +428,7 @@ public class Operaciones {
         });
         return listTable;
     }
+
     /**
      *
      * @param idDescuento
