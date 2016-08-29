@@ -23,7 +23,8 @@ INNER JOIN personas per
 ON per.id = cl.persona_id
 INNER JOIN paquetes paq
 ON paq.id = clp.paquete_id
-WHERE clp.fecha_inicia_paquete <= NOW() AND clp.fecha_finaliza_paquete >= NOW()]]>
+WHERE clp.fecha_inicia_paquete <= NOW() AND clp.fecha_finaliza_paquete >= NOW()
+ORDER BY primer_nombre, segundo_nombre, primer_apellido]]>
 	</queryString>
 	<field name="id" class="java.math.BigInteger">
 		<fieldDescription><![CDATA[Id principal]]></fieldDescription>
@@ -87,7 +88,7 @@ WHERE clp.fecha_inicia_paquete <= NOW() AND clp.fecha_finaliza_paquete >= NOW()]
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="0" width="119" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="8630629a-b43f-420f-a6b3-5c2da69360ff"/>
+				<reportElement mode="Opaque" x="0" y="0" width="159" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="8630629a-b43f-420f-a6b3-5c2da69360ff"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
@@ -100,7 +101,7 @@ WHERE clp.fecha_inicia_paquete <= NOW() AND clp.fecha_finaliza_paquete >= NOW()]
 				<textFieldExpression><![CDATA["Cliente"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="353" y="0" width="126" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="0eeeaaf8-c777-437c-8339-2245a93c27cc"/>
+				<reportElement mode="Opaque" x="377" y="0" width="102" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="0eeeaaf8-c777-437c-8339-2245a93c27cc"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
@@ -113,7 +114,7 @@ WHERE clp.fecha_inicia_paquete <= NOW() AND clp.fecha_finaliza_paquete >= NOW()]
 				<textFieldExpression><![CDATA["Fecha"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="119" y="0" width="107" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="c33e6b17-082f-4517-b991-450b15eb5356"/>
+				<reportElement mode="Opaque" x="159" y="0" width="99" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="c33e6b17-082f-4517-b991-450b15eb5356"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
@@ -126,7 +127,7 @@ WHERE clp.fecha_inicia_paquete <= NOW() AND clp.fecha_finaliza_paquete >= NOW()]
 				<textFieldExpression><![CDATA["Movil"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="226" y="0" width="127" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="a04a1cab-b46a-4ed9-95ad-412d58ddcbcf"/>
+				<reportElement mode="Opaque" x="258" y="0" width="119" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="a04a1cab-b46a-4ed9-95ad-412d58ddcbcf"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
@@ -167,7 +168,7 @@ WHERE clp.fecha_inicia_paquete <= NOW() AND clp.fecha_finaliza_paquete >= NOW()]
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="119" height="20" uuid="c42dc669-a0f5-4fad-aab4-b30ba1b75aaf"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="159" height="20" uuid="c42dc669-a0f5-4fad-aab4-b30ba1b75aaf"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
 					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
@@ -178,7 +179,7 @@ WHERE clp.fecha_inicia_paquete <= NOW() AND clp.fecha_finaliza_paquete >= NOW()]
 				<textFieldExpression><![CDATA[$F{primer_nombre}+" "+$F{segundo_nombre}+" "+$F{primer_apellido}+" "+$F{segundo_apellido}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="119" y="0" width="107" height="20" uuid="e76ca1fe-c392-4278-959d-a4589426293c"/>
+				<reportElement stretchType="RelativeToBandHeight" x="159" y="0" width="99" height="20" uuid="e76ca1fe-c392-4278-959d-a4589426293c"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
 					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
@@ -189,7 +190,7 @@ WHERE clp.fecha_inicia_paquete <= NOW() AND clp.fecha_finaliza_paquete >= NOW()]
 				<textFieldExpression><![CDATA[$F{movil}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="226" y="0" width="127" height="20" uuid="1506125c-208c-464f-adba-42532fb2d979"/>
+				<reportElement stretchType="RelativeToBandHeight" x="258" y="0" width="119" height="20" uuid="1506125c-208c-464f-adba-42532fb2d979"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
 					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
@@ -200,7 +201,7 @@ WHERE clp.fecha_inicia_paquete <= NOW() AND clp.fecha_finaliza_paquete >= NOW()]
 				<textFieldExpression><![CDATA[$F{correo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="353" y="0" width="126" height="20" uuid="d919e0be-ab35-47b8-9733-22b4466cff12"/>
+				<reportElement stretchType="RelativeToBandHeight" x="377" y="0" width="102" height="20" uuid="d919e0be-ab35-47b8-9733-22b4466cff12"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
 					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>

@@ -239,18 +239,27 @@ public class frmReporteCumpleanos extends javax.swing.JInternalFrame {
     private void setConsultaClientes(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setConsultaClientes
         this.setConsultarTableClientes();
     }//GEN-LAST:event_setConsultaClientes
-
+    
+    /**
+     * 
+     */
     public void setConsultarTableClientes() {
         List<TablaDto> lista;
         try {
-            lista = this.operacion.getClientesDatosTablaDto("", "", "", "");
-            this.table.getData().clear();
-            this.lblCantidad_clientes.setText(String.valueOf(lista.size()));
-            lista.stream().forEach((dto) -> {
-                this.table.setAgregar(dto);
-            });
-            this.tblClientes.setDefaultRenderer(Object.class, new MiRender(this.table));
-            this.tblClientes.repaint();
+            if(this.cmbMes.getSelectedIndex() > 0) {
+                
+                String mes = String.valueOf(this.cmbMes.getSelectedIndex());
+                lista = this.operacion.getClientesDatosTablaDto("", "", "", "");
+                this.table.getData().clear();
+                this.lblCantidad_clientes.setText(String.valueOf(lista.size()));
+                lista.stream().forEach((dto) -> {
+                    this.table.setAgregar(dto);
+                });
+                this.tblClientes.setDefaultRenderer(Object.class, new MiRender(this.table));
+                this.tblClientes.repaint();
+            }else {
+                JOptionPane.showMessageDialog(this, "Debe Seleccionar un Mes.", "Alerta de error", JOptionPane.ERROR_MESSAGE);
+            }
         } catch (SQLException ex) {
             JLabel label = new JLabel("Error al consultar los clientes, intente nuevamente");
             label.setFont(new Font("consolas", Font.PLAIN, 14));
