@@ -45,7 +45,7 @@ public class frmReporteCumpleanos extends javax.swing.JInternalFrame {
         this.padre = padre;
 
         this.headTable = new String[]{"Documento", "Nombres", "Apellidos", "Fecha Cumpleaños", "Edad", "Genero", "Movil", "Fijo", "Correo"};
-        int widthColumna[] = {100, 200, 200, 50, 50, 100, 100, 100, 200};
+        int widthColumna[] = {100, 200, 200, 150, 50, 100, 100, 100, 200};
         this.table = new TablaModelo(this.headTable);
         this.tblClientes.setModel(this.table);
 
@@ -249,7 +249,7 @@ public class frmReporteCumpleanos extends javax.swing.JInternalFrame {
             if(this.cmbMes.getSelectedIndex() > 0) {
                 
                 String mes = String.valueOf(this.cmbMes.getSelectedIndex());
-                lista = this.operacion.getClientesDatosTablaDto("", "", "", "");
+                lista = this.operacion.getClientesDatosTablaDto(mes);
                 this.table.getData().clear();
                 this.lblCantidad_clientes.setText(String.valueOf(lista.size()));
                 lista.stream().forEach((dto) -> {

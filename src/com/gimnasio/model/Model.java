@@ -768,6 +768,40 @@ public class Model {
         stat.close();
         return list;
     }
+    
+    public List<ClienteDto> getDatosClientes(String mes) throws SQLException {
+        List<ClienteDto> list = new ArrayList();
+        try (Statement stat = this.conexion.getConexion().createStatement()) {
+            String sql = "SELECT cl.*, ps.*, cl.id AS idCliente, ps.id AS idPersona "
+                    + " FROM clientes cl"
+                    + " INNER JOIN personas ps"
+                    + " ON cl.persona_id = ps.id "
+                    + " WHERE 1 ";
+            if (!Util.getVacio(mes)) {
+                sql += " AND month(fecha_nacimiento) = "+mes;
+            }            
+            ResultSet res = stat.executeQuery(sql);
+            while (res.next()) {
+                ClienteDto dto = new ClienteDto();
+                PersonaDto persona = new PersonaDto();
+                dto.setId(res.getLong("idCliente"));
+                persona.setId(res.getLong("idPersona"));
+                persona.setPrimerNombre(res.getString("primer_nombre"));
+                persona.setSegundoNombre(res.getString("segundo_nombre"));
+                persona.setPrimerApellido(res.getString("primer_apellido"));
+                persona.setSegundoApellido(res.getString("segundo_apellido"));
+                persona.setNumeroIdentificacion(res.getString("numero_identificacion"));
+                persona.setFechaNacimiento(res.getString("fecha_nacimiento"));
+                persona.setGenero(res.getShort("genero"));
+                persona.setMovil(res.getString("movil"));
+                persona.setTelefono(res.getString("telefono"));
+                persona.setEmail(res.getString("email"));
+                dto.setPersonaDto(persona);
+                list.add(dto);
+            }
+        }
+        return list;
+    }
 
     public List<Object> getListPersist() {
         return listPersist;

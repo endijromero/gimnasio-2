@@ -365,6 +365,15 @@ public class Operaciones {
     }
 
     /**
+     * 
+     * @param mes
+     * @return
+     * @throws SQLException 
+     */
+    public List<TablaDto> getClientesDatosTablaDto(String mes) throws SQLException {
+        return this.getClientesCumpleanosTablaDto(mes);
+    }
+    /**
      *
      * @param nombres
      * @param apellidos
@@ -393,6 +402,31 @@ public class Operaciones {
         return listTable;
     }
 
+    /**
+     * 
+     * @param mes
+     * @return
+     * @throws SQLException 
+     */
+    public List<TablaDto> getClientesCumpleanosTablaDto(String mes) throws SQLException {
+        List<TablaDto> listTable = new ArrayList();
+        //"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"
+        List<ClienteDto> listClientes = this.model.getDatosClientes(mes);
+        listClientes.stream().map((cliente) -> new TablaDto(
+                String.valueOf(cliente.getPersonaDto().getNumeroIdentificacion()),
+                Util.getQuitaNULL(cliente.getPersonaDto().getPrimerNombre() + " " + Util.getQuitaNULL(cliente.getPersonaDto().getSegundoNombre())),
+                Util.getQuitaNULL(cliente.getPersonaDto().getPrimerApellido() + " " + Util.getQuitaNULL(cliente.getPersonaDto().getSegundoApellido())),
+                String.valueOf(cliente.getPersonaDto().getFechaNacimiento()),
+                String.valueOf(cliente.getPersonaDto().getEdad()),
+                Util.getQuitaNULL(EGenero.getResult(cliente.getPersonaDto().getGenero()).getNombre()),
+                String.valueOf(Util.getQuitaNULL(cliente.getPersonaDto().getMovil())),
+                String.valueOf(Util.getQuitaNULL(cliente.getPersonaDto().getTelefono())),
+                String.valueOf(Util.getQuitaNULL(cliente.getPersonaDto().getEmail()))
+        )).forEach((tabla) -> {
+            listTable.add(tabla);
+        });
+        return listTable;
+    }
     /**
      *
      * @param idDescuento
