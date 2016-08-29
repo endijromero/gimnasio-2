@@ -7,8 +7,8 @@ import com.digitalpersona.onetouch.DPFPGlobal;
 import com.gimnasio.views.frmClientesIngresos;
 import com.gimnasio.controller.Operaciones;
 import com.gimnasio.model.enums.ESiNo;
-import com.gimnasio.model.enums.ETipoPlan;
 import com.gimnasio.views.frmHuella;
+import com.google.common.base.Joiner;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
@@ -114,7 +114,6 @@ public class HiloBusqueda extends Thread {
                         }
                     }
                     this.continua = false;
-                    System.out.println(e.getMessage() + "Verificacion");
                     break;
                 }
             }
@@ -123,7 +122,9 @@ public class HiloBusqueda extends Thread {
             this.corriendo = false;
             if (entra) {
                 this.cerrar.setCambia(true);
-                JOptionPane.showMessageDialog(this.cerrar, "El estudiante ha sido identificado.", "CORRECTO!", JOptionPane.INFORMATION_MESSAGE);
+                JLabel label = new JLabel("El cliente ha sido identificado");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this.cerrar, label, "Alerta de verificación de huellas", JOptionPane.WARNING_MESSAGE);
                 this.cerrar.dispose();
             } else if (!this.cerrar.isCambia()) {
                 int contador = 0;
@@ -134,7 +135,9 @@ public class HiloBusqueda extends Thread {
                 }
                 if (contador == this.listHilos.size()) {
                     this.cerrar.setCambia(true);
-                    JOptionPane.showMessageDialog(null, "No se han encontrado huellas.", "CORRECTO!", JOptionPane.INFORMATION_MESSAGE);
+                    JLabel label = new JLabel("No se han encontrado huellas");
+                    label.setFont(new Font("consolas", Font.PLAIN, 14));
+                    JOptionPane.showMessageDialog(this.cerrar, label, "Alerta de verificación de huellas", JOptionPane.WARNING_MESSAGE);
                     this.cerrar.dispose();
                 }
             }
@@ -149,7 +152,9 @@ public class HiloBusqueda extends Thread {
                 }
                 if (cant == this.listHilos.size()) {
                     this.cerrar.setCambia(true);
-                    // alerta usuario incorrecto
+                    JLabel label = new JLabel("El usuario no se encuentra registrado con esta huella");
+                    label.setFont(new Font("consolas", Font.PLAIN, 14));
+                    JOptionPane.showMessageDialog(this.cerrar, label, "Alerta de verificación de huellas", JOptionPane.WARNING_MESSAGE);
                     this.cerrar.start();
                     this.cerrar.getBtnCancelar().setEnabled(true);
                 }

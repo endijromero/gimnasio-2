@@ -99,7 +99,7 @@ public class frmClientesIngresos extends javax.swing.JInternalFrame {
         jLabel1.setText("Registros del Día");
 
         btnCapturaHuella.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/finger-print.png"))); // NOI18N
-        btnCapturaHuella.setText("Registrar Cliente");
+        btnCapturaHuella.setText("Registrar Ingreso");
         btnCapturaHuella.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCapturaHuellaActionPerformed(evt);
@@ -107,14 +107,14 @@ public class frmClientesIngresos extends javax.swing.JInternalFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel2.setText("La fecha actual para registrar el retardo es:");
+        jLabel2.setText("La fecha actual para registrar el ingreso es:");
 
         lblFechaActual.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblFechaActual.setText("jLabel3");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(153, 0, 0));
-        jLabel3.setText("REGISTRO DE RETARDOS DE LOS ESTUDIANTES");
+        jLabel3.setText("REGISTRO DE INGRESOS DE LOS CLIENTES");
 
         lblTotalRetardos.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         lblTotalRetardos.setForeground(new java.awt.Color(153, 0, 0));
@@ -132,7 +132,7 @@ public class frmClientesIngresos extends javax.swing.JInternalFrame {
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(btnCapturaHuella, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblFechaActual, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)

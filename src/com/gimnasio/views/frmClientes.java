@@ -49,7 +49,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
      *
      * @tutorial Creates new form frmCliente
      * @param padre
-     * @param operacion 
+     * @param operacion
      * @throws java.lang.Exception
      */
     public frmClientes(frmPrincipal padre, Operaciones operacion) throws Exception {
@@ -655,6 +655,14 @@ public class frmClientes extends javax.swing.JInternalFrame {
         this.lblFotoCliente = lblFotoCliente;
     }
 
+    public JLabel getLblHuellaDactilar() {
+        return lblHuellaDactilar;
+    }
+
+    public void setLblHuellaDactilar(JLabel lblHuellaDactilar) {
+        this.lblHuellaDactilar = lblHuellaDactilar;
+    }
+
     /**
      * @tutorial Method Description: llena la información capturada del
      * ----------------------------- formulario en clienteDto
@@ -734,7 +742,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
 
     private void setCloseIframeCliente(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_setCloseIframeCliente
         this.padre.setClienteView(null);
-        if (this.clienteDto.getPersonaDto().getHuellaDactilar() != null) {
+        if (this.clienteDto.getId() == null && this.clienteDto.getPersonaDto().getHuellaDactilar() != null) {
             File file = new File(this.rutaHuellas + this.clienteDto.getPersonaDto().getNumeroIdentificacion() + this.extension);
             if (file.exists()) {
                 file.delete();

@@ -33,6 +33,13 @@ public class Operaciones {
         this.model.setConexion(this.conexion);
     }
 
+    /**
+     *
+     * @param clienteDto
+     * @param idUsuario
+     * @return
+     * @throws SQLException
+     */
     public boolean setInsertarIngresoCliente(ClienteDto clienteDto, long idUsuario) throws SQLException {
         boolean correct = false;
         if (clienteDto.getId() > 0 && !clienteDto.getId().equals("")) {
@@ -64,12 +71,14 @@ public class Operaciones {
                             correct = true;
                         }
                     } else {
-                        if (fechaFinalPaquete.equals(fechaActual)) {
-                            stat.execute("UPDATE  cliente_paquete  SET estado = '" + EEstadoPlan.VENCIDO.getId() + "', usuario_id = '" + idUsuario + "', fecha_modificacion = NOW()  WHERE id = '" + paqueteDto.getId() + "'");
+                        if (fechaInitPaquete.before(fechaActual)) {
+                            if (fechaFinalPaquete.equals(fechaActual)) {
+                                stat.execute("UPDATE  cliente_paquete  SET estado = '" + EEstadoPlan.VENCIDO.getId() + "', usuario_id = '" + idUsuario + "', fecha_modificacion = NOW()  WHERE id = '" + paqueteDto.getId() + "'");
+                                correct = true;
+                            }
+                            // se pone true porque tiene plazo para que realice el registro diario
                             correct = true;
                         }
-                        // se pone true porque tiene plazo para que realice el registro diario
-                        correct = true;
                     }
                     if (correct) {
                         paqueteDto.setClienteDto(clienteDto);
@@ -77,9 +86,10 @@ public class Operaciones {
                     }
                     stat.close();
                 } catch (ParseException ex) {
-                    this.conexion.rollback();
+                    this.conexion.getConexion().rollback();
                     Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
-                } finally {
+                }
+                if (correct == true) {
                     this.conexion.commit();
                 }
             }
@@ -661,6 +671,7 @@ public class Operaciones {
             if (Util.getEncriptarMD5(password).equals(user.getPassword())) {
                 return listUsuarios.get(0);
             } else {
+                user = new UsuarioDto();
                 JLabel label = new JLabel("Usuario o contraseña incorrecta");
                 label.setFont(new Font("consolas", Font.PLAIN, 14));
                 JOptionPane.showMessageDialog(null, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);

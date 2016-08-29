@@ -217,7 +217,6 @@ public class WebcamViewer extends JFrame implements ActionListener, Runnable, We
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnTomarFoto) {
             boolean reemplaza = true;
-            BufferedImage image = webcam.getImage();
             try {
                 String nameFile = "fotos/" + this.getClienteDto().getPersonaDto().getNumeroIdentificacion() + ".JPG";
                 File file = new File(nameFile);
@@ -233,6 +232,7 @@ public class WebcamViewer extends JFrame implements ActionListener, Runnable, We
                     }
                 }
                 if (reemplaza) {
+                    BufferedImage image = webcam.getImage();
                     if (ImageIO.write(image, "JPG", file)) {
                         this.clienteDto.getPersonaDto().setFotoPerfil(file.getName());
                         ImageIcon imagen = new ImageIcon(this.clienteDto.getPersonaDto().getFotoPerfil());

@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -591,8 +592,10 @@ public class frmHuella extends javax.swing.JDialog {
                 stream = new FileOutputStream(file);
                 stream.write(this.template.serialize());
                 stream.close();
+                ImageIcon imagen = new ImageIcon(getClass().getResource("/com/gimnasio/files/finger-print-2.png"));
+                this.frmCliente.getLblHuellaDactilar().setIcon(imagen);
+                this.frmCliente.getLblHuellaDactilar().repaint();
                 this.clienteDto.getPersonaDto().setHuellaDactilar(this.template.serialize());
-
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(frmHuella.class
                         .getName()).log(Level.SEVERE, null, ex);
