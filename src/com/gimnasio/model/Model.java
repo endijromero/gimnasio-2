@@ -126,19 +126,6 @@ public class Model {
                 paquete.setEstado(res.getShort("estado"));
                 paquete.setFechaIniciaPaquete(res.getString("fecha_inicia_paquete"));
                 paquete.setFechaFinalizaPaquete(res.getString("fecha_finaliza_paquete"));
-
-                paquete.getPaqueteDto().setId(res.getInt("idPaquete"));
-                paquete.getPaqueteDto().setNombre(res.getString("nombrePaquete"));
-                paquete.getPaqueteDto().setTipo(res.getShort("tipo"));
-                paquete.getPaqueteDto().setPrecioBase(res.getDouble("precioBasePaquete"));
-                paquete.getPaqueteDto().setYnTiquetera(res.getShort("yn_tiquetera"));
-                paquete.getPaqueteDto().setDiasAplazamiento(res.getShort("dias_aplazamiento"));
-
-                paquete.getClienteDto().getPersonaDto().setId(res.getLong("idPersona"));
-                paquete.getClienteDto().getPersonaDto().setPrimerNombre(res.getString("primer_nombre"));
-                paquete.getClienteDto().getPersonaDto().setSegundoNombre(res.getString("segundo_nombre"));
-                paquete.getClienteDto().getPersonaDto().setPrimerApellido(res.getString("primer_apellido"));
-                paquete.getClienteDto().getPersonaDto().setSegundoApellido(res.getString("segundo_apellido"));
                 listPaquete.add(paquete);
             }
             stat.close();
