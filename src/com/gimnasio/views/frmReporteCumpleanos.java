@@ -12,9 +12,12 @@ import com.gimnasio.model.MiRender;
 import com.gimnasio.model.TablaDto;
 import com.gimnasio.model.TablaModelo;
 import com.gimnasio.model.UsuarioDto;
+import com.gimnasio.util.Util;
 import java.awt.Font;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
@@ -273,7 +276,15 @@ public class frmReporteCumpleanos extends javax.swing.JInternalFrame {
      * @param evt
      */
     private void setClienteProceso(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setClienteProceso
-
+        if (evt.getClickCount() == 2) {
+            int fila = this.tblClientes.getSelectedRow();
+            TablaDto dto = (TablaDto) this.table.getData().get(fila);
+            String documento = dto.getDato1();
+            String ruta = "tarjeta_cumpleanos.jrxml";
+            Map params = new HashMap<>();
+            params.put("ID_CLIENTE", documento);
+            Util.generarReportes(ruta, params);
+        }
     }//GEN-LAST:event_setClienteProceso
 
     /**
