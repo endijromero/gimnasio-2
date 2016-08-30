@@ -99,13 +99,31 @@ public class frmHuella extends javax.swing.JDialog {
         this.cambia = false;
         this.operacion = operacion;
         try {
-            this.listTemplates = new ArrayList();
             this.listClientesHuellas = this.operacion.getClienteDatos(null);
+            this.listTemplates = new ArrayList();
+            FileInputStream stream;
+            File fileHuella;
             for (ClienteDto dto : this.listClientesHuellas) {
-                if (dto.getPersonaDto().getHuellaDactilar() != null) {
-                    DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate();
-                    referenceTemplate.deserialize(dto.getPersonaDto().getHuellaDactilar());
-                    dto.getPersonaDto().setTemplateHuella(referenceTemplate);
+                if (dto.getPersonaDto().getNumeroIdentificacion() != null) {
+                    fileHuella = new File(this.rutaHuellas + dto.getPersonaDto().getNumeroIdentificacion() + this.extension);
+                    if (fileHuella.exists()) {
+                        try {
+                            stream = new FileInputStream(fileHuella);
+                            byte[] data = new byte[stream.available()];
+                            stream.read(data);
+                            stream.close();
+                            DPFPTemplate t = DPFPGlobal.getTemplateFactory().createTemplate();
+                            t.deserialize(data);
+                            setTemplate(t);
+                            dto.getPersonaDto().setTemplateHuella(getTemplate());
+                        } catch (IOException | IllegalArgumentException ex) {
+                            try {
+                                throw ex;
+                            } catch (IOException ex1) {
+                                Logger.getLogger(frmHuella.class.getName()).log(Level.SEVERE, null, ex1);
+                            }
+                        }
+                    }
                 }
             }
         } catch (SQLException | IllegalArgumentException e) {
@@ -161,11 +179,30 @@ public class frmHuella extends javax.swing.JDialog {
         try {
             this.listTemplates = new ArrayList();
             this.listClientesHuellas = this.operacion.getClienteDatos(null);
+            FileInputStream stream;
+            File fileHuella;
             for (ClienteDto dto : this.listClientesHuellas) {
-                if (dto.getPersonaDto().getHuellaDactilar() != null) {
-                    DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate();
-                    referenceTemplate.deserialize(dto.getPersonaDto().getHuellaDactilar());
-                    dto.getPersonaDto().setTemplateHuella(referenceTemplate);
+                if (dto.getPersonaDto().getNumeroIdentificacion() != null) {
+                    fileHuella = new File(this.rutaHuellas + dto.getPersonaDto().getNumeroIdentificacion() + this.extension);
+                    if (fileHuella.exists()) {
+                        try {
+                            stream = new FileInputStream(fileHuella);
+                            byte[] data = new byte[stream.available()];
+                            stream.read(data);
+                            stream.close();
+                            DPFPTemplate t = DPFPGlobal.getTemplateFactory().createTemplate();
+                            t.deserialize(data);
+                            setTemplate(t);
+                            dto.getPersonaDto().setTemplateHuella(getTemplate());
+                        } catch (IOException | IllegalArgumentException ex) {
+                            try {
+                                throw ex;
+                            } catch (IOException ex1) {
+                                Logger.getLogger(frmHuella.class.getName()).log(Level.SEVERE, null, ex1);
+                            }
+                        }
+
+                    }
                 }
             }
             if (this.listClientesHuellas.size() > 0) {

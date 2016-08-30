@@ -8,7 +8,6 @@ import com.gimnasio.views.frmClientesIngresos;
 import com.gimnasio.controller.Operaciones;
 import com.gimnasio.model.enums.ESiNo;
 import com.gimnasio.views.frmHuella;
-import com.google.common.base.Joiner;
 import java.awt.Font;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
@@ -203,7 +202,6 @@ public class HiloBusqueda extends Thread {
                         message += "Días cumplidos: <b>" + paqueteDto.getDiasUsadosTiquetera() + "</b><br>";
                         message += "Días restantes: <b>" + (paqueteDto.getNumeroDiasTiquetera() - paqueteDto.getDiasUsadosTiquetera()) + "</b><br>";
                     } else {
-
                         try {
                             SimpleDateFormat formateador = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy", new Locale("es", "ES"));
                             Date fechaTemp = new SimpleDateFormat("yyyy-MM-dd").parse(paqueteDto.getFechaFinalizaPaquete());

@@ -144,14 +144,13 @@ public class frmClientes extends javax.swing.JInternalFrame {
             } else {
                 setNoFile(this.lblFotoCliente);
             }
-            if (this.clienteDto.getPersonaDto().getHuellaDactilar() != null) {
-                if (Arrays.toString(this.clienteDto.getPersonaDto().getHuellaDactilar()).trim().length() > 0) {
-                    URL filename = getClass().getResource("/com/gimnasio/files/finger-print-128-128.png");
-                    File file = new File(filename.getFile());
-                    if (file.exists()) {
-                        Image image = new ImageIcon(file.getAbsolutePath()).getImage();
-                        Util.setPintarFotoPerfil(image, this.lblHuellaDactilar);
-                    }
+            File fileHuella = new File(this.rutaHuellas + this.clienteDto.getPersonaDto().getNumeroIdentificacion() + this.extension);
+            if (fileHuella.exists()) {
+                URL filename = getClass().getResource("/com/gimnasio/files/finger-print-128-128.png");
+                File file = new File(filename.getFile());
+                if (file.exists()) {
+                    Image image = new ImageIcon(file.getAbsolutePath()).getImage();
+                    Util.setPintarFotoPerfil(image, this.lblHuellaDactilar);
                 }
             } else {
                 setNoFile(this.lblHuellaDactilar);
