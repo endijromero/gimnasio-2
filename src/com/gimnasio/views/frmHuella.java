@@ -633,6 +633,7 @@ public class frmHuella extends javax.swing.JDialog {
                 this.frmCliente.getLblHuellaDactilar().setIcon(imagen);
                 this.frmCliente.getLblHuellaDactilar().repaint();
                 this.clienteDto.getPersonaDto().setHuellaDactilar(this.template.serialize());
+                // this.template = null;
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(frmHuella.class
                         .getName()).log(Level.SEVERE, null, ex);
