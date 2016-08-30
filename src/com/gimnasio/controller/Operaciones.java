@@ -33,14 +33,17 @@ public class Operaciones {
         this.model.setConexion(this.conexion);
     }
 
-    public void setCambiarEstados() {
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            Date fechaActual = format.parse(format.format(new Date()));
-            
-        } catch (ParseException ex) {
-            Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
+    public void setCambiarEstadosPaquetes(UsuarioDto userDto) throws SQLException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaActual = format.format(new Date());
+        List<ClientePaqueteDto> listPaquetes = this.model.getListPaquetesActivosClientes(null, fechaActual, true);
+        Statement stat = this.conexion.getConexion().createStatement();
+        for (ClientePaqueteDto paquete : listPaquetes) {
+            stat.execute("UPDATE cliente_paquete  SET estado = '" + EEstadoPlan.VENCIDO.getId() + "', usuario_id = '" + userDto.getId() + "', fecha_modificacion = NOW()  WHERE id = '" + paquete.getId() + "'");
         }
+        stat.close();
+        this.conexion.commit();
+
     }
 
     /**
@@ -97,7 +100,9 @@ public class Operaciones {
                     stat.close();
                 } catch (ParseException ex) {
                     this.conexion.getConexion().rollback();
-                    Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger
+                            .getLogger(Operaciones.class
+                                    .getName()).log(Level.SEVERE, null, ex);
                 }
                 if (correct == true) {
                     this.conexion.commit();

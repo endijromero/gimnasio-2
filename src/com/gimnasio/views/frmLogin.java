@@ -119,7 +119,11 @@ public class frmLogin extends javax.swing.JFrame {
                     principal.setTitle("::: StreetGym :::");
                     principal.setOperacion(operacion);
                     principal.setVisible(true);
-                    this.operacion.setCambiarEstados();
+                    try {
+                        this.operacion.setCambiarEstadosPaquetes(userDto);
+                    } catch (Exception e) {
+                        Logger.getLogger(frmLogin.class.getName()).log(Level.SEVERE, null, e);
+                    }
                     this.setVisible(false);
                 }
             } catch (SQLException ex) {

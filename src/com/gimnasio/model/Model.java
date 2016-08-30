@@ -1,6 +1,7 @@
 package com.gimnasio.model;
 
 import com.gimnasio.model.enums.EEstadoPlan;
+import com.gimnasio.model.enums.ESiNo;
 import com.gimnasio.util.Util;
 import com.google.common.base.Joiner;
 import java.sql.PreparedStatement;
@@ -79,6 +80,75 @@ public class Model {
 
         }
         return listIngresos;
+    }
+
+    /**
+     *
+     * @param fechaInicio
+     * @param fechaFin
+     * @param soloFin
+     * @return
+     * @throws SQLException
+     */
+    public List<ClientePaqueteDto> getListPaquetesActivosClientes(String fechaInicio, String fechaFin, boolean soloFin) throws SQLException {
+        List<ClientePaqueteDto> listPaquete = new ArrayList();
+        ClientePaqueteDto paquete;
+        try {
+            Statement stat;
+            stat = this.conexion.getConexion().createStatement();
+            String sql = "SELECT cp.*, pqt.id AS idPaquete, pqt.nombre AS nombrePaquete, pqt.tipo, pqt.precio_base AS precioBasePaquete, pqt.yn_tiquetera, pqt.dias_aplazamiento, "
+                    + " per.id AS idPersona, per.primer_nombre, per.segundo_nombre, per.primer_apellido, per.segundo_apellido "
+                    + " FROM cliente_paquete cp "
+                    + " INNER JOIN clientes cl ON cp.cliente_id = cl.id "
+                    + " INNER JOIN personas per ON cl.persona_id = per.id "
+                    + " INNER JOIN paquetes pqt ON cp.paquete_id = pqt.id "
+                    + " WHERE cp.estado=" + EEstadoPlan.ACTIVO.getId() + " "
+                    + " AND pqt.yn_tiquetera <> " + ESiNo.SI.getId() + " ";
+            if (!Util.getVacio(fechaInicio)) {
+                sql += " AND cp.fecha_inicia_paquete ='" + fechaInicio + "' ";
+            }
+            if (!Util.getVacio(fechaFin) && soloFin) {
+                sql += " AND cp.fecha_finaliza_paquete < '" + fechaFin + "' ";
+            }
+            sql += "ORDER BY cp.fecha_inicia_paquete DESC ";
+            ResultSet res = stat.executeQuery(sql);
+            while (res.next()) {
+                paquete = new ClientePaqueteDto();
+                paquete.setId(res.getLong("id"));
+                paquete.setClienteId(res.getLong("cliente_id"));
+                paquete.setPaqueteId(res.getLong("paquete_id"));
+                paquete.setDescuentoId(res.getLong("descuento_id"));
+                paquete.setNumeroDiasTiquetera(res.getShort("numero_dias_tiquetera"));
+                paquete.setDiasUsadosTiquetera(res.getShort("dias_usados_tiquetera"));
+
+                paquete.setPrecioBase(res.getDouble("precio_base"));
+                paquete.setValorTotal(res.getDouble("valor_total"));
+                paquete.setEstado(res.getShort("estado"));
+                paquete.setFechaIniciaPaquete(res.getString("fecha_inicia_paquete"));
+                paquete.setFechaFinalizaPaquete(res.getString("fecha_finaliza_paquete"));
+
+                paquete.getPaqueteDto().setId(res.getInt("idPaquete"));
+                paquete.getPaqueteDto().setNombre(res.getString("nombrePaquete"));
+                paquete.getPaqueteDto().setTipo(res.getShort("tipo"));
+                paquete.getPaqueteDto().setPrecioBase(res.getDouble("precioBasePaquete"));
+                paquete.getPaqueteDto().setYnTiquetera(res.getShort("yn_tiquetera"));
+                paquete.getPaqueteDto().setDiasAplazamiento(res.getShort("dias_aplazamiento"));
+
+                paquete.getClienteDto().getPersonaDto().setId(res.getLong("idPersona"));
+                paquete.getClienteDto().getPersonaDto().setPrimerNombre(res.getString("primer_nombre"));
+                paquete.getClienteDto().getPersonaDto().setSegundoNombre(res.getString("segundo_nombre"));
+                paquete.getClienteDto().getPersonaDto().setPrimerApellido(res.getString("primer_apellido"));
+                paquete.getClienteDto().getPersonaDto().setSegundoApellido(res.getString("segundo_apellido"));
+                listPaquete.add(paquete);
+            }
+            stat.close();
+        } catch (SQLException e) {
+            this.conexion.rollback();
+            throw e;
+        } finally {
+            this.conexion.commit();
+        }
+        return listPaquete;
     }
 
     /**
@@ -768,7 +838,7 @@ public class Model {
         stat.close();
         return list;
     }
-    
+
     public List<ClienteDto> getDatosClientes(String mes) throws SQLException {
         List<ClienteDto> list = new ArrayList();
         try (Statement stat = this.conexion.getConexion().createStatement()) {
@@ -778,8 +848,8 @@ public class Model {
                     + " ON cl.persona_id = ps.id "
                     + " WHERE 1 ";
             if (!Util.getVacio(mes)) {
-                sql += " AND month(fecha_nacimiento) = "+mes;
-            }            
+                sql += " AND month(fecha_nacimiento) = " + mes;
+            }
             ResultSet res = stat.executeQuery(sql);
             while (res.next()) {
                 ClienteDto dto = new ClienteDto();
