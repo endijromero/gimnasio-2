@@ -84,6 +84,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         menuCumpleanos = new javax.swing.JMenu();
         menuCierre_caja = new javax.swing.JMenuItem();
         menuClientes_activos = new javax.swing.JMenuItem();
@@ -216,6 +217,15 @@ public class frmPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu5.add(jMenuItem1);
+
+        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/file-powerpoint-icon.png"))); // NOI18N
+        jMenuItem4.setText("Reporte");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem4);
 
         jMenuBar1.add(jMenu5);
 
@@ -475,6 +485,11 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.clientesIngresosView.setVisible(true);
     }//GEN-LAST:event_setRegistrarClienteIngresos
 
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -624,6 +639,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     public static javax.swing.JDesktopPane jdstPrincipal;
     private javax.swing.JMenuItem menuBuscar_cliente;
     private javax.swing.JMenuItem menuCafeteria;

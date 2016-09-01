@@ -107,6 +107,7 @@ WHERE ven.fecha_registro >= $P{FECHA_INICIO} and  ven.fecha_registro <= $P{FECHA
 	</subDataset>
 	<parameter name="FECHA_INICIO" class="java.lang.String"/>
 	<parameter name="FECHA_FIN" class="java.lang.String"/>
+	<parameter name="RUTA_IMAGENES" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select  
 coalesce((SELECT sum(clp.valor_total) from cliente_paquete clp WHERE clp.fecha_registro >= $P{FECHA_INICIO} AND  clp.fecha_registro <= $P{FECHA_FIN}),0) as total_paquetes,
@@ -124,7 +125,7 @@ coalesce((SELECT sum(valor_total) FROM producto_ventas WHERE fecha_registro >= $
 		<band height="61" splitType="Stretch">
 			<image>
 				<reportElement x="4" y="0" width="58" height="51" uuid="32a40aaa-98ad-4701-8123-a503b9f55e0b"/>
-				<imageExpression><![CDATA["E:\\gimnasio\\gimnasio\\src\\com\\gimnasio\\files\\logo.PNG"]]></imageExpression>
+				<imageExpression><![CDATA[$P{RUTA_IMAGENES}+"logo.PNG"]]></imageExpression>
 			</image>
 			<rectangle radius="10">
 				<reportElement x="58" y="0" width="497" height="51" backcolor="#3366FF" uuid="ebc579e1-cf17-4ad3-8e3f-c26180c67d12"/>

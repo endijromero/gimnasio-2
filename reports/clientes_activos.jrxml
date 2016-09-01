@@ -3,6 +3,7 @@
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="RUTA_IMAGENES" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT 
 clp.id,
@@ -81,7 +82,7 @@ ORDER BY primer_nombre, segundo_nombre, primer_apellido]]>
 			</staticText>
 			<image>
 				<reportElement x="4" y="0" width="58" height="51" uuid="9b950f61-1e15-4c51-8898-ad3e31665789"/>
-				<imageExpression><![CDATA["E:\\gimnasio\\gimnasio\\src\\com\\gimnasio\\files\\logo.PNG"]]></imageExpression>
+				<imageExpression><![CDATA[$P{RUTA_IMAGENES}+"logo.PNG"]]></imageExpression>
 			</image>
 		</band>
 	</pageHeader>
