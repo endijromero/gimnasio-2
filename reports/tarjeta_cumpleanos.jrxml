@@ -49,18 +49,18 @@ ORDER BY primer_nombre, segundo_nombre, primer_apellido]]>
 				<imageExpression><![CDATA["E:\\gimnasio\\gimnasio\\src\\com\\gimnasio\\files\\logo.PNG"]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="24" y="398" width="249" height="24" forecolor="#660066" uuid="a78e5a09-1f15-4f2d-8f60-a56bf88ec20f"/>
+				<reportElement x="24" y="372" width="249" height="50" forecolor="#CC0000" uuid="a78e5a09-1f15-4f2d-8f60-a56bf88ec20f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Candara" size="18" isBold="true"/>
+					<font fontName="Candara" size="22" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["ATT: STREET GYM"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="24" y="226" width="249" height="151" forecolor="#660066" uuid="95d8c6a3-db97-46ce-b8a6-a8f11a7bdbfa"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Serif" size="18" isBold="false"/>
+				<reportElement x="24" y="214" width="249" height="151" forecolor="#000066" uuid="95d8c6a3-db97-46ce-b8a6-a8f11a7bdbfa"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Comic Sans MS" size="22" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Hola "+$F{primer_nombre}+" "+$F{segundo_nombre}+" "+" te deseamos un feliz dia lleno de alegria y cosas bellas."]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Hola "+$F{primer_nombre}+" "+$F{segundo_nombre}+" "+" te deseamos un feliz día lleno de alegria y muchas sorpresas."]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
