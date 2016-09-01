@@ -385,6 +385,102 @@ public class Model {
     }
 
     /**
+     * 
+     * @param nombres
+     * @param apellidos
+     * @param documento
+     * @param limite
+     * @param llaves
+     * @return
+     * @throws SQLException 
+     */
+    public List<FisioterapiaDto> getFisioterapiaDto(String nombres, String apellidos, String documento, String limite, List<String> llaves) throws SQLException {
+        List<FisioterapiaDto> list = new ArrayList<>();        
+        try (Statement stat = this.conexion.getConexion().createStatement()) {
+            String sql = "SELECT "
+                    + "cl.id as id_cliente, "
+                    + "cl.peso, "
+                    + "cl.talla, "
+                    + "cl.muslo_ant, "
+                    + "cl.triceps, "
+                    + "cl.pectoral, "
+                    + "cl.siliaco, "
+                    + "cl.abdomen, "
+                    + "cl.test_mmss, "
+                    + "cl.test_mmii, "
+                    + "cl.test_uno, "
+                    + "cl.test_dos, "
+                    + "cl.test_tres, "
+                    + "cl.frecuencia_cardiaca, "
+                    + "cl.tension_arterial, "
+                    + "cl.peak_air, "
+                    + "cl.observaciones, "
+                    + "ps.id, "
+                    + "ps.numero_identificacion, "
+                    + "ps.primer_nombre, "
+                    + "ps.segundo_nombre, "
+                    + "ps.primer_apellido, "
+                    + "ps.segundo_apellido, "
+                    + "ps.genero,"
+                    + "ps.fecha_nacimiento"
+                    + " FROM clientes cl"
+                    + " INNER JOIN personas ps"
+                    + " ON cl.persona_id = ps.id "
+                    + " WHERE 1=1";
+            if (!Util.getVacio(nombres)) {
+                sql += " AND UPPER(CONCAT(ps.primer_nombre,' ',COALESCE(ps.segundo_nombre,''))) LIKE '%" + nombres.toUpperCase() + "%' ";
+            }
+            if (!Util.getVacio(apellidos)) {
+                sql += " AND UPPER(CONCAT(ps.primer_apellido,' ',COALESCE(ps.segundo_apellido,''))) LIKE '%" + apellidos.toUpperCase() + "%' ";
+            }
+            if (!Util.getVacio(documento)) {
+                sql += " AND ps.numero_identificacion LIKE '%" + documento + "%' ";
+            }
+            if (llaves != null && llaves.size() > 0) {
+                sql += " AND cl.id IN (" + Joiner.on(",").join(llaves) + ")";
+            }
+            sql += " ORDER BY ps.fecha_registro DESC, ps.primer_nombre, ps.segundo_nombre, ps.primer_apellido,ps.segundo_apellido ";
+            if (limite != null && !limite.toLowerCase().equals("todos")) {
+                sql += "LIMIT " + limite;
+            }
+            ResultSet res = stat.executeQuery(sql);            
+            while (res.next()) {
+                FisioterapiaDto fisioterapia = new FisioterapiaDto();
+                ClienteDto dto = new ClienteDto();
+                PersonaDto persona = new PersonaDto();
+                fisioterapia.setPeso(res.getDouble("peso"));
+                fisioterapia.setTalla(res.getDouble("talla"));
+                fisioterapia.setMuslo_ant(res.getDouble("muslo_ant"));
+                fisioterapia.setTriceps(res.getDouble("triceps"));
+                fisioterapia.setPectoral(res.getDouble("pectoral"));
+                fisioterapia.setSiliaco(res.getDouble("siliaco"));
+                fisioterapia.setAbdomen(res.getDouble("abdomen"));
+                fisioterapia.setTest_uno(res.getDouble("test_uno"));
+                fisioterapia.setTest_dos(res.getDouble("test_dos"));
+                fisioterapia.setTest_tres(res.getDouble("test_tres"));
+                fisioterapia.setTest_mmii(res.getDouble("test_mmii"));
+                fisioterapia.setTest_mmss(res.getDouble("test_mmss"));
+                fisioterapia.setFrecuencia_cardiaca(res.getDouble("frecuencia_cardiaca"));
+                fisioterapia.setTension_arterial(res.getDouble("tension_arterial"));
+                fisioterapia.setPeak_air(res.getDouble("peak_air"));
+                fisioterapia.setObservaciones(res.getString("observaciones"));
+                dto.setId(res.getLong("id_cliente"));
+                persona.setId(res.getLong("id"));
+                persona.setPrimerNombre(res.getString("primer_nombre"));
+                persona.setSegundoNombre(res.getString("segundo_nombre"));
+                persona.setPrimerApellido(res.getString("primer_apellido"));
+                persona.setSegundoApellido(res.getString("segundo_apellido"));
+                persona.setNumeroIdentificacion(res.getString("numero_identificacion"));
+                persona.setFechaNacimiento(res.getString("fecha_nacimiento"));
+                persona.setGenero(res.getShort("genero"));
+                dto.setPersonaDto(persona);
+                fisioterapia.setClienteDto(dto);
+                list.add(fisioterapia);
+            }            
+        }
+        return list;
+    }
+    /**
      *
      * @param nombres
      * @param apellidos

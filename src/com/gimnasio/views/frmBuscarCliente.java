@@ -350,15 +350,20 @@ public class frmBuscarCliente extends javax.swing.JInternalFrame {
                     }
                 }
                 break;
-                case 2: {
-                    /*
-                     frmPrincipal.fisitorepiaView = new frmFisioterapia(this.operacion, documento);
-                     frmPrincipal.jdstPrincipal.add(frmPrincipal.fisitorepiaView);
-                     frmPrincipal.fisitorepiaView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
-                     frmPrincipal.fisitorepiaView.setResizable(true);
-                     frmPrincipal.fisitorepiaView.setClosable(true);
-                     frmPrincipal.fisitorepiaView.setVisible(true);
-                     */
+                case 2: {   
+                    try {                        
+                        frmFisioterapia fisitorepiaView = new frmFisioterapia(this.operacion, documento);
+                        frmPrincipal.jdstPrincipal.add(fisitorepiaView);
+                        fisitorepiaView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+                        fisitorepiaView.setResizable(true);
+                        fisitorepiaView.setClosable(true);
+                        fisitorepiaView.setVisible(true);  
+                      } catch (Exception ex) {
+                        JLabel label = new JLabel("Se ha presentado un error, intente nuevamente");
+                        label.setFont(new Font("consolas", Font.PLAIN, 14));
+                        JOptionPane.showMessageDialog(this, label, "Alerta de error", JOptionPane.ERROR_MESSAGE);
+                        Logger.getLogger(frmBuscarCliente.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 break;
                 case 3: {

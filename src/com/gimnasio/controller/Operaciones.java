@@ -380,6 +380,18 @@ public class Operaciones {
     }
 
     /**
+     * 
+     * @param nombres
+     * @param apellidos
+     * @param documento
+     * @param limite
+     * @return
+     * @throws SQLException 
+     */
+    public List<TablaDto> getReporteFisioterapiaTablaDto(String nombres, String apellidos, String documento, String limite) throws SQLException {
+        return this.getReporteFisioterapiaTablaDto(nombres, apellidos, documento, limite, null);
+    }
+    /**
      *
      * @param mes
      * @return
@@ -415,6 +427,42 @@ public class Operaciones {
         )).forEach((tabla) -> {
             listTable.add(tabla);
         });
+        return listTable;
+    }
+    
+    /**
+     * 
+     * @param nombres
+     * @param apellidos
+     * @param documento
+     * @param limite
+     * @param llaves
+     * @return
+     * @throws SQLException 
+     */
+    public List<TablaDto> getReporteFisioterapiaTablaDto(String nombres, String apellidos, String documento, String limite, List<String> llaves) throws SQLException {
+        List<TablaDto> listTable = new ArrayList();
+        //"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"
+        List<FisioterapiaDto> listFisioterapia = this.model.getFisioterapiaDto(nombres, apellidos, documento, limite, llaves);
+        
+        listFisioterapia.stream().forEach((fisioterapia) -> {
+            fisioterapia.getJacksonPollock();
+        });
+        
+        listFisioterapia.stream().map((fisioterapia) -> new TablaDto(                
+                String.valueOf(fisioterapia.getClienteDto().getPersonaDto().getNumeroIdentificacion()),
+                Util.getQuitaNULL(fisioterapia.getClienteDto().getPersonaDto().getPrimerNombre() + " " + Util.getQuitaNULL(fisioterapia.getClienteDto().getPersonaDto().getSegundoNombre())),
+                Util.getQuitaNULL(fisioterapia.getClienteDto().getPersonaDto().getPrimerApellido() + " " + Util.getQuitaNULL(fisioterapia.getClienteDto().getPersonaDto().getSegundoApellido())),
+                String.valueOf(fisioterapia.getClienteDto().getPersonaDto().getEdad()),                
+                Util.getQuitaNULL(EGenero.getResult(fisioterapia.getClienteDto().getPersonaDto().getGenero()).getNombre()),
+                String.valueOf(fisioterapia.setCalculaTesFlexibilidad()),
+                String.valueOf(fisioterapia.getDensidad()),
+                String.valueOf(fisioterapia.getPorcentaje()),
+                String.valueOf(fisioterapia.setCalcularIMC())                
+        )).forEach((tabla) -> {
+            listTable.add(tabla);
+        });
+        
         return listTable;
     }
 

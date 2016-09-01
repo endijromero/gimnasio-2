@@ -31,6 +31,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmRegistrarPagos registrarPagosView;
     private frmBuscarCliente buscarClienteView;
     private frmReporteCumpleanos cumpleanosView;
+    private frmReporteFisioterapia reporteFisioterapiaView;
     private frmFisioterapia fisitorepiaView;
     private frmDescuentos descuentoView;
     private frmCafeteria cafeteriaView;
@@ -52,6 +53,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.buscarClienteView = null;
         this.fisitorepiaView = null;
         this.cumpleanosView = null;
+        this.reporteFisioterapiaView = null;
         this.descuentoView = null;
         this.productoView = null;
         this.paqueteView = null;
@@ -84,7 +86,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        menuReporte_fisioterapia = new javax.swing.JMenuItem();
         menuCumpleanos = new javax.swing.JMenu();
         menuCierre_caja = new javax.swing.JMenuItem();
         menuClientes_activos = new javax.swing.JMenuItem();
@@ -218,14 +220,14 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jMenu5.add(jMenuItem1);
 
-        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/file-powerpoint-icon.png"))); // NOI18N
-        jMenuItem4.setText("Reporte");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        menuReporte_fisioterapia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/file-powerpoint-icon.png"))); // NOI18N
+        menuReporte_fisioterapia.setText("Reporte");
+        menuReporte_fisioterapia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                menuReporte_fisioterapiaActionPerformed(evt);
             }
         });
-        jMenu5.add(jMenuItem4);
+        jMenu5.add(menuReporte_fisioterapia);
 
         jMenuBar1.add(jMenu5);
 
@@ -485,10 +487,20 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.clientesIngresosView.setVisible(true);
     }//GEN-LAST:event_setRegistrarClienteIngresos
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    /**
+     * 
+     * @param evt 
+     */
+    private void menuReporte_fisioterapiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReporte_fisioterapiaActionPerformed
         // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+        this.reporteFisioterapiaView = new frmReporteFisioterapia(this);
+        frmPrincipal.jdstPrincipal.add(this.reporteFisioterapiaView);
+        this.reporteFisioterapiaView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+        this.reporteFisioterapiaView.setUsuarioSessionDto(usuarioSessionDto);
+        this.reporteFisioterapiaView.setResizable(true);
+        this.reporteFisioterapiaView.setClosable(true);
+        this.reporteFisioterapiaView.setVisible(true);
+    }//GEN-LAST:event_menuReporte_fisioterapiaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -639,7 +651,6 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     public static javax.swing.JDesktopPane jdstPrincipal;
     private javax.swing.JMenuItem menuBuscar_cliente;
     private javax.swing.JMenuItem menuCafeteria;
@@ -652,5 +663,6 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuPagos;
     private javax.swing.JMenuItem menuPaquetes;
     private javax.swing.JMenuItem menuProductos;
+    private javax.swing.JMenuItem menuReporte_fisioterapia;
     // End of variables declaration//GEN-END:variables
 }
