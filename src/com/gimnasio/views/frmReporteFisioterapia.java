@@ -12,9 +12,12 @@ import com.gimnasio.model.MiRender;
 import com.gimnasio.model.TablaDto;
 import com.gimnasio.model.TablaModelo;
 import com.gimnasio.model.UsuarioDto;
+import com.gimnasio.util.Util;
 import java.awt.Font;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
@@ -45,7 +48,7 @@ public class frmReporteFisioterapia extends javax.swing.JInternalFrame {
         this.padre = padre;     
 
         this.headTable = new String[]{"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Test Flex.", "% Grasa", "Desnsidad" ,"IMC"};
-        int widthColumna[] = {100, 200, 200, 50, 50, 200, 200, 200 ,200};
+        int widthColumna[] = {100, 200, 200, 100, 100, 200, 200, 200 ,200};
         this.table = new TablaModelo(this.headTable);
         this.tblClientes.setModel(this.table);
 
@@ -301,7 +304,24 @@ public class frmReporteFisioterapia extends javax.swing.JInternalFrame {
      */
     private void setClienteProceso(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setClienteProceso
         if (evt.getClickCount() == 2) {
-         
+            int fila = this.tblClientes.getSelectedRow();
+            TablaDto dto = (TablaDto) this.table.getData().get(fila);
+            String documento = dto.getDato1();
+            String edad = dto.getDato4();
+            String flexibilidad = dto.getDato6();
+            String densidad = dto.getDato7();
+            String grasa = dto.getDato8();
+            
+            String ruta = "fisioterapia.jrxml";
+            Map params = new HashMap<>();
+            
+            params.put("ID_CLIENTE", documento);
+            params.put("EDAD", edad);
+            params.put("FLEXIBILIDAD", flexibilidad);
+            params.put("DENSIDAD", densidad);
+            params.put("GRASA", grasa);
+            
+            Util.generarReportes(ruta, params);
         }
     }//GEN-LAST:event_setClienteProceso
 
