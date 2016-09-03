@@ -15,6 +15,7 @@ public class frmPagos extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form frmPagos
+     * @throws java.sql.SQLException
      */
     public frmPagos() throws SQLException{
         initComponents();

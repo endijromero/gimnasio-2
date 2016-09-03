@@ -31,8 +31,8 @@ public class frmLogin extends javax.swing.JFrame {
         initComponents();
         this.operacion = new Operaciones();
         this.setLocationRelativeTo(null);
-        // this.txtUser.setText("1052573174");
-        // this.txtPassword.setText("1234");
+        this.txtUser.setText("1052573174");
+        this.txtPassword.setText("1234");
     }
 
     /**
@@ -128,7 +128,7 @@ public class frmLogin extends javax.swing.JFrame {
                     principal.setDefaultCloseOperation(principal.EXIT_ON_CLOSE);
                     if (userDto.getTipoUsuario() == EPerfiles.FISIOTERAPEUTA.getId()) {
                         principal.getJmAdministracion().setEnabled(false);
-                        principal.getJmClientes().setEnabled(false);
+                        principal.getJmClientes().setEnabled(false);                        
                         principal.getJmIngresos().setEnabled(false);
                         principal.getJmPagos().setEnabled(false);
                         principal.getJmReportes().setEnabled(false);

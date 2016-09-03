@@ -35,7 +35,6 @@ public class frmCafeteria extends javax.swing.JInternalFrame {
      * Creates new form frmCafeteria
      *
      * @param operacion
-     * @param usuario
      */
     public frmCafeteria(Operaciones operacion) {
         initComponents();

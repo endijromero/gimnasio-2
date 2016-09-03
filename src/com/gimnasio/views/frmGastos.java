@@ -8,7 +8,6 @@ package com.gimnasio.views;
 import com.gimnasio.controller.*;
 import com.gimnasio.model.*;
 import java.awt.Font;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;

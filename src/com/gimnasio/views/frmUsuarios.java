@@ -179,9 +179,12 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         }
     }
 
+    /**
+     *
+     * @param lblFoto
+     */
     protected final void setNoFile(JLabel lblFoto) {
-        URL filename = getClass().getResource("/com/gimnasio/files/no-file.png");
-        File file = new File(filename.getFile());
+        File file = new File("files/no-file.png");
         if (file.exists()) {
             Image image = new ImageIcon(file.getAbsolutePath()).getImage();
             Util.setPintarFotoPerfil(image, lblFoto);

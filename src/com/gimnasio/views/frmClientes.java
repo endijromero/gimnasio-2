@@ -16,7 +16,6 @@ import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -140,17 +139,20 @@ public class frmClientes extends javax.swing.JInternalFrame {
                 if (file.exists()) {
                     Image image = new ImageIcon(file.getAbsolutePath()).getImage();
                     Util.setPintarFotoPerfil(image, this.lblFotoCliente);
+                } else {
+                    setNoFile(this.lblFotoCliente);
                 }
             } else {
                 setNoFile(this.lblFotoCliente);
             }
             File fileHuella = new File(this.rutaHuellas + this.clienteDto.getPersonaDto().getNumeroIdentificacion() + this.extension);
             if (fileHuella.exists()) {
-                URL filename = getClass().getResource("/com/gimnasio/files/finger-print-128-128.png");
-                File file = new File(filename.getFile());
+                File file = new File("files/finger-print-128-128.png");
                 if (file.exists()) {
                     Image image = new ImageIcon(file.getAbsolutePath()).getImage();
                     Util.setPintarFotoPerfil(image, this.lblHuellaDactilar);
+                } else {
+                    setNoFile(this.lblHuellaDactilar);
                 }
             } else {
                 setNoFile(this.lblHuellaDactilar);
@@ -164,8 +166,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
     }
 
     protected final void setNoFile(JLabel lblFoto) {
-        URL filename = getClass().getResource("/com/gimnasio/files/no-file.png");
-        File file = new File(filename.getFile());
+        File file = new File("files/no-file.png");
         if (file.exists()) {
             Image image = new ImageIcon(file.getAbsolutePath()).getImage();
             Util.setPintarFotoPerfil(image, lblFoto);
@@ -793,7 +794,7 @@ public class frmClientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_setValidarNumeroDocumento
 
     private void setValidaEmail(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_setValidaEmail
-        if (!setValidaEmail(this.txtEmail.getText().toLowerCase())) {
+        if (!this.txtEmail.getText().equals("") && !setValidaEmail(this.txtEmail.getText().toLowerCase())) {
             this.txtEmail.setText(null);
             JLabel label = new JLabel("<html>El correo ingresado: <b>" + this.txtEmail.getText() + "</b> no es correcto</html>");
             label.setFont(new Font("consolas", Font.PLAIN, 14));
