@@ -128,8 +128,8 @@ public class frmLogin extends javax.swing.JFrame {
                     principal.setDefaultCloseOperation(principal.EXIT_ON_CLOSE);
                     if (userDto.getTipoUsuario() == EPerfiles.FISIOTERAPEUTA.getId()) {
                         principal.getJmAdministracion().setEnabled(false);
-                        principal.getJmClientes().setEnabled(false);                        
-                        principal.getJmIngresos().setEnabled(false);
+                        principal.getJmClientes().setEnabled(false);
+                        principal.getJmIngresos().setVisible(false);
                         principal.getJmPagos().setEnabled(false);
                         principal.getJmReportes().setEnabled(false);
                     } else if (userDto.getTipoUsuario() == EPerfiles.RECEPCION.getId()) {
