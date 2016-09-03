@@ -759,7 +759,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
                     String password = this.operacion.setGuardarDatosUsuario(this.usuarioDto);
                     JLabel label;
                     if (!Util.getVacio(password)) {
-                        label = new JLabel("<html>El usuario <b>" + this.usuarioDto.getPersonaDto().getNombreCompleto().toUpperCase() + "</b> se registró correctamente,<br>La clave del usuario es: <b>" + password + "</b></html>");
+                        label = new JLabel("<html>El usuario <b>" + this.usuarioDto.getPersonaDto().getNombreCompleto().toUpperCase() + "</b> se registró correctamente,<br>Usuario: <b>" + this.usuarioDto.getPersonaDto().getNumeroIdentificacion() + "</b><br>La clave del usuario es: <b>" + password + "</b></html>");
                         label.setFont(new Font("consolas", Font.PLAIN, 14));
                         JOptionPane.showMessageDialog(this, label, "Alerta de información", JOptionPane.INFORMATION_MESSAGE);
                         this.setVisible(false);
@@ -826,7 +826,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
                 if (correcto) {
                     this.txtLoggin.setText(this.usuarioDto.getPersonaDto().getNumeroIdentificacion());
                 } else {
-                    JLabel label = new JLabel("<html>El cliente con número de documento: <b>" + this.usuarioDto.getPersonaDto().getNumeroIdentificacion() + "</b> ya se encuentra registrado</html>");
+                    JLabel label = new JLabel("<html>El usuario con número de documento: <b>" + this.usuarioDto.getPersonaDto().getNumeroIdentificacion() + "</b> ya se encuentra registrado</html>");
                     label.setFont(new Font("consolas", Font.PLAIN, 14));
                     JOptionPane.showMessageDialog(this, label, "Error de ingreso de datos", JOptionPane.WARNING_MESSAGE);
                     this.txtDocumento.setText(null);
@@ -881,7 +881,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
                 this.operacion.setGuardarDatosUsuario(this.usuarioDto);
                 String password = String.valueOf(Util.setRandom(1000, 9999));
                 if (this.operacion.setCambiarPassword(this.usuarioDto, password)) {
-                    JLabel label = new JLabel("<html>Los datos para el usuario <b>" + this.usuarioDto.getPersonaDto().getNombreCompleto().toUpperCase() + "</b> se guardaron correctamente, <br>La clave del usuario es: <b>" + password + "</b></html>");
+                    JLabel label = new JLabel("<html>Los datos para el usuario <b>" + this.usuarioDto.getPersonaDto().getNombreCompleto().toUpperCase() + "</b> se guardaron correctamente,<br>Usuario: <b>" + this.usuarioDto.getPersonaDto().getNumeroIdentificacion() + "</b><br>La clave del usuario es: <b>" + password + "</b></html>");
                     label.setFont(new Font("consolas", Font.PLAIN, 14));
                     JOptionPane.showMessageDialog(this, label, "Alerta de información", JOptionPane.INFORMATION_MESSAGE);
                     this.setVisible(false);
