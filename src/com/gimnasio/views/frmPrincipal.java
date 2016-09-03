@@ -30,6 +30,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmClientesIngresos clientesIngresosView;
     private frmRegistrarPagos registrarPagosView;
     private frmBuscarCliente buscarClienteView;
+    private frmBuscarUsuario buscarUsuarioView;
     private frmReporteCumpleanos cumpleanosView;
     private frmReporteFisioterapia reporteFisioterapiaView;
     private frmFisioterapia fisitorepiaView;
@@ -451,7 +452,6 @@ public class frmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_setRegistrarDatosFisioterapeuta
 
     private void setMenuCierreCaja(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setMenuCierreCaja
-        // TODO add your handling code here:
         String ruta = "cieerre_de_caja.jrxml";
         Map params = new HashMap<>();
         Calendar today = new GregorianCalendar();
@@ -463,7 +463,6 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         params.put("FECHA_INICIO", fecha_inicio);
         params.put("FECHA_FIN", fecha_fin);
-
         Util.generarReportes(ruta, params);
     }//GEN-LAST:event_setMenuCierreCaja
 
@@ -471,11 +470,9 @@ public class frmPrincipal extends javax.swing.JFrame {
      *
      */
     private void setMenuClientesActivos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setMenuClientesActivos
-        // TODO add your handling code here:
         String ruta = "clientes_activos.jrxml";
         Map params = new HashMap<>();
         Util.generarReportes(ruta, params);
-
     }//GEN-LAST:event_setMenuClientesActivos
 
     /**
@@ -537,7 +534,14 @@ public class frmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_setMenuCrearUsuario
 
     private void setMenuBuscarUsuario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setMenuBuscarUsuario
-
+        this.buscarUsuarioView = new frmBuscarUsuario(this, operacion, "1");
+        this.buscarUsuarioView.setTitle("Listado de usuarios del sistema");
+        this.buscarUsuarioView.setSize(this.getWidth(), this.getHeight() - 1);
+        this.buscarUsuarioView.setUsuarioSessionDto(this.usuarioSessionDto);
+        this.buscarUsuarioView.setResizable(true);
+        this.buscarUsuarioView.setClosable(true);
+        this.buscarUsuarioView.setVisible(true);
+        frmPrincipal.jdstPrincipal.add(this.buscarUsuarioView);
     }//GEN-LAST:event_setMenuBuscarUsuario
 
     private void menuGastosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuGastosActionPerformed

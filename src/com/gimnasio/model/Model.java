@@ -17,9 +17,61 @@ import java.util.List;
  * @author emimaster16
  */
 public class Model {
-
+    
     private List<Object> listPersist;
     private Conexion conexion;
+    
+    public List<UsuarioDto> getDatosUsuariosSistema(String nombres, String apellidos, String documento, String limite, List<String> llaves) throws SQLException {
+        List<UsuarioDto> list = new ArrayList();
+        try (Statement stat = this.conexion.getConexion().createStatement()) {
+            String sql = "SELECT usu.*, ps.*, usu.id AS idUsuario, ps.id AS idPersona "
+                    + " FROM usuarios usu"
+                    + " INNER JOIN personas ps"
+                    + " ON usu.persona_id = ps.id "
+                    + " WHERE 1 ";
+            if (!Util.getVacio(nombres)) {
+                sql += " AND UPPER(CONCAT(ps.primer_nombre,' ',COALESCE(ps.segundo_nombre,''))) LIKE '%" + nombres.toUpperCase() + "%' ";
+            }
+            if (!Util.getVacio(apellidos)) {
+                sql += " AND UPPER(CONCAT(ps.primer_apellido,' ',COALESCE(ps.segundo_apellido,''))) LIKE '%" + apellidos.toUpperCase() + "%' ";
+            }
+            if (!Util.getVacio(documento)) {
+                sql += " AND ps.numero_identificacion LIKE '%" + documento + "%' ";
+            }
+            if (llaves != null && llaves.size() > 0) {
+                sql += " AND usu.id IN (" + Joiner.on(",").join(llaves) + ")";
+            }
+            sql += " ORDER BY ps.fecha_registro DESC, ps.primer_nombre, ps.segundo_nombre, ps.primer_apellido,ps.segundo_apellido ";
+            if (limite != null && !limite.toLowerCase().equals("todos")) {
+                sql += "LIMIT " + limite;
+            }
+            ResultSet res = stat.executeQuery(sql);
+            while (res.next()) {
+                UsuarioDto dto = new UsuarioDto();
+                dto.setId(res.getLong("idUsuario"));
+                dto.setTipoUsuario(res.getShort("tipo_usuario"));
+                dto.setLoggin(res.getString("loggin"));
+                dto.setPassword(res.getString("password"));
+                dto.setPersonaId(res.getLong("persona_id"));
+                dto.setYnActivo(res.getShort("yn_activo"));
+                dto.setFechaRegistro(res.getString("fecha_registro"));
+                dto.setFechaModificacion(res.getString("fecha_modificacion"));
+                dto.getPersonaDto().setId(res.getLong("idPersona"));
+                dto.getPersonaDto().setPrimerNombre(res.getString("primer_nombre"));
+                dto.getPersonaDto().setSegundoNombre(res.getString("segundo_nombre"));
+                dto.getPersonaDto().setPrimerApellido(res.getString("primer_apellido"));
+                dto.getPersonaDto().setSegundoApellido(res.getString("segundo_apellido"));
+                dto.getPersonaDto().setNumeroIdentificacion(res.getString("numero_identificacion"));
+                dto.getPersonaDto().setFechaNacimiento(res.getString("fecha_nacimiento"));
+                dto.getPersonaDto().setGenero(res.getShort("genero"));
+                dto.getPersonaDto().setMovil(res.getString("movil"));
+                dto.getPersonaDto().setTelefono(res.getString("telefono"));
+                dto.getPersonaDto().setEmail(res.getString("email"));
+                list.add(dto);
+            }
+        }
+        return list;
+    }
 
     /**
      *
@@ -77,7 +129,7 @@ public class Model {
             throw e;
         } finally {
             this.conexion.commit();
-
+            
         }
         return listIngresos;
     }
@@ -120,7 +172,7 @@ public class Model {
                 paquete.setDescuentoId(res.getLong("descuento_id"));
                 paquete.setNumeroDiasTiquetera(res.getShort("numero_dias_tiquetera"));
                 paquete.setDiasUsadosTiquetera(res.getShort("dias_usados_tiquetera"));
-
+                
                 paquete.setPrecioBase(res.getDouble("precio_base"));
                 paquete.setValorTotal(res.getDouble("valor_total"));
                 paquete.setEstado(res.getShort("estado"));
@@ -173,26 +225,26 @@ public class Model {
                 paquete.setDescuentoId(res.getLong("descuento_id"));
                 paquete.setNumeroDiasTiquetera(res.getShort("numero_dias_tiquetera"));
                 paquete.setDiasUsadosTiquetera(res.getShort("dias_usados_tiquetera"));
-
+                
                 paquete.setPrecioBase(res.getDouble("precio_base"));
                 paquete.setValorTotal(res.getDouble("valor_total"));
                 paquete.setEstado(res.getShort("estado"));
                 paquete.setFechaIniciaPaquete(res.getString("fecha_inicia_paquete"));
                 paquete.setFechaFinalizaPaquete(res.getString("fecha_finaliza_paquete"));
-
+                
                 paquete.getPaqueteDto().setId(res.getInt("idPaquete"));
                 paquete.getPaqueteDto().setNombre(res.getString("nombrePaquete"));
                 paquete.getPaqueteDto().setTipo(res.getShort("tipo"));
                 paquete.getPaqueteDto().setPrecioBase(res.getDouble("precioBasePaquete"));
                 paquete.getPaqueteDto().setYnTiquetera(res.getShort("yn_tiquetera"));
                 paquete.getPaqueteDto().setDiasAplazamiento(res.getShort("dias_aplazamiento"));
-
+                
                 paquete.getClienteDto().getPersonaDto().setId(res.getLong("idPersona"));
                 paquete.getClienteDto().getPersonaDto().setPrimerNombre(res.getString("primer_nombre"));
                 paquete.getClienteDto().getPersonaDto().setSegundoNombre(res.getString("segundo_nombre"));
                 paquete.getClienteDto().getPersonaDto().setPrimerApellido(res.getString("primer_apellido"));
                 paquete.getClienteDto().getPersonaDto().setSegundoApellido(res.getString("segundo_apellido"));
-
+                
             }
             stat.close();
         } catch (SQLException e) {
@@ -248,7 +300,7 @@ public class Model {
                         + (clientePaqueteDto.getFechaFinalizaPaquete() == null ? "NULL" : "'" + clientePaqueteDto.getFechaFinalizaPaquete() + "'") + ","
                         + "'" + clientePaqueteDto.getUsuarioId() + "',"
                         + "NOW(), NOW())";
-
+                
             }
             Statement stat = this.conexion.getConexion().createStatement();
             stat.execute(sql);
@@ -583,7 +635,7 @@ public class Model {
         String sql = "SELECT * FROM descuentos WHERE 1";
         if (!Util.getVacio(idDescuentos)) {
             sql += " AND id=" + idDescuentos;
-
+            
         }
         sql += " ORDER BY id ASC ";
         ResultSet res = stat.executeQuery(sql);
@@ -594,7 +646,7 @@ public class Model {
             dto.setPorcentaje(res.getBigDecimal("porcentaje"));
             list.add(dto);
         }
-
+        
         return list;
     }
 
@@ -692,7 +744,7 @@ public class Model {
         List<UsuarioDto> list = new ArrayList();
         Statement stat;
         stat = this.conexion.getConexion().createStatement();
-        String sql = "SELECT usu.*, per.* FROM clientes cli INNER JOIN personas per ON usu.persona_id=per.id WHERE 1 ";
+        String sql = "SELECT usu.*, per.* FROM usuarios usu INNER JOIN personas per ON usu.persona_id=per.id WHERE 1 ";
         if (!Util.getVacio(idUsuario)) {
             sql += " AND usu.id=" + idUsuario;
         }
@@ -711,7 +763,7 @@ public class Model {
             dto.setYnActivo(res.getShort("yn_activo"));
             dto.setFechaRegistro(res.getString("fecha_registro"));
             dto.setFechaModificacion(res.getString("fecha_modificacion"));
-
+            
             dto.getPersonaDto().setId(res.getLong("persona_id"));
             dto.getPersonaDto().setPrimerNombre(res.getString("primer_nombre"));
             dto.getPersonaDto().setSegundoNombre(res.getString("segundo_nombre"));
@@ -742,9 +794,10 @@ public class Model {
      * @author Eminson Mendoza ~~ emimaster16@gmail.com
      * @date 08/07/2016
      * @param usuarioDto
+     * @return
      * @throws java.sql.SQLException
      */
-    public void setGuardarDatosUsuario(UsuarioDto usuarioDto) throws SQLException {
+    public boolean setGuardarDatosUsuario(UsuarioDto usuarioDto) throws SQLException {
         PreparedStatement stat;
         ResultSet res;
         boolean correct = false;
@@ -756,8 +809,7 @@ public class Model {
                         + "genero = ?, fecha_nacimiento = ?, "
                         + "direccion = ?, barrio = ?, "
                         + "telefono = ?, movil = ?, "
-                        + "email = ?, huella_dactilar = ?, "
-                        + "foto_perfil = ?,fecha_modificacion=NOW() "
+                        + "email = ?, foto_perfil = ?, fecha_modificacion=NOW() "
                         + "WHERE id=? ");
                 stat.setString(1, usuarioDto.getPersonaDto().getPrimerNombre());
                 stat.setString(2, usuarioDto.getPersonaDto().getSegundoNombre());
@@ -772,9 +824,8 @@ public class Model {
                 stat.setString(11, usuarioDto.getPersonaDto().getTelefono());
                 stat.setString(12, usuarioDto.getPersonaDto().getMovil());
                 stat.setString(13, usuarioDto.getPersonaDto().getEmail());
-                stat.setBytes(14, usuarioDto.getPersonaDto().getHuellaDactilar());
-                stat.setString(15, usuarioDto.getPersonaDto().getFotoPerfil());
-                stat.setLong(16, usuarioDto.getPersonaDto().getId());
+                stat.setString(14, usuarioDto.getPersonaDto().getFotoPerfil());
+                stat.setLong(15, usuarioDto.getPersonaDto().getId());
                 correct = stat.executeUpdate() > 0;
             } else {
                 stat = this.conexion.getConexion().prepareStatement("INSERT INTO personas (primer_nombre, segundo_nombre, "
@@ -783,9 +834,8 @@ public class Model {
                         + "genero, fecha_nacimiento, "
                         + "direccion, barrio, "
                         + "telefono, movil, "
-                        + "email, huella_dactilar, "
-                        + "foto_perfil, fecha_registro, "
-                        + "fecha_modificacion) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW())", Statement.RETURN_GENERATED_KEYS);
+                        + "email, foto_perfil, fecha_registro, "
+                        + "fecha_modificacion) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW())", Statement.RETURN_GENERATED_KEYS);
                 stat.setString(1, usuarioDto.getPersonaDto().getPrimerNombre());
                 stat.setString(2, usuarioDto.getPersonaDto().getSegundoNombre());
                 stat.setString(3, usuarioDto.getPersonaDto().getPrimerApellido());
@@ -799,8 +849,7 @@ public class Model {
                 stat.setString(11, usuarioDto.getPersonaDto().getTelefono());
                 stat.setString(12, usuarioDto.getPersonaDto().getMovil());
                 stat.setString(13, usuarioDto.getPersonaDto().getEmail());
-                stat.setBytes(14, usuarioDto.getPersonaDto().getHuellaDactilar());
-                stat.setString(15, usuarioDto.getPersonaDto().getFotoPerfil());
+                stat.setString(14, usuarioDto.getPersonaDto().getFotoPerfil());
                 if (stat.executeUpdate() > 0) {
                     res = stat.getGeneratedKeys();
                     if (res.next()) {
@@ -813,19 +862,21 @@ public class Model {
                 if (usuarioDto.getId() != null && !Util.getVacio(String.valueOf(usuarioDto.getId()))) {
                     stat = this.conexion.getConexion().prepareStatement("UPDATE  usuarios SET tipo_usuario = ?, persona_id = ?, loggin = ?, yn_activo = ?, fecha_modificacion=NOW() WHERE id = ?");
                     stat.setShort(1, usuarioDto.getTipoUsuario());
-                    stat.setLong(1, usuarioDto.getPersonaDto().getId());
-                    stat.setString(2, usuarioDto.getPersonaDto().getNumeroIdentificacion());
-                    stat.setShort(3, usuarioDto.getYnActivo());
-                    stat.setLong(4, usuarioDto.getId());
+                    stat.setLong(2, usuarioDto.getPersonaDto().getId());
+                    stat.setString(3, usuarioDto.getPersonaDto().getNumeroIdentificacion());
+                    stat.setShort(4, usuarioDto.getYnActivo());
+                    stat.setLong(5, usuarioDto.getId());
                     stat.executeUpdate();
                 } else {
+                    String password = String.valueOf(Util.setRandom(1000, 9999));
                     stat = this.conexion.getConexion().prepareStatement("INSERT INTO usuarios(tipo_usuario, persona_id, loggin, password, yn_activo, fecha_registro ) VALUES(?, ?, ?, ?, ?, NOW()) ", Statement.RETURN_GENERATED_KEYS);
                     stat.setShort(1, usuarioDto.getTipoUsuario());
                     stat.setLong(2, usuarioDto.getPersonaDto().getId());
                     stat.setString(3, usuarioDto.getPersonaDto().getNumeroIdentificacion());
-                    stat.setString(4, String.valueOf(Util.setRandom(1000, 9999)));
+                    stat.setString(4, Util.getEncriptarMD5(password));
                     stat.setShort(5, usuarioDto.getYnActivo());
                     if (stat.executeUpdate() > 0) {
+                        usuarioDto.setPassword(password);
                         res = stat.getGeneratedKeys();
                         if (res.next()) {
                             correct = true;
@@ -841,6 +892,7 @@ public class Model {
         } finally {
             this.conexion.commit();
         }
+        return correct;
     }
 
     /**
@@ -989,7 +1041,7 @@ public class Model {
             this.conexion.commit();
         }
     }
-
+    
     public boolean setGuardarPaquete(PaqueteDto paquete) throws SQLException {
         boolean correct = false;
         try {
@@ -1017,7 +1069,7 @@ public class Model {
         }
         return correct;
     }
-
+    
     public List<UsuarioDto> getUsuariosDatos(String loggin) throws SQLException {
         List<UsuarioDto> list = new ArrayList();
         Statement stat = this.conexion.getConexion().createStatement();
@@ -1064,7 +1116,7 @@ public class Model {
         String sql = "SELECT * FROM paquetes WHERE 1";
         if (!Util.getVacio(idPaquete)) {
             sql += " AND id=" + idPaquete;
-
+            
         }
         sql += " ORDER BY id ASC ";
         ResultSet res = stat.executeQuery(sql);
@@ -1081,7 +1133,7 @@ public class Model {
         stat.close();
         return list;
     }
-
+    
     public List<ClienteDto> getDatosClientes(String mes) throws SQLException {
         List<ClienteDto> list = new ArrayList();
         try (Statement stat = this.conexion.getConexion().createStatement()) {
@@ -1115,21 +1167,21 @@ public class Model {
         }
         return list;
     }
-
+    
     public List<Object> getListPersist() {
         return listPersist;
     }
-
+    
     public void setListPersist(List<Object> listPersist) {
         this.listPersist = listPersist;
     }
-
+    
     public Conexion getConexion() {
         return conexion;
     }
-
+    
     public void setConexion(Conexion conexion) {
         this.conexion = conexion;
     }
-
+    
 }

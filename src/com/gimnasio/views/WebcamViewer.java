@@ -221,11 +221,20 @@ public class WebcamViewer extends JFrame implements ActionListener, Runnable, We
         if (e.getSource() == btnTomarFoto) {
             boolean reemplaza = true;
             try {
-                String nameFile = "fotos/" + this.getClienteDto().getPersonaDto().getNumeroIdentificacion() + ".JPG";
+                String numeroDocuemnto;
+                String nombreCompleto;
+                if (this.getClienteDto() != null) {
+                    numeroDocuemnto = this.clienteDto.getPersonaDto().getNumeroIdentificacion();
+                    nombreCompleto = this.clienteDto.getPersonaDto().getNombreCompleto();
+                } else {
+                    numeroDocuemnto = this.usuarioDto.getPersonaDto().getNumeroIdentificacion();
+                    nombreCompleto = this.usuarioDto.getPersonaDto().getNombreCompleto();
+                }
+                String nameFile = "fotos/" + numeroDocuemnto + ".JPG";
                 File file = new File(nameFile);
                 if (file.exists()) {
                     int choice = JOptionPane.showConfirmDialog(this,
-                            String.format("La foto para el cliente \"%1$s\" realmente existe.\nDesea reemplazarla?", this.clienteDto.getPersonaDto().getNombreCompleto()),
+                            String.format("La foto para el cliente \"%1$s\" realmente existe.\nDesea reemplazarla?", nombreCompleto),
                             "Información de captura de foto",
                             JOptionPane.YES_NO_CANCEL_OPTION);
                     if (choice == JOptionPane.NO_OPTION) {
@@ -237,16 +246,23 @@ public class WebcamViewer extends JFrame implements ActionListener, Runnable, We
                 if (reemplaza) {
                     BufferedImage image = webcam.getImage();
                     if (ImageIO.write(image, "JPG", file)) {
-                        this.clienteDto.getPersonaDto().setFotoPerfil(file.getName());
-                        ImageIcon imagen = new ImageIcon(this.clienteDto.getPersonaDto().getFotoPerfil());
-                        this.frmCliente.getLblFotoCliente().setIcon(new ImageIcon(
-                                image.getScaledInstance(this.frmCliente.getLblFotoCliente().getWidth(), this.frmCliente.getLblFotoCliente().getHeight(), Image.SCALE_DEFAULT)));
-                        this.frmCliente.getLblFotoCliente().repaint();
+                        ImageIcon imagen = new ImageIcon(file.getName());
+                        if (this.clienteDto != null) {
+                            this.clienteDto.getPersonaDto().setFotoPerfil(file.getName());
+                            this.frmCliente.getLblFotoCliente().setIcon(new ImageIcon(
+                                    image.getScaledInstance(this.frmCliente.getLblFotoCliente().getWidth(), this.frmCliente.getLblFotoCliente().getHeight(), Image.SCALE_DEFAULT)));
+                            this.frmCliente.getLblFotoCliente().repaint();
+                        } else {
+                            this.usuarioDto.getPersonaDto().setFotoPerfil(file.getName());
+                            this.frmUsuario.getLblFotoUsuario().setIcon(new ImageIcon(
+                                    image.getScaledInstance(this.frmUsuario.getLblFotoUsuario().getWidth(), this.frmUsuario.getLblFotoUsuario().getHeight(), Image.SCALE_DEFAULT)));
+                            this.frmUsuario.getLblFotoUsuario().repaint();
+                        }
                         webcam.close();
                         this.setVisible(false);
                         System.out.println("Guardado");
                     } else {
-                        JLabel label = new JLabel("La huella no se ha podido guardar por favor verífique si la camara está bien conectada");
+                        JLabel label = new JLabel("La foto no se ha podido guardar por favor verífique si la camara está bien conectada");
                         label.setFont(new Font("consolas", Font.PLAIN, 14));
                         JOptionPane.showMessageDialog(this, label, "Alerta de verificación de camara web", JOptionPane.WARNING_MESSAGE);
                     }

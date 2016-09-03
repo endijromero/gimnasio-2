@@ -8,9 +8,11 @@ package com.gimnasio.views;
 import com.gimnasio.controller.*;
 import com.gimnasio.model.*;
 import com.gimnasio.model.enums.EGenero;
+import com.gimnasio.model.enums.ESiNo;
 import com.gimnasio.util.Util;
 import com.google.common.base.Joiner;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.io.File;
 import java.net.URL;
@@ -32,20 +34,20 @@ import javax.swing.SwingUtilities;
  * @author rodolfo
  */
 public class frmUsuarios extends javax.swing.JInternalFrame {
-    
-    private final ComboModel comboTipoDocumentos;
+
+    private ComboModel comboTipoDocumentos;
+    private ComboModel comboActivo;
+    private ComboModel comboPerfil;
+
     private List<ComboDto> listTipoDocumentos;
-    
-    private final ComboModel comboPerfil;
     private List<ComboDto> listPerfiles;
-    
-    private final ComboModel comboActivo;
     private List<ComboDto> listActivos;
-    
+
     private UsuarioDto usuarioSessionDto;
-    private final UsuarioDto usuarioDto;
+    private UsuarioDto usuarioDto;
     private final frmPrincipal padre;
     private Operaciones operacion;
+    private frmBuscarUsuario frmBusca;
 
     /**
      *
@@ -59,86 +61,71 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         this.operacion = operacion;
         this.usuarioDto = new UsuarioDto();
         this.padre = padre;
-        
-        ComboDto inicio;
-        this.comboTipoDocumentos = new ComboModel();
-        this.comboTipoDocumentos.getLista().clear();
-        this.listTipoDocumentos = this.operacion.getTipoDocumentos();
-        inicio = new ComboDto("", "-------------");
-        this.listTipoDocumentos.add(0, inicio);
-        this.comboTipoDocumentos.getLista().addAll(this.listTipoDocumentos);
-        this.comboTipoDocumentos.setSelectedItem(inicio);
-        this.cmbTipo_documento.setModel(this.comboTipoDocumentos);
-        
-        this.comboPerfil = new ComboModel();
-        this.comboPerfil.getLista().clear();
-        this.listPerfiles = this.operacion.getPerfiles();
-        this.listPerfiles.add(0, inicio);
-        this.comboPerfil.getLista().addAll(this.listPerfiles);
-        this.comboPerfil.setSelectedItem(inicio);
-        this.cmbTipo_usuario.setModel(this.comboPerfil);
-        
-        this.comboActivo = new ComboModel();
-        this.comboActivo.getLista().clear();
-        this.listActivos = this.operacion.getYnActivo();
-        this.listActivos.add(0, inicio);
-        this.comboActivo.getLista().addAll(this.listActivos);
-        this.comboActivo.setSelectedItem(inicio);
-        this.cmbTipo_usuario.setModel(this.comboActivo);
-        
+        this.setInitCombos();
         this.btnCambiarClave.setEnabled(false);
-        setNoFile(this.lblFotoCliente);
+        setNoFile(this.lblFotoUsuario);
     }
 
     /**
-     *
      * @tutorial Creates new form frmCliente
+     * @param frmBusca
      * @param padre
      * @param operacion
      * @param numeroDocumento
      * @throws java.lang.Exception
      */
-    public frmUsuarios(frmPrincipal padre, Operaciones operacion, String numeroDocumento) throws Exception {
+    public frmUsuarios(frmPrincipal padre, Operaciones operacion, String numeroDocumento, frmBuscarUsuario frmBusca) throws Exception {
         initComponents();
         this.operacion = operacion;
+        this.frmBusca = frmBusca;
         this.padre = padre;
-        
-        ComboDto inicio;
-        this.comboTipoDocumentos = new ComboModel();
-        this.comboTipoDocumentos.getLista().clear();
-        this.listTipoDocumentos = this.operacion.getTipoDocumentos();
-        inicio = new ComboDto("", "-------------");
-        this.listTipoDocumentos.add(0, inicio);
-        this.comboTipoDocumentos.getLista().addAll(this.listTipoDocumentos);
-        this.comboTipoDocumentos.setSelectedItem(inicio);
-        this.cmbTipo_documento.setModel(this.comboTipoDocumentos);
-        
-        this.comboPerfil = new ComboModel();
-        this.comboPerfil.getLista().clear();
-        this.listPerfiles = this.operacion.getPerfiles();
-        this.listPerfiles.add(0, inicio);
-        this.comboPerfil.getLista().addAll(this.listPerfiles);
-        this.comboPerfil.setSelectedItem(inicio);
-        this.cmbTipo_usuario.setModel(this.comboPerfil);
-        
-        this.comboActivo = new ComboModel();
-        this.comboActivo.getLista().clear();
-        this.listActivos = this.operacion.getYnActivo();
-        this.listActivos.add(0, inicio);
-        this.comboActivo.getLista().addAll(this.listActivos);
-        this.comboActivo.setSelectedItem(inicio);
-        this.cmbTipo_usuario.setModel(this.comboActivo);
-        
+
+        this.setInitCombos();
+
         UsuarioDto usuarioTempDto = new UsuarioDto();
-        List<UsuarioDto> listUsuarios = this.operacion.getUsuarioPersonaDatos(null, numeroDocumento);
-        for (UsuarioDto userDto : listUsuarios) {
-            if (userDto.getPersonaDto().getNumeroIdentificacion().equals(numeroDocumento)) {
-                usuarioTempDto = userDto;
-                break;
+        if (!Util.getVacio(numeroDocumento)) {
+            List<UsuarioDto> listUsuarios = this.operacion.getUsuarioPersonaDatos(null, numeroDocumento);
+            for (UsuarioDto userDto : listUsuarios) {
+                if (userDto.getPersonaDto().getNumeroIdentificacion().equals(numeroDocumento)) {
+                    usuarioTempDto = userDto;
+                    break;
+                }
             }
         }
         this.usuarioDto = usuarioTempDto;
         this.setCargarDatosClientes();
+    }
+
+    private void setInitCombos() {
+        try {
+            ComboDto inicio;
+            this.comboTipoDocumentos = new ComboModel();
+            this.comboTipoDocumentos.getLista().clear();
+            this.listTipoDocumentos = this.operacion.getTipoDocumentos();
+            inicio = new ComboDto("", "-------------");
+            this.listTipoDocumentos.add(0, inicio);
+            this.comboTipoDocumentos.getLista().addAll(this.listTipoDocumentos);
+            this.comboTipoDocumentos.setSelectedItem(inicio);
+            this.cmbTipo_documento.setModel(this.comboTipoDocumentos);
+
+            this.comboPerfil = new ComboModel();
+            this.comboPerfil.getLista().clear();
+            this.listPerfiles = this.operacion.getPerfiles();
+            this.listPerfiles.add(0, inicio);
+            this.comboPerfil.getLista().addAll(this.listPerfiles);
+            this.comboPerfil.setSelectedItem(inicio);
+            this.cmbTipo_usuario.setModel(this.comboPerfil);
+
+            this.comboActivo = new ComboModel();
+            this.comboActivo.getLista().clear();
+            this.listActivos = this.operacion.getYnActivo();
+            this.listActivos.add(0, inicio);
+            this.comboActivo.getLista().addAll(this.listActivos);
+            this.cmbYn_activo.setModel(this.comboActivo);
+            this.cmbYn_activo.setSelectedIndex(ESiNo.SI.getId());
+        } catch (Exception ex) {
+            Logger.getLogger(frmUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -168,15 +155,21 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
             this.txtFijo.setText(this.usuarioDto.getPersonaDto().getTelefono());
             this.txtMovil.setText(this.usuarioDto.getPersonaDto().getMovil());
             this.txtEmail.setText(this.usuarioDto.getPersonaDto().getEmail());
-            
+
+            this.cmbTipo_usuario.setSelectedIndex(this.usuarioDto.getTipoUsuario());
+            this.cmbYn_activo.setSelectedIndex(this.usuarioDto.getYnActivo());
+            this.txtLoggin.setText(this.usuarioDto.getLoggin());
+
             if (this.usuarioDto.getPersonaDto().getFotoPerfil().trim().length() > 0) {
                 File file = new File("fotos/" + this.usuarioDto.getPersonaDto().getFotoPerfil());
                 if (file.exists()) {
                     Image image = new ImageIcon(file.getAbsolutePath()).getImage();
-                    Util.setPintarFotoPerfil(image, this.lblFotoCliente);
+                    Util.setPintarFotoPerfil(image, this.lblFotoUsuario);
+                } else {
+                    setNoFile(this.lblFotoUsuario);
                 }
             } else {
-                setNoFile(this.lblFotoCliente);
+                setNoFile(this.lblFotoUsuario);
             }
         } catch (Exception ex) {
             JLabel label = new JLabel("Se ha presentado un error, intente nuevamente");
@@ -185,7 +178,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
             Logger.getLogger(frmUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     protected final void setNoFile(JLabel lblFoto) {
         URL filename = getClass().getResource("/com/gimnasio/files/no-file.png");
         File file = new File(filename.getFile());
@@ -208,7 +201,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         lblTitulo_foto = new javax.swing.JLabel();
-        lblFotoCliente = new javax.swing.JLabel();
+        lblFotoUsuario = new javax.swing.JLabel();
         btnCapturarFoto = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         txtSegundo_nombre = new javax.swing.JTextField();
@@ -273,9 +266,9 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         lblTitulo_foto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitulo_foto.setText("Foto");
 
-        lblFotoCliente.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblFotoCliente.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        lblFotoCliente.setPreferredSize(new java.awt.Dimension(128, 128));
+        lblFotoUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblFotoUsuario.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblFotoUsuario.setPreferredSize(new java.awt.Dimension(128, 128));
 
         btnCapturarFoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/camera-add.png"))); // NOI18N
         btnCapturarFoto.setText("Tomar Foto");
@@ -295,7 +288,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
                     .addComponent(btnCapturarFoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblFotoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblFotoUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblTitulo_foto, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -305,7 +298,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(lblTitulo_foto)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblFotoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblFotoUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCapturarFoto)
                 .addGap(10, 10, 10))
@@ -454,11 +447,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
 
         cmbTipo_usuario.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        txtLoggin.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtLogginsetValidateSoloLetras(evt);
-            }
-        });
+        txtLoggin.setEditable(false);
 
         btnCambiarClave.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCambiarClave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/change_password.png"))); // NOI18N
@@ -678,25 +667,25 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
     public Operaciones getOperacion() {
         return operacion;
     }
-    
+
     public void setOperacion(Operaciones operacion) {
         this.operacion = operacion;
     }
-    
+
     public UsuarioDto getUsuarioSessionDto() {
         return usuarioSessionDto;
     }
-    
+
     public void setUsuarioSessionDto(UsuarioDto usuarioSessionDto) {
         this.usuarioSessionDto = usuarioSessionDto;
     }
-    
-    public JLabel getLblFotoCliente() {
-        return lblFotoCliente;
+
+    public JLabel getLblFotoUsuario() {
+        return lblFotoUsuario;
     }
-    
-    public void setLblFotoCliente(JLabel lblFotoCliente) {
-        this.lblFotoCliente = lblFotoCliente;
+
+    public void setLblFotoUsuario(JLabel lblFotoUsuario) {
+        this.lblFotoUsuario = lblFotoUsuario;
     }
 
     /**
@@ -707,15 +696,30 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
      */
     protected void setLlenarUsuarioDto() {
         ComboDto cmbTipoDocumento = (ComboDto) this.cmbTipo_documento.getSelectedItem();
+        ComboDto cmbTipoUsuario = (ComboDto) this.cmbTipo_usuario.getSelectedItem();
+        ComboDto cmbYnActivo = (ComboDto) this.cmbYn_activo.getSelectedItem();
+
         this.usuarioDto.getPersonaDto().setPrimerNombre(this.txtPrimer_nombre.getText());
         this.usuarioDto.getPersonaDto().setSegundoNombre(this.txtSegundo_nombre.getText());
         this.usuarioDto.getPersonaDto().setPrimerApellido(this.txtPrimer_apellido.getText());
         this.usuarioDto.getPersonaDto().setSegundoApellido(this.txtSegundo_apellido.getText());
+
         if (!Util.getVacio(cmbTipoDocumento.getCodigo())) {
             this.usuarioDto.getPersonaDto().setTipoIdentificacion(Short.parseShort(cmbTipoDocumento.getCodigo()));
         } else {
             this.usuarioDto.getPersonaDto().setTipoIdentificacion(Short.parseShort("0"));
         }
+        if (!Util.getVacio(cmbTipoUsuario.getCodigo())) {
+            this.usuarioDto.setTipoUsuario(Short.parseShort(cmbTipoUsuario.getCodigo()));
+        } else {
+            this.usuarioDto.setTipoUsuario(Short.parseShort("0"));
+        }
+        if (!Util.getVacio(cmbYnActivo.getCodigo())) {
+            this.usuarioDto.setYnActivo(Short.parseShort(cmbYnActivo.getCodigo()));
+        } else {
+            this.usuarioDto.setYnActivo(Short.parseShort("0"));
+        }
+
         this.usuarioDto.getPersonaDto().setNumeroIdentificacion(this.txtDocumento.getText());
         if (this.rbtFemenino.isSelected()) {
             this.usuarioDto.getPersonaDto().setGenero(EGenero.FEMENIMO.getId());
@@ -749,11 +753,29 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
     private void setGuardarUsuario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setGuardarUsuario
         try {
             setLlenarUsuarioDto();
-            List<String> listMessage = this.operacion.setGuardarDatosUsuario(this.usuarioDto, true);
-            if (listMessage.size() < 1 && (this.usuarioDto.getId() != null && this.usuarioDto.getId() > 0)) {
+            List<String> listMessage = this.operacion.setValidarDatosUsuario(this.usuarioDto);
+            if (listMessage.size() < 1) {
                 try {
-                    
-                } catch (Exception ex) {
+                    if (this.usuarioDto.getPersonaDto().getFotoPerfil() == null) {
+                        this.usuarioDto.getPersonaDto().setFotoPerfil(this.usuarioDto.getPersonaDto().getNumeroIdentificacion() + ".JPG");
+                    }
+                    String password = this.operacion.setGuardarDatosUsuario(this.usuarioDto);
+                    JLabel label;
+                    if (!Util.getVacio(password)) {
+                        label = new JLabel("<html>El usuario <b>" + this.usuarioDto.getPersonaDto().getNombreCompleto().toUpperCase() + "</b> se registró correctamente,<br>La clave del usuario es: <b>" + password + "</b></html>");
+                        label.setFont(new Font("consolas", Font.PLAIN, 14));
+                        JOptionPane.showMessageDialog(this, label, "Alerta de información", JOptionPane.INFORMATION_MESSAGE);
+                        this.setVisible(false);
+                    } else {
+                        label = new JLabel("<html>Los datos para el usuario <b>" + this.usuarioDto.getPersonaDto().getNombreCompleto().toUpperCase() + "</b> se guardaron correctamente</html>");
+                        label.setFont(new Font("consolas", Font.PLAIN, 14));
+                        JOptionPane.showMessageDialog(this, label, "Alerta de información", JOptionPane.INFORMATION_MESSAGE);
+                        this.setVisible(false);
+                    }
+                    if (this.frmBusca != null) {
+                        this.frmBusca.setConsultarTableUsuarios();
+                    }
+                } catch (SQLException | HeadlessException ex) {
                     JLabel label = new JLabel("Se ha presentado un error para registrar el pago del paquete, intente nuevamente");
                     label.setFont(new Font("consolas", Font.PLAIN, 14));
                     JOptionPane.showMessageDialog(this, label, "Alerta de error", JOptionPane.ERROR_MESSAGE);
@@ -804,11 +826,14 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
                     idPersona = this.usuarioDto.getPersonaDto().getId().toString();
                 }
                 boolean correcto = this.operacion.setValidaDocumentoCliene(idPersona, this.usuarioDto.getPersonaDto().getNumeroIdentificacion());
-                if (!correcto) {
+                if (correcto) {
+                    this.txtLoggin.setText(this.usuarioDto.getPersonaDto().getNumeroIdentificacion());
+                } else {
                     JLabel label = new JLabel("<html>El cliente con número de documento: <b>" + this.usuarioDto.getPersonaDto().getNumeroIdentificacion() + "</b> ya se encuentra registrado</html>");
                     label.setFont(new Font("consolas", Font.PLAIN, 14));
                     JOptionPane.showMessageDialog(this, label, "Error de ingreso de datos", JOptionPane.WARNING_MESSAGE);
                     this.txtDocumento.setText(null);
+
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(frmUsuarios.class.getName()).log(Level.SEVERE, null, ex);
@@ -817,7 +842,8 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_setValidarNumeroDocumento
 
     private void setValidaEmail(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_setValidaEmail
-        if (!setValidaEmail(this.txtEmail.getText().toLowerCase())) {
+
+        if (!Util.getVacio(this.txtEmail.getText()) && !setValidaEmail(this.txtEmail.getText().toLowerCase())) {
             this.txtEmail.setText(null);
             JLabel label = new JLabel("<html>El correo ingresado: <b>" + this.txtEmail.getText() + "</b> no es correcto</html>");
             label.setFont(new Font("consolas", Font.PLAIN, 14));
@@ -833,14 +859,14 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         try {
             setLlenarUsuarioDto();
             List<String> listMessage;
-            listMessage = this.operacion.setGuardarDatosUsuario(this.usuarioDto, false);
+            listMessage = this.operacion.setValidarDatosUsuario(this.usuarioDto);
             if (listMessage.size() < 1) {
                 WebcamViewer webCam = new WebcamViewer();
                 webCam.setUsuarioDto(this.usuarioDto);
                 webCam.setFrmUsuario(this);
                 SwingUtilities.invokeLater(webCam);
             } else {
-                JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol><li>Debe ingresar los datos del cliente <br>para realizar el proceso de captura de la huella</li></ol></html>");
+                JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol><li>Debe ingresar los datos del cliente <br>para realizar el proceso de captura de la foto</li>" + Joiner.on("\n").join(listMessage) + "</ol></html>");
                 label.setFont(new Font("consolas", Font.PLAIN, 14));
                 JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
             }
@@ -849,12 +875,31 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_setCapturarFotoPerfil
 
-    private void txtLogginsetValidateSoloLetras(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLogginsetValidateSoloLetras
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtLogginsetValidateSoloLetras
-
     private void btnCambiarClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarClaveActionPerformed
-        // TODO add your handling code here:
+        try {
+            setLlenarUsuarioDto();
+            List<String> listMessage;
+            listMessage = this.operacion.setValidarDatosUsuario(this.usuarioDto);
+            if (listMessage.size() < 1) {
+                this.operacion.setGuardarDatosUsuario(this.usuarioDto);
+                String password = String.valueOf(Util.setRandom(1000, 9999));
+                if (this.operacion.setCambiarPassword(this.usuarioDto, password)) {
+                    JLabel label = new JLabel("<html>Los datos para el usuario <b>" + this.usuarioDto.getPersonaDto().getNombreCompleto().toUpperCase() + "</b> se guardaron correctamente, <br>La clave del usuario es: <b>" + password + "</b></html>");
+                    label.setFont(new Font("consolas", Font.PLAIN, 14));
+                    JOptionPane.showMessageDialog(this, label, "Alerta de información", JOptionPane.INFORMATION_MESSAGE);
+                    this.setVisible(false);
+                    if (this.frmBusca != null) {
+                        this.frmBusca.setConsultarTableUsuarios();
+                    }
+                }
+            } else {
+                JLabel label = new JLabel("<html>Verífique la siguiente lista de campos obligatorios:\n<ol>" + Joiner.on("\n").join(listMessage) + "</ol></html>");
+                label.setFont(new Font("consolas", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(this, label, "Alerta de verificación de datos", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(frmUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnCambiarClaveActionPerformed
     /**
      * Valida si es correcta la dirección de correo electrónica dada.
@@ -886,7 +931,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblFecha_nacimiento;
     private javax.swing.JLabel lblFijo;
-    private javax.swing.JLabel lblFotoCliente;
+    private javax.swing.JLabel lblFotoUsuario;
     private javax.swing.JLabel lblGenero;
     private javax.swing.JLabel lblLoggin;
     private javax.swing.JLabel lblMovil;

@@ -33,17 +33,80 @@ public class Operaciones {
         this.model.setConexion(this.conexion);
     }
 
-    public void setCambiarEstadosPaquetes(UsuarioDto userDto) throws SQLException {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String fechaActual = format.format(new Date());
-        List<ClientePaqueteDto> listPaquetes = this.model.getListPaquetesActivosClientes(null, fechaActual, true);
-        Statement stat = this.conexion.getConexion().createStatement();
-        for (ClientePaqueteDto paquete : listPaquetes) {
-            stat.execute("UPDATE cliente_paquete  SET estado = '" + EEstadoPlan.VENCIDO.getId() + "', usuario_id = '" + userDto.getId() + "', fecha_modificacion = NOW()  WHERE id = '" + paquete.getId() + "'");
-        }
-        stat.close();
-        this.conexion.commit();
+    /**
+     *
+     * @param nombres
+     * @param apellidos
+     * @param documento
+     * @param limite
+     * @return
+     * @throws SQLException
+     */
+    public List<TablaDto> getUsuariosDatosTablaDto(String nombres, String apellidos, String documento, String limite) throws SQLException {
+        return this.getUsuariosDatosTablaDto(nombres, apellidos, documento, limite, null);
+    }
 
+    /**
+     *
+     * @param nombres
+     * @param apellidos
+     * @param documento
+     * @param limite
+     * @param llaves
+     * @return
+     * @throws SQLException
+     */
+    public List<TablaDto> getUsuariosDatosTablaDto(String nombres, String apellidos, String documento, String limite, List<String> llaves) throws SQLException {
+        List<TablaDto> listTable = new ArrayList();
+        List<UsuarioDto> listUsuarios = this.model.getDatosUsuariosSistema(nombres, apellidos, documento, limite, llaves);
+        listUsuarios.stream().map((usuario) -> new TablaDto(
+                String.valueOf(usuario.getPersonaDto().getNumeroIdentificacion()),
+                Util.getQuitaNULL(usuario.getPersonaDto().getNombreCompleto().toUpperCase()),
+                Util.getQuitaNULL(EGenero.getResult(usuario.getPersonaDto().getGenero()).getNombre()),
+                String.valueOf(Util.getQuitaNULL(usuario.getPersonaDto().getMovil())) + (usuario.getPersonaDto().getTelefono().trim().equals("") ? "" : (" - " + String.valueOf(Util.getQuitaNULL(usuario.getPersonaDto().getTelefono())))),
+                String.valueOf(Util.getQuitaNULL(usuario.getPersonaDto().getEmail())),
+                Util.getQuitaNULL(EPerfiles.getResult(usuario.getTipoUsuario()).getNombre()),
+                String.valueOf(Util.getQuitaNULL(usuario.getLoggin())),
+                Util.getQuitaNULL(ESiNo.getResult(usuario.getYnActivo()).getNombre())
+        )
+        ).forEach((tabla) -> {
+            listTable.add(tabla);
+        });
+        return listTable;
+    }
+
+    public void setCambiarEstadosPaquetes(UsuarioDto userDto) throws SQLException {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            String fechaActual = format.format(new Date());
+            List<ClientePaqueteDto> listPaquetes = this.model.getListPaquetesActivosClientes(null, fechaActual, true);
+            Statement stat = this.conexion.getConexion().createStatement();
+            for (ClientePaqueteDto paquete : listPaquetes) {
+                stat.execute("UPDATE cliente_paquete  SET estado = '" + EEstadoPlan.VENCIDO.getId() + "', usuario_id = '" + userDto.getId() + "', fecha_modificacion = NOW()  WHERE id = '" + paquete.getId() + "'");
+            }
+            stat.close();
+        } catch (SQLException ex) {
+            this.conexion.rollback();
+            throw ex;
+        } finally {
+            this.conexion.commit();
+        }
+    }
+
+    public boolean setCambiarPassword(UsuarioDto usu, String password) throws SQLException {
+        boolean correct = false;
+        try {
+            Statement stat = this.conexion.getConexion().createStatement();
+            stat.execute("UPDATE usuarios  SET password = '" + Util.getEncriptarMD5(password) + "', fecha_modificacion=NOW() WHERE id = " + usu.getId());
+            correct = true;
+        } catch (SQLException ex) {
+            this.conexion.rollback();
+            correct = false;
+            throw ex;
+        } finally {
+            this.conexion.commit();
+        }
+        return correct;
     }
 
     /**
@@ -52,8 +115,9 @@ public class Operaciones {
      * @param idUsuario
      * @return
      * @throws SQLException
+     * @throws java.text.ParseException
      */
-    public boolean setInsertarIngresoCliente(ClienteDto clienteDto, long idUsuario) throws SQLException {
+    public boolean setInsertarIngresoCliente(ClienteDto clienteDto, long idUsuario) throws SQLException, ParseException {
         boolean correct = false;
         if (clienteDto.getId() > 0 && !clienteDto.getId().equals("")) {
             ClientePaqueteDto paqueteDto = this.model.getPaqueteActivoCliente(clienteDto.getId().toString(), null);
@@ -99,10 +163,8 @@ public class Operaciones {
                     }
                     stat.close();
                 } catch (ParseException ex) {
-                    this.conexion.getConexion().rollback();
-                    Logger
-                            .getLogger(Operaciones.class
-                                    .getName()).log(Level.SEVERE, null, ex);
+                    this.conexion.rollback();
+                    throw ex;
                 }
                 if (correct == true) {
                     this.conexion.commit();
@@ -678,11 +740,10 @@ public class Operaciones {
      * @author Eminson Mendoza ~~ emimaster16@gmail.com
      * @date 08/07/2016
      * @param usuarioDto
-     * @param guarda
      * @return
      * @throws SQLException
      */
-    public List<String> setGuardarDatosUsuario(UsuarioDto usuarioDto, boolean guarda) throws SQLException {
+    public List<String> setValidarDatosUsuario(UsuarioDto usuarioDto) throws SQLException {
         List<String> listMessages = new ArrayList();
         if (Util.getVacio(usuarioDto.getPersonaDto().getPrimerNombre())) {
             listMessages.add("<li>Primer nombre</li>");
@@ -696,7 +757,6 @@ public class Operaciones {
         if (Util.getVacio(usuarioDto.getPersonaDto().getNumeroIdentificacion())) {
             listMessages.add("<li>Número de documento</li>");
         }
-
         if (usuarioDto.getPersonaDto().getGenero() == 0) {
             listMessages.add("<li>Género</li>");
         }
@@ -712,10 +772,29 @@ public class Operaciones {
         if (Util.getVacio(usuarioDto.getPersonaDto().getBarrio())) {
             listMessages.add("<li>Barrio domicilio</li>");
         }
-        if (listMessages.size() < 1 && guarda) {
-            this.model.setGuardarDatosUsuario(usuarioDto);
+        if (Util.getVacio(String.valueOf(usuarioDto.getTipoUsuario())) || usuarioDto.getTipoUsuario() == 0) {
+            listMessages.add("<li>Perfil del usuario</li>");
+        }
+        if (Util.getVacio(String.valueOf(usuarioDto.getYnActivo())) || usuarioDto.getYnActivo() == 0) {
+            listMessages.add("<li>Campo activo</li>");
         }
         return listMessages;
+    }
+
+    /**
+     *
+     * @param usuarioDto
+     * @return
+     * @throws SQLException
+     */
+    public String setGuardarDatosUsuario(UsuarioDto usuarioDto) throws SQLException {
+        String password = "";
+        if (this.model.setGuardarDatosUsuario(usuarioDto)) {
+            if (Util.getVacio(usuarioDto.getFechaModificacion())) {
+                password = usuarioDto.getPassword();
+            }
+        }
+        return password;
     }
 
     /**

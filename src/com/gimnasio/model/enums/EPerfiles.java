@@ -17,6 +17,17 @@ public enum EPerfiles {
                     return 1;
                 }
             },
+    RECEPCION {
+                @Override
+                public String getNombre() {
+                    return "Recepción";
+                }
+
+                @Override
+                public short getId() {
+                    return 2;
+                }
+            },
     FISIOTERAPEUTA {
                 @Override
                 public String getNombre() {
@@ -25,7 +36,7 @@ public enum EPerfiles {
 
                 @Override
                 public short getId() {
-                    return 2;
+                    return 3;
                 }
             };
 
