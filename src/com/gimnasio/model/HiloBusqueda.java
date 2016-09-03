@@ -213,7 +213,6 @@ public class HiloBusqueda extends Thread {
                         } catch (ParseException ex) {
                             Logger.getLogger(HiloBusqueda.class.getName()).log(Level.SEVERE, null, ex);
                         }
-
                     }
                 } else {
                     message += "El plan o paquete vence el día de hoy para el cliente: <b>" + clienteDto.getPersonaDto().getNombreCompleto().toUpperCase() + "</b><br>";

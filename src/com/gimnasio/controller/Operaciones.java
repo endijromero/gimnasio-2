@@ -22,10 +22,10 @@ import javax.swing.JOptionPane;
  * @author emimaster16
  */
 public class Operaciones {
-
+    
     private Model model;
     private Conexion conexion;
-
+    
     public Operaciones() {
         this.conexion = new Conexion();
         this.conexion.connect();
@@ -63,7 +63,7 @@ public class Operaciones {
                 String.valueOf(usuario.getPersonaDto().getNumeroIdentificacion()),
                 Util.getQuitaNULL(usuario.getPersonaDto().getNombreCompleto().toUpperCase()),
                 Util.getQuitaNULL(EGenero.getResult(usuario.getPersonaDto().getGenero()).getNombre()),
-                String.valueOf(Util.getQuitaNULL(usuario.getPersonaDto().getMovil())) + (usuario.getPersonaDto().getTelefono().trim().equals("") ? "" : (" - " + String.valueOf(Util.getQuitaNULL(usuario.getPersonaDto().getTelefono())))),
+                String.valueOf(Util.getQuitaNULL(usuario.getPersonaDto().getMovil())) + (Util.getVacio(usuario.getPersonaDto().getTelefono()) ? "" : (" - " + String.valueOf(Util.getQuitaNULL(usuario.getPersonaDto().getTelefono())))),
                 String.valueOf(Util.getQuitaNULL(usuario.getPersonaDto().getEmail())),
                 Util.getQuitaNULL(EPerfiles.getResult(usuario.getTipoUsuario()).getNombre()),
                 String.valueOf(Util.getQuitaNULL(usuario.getLoggin())),
@@ -74,7 +74,7 @@ public class Operaciones {
         });
         return listTable;
     }
-
+    
     public void setCambiarEstadosPaquetes(UsuarioDto userDto) throws SQLException {
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -92,7 +92,7 @@ public class Operaciones {
             this.conexion.commit();
         }
     }
-
+    
     public boolean setCambiarPassword(UsuarioDto usu, String password) throws SQLException {
         boolean correct = false;
         try {
@@ -198,7 +198,7 @@ public class Operaciones {
     public List<ClienteIngresoDto> getClientesIngresosDia(String idCliente) throws SQLException {
         return this.model.getClientesIngresosDia(idCliente);
     }
-
+    
     public List<TablaDto> getClientesIngresoTableDto() throws SQLException {
         List<TablaDto> result = new ArrayList();
         List<ClienteIngresoDto> list = this.model.getClientesIngresosDia(null);
@@ -209,7 +209,7 @@ public class Operaciones {
             }
             return this.getClientesDatosTablaDto(llaves);
         }
-
+        
         return result;
     }
 
@@ -274,7 +274,7 @@ public class Operaciones {
         }
         return lista;
     }
-
+    
     public List<ComboDto> getYnActivo() throws Exception {
         List<ComboDto> lista = new ArrayList();
         for (ESiNo tip : ESiNo.getValues()) {
@@ -313,7 +313,7 @@ public class Operaciones {
         }
         return lista;
     }
-
+    
     public List<PaqueteDto> getPaquetesDatos(String idPaquete) throws SQLException {
         return this.model.getPaquetesDatos(idPaquete);
     }
@@ -333,7 +333,7 @@ public class Operaciones {
         } else {
             listMessages.add("<li>TEST DE MMII: Número de repeticiones</li>");
         }
-
+        
         if (fisioterapia.getTest_uno() > 0) {
         } else {
             listMessages.add("<li>TEST DE FLEXIBILIDAD: Test uno</li>");
@@ -346,7 +346,7 @@ public class Operaciones {
         } else {
             listMessages.add("<li>TEST DE FLEXIBILIDAD: Test tres</li>");
         }
-
+        
         if (fisioterapia.getClienteDto().getPersonaDto().getGenero() == EGenero.FEMENIMO.getId()) { //HOMBRE
             if (fisioterapia.getTriceps() > 0) {
             } else {
@@ -357,7 +357,7 @@ public class Operaciones {
                 listMessages.add("<li>PORCENTAJE DE GRASA: Siliaco</li>");
             }
         }
-
+        
         if (fisioterapia.getClienteDto().getPersonaDto().getGenero() == EGenero.MASCULINO.getId()) { //HOMBRE
             if (fisioterapia.getPectoral() > 0) {
             } else {
@@ -387,7 +387,7 @@ public class Operaciones {
         if (listMessages.size() < 1) {
             try {
                 this.model.getSaveFisioterapia(fisioterapia);
-
+                
             } catch (SQLException ex) {
                 Logger.getLogger(Operaciones.class
                         .getName()).log(Level.SEVERE, null, ex);
@@ -507,11 +507,11 @@ public class Operaciones {
         List<TablaDto> listTable = new ArrayList();
         //"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"
         List<FisioterapiaDto> listFisioterapia = this.model.getFisioterapiaDto(nombres, apellidos, documento, limite, llaves);
-
+        
         listFisioterapia.stream().forEach((fisioterapia) -> {
             fisioterapia.getJacksonPollock();
         });
-
+        
         listFisioterapia.stream().map((fisioterapia) -> new TablaDto(
                 String.valueOf(fisioterapia.getClienteDto().getPersonaDto().getNumeroIdentificacion()),
                 Util.getQuitaNULL(fisioterapia.getClienteDto().getPersonaDto().getPrimerNombre() + " " + Util.getQuitaNULL(fisioterapia.getClienteDto().getPersonaDto().getSegundoNombre())),
@@ -525,7 +525,7 @@ public class Operaciones {
         )).forEach((tabla) -> {
             listTable.add(tabla);
         });
-
+        
         return listTable;
     }
 
@@ -587,7 +587,7 @@ public class Operaciones {
             if (idProducto > 0 && idUsuario > 0 && !cantidad.equals("") && !valor_total.equals("")) {
                 java.util.Date fecha = new Date();
                 guarda = this.model.setGuardarCafeteria(idProducto, idUsuario, cantidad, valor_total, fecha);
-
+                
             }
         } catch (SQLException ex) {
             Logger.getLogger(Operaciones.class
@@ -675,23 +675,30 @@ public class Operaciones {
         return listTable;
     }
 
-    public boolean setValidaDocumentoCliene(String idPersona, String numeroDocuemnto) throws SQLException {
+    /**
+     *
+     * @param idPersona
+     * @param numeroDocuemento
+     * @return
+     * @throws SQLException
+     */
+    public boolean setValidaDocumentoCliene(String idPersona, String numeroDocuemento) throws SQLException {
         boolean correcto = true;
-        List<ClienteDto> listClientes = this.model.getClienteDatos(null, numeroDocuemnto);
-        for (ClienteDto dto : listClientes) {
+        List<PersonaDto> listPersonas = this.model.getDatosPersona(numeroDocuemento);
+        for (PersonaDto dto : listPersonas) {
             if (!Util.getVacio(idPersona)) {
-                if (!idPersona.equals(String.valueOf(dto.getPersonaDto().getId())) && numeroDocuemnto.equals(dto.getPersonaDto().getNumeroIdentificacion())) {
+                if (!idPersona.equals(String.valueOf(dto.getId())) && numeroDocuemento.equals(dto.getNumeroIdentificacion())) {
                     correcto = false;
                     break;
                 }
-            } else if (numeroDocuemnto.equals(dto.getPersonaDto().getNumeroIdentificacion())) {
+            } else if (numeroDocuemento.equals(dto.getNumeroIdentificacion())) {
                 correcto = false;
                 break;
             }
         }
         return correcto;
     }
-
+    
     public List<ClienteDto> getClienteHuellasDatos(String idCliente) throws SQLException {
         List<ClienteDto> list = new ArrayList();
         List<ClienteDto> listClientes = this.model.getClienteDatos(idCliente, null);
@@ -702,7 +709,7 @@ public class Operaciones {
         }
         return list;
     }
-
+    
     public List<ClienteDto> getClienteDatos(String idCliente) throws SQLException {
         List<ClienteDto> list = this.model.getClienteDatos(idCliente, null);
         return list;
@@ -820,7 +827,7 @@ public class Operaciones {
         if (Util.getVacio(clienteDto.getPersonaDto().getNumeroIdentificacion())) {
             listMessages.add("<li>Número de documento</li>");
         }
-
+        
         if (clienteDto.getPersonaDto().getGenero() == 0) {
             listMessages.add("<li>Género</li>");
         }
@@ -844,7 +851,7 @@ public class Operaciones {
         }
         return listMessages;
     }
-
+    
     public List<ComboDto> getPerfiles() throws Exception {
         List<ComboDto> lista = new ArrayList();
         for (EPerfiles tip : EPerfiles.getValues()) {
@@ -853,7 +860,7 @@ public class Operaciones {
         }
         return lista;
     }
-
+    
     public List<ComboDto> getTipoDocumentos() throws Exception {
         List<ComboDto> lista = new ArrayList();
         for (ETipoDocumento tip : ETipoDocumento.getValues()) {
@@ -935,14 +942,14 @@ public class Operaciones {
      */
     public ClientePaqueteDto getPaqueteActivoCliente(String idCliente, String documento) throws SQLException {
         return this.model.getPaqueteActivoCliente(idCliente, documento);
-    }    
-    
+    }
+
     /**
-     * 
+     *
      * @param gasto
      * @param usuario_id
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public boolean setSaveGastos(GastoDto gasto, String usuario_id) throws SQLException {
         boolean guarda = false;
@@ -955,12 +962,12 @@ public class Operaciones {
         }
         return guarda;
     }
-    
+
     /**
-     * 
+     *
      * @param idGasto
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public List<TablaDto> getGastosDatosTablaDto(String idGasto) throws SQLException {
         List<TablaDto> listTable = new ArrayList();
@@ -973,21 +980,21 @@ public class Operaciones {
                 });
         return listTable;
     }
-
+    
     public Model getModel() {
         return model;
     }
-
+    
     public void setModel(Model model) {
         this.model = model;
     }
-
+    
     public Conexion getConexion() {
         return conexion;
     }
-
+    
     public void setConexion(Conexion conexion) {
         this.conexion = conexion;
     }
-
+    
 }

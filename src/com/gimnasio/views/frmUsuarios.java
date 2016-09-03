@@ -454,7 +454,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         btnCambiarClave.setText("Cambiar Clave");
         btnCambiarClave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCambiarClaveActionPerformed(evt);
+                setCambiarClave(evt);
             }
         });
 
@@ -521,8 +521,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                                         .addComponent(btnGuardar)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnCambiarClave)))))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                                        .addComponent(btnCambiarClave))))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -658,8 +657,6 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
-
-        jPanel1.getAccessibleContext().setAccessibleName("AGREGAR USUARIO");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -875,7 +872,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_setCapturarFotoPerfil
 
-    private void btnCambiarClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarClaveActionPerformed
+    private void setCambiarClave(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCambiarClave
         try {
             setLlenarUsuarioDto();
             List<String> listMessage;
@@ -900,7 +897,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(frmUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnCambiarClaveActionPerformed
+    }//GEN-LAST:event_setCambiarClave
     /**
      * Valida si es correcta la dirección de correo electrónica dada.
      *

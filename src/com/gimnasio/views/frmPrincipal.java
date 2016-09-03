@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 
 /**
@@ -76,7 +77,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jdstPrincipal = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        jmAdministracion = new javax.swing.JMenu();
         menuPaquetes = new javax.swing.JMenuItem();
         menuDescuentos = new javax.swing.JMenuItem();
         menuProductos = new javax.swing.JMenuItem();
@@ -84,17 +85,17 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuCrear_usuario = new javax.swing.JMenuItem();
         menuBuscar_cliente1 = new javax.swing.JMenuItem();
         menuGastos = new javax.swing.JMenuItem();
-        menuCliente = new javax.swing.JMenu();
+        jmClientes = new javax.swing.JMenu();
         menuCrear_cliente = new javax.swing.JMenuItem();
         menuBuscar_cliente = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        jmPagos = new javax.swing.JMenu();
         menuPagos = new javax.swing.JMenuItem();
         menuCafeteria = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        jMenu5 = new javax.swing.JMenu();
+        jmIngresos = new javax.swing.JMenu();
+        jmFisioterapeuta = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         menuReporte_fisioterapia = new javax.swing.JMenuItem();
-        menuCumpleanos = new javax.swing.JMenu();
+        jmReportes = new javax.swing.JMenu();
         menuCierre_caja = new javax.swing.JMenuItem();
         menuClientes_activos = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -112,8 +113,8 @@ public class frmPrincipal extends javax.swing.JFrame {
             .addGap(0, 370, Short.MAX_VALUE)
         );
 
-        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/cog-icon.png"))); // NOI18N
-        jMenu1.setText("Administración");
+        jmAdministracion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/cog-icon.png"))); // NOI18N
+        jmAdministracion.setText("Administración");
 
         menuPaquetes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/folder-icon.png"))); // NOI18N
         menuPaquetes.setText("Paquetes");
@@ -122,7 +123,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                 setCrearPaquetes(evt);
             }
         });
-        jMenu1.add(menuPaquetes);
+        jmAdministracion.add(menuPaquetes);
 
         menuDescuentos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/box-in-icon.png"))); // NOI18N
         menuDescuentos.setText("Descuentos");
@@ -132,7 +133,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                 setCrearDescuentos(evt);
             }
         });
-        jMenu1.add(menuDescuentos);
+        jmAdministracion.add(menuDescuentos);
 
         menuProductos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/apple-2-icon.png"))); // NOI18N
         menuProductos.setText("Productos");
@@ -141,7 +142,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                 setCrearPoductos(evt);
             }
         });
-        jMenu1.add(menuProductos);
+        jmAdministracion.add(menuProductos);
 
         menuUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/user-male-alt-icon.png"))); // NOI18N
         menuUsuario.setText("Usuarios");
@@ -164,7 +165,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         menuUsuario.add(menuBuscar_cliente1);
 
-        jMenu1.add(menuUsuario);
+        jmAdministracion.add(menuUsuario);
 
         menuGastos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/shopping-basket-accept-icon.png"))); // NOI18N
         menuGastos.setText("Gastos Diarios");
@@ -173,12 +174,12 @@ public class frmPrincipal extends javax.swing.JFrame {
                 menuGastosActionPerformed(evt);
             }
         });
-        jMenu1.add(menuGastos);
+        jmAdministracion.add(menuGastos);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(jmAdministracion);
 
-        menuCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/user-male-alt-icon.png"))); // NOI18N
-        menuCliente.setText("Clientes");
+        jmClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/user-male-alt-icon.png"))); // NOI18N
+        jmClientes.setText("Clientes");
 
         menuCrear_cliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/user-male-alt-icon.png"))); // NOI18N
         menuCrear_cliente.setText("Crear");
@@ -187,7 +188,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                 setRegistrarClientes(evt);
             }
         });
-        menuCliente.add(menuCrear_cliente);
+        jmClientes.add(menuCrear_cliente);
 
         menuBuscar_cliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Zoom-icon.png"))); // NOI18N
         menuBuscar_cliente.setText("Buscar");
@@ -196,12 +197,12 @@ public class frmPrincipal extends javax.swing.JFrame {
                 setBuscarClientes(evt);
             }
         });
-        menuCliente.add(menuBuscar_cliente);
+        jmClientes.add(menuBuscar_cliente);
 
-        jMenuBar1.add(menuCliente);
+        jMenuBar1.add(jmClientes);
 
-        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/money-icon.png"))); // NOI18N
-        jMenu3.setText("Pagos");
+        jmPagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/money-icon.png"))); // NOI18N
+        jmPagos.setText("Pagos");
 
         menuPagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/money-icon.png"))); // NOI18N
         menuPagos.setText("Pagos");
@@ -211,7 +212,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                 setRegistrarPagosPlanes(evt);
             }
         });
-        jMenu3.add(menuPagos);
+        jmPagos.add(menuPagos);
 
         menuCafeteria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Juice-icon.png"))); // NOI18N
         menuCafeteria.setText("Cafeteria");
@@ -220,21 +221,21 @@ public class frmPrincipal extends javax.swing.JFrame {
                 setRegistrarPagosProductos(evt);
             }
         });
-        jMenu3.add(menuCafeteria);
+        jmPagos.add(menuCafeteria);
 
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(jmPagos);
 
-        jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Hand-Touch-2-icon.png"))); // NOI18N
-        jMenu4.setText("Registro");
-        jMenu4.addMouseListener(new java.awt.event.MouseAdapter() {
+        jmIngresos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Hand-Touch-2-icon.png"))); // NOI18N
+        jmIngresos.setText("Registro");
+        jmIngresos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 setRegistrarClienteIngresos(evt);
             }
         });
-        jMenuBar1.add(jMenu4);
+        jMenuBar1.add(jmIngresos);
 
-        jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/medical-suitecase-icon.png"))); // NOI18N
-        jMenu5.setText("Fisioterapia");
+        jmFisioterapeuta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/medical-suitecase-icon.png"))); // NOI18N
+        jmFisioterapeuta.setText("Fisioterapia");
 
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/medical-suitecase-icon.png"))); // NOI18N
         jMenuItem1.setText("Registrar");
@@ -243,7 +244,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                 setRegistrarDatosFisioterapeuta(evt);
             }
         });
-        jMenu5.add(jMenuItem1);
+        jmFisioterapeuta.add(jMenuItem1);
 
         menuReporte_fisioterapia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/file-powerpoint-icon.png"))); // NOI18N
         menuReporte_fisioterapia.setText("Reporte");
@@ -252,12 +253,12 @@ public class frmPrincipal extends javax.swing.JFrame {
                 setMenuReporteFisioterapeuta(evt);
             }
         });
-        jMenu5.add(menuReporte_fisioterapia);
+        jmFisioterapeuta.add(menuReporte_fisioterapia);
 
-        jMenuBar1.add(jMenu5);
+        jMenuBar1.add(jmFisioterapeuta);
 
-        menuCumpleanos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/file-powerpoint-icon.png"))); // NOI18N
-        menuCumpleanos.setText("Reportes");
+        jmReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/file-powerpoint-icon.png"))); // NOI18N
+        jmReportes.setText("Reportes");
 
         menuCierre_caja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/cash-register-icon.png"))); // NOI18N
         menuCierre_caja.setText("Cierre de Caja");
@@ -266,7 +267,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                 setMenuCierreCaja(evt);
             }
         });
-        menuCumpleanos.add(menuCierre_caja);
+        jmReportes.add(menuCierre_caja);
 
         menuClientes_activos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/User-green-icon.png"))); // NOI18N
         menuClientes_activos.setText("Clientes Activos");
@@ -275,7 +276,7 @@ public class frmPrincipal extends javax.swing.JFrame {
                 setMenuClientesActivos(evt);
             }
         });
-        menuCumpleanos.add(menuClientes_activos);
+        jmReportes.add(menuClientes_activos);
 
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Present-icon.png"))); // NOI18N
         jMenuItem3.setText("Cumpleaños");
@@ -284,9 +285,9 @@ public class frmPrincipal extends javax.swing.JFrame {
                 setMenuCumpleanos(evt);
             }
         });
-        menuCumpleanos.add(jMenuItem3);
+        jmReportes.add(jMenuItem3);
 
-        jMenuBar1.add(menuCumpleanos);
+        jMenuBar1.add(jmReportes);
 
         setJMenuBar(jMenuBar1);
 
@@ -709,25 +710,73 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.usuarioView = usuarioView;
     }
 
+    public JMenu getJmAdministracion() {
+        return jmAdministracion;
+    }
+
+    public void setJmAdministracion(JMenu jmAdministracion) {
+        this.jmAdministracion = jmAdministracion;
+    }
+
+    public JMenu getJmClientes() {
+        return jmClientes;
+    }
+
+    public void setJmClientes(JMenu jmClientes) {
+        this.jmClientes = jmClientes;
+    }
+
+    public JMenu getJmIngresos() {
+        return jmIngresos;
+    }
+
+    public void setJmIngresos(JMenu jmIngresos) {
+        this.jmIngresos = jmIngresos;
+    }
+
+    public JMenu getJmPagos() {
+        return jmPagos;
+    }
+
+    public void setJmPagos(JMenu jmPagos) {
+        this.jmPagos = jmPagos;
+    }
+
+    public JMenu getJmReportes() {
+        return jmReportes;
+    }
+
+    public void setJmReportes(JMenu jmReportes) {
+        this.jmReportes = jmReportes;
+    }
+
+    public JMenu getJmFisioterapeuta() {
+        return jmFisioterapeuta;
+    }
+
+    public void setJmFisioterapeuta(JMenu jmFisioterapeuta) {
+        this.jmFisioterapeuta = jmFisioterapeuta;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem3;
     public static javax.swing.JDesktopPane jdstPrincipal;
+    private javax.swing.JMenu jmAdministracion;
+    private javax.swing.JMenu jmClientes;
+    private javax.swing.JMenu jmFisioterapeuta;
+    private javax.swing.JMenu jmIngresos;
+    private javax.swing.JMenu jmPagos;
+    private javax.swing.JMenu jmReportes;
     private javax.swing.JMenuItem menuBuscar_cliente;
     private javax.swing.JMenuItem menuBuscar_cliente1;
     private javax.swing.JMenuItem menuCafeteria;
     private javax.swing.JMenuItem menuCierre_caja;
-    private javax.swing.JMenu menuCliente;
     private javax.swing.JMenuItem menuClientes_activos;
     private javax.swing.JMenuItem menuCrear_cliente;
     private javax.swing.JMenuItem menuCrear_usuario;
-    private javax.swing.JMenu menuCumpleanos;
     private javax.swing.JMenuItem menuDescuentos;
     private javax.swing.JMenuItem menuGastos;
     private javax.swing.JMenuItem menuPagos;

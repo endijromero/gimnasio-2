@@ -17,10 +17,10 @@ import java.util.List;
  * @author emimaster16
  */
 public class Model {
-    
+
     private List<Object> listPersist;
     private Conexion conexion;
-    
+
     public List<UsuarioDto> getDatosUsuariosSistema(String nombres, String apellidos, String documento, String limite, List<String> llaves) throws SQLException {
         List<UsuarioDto> list = new ArrayList();
         try (Statement stat = this.conexion.getConexion().createStatement()) {
@@ -129,7 +129,7 @@ public class Model {
             throw e;
         } finally {
             this.conexion.commit();
-            
+
         }
         return listIngresos;
     }
@@ -172,7 +172,7 @@ public class Model {
                 paquete.setDescuentoId(res.getLong("descuento_id"));
                 paquete.setNumeroDiasTiquetera(res.getShort("numero_dias_tiquetera"));
                 paquete.setDiasUsadosTiquetera(res.getShort("dias_usados_tiquetera"));
-                
+
                 paquete.setPrecioBase(res.getDouble("precio_base"));
                 paquete.setValorTotal(res.getDouble("valor_total"));
                 paquete.setEstado(res.getShort("estado"));
@@ -225,26 +225,26 @@ public class Model {
                 paquete.setDescuentoId(res.getLong("descuento_id"));
                 paquete.setNumeroDiasTiquetera(res.getShort("numero_dias_tiquetera"));
                 paquete.setDiasUsadosTiquetera(res.getShort("dias_usados_tiquetera"));
-                
+
                 paquete.setPrecioBase(res.getDouble("precio_base"));
                 paquete.setValorTotal(res.getDouble("valor_total"));
                 paquete.setEstado(res.getShort("estado"));
                 paquete.setFechaIniciaPaquete(res.getString("fecha_inicia_paquete"));
                 paquete.setFechaFinalizaPaquete(res.getString("fecha_finaliza_paquete"));
-                
+
                 paquete.getPaqueteDto().setId(res.getInt("idPaquete"));
                 paquete.getPaqueteDto().setNombre(res.getString("nombrePaquete"));
                 paquete.getPaqueteDto().setTipo(res.getShort("tipo"));
                 paquete.getPaqueteDto().setPrecioBase(res.getDouble("precioBasePaquete"));
                 paquete.getPaqueteDto().setYnTiquetera(res.getShort("yn_tiquetera"));
                 paquete.getPaqueteDto().setDiasAplazamiento(res.getShort("dias_aplazamiento"));
-                
+
                 paquete.getClienteDto().getPersonaDto().setId(res.getLong("idPersona"));
                 paquete.getClienteDto().getPersonaDto().setPrimerNombre(res.getString("primer_nombre"));
                 paquete.getClienteDto().getPersonaDto().setSegundoNombre(res.getString("segundo_nombre"));
                 paquete.getClienteDto().getPersonaDto().setPrimerApellido(res.getString("primer_apellido"));
                 paquete.getClienteDto().getPersonaDto().setSegundoApellido(res.getString("segundo_apellido"));
-                
+
             }
             stat.close();
         } catch (SQLException e) {
@@ -300,7 +300,7 @@ public class Model {
                         + (clientePaqueteDto.getFechaFinalizaPaquete() == null ? "NULL" : "'" + clientePaqueteDto.getFechaFinalizaPaquete() + "'") + ","
                         + "'" + clientePaqueteDto.getUsuarioId() + "',"
                         + "NOW(), NOW())";
-                
+
             }
             Statement stat = this.conexion.getConexion().createStatement();
             stat.execute(sql);
@@ -635,7 +635,7 @@ public class Model {
         String sql = "SELECT * FROM descuentos WHERE 1";
         if (!Util.getVacio(idDescuentos)) {
             sql += " AND id=" + idDescuentos;
-            
+
         }
         sql += " ORDER BY id ASC ";
         ResultSet res = stat.executeQuery(sql);
@@ -646,11 +646,10 @@ public class Model {
             dto.setPorcentaje(res.getBigDecimal("porcentaje"));
             list.add(dto);
         }
-        
+
         return list;
     }
 
-    
     /**
      *
      * @param descuento
@@ -680,11 +679,11 @@ public class Model {
     }
 
     /**
-     * 
+     *
      * @param gasto
      * @param usuario_id
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public boolean setGuardarGastos(GastoDto gasto, String usuario_id) throws SQLException {
         PreparedStatement stat;
@@ -708,6 +707,7 @@ public class Model {
         }
         return true;
     }
+
     /**
      *
      * @param producto
@@ -793,7 +793,7 @@ public class Model {
             dto.setYnActivo(res.getShort("yn_activo"));
             dto.setFechaRegistro(res.getString("fecha_registro"));
             dto.setFechaModificacion(res.getString("fecha_modificacion"));
-            
+
             dto.getPersonaDto().setId(res.getLong("persona_id"));
             dto.getPersonaDto().setPrimerNombre(res.getString("primer_nombre"));
             dto.getPersonaDto().setSegundoNombre(res.getString("segundo_nombre"));
@@ -974,6 +974,47 @@ public class Model {
 
     /**
      *
+     * @param numeroDocuemnto
+     * @return
+     * @throws SQLException
+     */
+    public List<PersonaDto> getDatosPersona(String numeroDocuemnto) throws SQLException {
+        List<PersonaDto> list = new ArrayList();
+        Statement stat;
+        stat = this.conexion.getConexion().createStatement();
+        String sql = "SELECT per.* FROM personas per WHERE 1 ";
+        if (!Util.getVacio(numeroDocuemnto)) {
+            sql += " AND per.numero_identificacion='" + numeroDocuemnto + "'";
+        }
+        ResultSet res = stat.executeQuery(sql);
+        while (res.next()) {
+            PersonaDto personaDto = new PersonaDto();
+            personaDto.setId(res.getLong("id"));
+            personaDto.setPrimerNombre(res.getString("primer_nombre"));
+            personaDto.setSegundoNombre(res.getString("segundo_nombre"));
+            personaDto.setPrimerApellido(res.getString("primer_apellido"));
+            personaDto.setSegundoApellido(res.getString("segundo_apellido"));
+            personaDto.setTipoIdentificacion(res.getShort("tipo_identificacion"));
+            personaDto.setNumeroIdentificacion(res.getString("numero_identificacion"));
+            personaDto.setGenero(res.getShort("genero"));
+            personaDto.setFechaNacimiento(res.getString("fecha_nacimiento"));
+            personaDto.setDireccion(res.getString("direccion"));
+            personaDto.setBarrio(res.getString("barrio"));
+            personaDto.setTelefono(res.getString("telefono"));
+            personaDto.setMovil(res.getString("movil"));
+            personaDto.setEmail(res.getString("email"));
+            personaDto.setHuellaDactilar(res.getBytes("huella_dactilar"));
+            personaDto.setFotoPerfil(res.getString("foto_perfil"));
+            personaDto.setFechaRegistro(res.getString("fecha_registro"));
+            personaDto.setFechaModificacion(res.getString("fecha_modificacion"));
+            list.add(personaDto);
+        }
+        stat.close();
+        return list;
+    }
+
+    /**
+     *
      * @tutorial Method Description: valida que la informacion este correcta
      * @author Eminson Mendoza ~~ emimaster16@gmail.com
      * @date 08/07/2016
@@ -1071,7 +1112,7 @@ public class Model {
             this.conexion.commit();
         }
     }
-    
+
     public boolean setGuardarPaquete(PaqueteDto paquete) throws SQLException {
         boolean correct = false;
         try {
@@ -1099,7 +1140,7 @@ public class Model {
         }
         return correct;
     }
-    
+
     public List<UsuarioDto> getUsuariosDatos(String loggin) throws SQLException {
         List<UsuarioDto> list = new ArrayList();
         Statement stat = this.conexion.getConexion().createStatement();
@@ -1111,6 +1152,9 @@ public class Model {
             dto.setLoggin(res.getString("loggin"));
             dto.setPassword(res.getString("password"));
             dto.setPersonaId(res.getLong("persona_id"));
+            dto.setTipoUsuario(res.getShort("tipo_usuario"));
+            dto.setYnActivo(res.getShort("yn_activo"));
+
             dto.getPersonaDto().setId(res.getLong("idPersona"));
             dto.getPersonaDto().setPrimerNombre(res.getString("primer_nombre"));
             dto.getPersonaDto().setSegundoNombre(res.getString("segundo_nombre"));
@@ -1146,7 +1190,7 @@ public class Model {
         String sql = "SELECT * FROM paquetes WHERE 1";
         if (!Util.getVacio(idPaquete)) {
             sql += " AND id=" + idPaquete;
-            
+
         }
         sql += " ORDER BY id ASC ";
         ResultSet res = stat.executeQuery(sql);
@@ -1163,7 +1207,7 @@ public class Model {
         stat.close();
         return list;
     }
-    
+
     public List<ClienteDto> getDatosClientes(String mes) throws SQLException {
         List<ClienteDto> list = new ArrayList();
         try (Statement stat = this.conexion.getConexion().createStatement()) {
@@ -1197,26 +1241,27 @@ public class Model {
         }
         return list;
     }
-    
+
     /**
      * RP: se traen los gastos del dia
+     *
      * @param idGastos
      * @param fecha
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public List<GastoDto> getDatosGastos(String idGastos, boolean fecha) throws SQLException {
         List<GastoDto> list = new ArrayList();
         Statement stat = this.conexion.getConexion().createStatement();
-        
+
         String sql = "SELECT * FROM gastos WHERE 1 ";
-        if(fecha) {
+        if (fecha) {
             sql += " AND CONCAT(year(fecha_registro),'-',month(fecha_registro),'-',day(fecha_registro)) = CONCAT(year(NOW()),'-',month(NOW()),'-',day(NOW())) ";
         }
         if (!Util.getVacio(idGastos)) {
             sql += " AND id=" + idGastos;
-            
-        }        
+
+        }
         sql += " ORDER BY id ASC ";
         ResultSet res = stat.executeQuery(sql);
         while (res.next()) {
@@ -1227,24 +1272,24 @@ public class Model {
             dto.setFechaRegistro(res.getString("fecha_registro"));
             list.add(dto);
         }
-        
+
         return list;
     }
-    
+
     public List<Object> getListPersist() {
         return listPersist;
     }
-    
+
     public void setListPersist(List<Object> listPersist) {
         this.listPersist = listPersist;
     }
-    
+
     public Conexion getConexion() {
         return conexion;
     }
-    
+
     public void setConexion(Conexion conexion) {
         this.conexion = conexion;
     }
-    
+
 }

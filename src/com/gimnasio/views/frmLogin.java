@@ -7,6 +7,7 @@ package com.gimnasio.views;
 
 import com.gimnasio.controller.Operaciones;
 import com.gimnasio.model.UsuarioDto;
+import com.gimnasio.model.enums.EPerfiles;
 import java.awt.Font;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -125,6 +126,15 @@ public class frmLogin extends javax.swing.JFrame {
                     principal.setOperacion(operacion);
                     principal.setExtendedState(JFrame.MAXIMIZED_BOTH);
                     principal.setDefaultCloseOperation(principal.EXIT_ON_CLOSE);
+                    if (userDto.getTipoUsuario() == EPerfiles.FISIOTERAPEUTA.getId()) {
+                        principal.getJmAdministracion().setEnabled(false);
+                        principal.getJmClientes().setEnabled(false);
+                        principal.getJmIngresos().setEnabled(false);
+                        principal.getJmPagos().setEnabled(false);
+                        principal.getJmReportes().setEnabled(false);
+                    } else if (userDto.getTipoUsuario() == EPerfiles.RECEPCION.getId()) {
+                        principal.getJmFisioterapeuta().setEnabled(false);
+                    }
                     principal.setVisible(true);
                     try {
                         this.operacion.setCambiarEstadosPaquetes(userDto);
