@@ -766,6 +766,15 @@ public class Operaciones {
         return listMessages;
     }
 
+    public List<ComboDto> getPerfiles() throws Exception {
+        List<ComboDto> lista = new ArrayList();
+        for (EPerfiles tip : EPerfiles.getValues()) {
+            ComboDto dto = new ComboDto(String.valueOf(tip.getId()), tip.getNombre());
+            lista.add(dto);
+        }
+        return lista;
+    }
+
     public List<ComboDto> getTipoDocumentos() throws Exception {
         List<ComboDto> lista = new ArrayList();
         for (ETipoDocumento tip : ETipoDocumento.getValues()) {

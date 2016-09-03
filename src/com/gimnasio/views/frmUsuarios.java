@@ -32,10 +32,16 @@ import javax.swing.SwingUtilities;
  * @author rodolfo
  */
 public class frmUsuarios extends javax.swing.JInternalFrame {
-
+    
     private final ComboModel comboTipoDocumentos;
     private List<ComboDto> listTipoDocumentos;
-
+    
+    private final ComboModel comboPerfil;
+    private List<ComboDto> listPerfiles;
+    
+    private final ComboModel comboActivo;
+    private List<ComboDto> listActivos;
+    
     private UsuarioDto usuarioSessionDto;
     private final UsuarioDto usuarioDto;
     private final frmPrincipal padre;
@@ -53,7 +59,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         this.operacion = operacion;
         this.usuarioDto = new UsuarioDto();
         this.padre = padre;
-
+        
         ComboDto inicio;
         this.comboTipoDocumentos = new ComboModel();
         this.comboTipoDocumentos.getLista().clear();
@@ -63,7 +69,24 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         this.comboTipoDocumentos.getLista().addAll(this.listTipoDocumentos);
         this.comboTipoDocumentos.setSelectedItem(inicio);
         this.cmbTipo_documento.setModel(this.comboTipoDocumentos);
-
+        
+        this.comboPerfil = new ComboModel();
+        this.comboPerfil.getLista().clear();
+        this.listPerfiles = this.operacion.getPerfiles();
+        this.listPerfiles.add(0, inicio);
+        this.comboPerfil.getLista().addAll(this.listPerfiles);
+        this.comboPerfil.setSelectedItem(inicio);
+        this.cmbTipo_usuario.setModel(this.comboPerfil);
+        
+        this.comboActivo = new ComboModel();
+        this.comboActivo.getLista().clear();
+        this.listActivos = this.operacion.getYnActivo();
+        this.listActivos.add(0, inicio);
+        this.comboActivo.getLista().addAll(this.listActivos);
+        this.comboActivo.setSelectedItem(inicio);
+        this.cmbTipo_usuario.setModel(this.comboActivo);
+        
+        this.btnCambiarClave.setEnabled(false);
         setNoFile(this.lblFotoCliente);
     }
 
@@ -79,7 +102,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         initComponents();
         this.operacion = operacion;
         this.padre = padre;
-
+        
         ComboDto inicio;
         this.comboTipoDocumentos = new ComboModel();
         this.comboTipoDocumentos.getLista().clear();
@@ -89,16 +112,32 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         this.comboTipoDocumentos.getLista().addAll(this.listTipoDocumentos);
         this.comboTipoDocumentos.setSelectedItem(inicio);
         this.cmbTipo_documento.setModel(this.comboTipoDocumentos);
-
-        UsuarioDto usuarioDto = new UsuarioDto();
+        
+        this.comboPerfil = new ComboModel();
+        this.comboPerfil.getLista().clear();
+        this.listPerfiles = this.operacion.getPerfiles();
+        this.listPerfiles.add(0, inicio);
+        this.comboPerfil.getLista().addAll(this.listPerfiles);
+        this.comboPerfil.setSelectedItem(inicio);
+        this.cmbTipo_usuario.setModel(this.comboPerfil);
+        
+        this.comboActivo = new ComboModel();
+        this.comboActivo.getLista().clear();
+        this.listActivos = this.operacion.getYnActivo();
+        this.listActivos.add(0, inicio);
+        this.comboActivo.getLista().addAll(this.listActivos);
+        this.comboActivo.setSelectedItem(inicio);
+        this.cmbTipo_usuario.setModel(this.comboActivo);
+        
+        UsuarioDto usuarioTempDto = new UsuarioDto();
         List<UsuarioDto> listUsuarios = this.operacion.getUsuarioPersonaDatos(null, numeroDocumento);
         for (UsuarioDto userDto : listUsuarios) {
             if (userDto.getPersonaDto().getNumeroIdentificacion().equals(numeroDocumento)) {
-                usuarioDto = userDto;
+                usuarioTempDto = userDto;
                 break;
             }
         }
-        this.usuarioDto = usuarioDto;
+        this.usuarioDto = usuarioTempDto;
         this.setCargarDatosClientes();
     }
 
@@ -129,7 +168,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
             this.txtFijo.setText(this.usuarioDto.getPersonaDto().getTelefono());
             this.txtMovil.setText(this.usuarioDto.getPersonaDto().getMovil());
             this.txtEmail.setText(this.usuarioDto.getPersonaDto().getEmail());
-
+            
             if (this.usuarioDto.getPersonaDto().getFotoPerfil().trim().length() > 0) {
                 File file = new File("fotos/" + this.usuarioDto.getPersonaDto().getFotoPerfil());
                 if (file.exists()) {
@@ -146,7 +185,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
             Logger.getLogger(frmUsuarios.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     protected final void setNoFile(JLabel lblFoto) {
         URL filename = getClass().getResource("/com/gimnasio/files/no-file.png");
         File file = new File(filename.getFile());
@@ -200,12 +239,12 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         lblDireccion = new javax.swing.JLabel();
         txtDireccion = new javax.swing.JTextField();
         txtFecha_nacimiento = new com.toedter.calendar.JDateChooser();
-        lblTipo_usuario = new javax.swing.JLabel();
+        lblLoggin = new javax.swing.JLabel();
         lblActivo = new javax.swing.JLabel();
         cmbYn_activo = new javax.swing.JComboBox();
-        lblTipo_usuario1 = new javax.swing.JLabel();
-        cmbTipo_usuario1 = new javax.swing.JComboBox();
-        txtSegundo_apellido1 = new javax.swing.JTextField();
+        lblTipo_usuario = new javax.swing.JLabel();
+        cmbTipo_usuario = new javax.swing.JComboBox();
+        txtLoggin = new javax.swing.JTextField();
         btnCambiarClave = new javax.swing.JButton();
 
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -399,9 +438,9 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         txtFecha_nacimiento.setDateFormatString("yyyy-MM-dd");
         txtFecha_nacimiento.setMaxSelectableDate(new java.util.Date(253370786466000L));
 
-        lblTipo_usuario.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        lblTipo_usuario.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblTipo_usuario.setText("Usuario");
+        lblLoggin.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblLoggin.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblLoggin.setText("Usuario");
 
         lblActivo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblActivo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -409,15 +448,15 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
 
         cmbYn_activo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        lblTipo_usuario1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        lblTipo_usuario1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblTipo_usuario1.setText("Tipo Usuario");
+        lblTipo_usuario.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblTipo_usuario.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblTipo_usuario.setText("Perfil");
 
-        cmbTipo_usuario1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbTipo_usuario.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        txtSegundo_apellido1.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtLoggin.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtSegundo_apellido1setValidateSoloLetras(evt);
+                txtLogginsetValidateSoloLetras(evt);
             }
         });
 
@@ -435,90 +474,93 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(lblDireccion)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblActivo)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel6Layout.createSequentialGroup()
-                                    .addGap(79, 79, 79)
-                                    .addComponent(lblGenero))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lblMovil, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(lblEmail, javax.swing.GroupLayout.Alignment.TRAILING)))))
-                        .addGap(10, 10, 10)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cmbYn_activo, 0, 236, Short.MAX_VALUE)
-                            .addComponent(txtMovil)
                             .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(rbtMasculino)
-                                .addGap(12, 12, 12)
-                                .addComponent(rbtFemenino))
-                            .addComponent(txtEmail))))
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(lblFecha_nacimiento)
-                                .addGap(10, 10, 10)
-                                .addComponent(txtFecha_nacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(lblBarrio)
-                                .addGap(10, 10, 10)
-                                .addComponent(txtBarrio, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(lblDireccion)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblTipo_usuario)
-                                    .addComponent(lblFijo))
+                                    .addComponent(lblActivo)
+                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel6Layout.createSequentialGroup()
+                                            .addGap(79, 79, 79)
+                                            .addComponent(lblGenero))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                            .addContainerGap()
+                                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(lblMovil, javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(lblEmail, javax.swing.GroupLayout.Alignment.TRAILING)))))
                                 .addGap(10, 10, 10)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cmbYn_activo, 0, 236, Short.MAX_VALUE)
+                                    .addComponent(txtMovil)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(rbtMasculino)
+                                        .addGap(12, 12, 12)
+                                        .addComponent(rbtFemenino))
+                                    .addComponent(txtEmail))))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(lblFecha_nacimiento)
+                                        .addGap(10, 10, 10)
+                                        .addComponent(txtFecha_nacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(lblBarrio)
+                                        .addGap(10, 10, 10)
+                                        .addComponent(txtBarrio, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(lblLoggin)
+                                            .addComponent(lblFijo))
+                                        .addGap(10, 10, 10)
+                                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtFijo, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtLoggin, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtFijo, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtSegundo_apellido1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(80, 80, 80)
-                        .addComponent(lblTipo_usuario1)
-                        .addGap(10, 10, 10)
-                        .addComponent(cmbTipo_usuario1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                        .addComponent(lblTipo_usuario)
+                                        .addGap(10, 10, 10)
+                                        .addComponent(cmbTipo_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                        .addComponent(btnGuardar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnCambiarClave)))))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnGuardar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCambiarClave)))
-                .addContainerGap(31, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblTipo_documento)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(lblPrimer_nombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)))
-                .addGap(10, 10, 10)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cmbTipo_documento, 0, 236, Short.MAX_VALUE)
-                            .addComponent(txtPrimer_apellido))
-                        .addGap(50, 50, 50)
-                        .addComponent(lblDocumento))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(txtPrimer_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblSegundo_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblSegundo_apellido))))
-                .addGap(10, 10, 10)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtSegundo_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSegundo_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31))
+                        .addGap(19, 19, 19)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblTipo_documento)
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(lblPrimer_nombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)))
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(cmbTipo_documento, 0, 236, Short.MAX_VALUE)
+                                    .addComponent(txtPrimer_apellido))
+                                .addGap(50, 50, 50)
+                                .addComponent(lblDocumento))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(txtPrimer_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(41, 41, 41)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblSegundo_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblSegundo_apellido))))
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtSegundo_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSegundo_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -572,8 +614,8 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
                         .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblEmail))
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblTipo_usuario)
-                        .addComponent(txtSegundo_apellido1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblLoggin)
+                        .addComponent(txtLoggin, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
@@ -583,8 +625,8 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblTipo_usuario1)
-                            .addComponent(cmbTipo_usuario1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(lblTipo_usuario)
+                            .addComponent(cmbTipo_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(40, 40, 40)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -636,23 +678,23 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
     public Operaciones getOperacion() {
         return operacion;
     }
-
+    
     public void setOperacion(Operaciones operacion) {
         this.operacion = operacion;
     }
-
+    
     public UsuarioDto getUsuarioSessionDto() {
         return usuarioSessionDto;
     }
-
+    
     public void setUsuarioSessionDto(UsuarioDto usuarioSessionDto) {
         this.usuarioSessionDto = usuarioSessionDto;
     }
-
+    
     public JLabel getLblFotoCliente() {
         return lblFotoCliente;
     }
-
+    
     public void setLblFotoCliente(JLabel lblFotoCliente) {
         this.lblFotoCliente = lblFotoCliente;
     }
@@ -710,7 +752,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
             List<String> listMessage = this.operacion.setGuardarDatosUsuario(this.usuarioDto, true);
             if (listMessage.size() < 1 && (this.usuarioDto.getId() != null && this.usuarioDto.getId() > 0)) {
                 try {
-
+                    
                 } catch (Exception ex) {
                     JLabel label = new JLabel("Se ha presentado un error para registrar el pago del paquete, intente nuevamente");
                     label.setFont(new Font("consolas", Font.PLAIN, 14));
@@ -807,9 +849,9 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_setCapturarFotoPerfil
 
-    private void txtSegundo_apellido1setValidateSoloLetras(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSegundo_apellido1setValidateSoloLetras
+    private void txtLogginsetValidateSoloLetras(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLogginsetValidateSoloLetras
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtSegundo_apellido1setValidateSoloLetras
+    }//GEN-LAST:event_txtLogginsetValidateSoloLetras
 
     private void btnCambiarClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarClaveActionPerformed
         // TODO add your handling code here:
@@ -831,7 +873,7 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnCapturarFoto;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JComboBox cmbTipo_documento;
-    private javax.swing.JComboBox cmbTipo_usuario1;
+    private javax.swing.JComboBox cmbTipo_usuario;
     private javax.swing.JComboBox cmbYn_activo;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
@@ -846,13 +888,13 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblFijo;
     private javax.swing.JLabel lblFotoCliente;
     private javax.swing.JLabel lblGenero;
+    private javax.swing.JLabel lblLoggin;
     private javax.swing.JLabel lblMovil;
     private javax.swing.JLabel lblPrimer_nombre;
     private javax.swing.JLabel lblSegundo_apellido;
     private javax.swing.JLabel lblSegundo_nombre;
     private javax.swing.JLabel lblTipo_documento;
     private javax.swing.JLabel lblTipo_usuario;
-    private javax.swing.JLabel lblTipo_usuario1;
     private javax.swing.JLabel lblTitulo_foto;
     private javax.swing.JRadioButton rbtFemenino;
     private javax.swing.ButtonGroup rbtGenero;
@@ -863,11 +905,11 @@ public class frmUsuarios extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField txtEmail;
     private com.toedter.calendar.JDateChooser txtFecha_nacimiento;
     private javax.swing.JTextField txtFijo;
+    private javax.swing.JTextField txtLoggin;
     private javax.swing.JTextField txtMovil;
     private javax.swing.JTextField txtPrimer_apellido;
     private javax.swing.JTextField txtPrimer_nombre;
     private javax.swing.JTextField txtSegundo_apellido;
-    private javax.swing.JTextField txtSegundo_apellido1;
     private javax.swing.JTextField txtSegundo_nombre;
     // End of variables declaration//GEN-END:variables
 }
