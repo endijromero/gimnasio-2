@@ -46,12 +46,12 @@ public final class frmGastos extends javax.swing.JInternalFrame {
         this.headTable = new String[]{"Id", "Nombre", "Porcentaje"};
         int widthColumna[] = {50, 200, 100};
         this.table = new TablaModelo(this.headTable);
-        this.tblDescuentos.setModel(this.table);
+        this.tblGastos.setModel(this.table);
 
         this.padre = padre;
-        int columnas = this.tblDescuentos.getColumnCount();
+        int columnas = this.tblGastos.getColumnCount();
         for (int i = 0; i < columnas; i++) {
-            this.tblDescuentos.getColumnModel().getColumn(i).setPreferredWidth(widthColumna[i]);
+            this.tblGastos.getColumnModel().getColumn(i).setPreferredWidth(widthColumna[i]);
         }
         this.setConsultarTableDescuentos();
         this.setLimpiar();
@@ -68,8 +68,8 @@ public final class frmGastos extends javax.swing.JInternalFrame {
         lista.stream().forEach((dto) -> {
             this.table.setAgregar(dto);
         });
-        this.tblDescuentos.setDefaultRenderer(Object.class, new MiRender(this.table));
-        this.tblDescuentos.repaint();
+        this.tblGastos.setDefaultRenderer(Object.class, new MiRender(this.table));
+        this.tblGastos.repaint();
     }
 
     public void setLimpiar() {
@@ -97,7 +97,7 @@ public final class frmGastos extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblDescuentos = new javax.swing.JTable();
+        tblGastos = new javax.swing.JTable();
         lblResultado = new javax.swing.JLabel();
         lblCantidad_descuentos = new javax.swing.JLabel();
 
@@ -183,7 +183,7 @@ public final class frmGastos extends javax.swing.JInternalFrame {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "LISTA DE GASTOS", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
         jPanel3.setMaximumSize(new java.awt.Dimension(500, 500));
 
-        tblDescuentos.setModel(new javax.swing.table.DefaultTableModel(
+        tblGastos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -194,12 +194,12 @@ public final class frmGastos extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3"
             }
         ));
-        tblDescuentos.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblGastos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 setEditarDescuento(evt);
             }
         });
-        jScrollPane1.setViewportView(tblDescuentos);
+        jScrollPane1.setViewportView(tblGastos);
 
         lblResultado.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         lblResultado.setText("Resultados");
@@ -314,7 +314,7 @@ public final class frmGastos extends javax.swing.JInternalFrame {
 
     private void setEditarDescuento(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setEditarDescuento
         if (evt.getClickCount() == 2) {
-            int fila = this.tblDescuentos.getSelectedRow();
+            int fila = this.tblGastos.getSelectedRow();
             TablaDto dto = (TablaDto) this.table.getData().get(fila);
             this.descuentoDto.setId(Integer.parseInt(dto.getDato1()));
             this.txtNombre_gasto.setText(dto.getDato2());
@@ -343,7 +343,7 @@ public final class frmGastos extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCantidad_descuentos;
     private javax.swing.JLabel lblResultado;
-    private javax.swing.JTable tblDescuentos;
+    private javax.swing.JTable tblGastos;
     private javax.swing.JTextField txtNombre_gasto;
     private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
