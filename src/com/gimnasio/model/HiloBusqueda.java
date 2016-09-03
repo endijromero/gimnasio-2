@@ -98,15 +98,17 @@ public class HiloBusqueda extends Thread {
                             }
                         }
                     } else {
-                        for (HiloBusqueda h : this.listHilos) {
-                            if (h != this) {
-                                h.setContinua(false);
-                            }
-                        }
-                        this.continua = false;
-                        break;
+//                        for (HiloBusqueda h : this.listHilos) {
+//                            if (h != this) {
+//                                h.setContinua(false);
+//                            }
+//                        }
+//                        this.continua = false;
+//                        break;
+
                     }
                 } catch (Exception e) {
+                    this.cerrar.setEnviarTexto("Error verificando la huella del cliente, detale del error: " + e.getMessage());
                     for (HiloBusqueda h : this.listHilos) {
                         if (h != this) {
                             h.setContinua(false);
@@ -170,6 +172,7 @@ public class HiloBusqueda extends Thread {
     /**
      *
      * @param clienteDto
+     * @throws java.text.ParseException
      */
     public void setGuardaAsistencia(ClienteDto clienteDto) throws ParseException {
         try {
