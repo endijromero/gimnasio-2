@@ -105,16 +105,46 @@ WHERE ven.fecha_registro >= $P{FECHA_INICIO} and  ven.fecha_registro <= $P{FECHA
 			<groupExpression><![CDATA[$F{id}]]></groupExpression>
 		</group>
 	</subDataset>
+	<subDataset name="gastos" uuid="c609de56-57c3-4b9c-ad30-073f227d0a6b">
+		<parameter name="FECHA_FIN" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<parameter name="FECHA_INICIO" class="java.lang.String">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[SELECT 
+g.id,
+coalesce(g.descripcion,'') as nombre,
+coalesce(g.valor,0) as valor,
+coalesce((SELECT sum(gas.valor) from gastos gas WHERE  gas.fecha_registro >= $P{FECHA_INICIO} AND gas.fecha_registro <= $P{FECHA_FIN} ),0) as total
+FROM 
+gastos g
+WHERE g.fecha_registro >= $P{FECHA_INICIO} AND g.fecha_registro <= $P{FECHA_FIN}]]>
+		</queryString>
+		<field name="id" class="java.math.BigInteger">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="nombre" class="java.lang.String">
+			<fieldDescription><![CDATA[Nombre del descuento]]></fieldDescription>
+		</field>
+		<field name="valor" class="java.math.BigDecimal">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="total" class="java.math.BigDecimal"/>
+	</subDataset>
 	<parameter name="FECHA_INICIO" class="java.lang.String"/>
 	<parameter name="FECHA_FIN" class="java.lang.String"/>
 	<parameter name="RUTA_IMAGENES" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select  
 coalesce((SELECT sum(clp.valor_total) from cliente_paquete clp WHERE clp.fecha_registro >= $P{FECHA_INICIO} AND  clp.fecha_registro <= $P{FECHA_FIN}),0) as total_paquetes,
-coalesce((SELECT sum(valor_total) FROM producto_ventas WHERE fecha_registro >= $P{FECHA_INICIO} AND fecha_registro <=$P{FECHA_FIN} ),0) as total_cafeteria]]>
+coalesce((SELECT sum(valor_total) FROM producto_ventas WHERE fecha_registro >= $P{FECHA_INICIO} AND fecha_registro <=$P{FECHA_FIN} ),0) as total_cafeteria,
+coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= $P{FECHA_INICIO} AND fecha_registro <=$P{FECHA_FIN} ),0) as total_gastos]]>
 	</queryString>
 	<field name="total_paquetes" class="java.math.BigDecimal"/>
 	<field name="total_cafeteria" class="java.lang.Double"/>
+	<field name="total_gastos" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -153,7 +183,7 @@ coalesce((SELECT sum(valor_total) FROM producto_ventas WHERE fecha_registro >= $
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="0" width="227" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="3a369cf6-0f9c-495c-a813-885e2fafeb73"/>
+				<reportElement mode="Opaque" x="0" y="0" width="299" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="3a369cf6-0f9c-495c-a813-885e2fafeb73"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
@@ -166,7 +196,7 @@ coalesce((SELECT sum(valor_total) FROM producto_ventas WHERE fecha_registro >= $
 				<textFieldExpression><![CDATA["Cliente"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="227" y="0" width="169" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="f529af33-435a-48c9-9b74-33c54f068cd8"/>
+				<reportElement mode="Opaque" x="299" y="0" width="97" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="f529af33-435a-48c9-9b74-33c54f068cd8"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
@@ -230,7 +260,7 @@ coalesce((SELECT sum(valor_total) FROM producto_ventas WHERE fecha_registro >= $
 						<jr:columnFooter style="table_CH" height="0" rowSpan="1"/>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="227" height="20" uuid="f8df6d88-8e69-485f-846e-904755ab2e96"/>
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="299" height="20" uuid="f8df6d88-8e69-485f-846e-904755ab2e96"/>
 								<box leftPadding="2" rightPadding="2">
 									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
@@ -239,7 +269,7 @@ coalesce((SELECT sum(valor_total) FROM producto_ventas WHERE fecha_registro >= $
 								<textFieldExpression><![CDATA[$F{primer_nombre}+" "+$F{segundo_nombre}+" "+$F{primer_apellido}+" "+$F{segundo_apellido}]]></textFieldExpression>
 							</textField>
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="227" y="0" width="169" height="20" uuid="0dcf4618-9b72-4659-a853-10b94a16f70f"/>
+								<reportElement stretchType="RelativeToBandHeight" x="299" y="0" width="97" height="20" uuid="0dcf4618-9b72-4659-a853-10b94a16f70f"/>
 								<box leftPadding="2" rightPadding="2">
 									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
@@ -367,28 +397,152 @@ coalesce((SELECT sum(valor_total) FROM producto_ventas WHERE fecha_registro >= $
 				<textFieldExpression><![CDATA["Cantidad"]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="32">
+		<band height="52">
 			<textField>
-				<reportElement x="-1" y="14" width="396" height="18" uuid="c37a0606-5c46-4684-8d93-a77aeeb768bd"/>
+				<reportElement mode="Opaque" x="396" y="8" width="159" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="e6249b50-5d39-4344-9bbe-f51d5562b4af"/>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.25" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Valor"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="8" width="396" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="255c7b48-5658-4c9e-825f-1a134a3f4729"/>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.25" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Gasto"]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement key="" x="0" y="28" width="555" height="20" uuid="b2ca69a4-3b27-459e-abf3-ff51bcee4e67"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="gastos" uuid="1875755a-faf4-44ba-9b87-4d393ee60cd8">
+						<datasetParameter name="FECHA_INICIO">
+							<datasetParameterExpression><![CDATA[$P{FECHA_INICIO}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="FECHA_FIN">
+							<datasetParameterExpression><![CDATA[$P{FECHA_FIN}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="556" uuid="267502f9-3555-4179-beb8-c5f12820b319">
+						<jr:tableHeader style="table_TH" height="0" rowSpan="1"/>
+						<jr:tableFooter height="18" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="396" height="18" uuid="67138dc5-d171-4184-9176-79ef1bbda452"/>
+								<box rightPadding="3"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression><![CDATA["TOTAL"]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="396" y="0" width="160" height="18" uuid="f9330d1b-8621-4577-a2e1-3677988bd302"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{total}.intValue()]]></textFieldExpression>
+							</textField>
+						</jr:tableFooter>
+						<jr:columnHeader style="table_CH" height="0" rowSpan="1"/>
+						<jr:columnFooter style="table_CH" height="0" rowSpan="1"/>
+						<jr:detailCell height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="396" height="20" uuid="f93acdb1-e149-43bf-a87d-6120585a1c7d"/>
+								<box leftPadding="2" rightPadding="2">
+									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
+									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+							</textField>
+							<textField isStretchWithOverflow="true">
+								<reportElement stretchType="RelativeToBandHeight" x="396" y="0" width="160" height="20" uuid="5cf1c397-4100-4959-b488-f2d38d9cba2b"/>
+								<box leftPadding="2" rightPadding="2">
+									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
+									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{valor}.intValue()]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+		<band height="117">
+			<textField>
+				<reportElement x="0" y="26" width="396" height="18" uuid="c37a0606-5c46-4684-8d93-a77aeeb768bd"/>
 				<box rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA["TOTAL"]]></textFieldExpression>
+				<textFieldExpression><![CDATA["TOTAL INGRESOS"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="395" y="14" width="160" height="18" uuid="418bafea-f2ef-464f-a5fd-2eae8f928e27"/>
+				<reportElement x="396" y="26" width="160" height="18" uuid="418bafea-f2ef-464f-a5fd-2eae8f928e27"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total_paquetes}.intValue() + $F{total_cafeteria}.intValue()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="7" width="555" height="1" uuid="83af3d56-0c39-4ca5-b955-b43d1b905b5b"/>
+				<reportElement x="0" y="15" width="555" height="1" uuid="83af3d56-0c39-4ca5-b955-b43d1b905b5b"/>
 				<graphicElement>
 					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
 				</graphicElement>
 			</line>
+			<textField>
+				<reportElement x="396" y="54" width="160" height="18" uuid="9b1fb663-896b-4913-99d3-e93011fbff22"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_gastos}.intValue()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="54" width="396" height="18" uuid="c1c593d0-3db5-4fb2-acea-b253dadffbba"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TOTAL EGRESOS"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="84" width="555" height="1" uuid="12a882eb-43df-4fdb-b213-7b7a3c3b2129"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#CCCCCC"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="85" width="396" height="18" uuid="45ba42ca-a02f-45f1-8922-c55dfbc12b83"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TOTAL CAJA"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="396" y="85" width="160" height="18" uuid="13893e16-f4b7-4a7d-ad26-b7dfaf7f40c3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{total_paquetes}.intValue() + $F{total_cafeteria}.intValue())- ($F{total_gastos}.intValue())]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
