@@ -187,7 +187,7 @@ ORDER BY
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{genero} == 1 ? "Masculino" : "Femenino"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{genero} == 2 ? "Masculino" : "Femenino"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement stretchType="RelativeToBandHeight" x="396" y="0" width="159" height="20" uuid="2a1b3364-583b-4d55-a17e-dd44721b80a4"/>
