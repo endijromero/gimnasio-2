@@ -66,19 +66,19 @@ public class Operaciones {
                                 stat.execute("UPDATE cliente_paquete  SET dias_usados_tiquetera = '" + diasUsados + "', estado = '" + EEstadoPlan.ACTIVO.getId() + "', usuario_id = '" + idUsuario + "', fecha_modificacion = NOW()  WHERE id = '" + paqueteDto.getId() + "'");
                                 correct = true;
                             }
-                        } else if (fechaFinalPaquete.equals(fechaActual)) {
+                        } else if (fechaFinalPaquete != null && fechaFinalPaquete.equals(fechaActual)) {
+                            stat.execute("UPDATE  cliente_paquete  SET estado = '" + EEstadoPlan.VENCIDO.getId() + "', usuario_id = '" + idUsuario + "', fecha_modificacion = NOW()  WHERE id = '" + paqueteDto.getId() + "'");
+                            correct = true;
+                        } else {
+                            correct = false;
+                        }
+                    } else if (fechaInitPaquete.before(fechaActual)) {
+                        if (fechaFinalPaquete.equals(fechaActual)) {
                             stat.execute("UPDATE  cliente_paquete  SET estado = '" + EEstadoPlan.VENCIDO.getId() + "', usuario_id = '" + idUsuario + "', fecha_modificacion = NOW()  WHERE id = '" + paqueteDto.getId() + "'");
                             correct = true;
                         }
-                    } else {
-                        if (fechaInitPaquete.before(fechaActual)) {
-                            if (fechaFinalPaquete.equals(fechaActual)) {
-                                stat.execute("UPDATE  cliente_paquete  SET estado = '" + EEstadoPlan.VENCIDO.getId() + "', usuario_id = '" + idUsuario + "', fecha_modificacion = NOW()  WHERE id = '" + paqueteDto.getId() + "'");
-                                correct = true;
-                            }
-                            // se pone true porque tiene plazo para que realice el registro diario
-                            correct = true;
-                        }
+                        // se pone true porque tiene plazo para que realice el registro diario
+                        correct = true;
                     }
                     if (correct) {
                         paqueteDto.setClienteDto(clienteDto);
@@ -406,8 +406,8 @@ public class Operaciones {
                 String.valueOf(descuento.getId()),
                 Util.getQuitaNULL(descuento.getNombre()),
                 String.valueOf(descuento.getPorcentaje()))).forEach((tabla) -> {
-                    listTable.add(tabla);
-                });
+            listTable.add(tabla);
+        });
         return listTable;
     }
 
@@ -461,8 +461,8 @@ public class Operaciones {
         List<ProductoDto> listProductos = this.getProductosDatosDto(null);
         listProductos.stream().map((producto) -> new ComboDto(String.valueOf(producto.getId()),
                 Util.getQuitaNULL(producto.getNombre()))).forEach((tabla) -> {
-                    listTable.add(tabla);
-                });
+            listTable.add(tabla);
+        });
         return listTable;
     }
 
@@ -508,8 +508,8 @@ public class Operaciones {
                 String.valueOf(producto.getId()),
                 Util.getQuitaNULL(producto.getNombre()),
                 String.valueOf(producto.getPrecio()))).forEach((tabla) -> {
-                    listTable.add(tabla);
-                });
+            listTable.add(tabla);
+        });
         return listTable;
     }
 
@@ -522,11 +522,9 @@ public class Operaciones {
                     correcto = false;
                     break;
                 }
-            } else {
-                if (numeroDocuemnto.equals(dto.getPersonaDto().getNumeroIdentificacion())) {
-                    correcto = false;
-                    break;
-                }
+            } else if (numeroDocuemnto.equals(dto.getPersonaDto().getNumeroIdentificacion())) {
+                correcto = false;
+                break;
             }
         }
         return correcto;

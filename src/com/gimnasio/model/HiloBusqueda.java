@@ -221,9 +221,9 @@ public class HiloBusqueda extends Thread {
                 label.setFont(new Font("consolas", Font.PLAIN, 16));
                 JOptionPane.showMessageDialog(this.frmClienteIngreso, label, "Mensaje de Advertencia", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JLabel label = new JLabel("El cliente no cuenta con un paquete o plan activo");
+                JLabel label = new JLabel("El cliente no cuenta con un paquete o plan activo, para el día de hoy");
                 label.setFont(new Font("consolas", Font.PLAIN, 14));
-                JOptionPane.showMessageDialog(this.frmClienteIngreso, label, "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this.frmClienteIngreso, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
             }
         } catch (SQLException | HeadlessException e) {
             JLabel label = new JLabel("Error no controlado, intente nuevamente");
