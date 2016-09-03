@@ -40,6 +40,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmPaquetes paqueteView;
     private frmClientes clienteView;
     private frmPagos pagosView;
+    private frmGastos gastosView;
 
     private UsuarioDto usuarioSessionDto;
     private Operaciones operacion;
@@ -60,6 +61,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.paqueteView = null;
         this.clienteView = null;
         this.pagosView = null;
+        this.gastosView = null;
     }
 
     /**
@@ -80,6 +82,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuUsuario = new javax.swing.JMenu();
         menuCrear_usuario = new javax.swing.JMenuItem();
         menuBuscar_cliente1 = new javax.swing.JMenuItem();
+        menuGastos = new javax.swing.JMenuItem();
         menuCliente = new javax.swing.JMenu();
         menuCrear_cliente = new javax.swing.JMenuItem();
         menuBuscar_cliente = new javax.swing.JMenuItem();
@@ -161,6 +164,15 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuUsuario.add(menuBuscar_cliente1);
 
         jMenu1.add(menuUsuario);
+
+        menuGastos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/shopping-basket-accept-icon.png"))); // NOI18N
+        menuGastos.setText("Gastos Diarios");
+        menuGastos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuGastosActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuGastos);
 
         jMenuBar1.add(jMenu1);
 
@@ -528,6 +540,24 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_setMenuBuscarUsuario
 
+    private void menuGastosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuGastosActionPerformed
+        // TODO add your handling code here:
+        try {
+            this.gastosView = new frmGastos(this, this.operacion);
+            frmPrincipal.jdstPrincipal.add(this.gastosView);
+            this.gastosView.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+            this.gastosView.setResizable(true);
+            this.gastosView.setUsuarioSessionDto(this.usuarioSessionDto);
+            this.gastosView.setClosable(true);
+            this.gastosView.setVisible(true);
+        } catch (SQLException ex) {
+            JLabel label = new JLabel("Error no controlado, intente nuevamente");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_menuGastosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -695,6 +725,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuCrear_usuario;
     private javax.swing.JMenu menuCumpleanos;
     private javax.swing.JMenuItem menuDescuentos;
+    private javax.swing.JMenuItem menuGastos;
     private javax.swing.JMenuItem menuPagos;
     private javax.swing.JMenuItem menuPaquetes;
     private javax.swing.JMenuItem menuProductos;
