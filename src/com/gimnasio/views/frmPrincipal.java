@@ -241,7 +241,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuReporte_fisioterapia.setText("Reporte");
         menuReporte_fisioterapia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuReporte_fisioterapiaActionPerformed(evt);
+                setMenuReporteFisioterapeuta(evt);
             }
         });
         jMenu5.add(menuReporte_fisioterapia);
@@ -504,7 +504,7 @@ public class frmPrincipal extends javax.swing.JFrame {
      *
      * @param evt
      */
-    private void menuReporte_fisioterapiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReporte_fisioterapiaActionPerformed
+    private void setMenuReporteFisioterapeuta(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setMenuReporteFisioterapeuta
         // TODO add your handling code here:
         this.reporteFisioterapiaView = new frmReporteFisioterapia(this);
         frmPrincipal.jdstPrincipal.add(this.reporteFisioterapiaView);
@@ -513,7 +513,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.reporteFisioterapiaView.setResizable(true);
         this.reporteFisioterapiaView.setClosable(true);
         this.reporteFisioterapiaView.setVisible(true);
-    }//GEN-LAST:event_menuReporte_fisioterapiaActionPerformed
+    }//GEN-LAST:event_setMenuReporteFisioterapeuta
 
     private void setMenuCrearUsuario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setMenuCrearUsuario
         try {
@@ -534,7 +534,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_setMenuCrearUsuario
 
     private void setMenuBuscarUsuario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setMenuBuscarUsuario
-        
+
     }//GEN-LAST:event_setMenuBuscarUsuario
 
     /**
