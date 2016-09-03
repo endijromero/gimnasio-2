@@ -380,17 +380,18 @@ public class Operaciones {
     }
 
     /**
-     * 
+     *
      * @param nombres
      * @param apellidos
      * @param documento
      * @param limite
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public List<TablaDto> getReporteFisioterapiaTablaDto(String nombres, String apellidos, String documento, String limite) throws SQLException {
         return this.getReporteFisioterapiaTablaDto(nombres, apellidos, documento, limite, null);
     }
+
     /**
      *
      * @param mes
@@ -429,40 +430,40 @@ public class Operaciones {
         });
         return listTable;
     }
-    
+
     /**
-     * 
+     *
      * @param nombres
      * @param apellidos
      * @param documento
      * @param limite
      * @param llaves
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public List<TablaDto> getReporteFisioterapiaTablaDto(String nombres, String apellidos, String documento, String limite, List<String> llaves) throws SQLException {
         List<TablaDto> listTable = new ArrayList();
         //"Documento", "Nombres", "Apellidos", "Edad", "Genero", "Movil", "Fijo", "Correo"
         List<FisioterapiaDto> listFisioterapia = this.model.getFisioterapiaDto(nombres, apellidos, documento, limite, llaves);
-        
+
         listFisioterapia.stream().forEach((fisioterapia) -> {
             fisioterapia.getJacksonPollock();
         });
-        
-        listFisioterapia.stream().map((fisioterapia) -> new TablaDto(                
+
+        listFisioterapia.stream().map((fisioterapia) -> new TablaDto(
                 String.valueOf(fisioterapia.getClienteDto().getPersonaDto().getNumeroIdentificacion()),
                 Util.getQuitaNULL(fisioterapia.getClienteDto().getPersonaDto().getPrimerNombre() + " " + Util.getQuitaNULL(fisioterapia.getClienteDto().getPersonaDto().getSegundoNombre())),
                 Util.getQuitaNULL(fisioterapia.getClienteDto().getPersonaDto().getPrimerApellido() + " " + Util.getQuitaNULL(fisioterapia.getClienteDto().getPersonaDto().getSegundoApellido())),
-                String.valueOf(fisioterapia.getClienteDto().getPersonaDto().getEdad()),                
+                String.valueOf(fisioterapia.getClienteDto().getPersonaDto().getEdad()),
                 Util.getQuitaNULL(EGenero.getResult(fisioterapia.getClienteDto().getPersonaDto().getGenero()).getNombre()),
                 String.valueOf(fisioterapia.setCalculaTesFlexibilidad()),
                 String.valueOf(fisioterapia.getDensidad()),
                 String.valueOf(fisioterapia.getPorcentaje()),
-                String.valueOf(fisioterapia.setCalcularIMC())                
+                String.valueOf(fisioterapia.setCalcularIMC())
         )).forEach((tabla) -> {
             listTable.add(tabla);
         });
-        
+
         return listTable;
     }
 
@@ -505,8 +506,8 @@ public class Operaciones {
                 String.valueOf(descuento.getId()),
                 Util.getQuitaNULL(descuento.getNombre()),
                 String.valueOf(descuento.getPorcentaje()))).forEach((tabla) -> {
-            listTable.add(tabla);
-        });
+                    listTable.add(tabla);
+                });
         return listTable;
     }
 
@@ -560,8 +561,8 @@ public class Operaciones {
         List<ProductoDto> listProductos = this.getProductosDatosDto(null);
         listProductos.stream().map((producto) -> new ComboDto(String.valueOf(producto.getId()),
                 Util.getQuitaNULL(producto.getNombre()))).forEach((tabla) -> {
-            listTable.add(tabla);
-        });
+                    listTable.add(tabla);
+                });
         return listTable;
     }
 
@@ -607,8 +608,8 @@ public class Operaciones {
                 String.valueOf(producto.getId()),
                 Util.getQuitaNULL(producto.getNombre()),
                 String.valueOf(producto.getPrecio()))).forEach((tabla) -> {
-            listTable.add(tabla);
-        });
+                    listTable.add(tabla);
+                });
         return listTable;
     }
 
@@ -649,6 +650,19 @@ public class Operaciones {
      * @tutorial Method Description: consulta los datos del cliente
      * @author Eminson Mendoza ~~ emimaster16@gmail.com
      * @date 09/07/2016
+     * @param idUsuario
+     * @param numeroDocuemnto
+     * @throws java.sql.SQLException
+     * @return
+     */
+    public List<UsuarioDto> getUsuarioPersonaDatos(String idUsuario, String numeroDocuemnto) throws SQLException {
+        return this.model.getUsuarioPersonaDatos(idUsuario, numeroDocuemnto);
+    }
+
+    /**
+     * @tutorial Method Description: consulta los datos del cliente
+     * @author Eminson Mendoza ~~ emimaster16@gmail.com
+     * @date 09/07/2016
      * @param idCliente
      * @param numeroDocuemnto
      * @throws java.sql.SQLException
@@ -657,6 +671,51 @@ public class Operaciones {
     public List<ClienteDto> getClienteDatos(String idCliente, String numeroDocuemnto) throws SQLException {
         List<ClienteDto> list = this.model.getClienteDatos(idCliente, numeroDocuemnto);
         return list;
+    }
+
+    /**
+     * @tutorial Method Description: valida que la informacion este correcta
+     * @author Eminson Mendoza ~~ emimaster16@gmail.com
+     * @date 08/07/2016
+     * @param usuarioDto
+     * @param guarda
+     * @return
+     * @throws SQLException
+     */
+    public List<String> setGuardarDatosUsuario(UsuarioDto usuarioDto, boolean guarda) throws SQLException {
+        List<String> listMessages = new ArrayList();
+        if (Util.getVacio(usuarioDto.getPersonaDto().getPrimerNombre())) {
+            listMessages.add("<li>Primer nombre</li>");
+        }
+        if (Util.getVacio(usuarioDto.getPersonaDto().getPrimerApellido())) {
+            listMessages.add("<li>Primer appelido</li>");
+        }
+        if (Util.getVacio(String.valueOf(usuarioDto.getPersonaDto().getTipoIdentificacion())) || usuarioDto.getPersonaDto().getTipoIdentificacion() == 0) {
+            listMessages.add("<li>Tipo documento</li>");
+        }
+        if (Util.getVacio(usuarioDto.getPersonaDto().getNumeroIdentificacion())) {
+            listMessages.add("<li>Número de documento</li>");
+        }
+
+        if (usuarioDto.getPersonaDto().getGenero() == 0) {
+            listMessages.add("<li>Género</li>");
+        }
+        if (Util.getVacio(usuarioDto.getPersonaDto().getFechaNacimiento())) {
+            listMessages.add("<li>Fecha de nacimiento</li>");
+        }
+        if (Util.getVacio(usuarioDto.getPersonaDto().getMovil())) {
+            listMessages.add("<li>Número móvil</li>");
+        }
+        if (Util.getVacio(usuarioDto.getPersonaDto().getDireccion())) {
+            listMessages.add("<li>Dirección domicilio</li>");
+        }
+        if (Util.getVacio(usuarioDto.getPersonaDto().getBarrio())) {
+            listMessages.add("<li>Barrio domicilio</li>");
+        }
+        if (listMessages.size() < 1 && guarda) {
+            this.model.setGuardarDatosUsuario(usuarioDto);
+        }
+        return listMessages;
     }
 
     /**
@@ -703,44 +762,6 @@ public class Operaciones {
         }
         if (listMessages.size() < 1 && guarda) {
             this.model.setGuardarCliente(clienteDto);
-        }
-        return listMessages;
-    }
-
-    public List<String> setGuardarUsuario(UsuarioDto usuarioDto) throws SQLException {
-        List<String> listMessages = new ArrayList();
-        if (Util.getVacio(usuarioDto.getPersonaDto().getPrimerNombre())) {
-            listMessages.add("<li>Primer nombre</li>");
-        }
-        if (Util.getVacio(usuarioDto.getPersonaDto().getPrimerApellido())) {
-            listMessages.add("<li>Primer appelido</li>");
-        }
-        if (Util.getVacio(String.valueOf(usuarioDto.getPersonaDto().getTipoIdentificacion()))) {
-            listMessages.add("<li>Tipo documento</li>");
-        }
-        if (Util.getVacio(usuarioDto.getPersonaDto().getNumeroIdentificacion())) {
-            listMessages.add("<li>Número de documento</li>");
-        }
-        if (usuarioDto.getPersonaDto().getGenero() == 0) {
-            listMessages.add("<li>Género</li>");
-        }
-        if (Util.getVacio(usuarioDto.getPersonaDto().getFechaNacimiento())) {
-            listMessages.add("<li>Fecha de nacimiento</li>");
-        }
-        if (Util.getVacio(usuarioDto.getPersonaDto().getMovil())) {
-            listMessages.add("<li>Número móvil</li>");
-        }
-        if (Util.getVacio(usuarioDto.getPersonaDto().getDireccion())) {
-            listMessages.add("<li>Dirección domicilio</li>");
-        }
-        if (Util.getVacio(usuarioDto.getPersonaDto().getBarrio())) {
-            listMessages.add("<li>Barrio domicilio</li>");
-        }
-        if (usuarioDto.getPersonaDto().getHuellaDactilar() == null) {
-            listMessages.add("<li>Huella dactilar</li>");
-        }
-        if (listMessages.size() < 1) {
-            this.model.setGuardarUsuario(usuarioDto);
         }
         return listMessages;
     }

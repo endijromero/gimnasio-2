@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -105,6 +106,10 @@ public class frmLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     *
+     * @param evt
+     */
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         if (this.txtUser.getText().equals("") || this.txtPassword.getText().equals("")) {
             JLabel label = new JLabel("Ingrese usario y contraseña");
@@ -118,6 +123,8 @@ public class frmLogin extends javax.swing.JFrame {
                     principal.setUsuarioSessionDto(userDto);
                     principal.setTitle("::: StreetGym :::");
                     principal.setOperacion(operacion);
+                    principal.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    principal.setDefaultCloseOperation(principal.EXIT_ON_CLOSE);
                     principal.setVisible(true);
                     try {
                         this.operacion.setCambiarEstadosPaquetes(userDto);
@@ -168,12 +175,6 @@ public class frmLogin extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                /*
-                 JFrame.setDefaultLookAndFeelDecorated(true);
-                 SubstanceLookAndFeel.setSkin("org.jvnet.substance.skin.AutumnSkin");
-                 SubstanceLookAndFeel.setCurrentTheme("org.jvnet.substance.theme.SubstanceCremeTheme");
-                 SubstanceLookAndFeel.setCurrentWatermark("org.jvnet.substance.watermark.SubstanceMazeWatermark");
-                 */
                 new frmLogin().setVisible(true);
             }
         });

@@ -1,6 +1,7 @@
 package com.gimnasio.views;
 
 import com.gimnasio.model.ClienteDto;
+import com.gimnasio.model.UsuarioDto;
 import java.awt.BorderLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -42,7 +43,9 @@ public class WebcamViewer extends JFrame implements ActionListener, Runnable, We
 
     private static final long serialVersionUID = 1L;
     protected ClienteDto clienteDto;
+    protected UsuarioDto usuarioDto;
     protected frmClientes frmCliente;
+    protected frmUsuarios frmUsuario;
     private Webcam webcam = null;
     private WebcamPanel panel = null;
     private WebcamPicker picker = null;
@@ -271,5 +274,53 @@ public class WebcamViewer extends JFrame implements ActionListener, Runnable, We
 
     public void setFrmCliente(frmClientes frmCliente) {
         this.frmCliente = frmCliente;
+    }
+
+    public frmUsuarios getFrmUsuario() {
+        return frmUsuario;
+    }
+
+    public UsuarioDto getUsuarioDto() {
+        return usuarioDto;
+    }
+
+    public void setUsuarioDto(UsuarioDto usuarioDto) {
+        this.usuarioDto = usuarioDto;
+    }
+
+    public Webcam getWebcam() {
+        return webcam;
+    }
+
+    public void setWebcam(Webcam webcam) {
+        this.webcam = webcam;
+    }
+
+    public WebcamPanel getPanel() {
+        return panel;
+    }
+
+    public void setPanel(WebcamPanel panel) {
+        this.panel = panel;
+    }
+
+    public WebcamPicker getPicker() {
+        return picker;
+    }
+
+    public void setPicker(WebcamPicker picker) {
+        this.picker = picker;
+    }
+
+    public JButton getBtnTomarFoto() {
+        return btnTomarFoto;
+    }
+
+    public void setBtnTomarFoto(JButton btnTomarFoto) {
+        this.btnTomarFoto = btnTomarFoto;
+    }
+
+    public void setFrmUsuario(frmUsuarios frmUsuario) {
+        this.frmUsuario = frmUsuario;
     }
 }

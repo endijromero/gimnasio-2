@@ -14,8 +14,8 @@ public class UsuarioDto implements java.io.Serializable {
     private Long personaId;
     private short tipoUsuario;
     private short ynActivo;
-    private Date fechaRegistro;
-    private Date fechaModificacion;
+    private String fechaRegistro;
+    private String fechaModificacion;
     private PersonaDto personaDto;
 
     public UsuarioDto() {
@@ -62,19 +62,19 @@ public class UsuarioDto implements java.io.Serializable {
         this.ynActivo = ynActivo;
     }
 
-    public Date getFechaRegistro() {
+    public String getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(Date fechaRegistro) {
+    public void setFechaRegistro(String fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public Date getFechaModificacion() {
+    public String getFechaModificacion() {
         return fechaModificacion;
     }
 
-    public void setFechaModificacion(Date fechaModificacion) {
+    public void setFechaModificacion(String fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
     }
 

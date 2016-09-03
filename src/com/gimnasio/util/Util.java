@@ -24,6 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.net.URLEncoder;
 import java.util.Map;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JInternalFrame;
@@ -32,7 +33,6 @@ import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 /**
@@ -142,7 +142,7 @@ public class Util {
      * @return
      */
     public static List<?> getDivideArray(List<?> arr, int size) {
-        List<List<?>> lista = new ArrayList<List<?>>();
+        List<List<?>> lista = new ArrayList();
         double val = arr.size() < size ? 1 : Double.parseDouble(arr.size() + "") / size;
         int cantidad = (int) Math.ceil(val);
         for (int i = 0; i < cantidad; i++) {
@@ -222,15 +222,20 @@ public class Util {
     public static void generarReportes(String ruta, Map parametros) {
         try {
             parametros.put("RUTA_IMAGENES", "E:/gimnasio/gimnasio/reports/");
-            Conexion conexion = new Conexion();                       
-            File fileReport = new File("reports/" + ruta);           
-            JasperReport load = JasperCompileManager.compileReport(fileReport.getAbsolutePath());            
+            Conexion conexion = new Conexion();
+            File fileReport = new File("reports/" + ruta);
+            JasperReport load = JasperCompileManager.compileReport(fileReport.getAbsolutePath());
             JasperPrint print = JasperFillManager.fillReport(load, parametros, conexion.getConexion());
-            JasperViewer view = new JasperViewer(print,false);
-            view.setVisible(true);            
+            JasperViewer view = new JasperViewer(print, false);
+            view.setVisible(true);
         } catch (Exception e) {
             System.out.println(e);
 
         }
+    }
+
+    public static int setRandom(int min, int max) {
+        Random rand = new Random();
+        return rand.nextInt((max - min) + 1) + min;
     }
 }

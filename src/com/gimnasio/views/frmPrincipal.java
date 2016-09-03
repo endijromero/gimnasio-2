@@ -36,6 +36,7 @@ public class frmPrincipal extends javax.swing.JFrame {
     private frmDescuentos descuentoView;
     private frmCafeteria cafeteriaView;
     private frmProductos productoView;
+    private frmUsuarios usuarioView;
     private frmPaquetes paqueteView;
     private frmClientes clienteView;
     private frmPagos pagosView;
@@ -45,7 +46,7 @@ public class frmPrincipal extends javax.swing.JFrame {
 
     public frmPrincipal() {
         initComponents();
-        this.setSize(1250, 700);
+        // this.setSize(1250, 700);
         Util.setCentrarJFrame(this, null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         Util.setFuncionesJFrame(this, false);
@@ -76,7 +77,9 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuPaquetes = new javax.swing.JMenuItem();
         menuDescuentos = new javax.swing.JMenuItem();
         menuProductos = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        menuUsuario = new javax.swing.JMenu();
+        menuCrear_usuario = new javax.swing.JMenuItem();
+        menuBuscar_cliente1 = new javax.swing.JMenuItem();
         menuCliente = new javax.swing.JMenu();
         menuCrear_cliente = new javax.swing.JMenuItem();
         menuBuscar_cliente = new javax.swing.JMenuItem();
@@ -141,14 +144,28 @@ public class frmPrincipal extends javax.swing.JFrame {
         });
         jMenu1.add(menuProductos);
 
-        jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/profile-icon.png"))); // NOI18N
-        jMenuItem2.setText("Usuarios");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        menuUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/user-male-alt-icon.png"))); // NOI18N
+        menuUsuario.setText("Usuarios");
+
+        menuCrear_usuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/user-male-alt-icon.png"))); // NOI18N
+        menuCrear_usuario.setText("Crear");
+        menuCrear_usuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setCrearUsuarios(evt);
+                setMenuCrearUsuario(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        menuUsuario.add(menuCrear_usuario);
+
+        menuBuscar_cliente1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/Zoom-icon.png"))); // NOI18N
+        menuBuscar_cliente1.setText("Buscar");
+        menuBuscar_cliente1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setMenuBuscarUsuario(evt);
+            }
+        });
+        menuUsuario.add(menuBuscar_cliente1);
+
+        jMenu1.add(menuUsuario);
 
         jMenuBar1.add(jMenu1);
 
@@ -238,7 +255,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuCierre_caja.setText("Cierre de Caja");
         menuCierre_caja.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuCierre_cajaActionPerformed(evt);
+                setMenuCierreCaja(evt);
             }
         });
         menuCumpleanos.add(menuCierre_caja);
@@ -247,7 +264,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         menuClientes_activos.setText("Clientes Activos");
         menuClientes_activos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuClientes_activosActionPerformed(evt);
+                setMenuClientesActivos(evt);
             }
         });
         menuCumpleanos.add(menuClientes_activos);
@@ -256,7 +273,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         jMenuItem3.setText("Cumpleaños");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                setMenuCumpleanos(evt);
             }
         });
         menuCumpleanos.add(jMenuItem3);
@@ -430,11 +447,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.buscarClienteView.setVisible(true);
     }//GEN-LAST:event_setRegistrarDatosFisioterapeuta
 
-    private void setCrearUsuarios(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setCrearUsuarios
-
-    }//GEN-LAST:event_setCrearUsuarios
-
-    private void menuCierre_cajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCierre_cajaActionPerformed
+    private void setMenuCierreCaja(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setMenuCierreCaja
         // TODO add your handling code here:
         String ruta = "cieerre_de_caja.jrxml";
         Map params = new HashMap<>();
@@ -449,24 +462,24 @@ public class frmPrincipal extends javax.swing.JFrame {
         params.put("FECHA_FIN", fecha_fin);
 
         Util.generarReportes(ruta, params);
-    }//GEN-LAST:event_menuCierre_cajaActionPerformed
+    }//GEN-LAST:event_setMenuCierreCaja
 
     /**
      *
      */
-    private void menuClientes_activosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuClientes_activosActionPerformed
+    private void setMenuClientesActivos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setMenuClientesActivos
         // TODO add your handling code here:
         String ruta = "clientes_activos.jrxml";
         Map params = new HashMap<>();
         Util.generarReportes(ruta, params);
 
-    }//GEN-LAST:event_menuClientes_activosActionPerformed
+    }//GEN-LAST:event_setMenuClientesActivos
 
     /**
      *
      * @param evt
      */
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void setMenuCumpleanos(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setMenuCumpleanos
         // TODO add your handling code here:
         this.cumpleanosView = new frmReporteCumpleanos(this);
         frmPrincipal.jdstPrincipal.add(this.cumpleanosView);
@@ -475,7 +488,7 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.cumpleanosView.setResizable(true);
         this.cumpleanosView.setClosable(true);
         this.cumpleanosView.setVisible(true);
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_setMenuCumpleanos
 
     private void setRegistrarClienteIngresos(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_setRegistrarClienteIngresos
         this.clientesIngresosView = new frmClientesIngresos(this, operacion);
@@ -488,8 +501,8 @@ public class frmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_setRegistrarClienteIngresos
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     private void menuReporte_fisioterapiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReporte_fisioterapiaActionPerformed
         // TODO add your handling code here:
@@ -501,6 +514,28 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.reporteFisioterapiaView.setClosable(true);
         this.reporteFisioterapiaView.setVisible(true);
     }//GEN-LAST:event_menuReporte_fisioterapiaActionPerformed
+
+    private void setMenuCrearUsuario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setMenuCrearUsuario
+        try {
+            this.usuarioView = new frmUsuarios(this, this.operacion);
+            this.usuarioView.setTitle("Formulario para el registro de usuarios");
+            this.usuarioView.setSize(this.getWidth(), this.getHeight() - 1);
+            this.usuarioView.setUsuarioSessionDto(this.usuarioSessionDto);
+            this.usuarioView.setResizable(true);
+            this.usuarioView.setClosable(true);
+            this.usuarioView.setVisible(true);
+            frmPrincipal.jdstPrincipal.add(this.usuarioView);
+        } catch (Exception ex) {
+            JLabel label = new JLabel("Error no controlado, intente nuevamente");
+            label.setFont(new Font("consolas", Font.PLAIN, 14));
+            JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(frmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_setMenuCrearUsuario
+
+    private void setMenuBuscarUsuario(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setMenuBuscarUsuario
+        
+    }//GEN-LAST:event_setMenuBuscarUsuario
 
     /**
      * @param args the command line arguments
@@ -641,6 +676,14 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.operacion = operacion;
     }
 
+    public frmUsuarios getUsuarioView() {
+        return usuarioView;
+    }
+
+    public void setUsuarioView(frmUsuarios usuarioView) {
+        this.usuarioView = usuarioView;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
@@ -649,20 +692,22 @@ public class frmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     public static javax.swing.JDesktopPane jdstPrincipal;
     private javax.swing.JMenuItem menuBuscar_cliente;
+    private javax.swing.JMenuItem menuBuscar_cliente1;
     private javax.swing.JMenuItem menuCafeteria;
     private javax.swing.JMenuItem menuCierre_caja;
     private javax.swing.JMenu menuCliente;
     private javax.swing.JMenuItem menuClientes_activos;
     private javax.swing.JMenuItem menuCrear_cliente;
+    private javax.swing.JMenuItem menuCrear_usuario;
     private javax.swing.JMenu menuCumpleanos;
     private javax.swing.JMenuItem menuDescuentos;
     private javax.swing.JMenuItem menuPagos;
     private javax.swing.JMenuItem menuPaquetes;
     private javax.swing.JMenuItem menuProductos;
     private javax.swing.JMenuItem menuReporte_fisioterapia;
+    private javax.swing.JMenu menuUsuario;
     // End of variables declaration//GEN-END:variables
 }

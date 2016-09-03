@@ -385,17 +385,17 @@ public class Model {
     }
 
     /**
-     * 
+     *
      * @param nombres
      * @param apellidos
      * @param documento
      * @param limite
      * @param llaves
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public List<FisioterapiaDto> getFisioterapiaDto(String nombres, String apellidos, String documento, String limite, List<String> llaves) throws SQLException {
-        List<FisioterapiaDto> list = new ArrayList<>();        
+        List<FisioterapiaDto> list = new ArrayList<>();
         try (Statement stat = this.conexion.getConexion().createStatement()) {
             String sql = "SELECT "
                     + "cl.id as id_cliente, "
@@ -443,7 +443,7 @@ public class Model {
             if (limite != null && !limite.toLowerCase().equals("todos")) {
                 sql += "LIMIT " + limite;
             }
-            ResultSet res = stat.executeQuery(sql);            
+            ResultSet res = stat.executeQuery(sql);
             while (res.next()) {
                 FisioterapiaDto fisioterapia = new FisioterapiaDto();
                 ClienteDto dto = new ClienteDto();
@@ -476,10 +476,11 @@ public class Model {
                 dto.setPersonaDto(persona);
                 fisioterapia.setClienteDto(dto);
                 list.add(fisioterapia);
-            }            
+            }
         }
         return list;
     }
+
     /**
      *
      * @param nombres
@@ -682,6 +683,168 @@ public class Model {
 
     /**
      *
+     * @param idUsuario
+     * @param numeroDocuemnto
+     * @return
+     * @throws SQLException
+     */
+    public List<UsuarioDto> getUsuarioPersonaDatos(String idUsuario, String numeroDocuemnto) throws SQLException {
+        List<UsuarioDto> list = new ArrayList();
+        Statement stat;
+        stat = this.conexion.getConexion().createStatement();
+        String sql = "SELECT usu.*, per.* FROM clientes cli INNER JOIN personas per ON usu.persona_id=per.id WHERE 1 ";
+        if (!Util.getVacio(idUsuario)) {
+            sql += " AND usu.id=" + idUsuario;
+        }
+        if (!Util.getVacio(numeroDocuemnto)) {
+            sql += " AND per.numero_identificacion='" + numeroDocuemnto + "'";
+        }
+        sql += " ORDER BY usu.id ASC ";
+        ResultSet res = stat.executeQuery(sql);
+        while (res.next()) {
+            UsuarioDto dto = new UsuarioDto();
+            dto.setId(res.getLong("id"));
+            dto.setLoggin(res.getString("loggin"));
+            dto.setPassword(res.getString("password"));
+            dto.setPersonaId(res.getLong("persona_id"));
+            dto.setTipoUsuario(res.getShort("tipo_usuario"));
+            dto.setYnActivo(res.getShort("yn_activo"));
+            dto.setFechaRegistro(res.getString("fecha_registro"));
+            dto.setFechaModificacion(res.getString("fecha_modificacion"));
+
+            dto.getPersonaDto().setId(res.getLong("persona_id"));
+            dto.getPersonaDto().setPrimerNombre(res.getString("primer_nombre"));
+            dto.getPersonaDto().setSegundoNombre(res.getString("segundo_nombre"));
+            dto.getPersonaDto().setPrimerApellido(res.getString("primer_apellido"));
+            dto.getPersonaDto().setSegundoApellido(res.getString("segundo_apellido"));
+            dto.getPersonaDto().setTipoIdentificacion(res.getShort("tipo_identificacion"));
+            dto.getPersonaDto().setNumeroIdentificacion(res.getString("numero_identificacion"));
+            dto.getPersonaDto().setGenero(res.getShort("genero"));
+            dto.getPersonaDto().setFechaNacimiento(res.getString("fecha_nacimiento"));
+            dto.getPersonaDto().setDireccion(res.getString("direccion"));
+            dto.getPersonaDto().setBarrio(res.getString("barrio"));
+            dto.getPersonaDto().setTelefono(res.getString("telefono"));
+            dto.getPersonaDto().setMovil(res.getString("movil"));
+            dto.getPersonaDto().setEmail(res.getString("email"));
+            dto.getPersonaDto().setHuellaDactilar(res.getBytes("huella_dactilar"));
+            dto.getPersonaDto().setFotoPerfil(res.getString("foto_perfil"));
+            dto.getPersonaDto().setFechaRegistro(res.getString("fecha_registro"));
+            dto.getPersonaDto().setFechaModificacion(res.getString("fecha_modificacion"));
+            list.add(dto);
+        }
+        stat.close();
+        return list;
+    }
+
+    /**
+     *
+     * @tutorial Method Description: valida que la informacion este correcta
+     * @author Eminson Mendoza ~~ emimaster16@gmail.com
+     * @date 08/07/2016
+     * @param usuarioDto
+     * @throws java.sql.SQLException
+     */
+    public void setGuardarDatosUsuario(UsuarioDto usuarioDto) throws SQLException {
+        PreparedStatement stat;
+        ResultSet res;
+        boolean correct = false;
+        try {
+            if (usuarioDto.getId() != null && !Util.getVacio(String.valueOf(usuarioDto.getId()))) {
+                stat = this.conexion.getConexion().prepareStatement("UPDATE personas SET primer_nombre = ?, segundo_nombre = ?, "
+                        + "primer_apellido = ?, segundo_apellido = ?, "
+                        + "tipo_identificacion = ?, numero_identificacion = ?, "
+                        + "genero = ?, fecha_nacimiento = ?, "
+                        + "direccion = ?, barrio = ?, "
+                        + "telefono = ?, movil = ?, "
+                        + "email = ?, huella_dactilar = ?, "
+                        + "foto_perfil = ?,fecha_modificacion=NOW() "
+                        + "WHERE id=? ");
+                stat.setString(1, usuarioDto.getPersonaDto().getPrimerNombre());
+                stat.setString(2, usuarioDto.getPersonaDto().getSegundoNombre());
+                stat.setString(3, usuarioDto.getPersonaDto().getPrimerApellido());
+                stat.setString(4, usuarioDto.getPersonaDto().getSegundoApellido());
+                stat.setShort(5, usuarioDto.getPersonaDto().getTipoIdentificacion());
+                stat.setString(6, usuarioDto.getPersonaDto().getNumeroIdentificacion());
+                stat.setShort(7, usuarioDto.getPersonaDto().getGenero());
+                stat.setString(8, usuarioDto.getPersonaDto().getFechaNacimiento());
+                stat.setString(9, usuarioDto.getPersonaDto().getDireccion());
+                stat.setString(10, usuarioDto.getPersonaDto().getBarrio());
+                stat.setString(11, usuarioDto.getPersonaDto().getTelefono());
+                stat.setString(12, usuarioDto.getPersonaDto().getMovil());
+                stat.setString(13, usuarioDto.getPersonaDto().getEmail());
+                stat.setBytes(14, usuarioDto.getPersonaDto().getHuellaDactilar());
+                stat.setString(15, usuarioDto.getPersonaDto().getFotoPerfil());
+                stat.setLong(16, usuarioDto.getPersonaDto().getId());
+                correct = stat.executeUpdate() > 0;
+            } else {
+                stat = this.conexion.getConexion().prepareStatement("INSERT INTO personas (primer_nombre, segundo_nombre, "
+                        + "primer_apellido, segundo_apellido, "
+                        + "tipo_identificacion, numero_identificacion, "
+                        + "genero, fecha_nacimiento, "
+                        + "direccion, barrio, "
+                        + "telefono, movil, "
+                        + "email, huella_dactilar, "
+                        + "foto_perfil, fecha_registro, "
+                        + "fecha_modificacion) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW())", Statement.RETURN_GENERATED_KEYS);
+                stat.setString(1, usuarioDto.getPersonaDto().getPrimerNombre());
+                stat.setString(2, usuarioDto.getPersonaDto().getSegundoNombre());
+                stat.setString(3, usuarioDto.getPersonaDto().getPrimerApellido());
+                stat.setString(4, usuarioDto.getPersonaDto().getSegundoApellido());
+                stat.setShort(5, usuarioDto.getPersonaDto().getTipoIdentificacion());
+                stat.setString(6, usuarioDto.getPersonaDto().getNumeroIdentificacion());
+                stat.setShort(7, usuarioDto.getPersonaDto().getGenero());
+                stat.setString(8, usuarioDto.getPersonaDto().getFechaNacimiento());
+                stat.setString(9, usuarioDto.getPersonaDto().getDireccion());
+                stat.setString(10, usuarioDto.getPersonaDto().getBarrio());
+                stat.setString(11, usuarioDto.getPersonaDto().getTelefono());
+                stat.setString(12, usuarioDto.getPersonaDto().getMovil());
+                stat.setString(13, usuarioDto.getPersonaDto().getEmail());
+                stat.setBytes(14, usuarioDto.getPersonaDto().getHuellaDactilar());
+                stat.setString(15, usuarioDto.getPersonaDto().getFotoPerfil());
+                if (stat.executeUpdate() > 0) {
+                    res = stat.getGeneratedKeys();
+                    if (res.next()) {
+                        correct = true;
+                        usuarioDto.getPersonaDto().setId(res.getLong(1));
+                    }
+                }
+            }
+            if (correct) {
+                if (usuarioDto.getId() != null && !Util.getVacio(String.valueOf(usuarioDto.getId()))) {
+                    stat = this.conexion.getConexion().prepareStatement("UPDATE  usuarios SET tipo_usuario = ?, persona_id = ?, loggin = ?, yn_activo = ?, fecha_modificacion=NOW() WHERE id = ?");
+                    stat.setShort(1, usuarioDto.getTipoUsuario());
+                    stat.setLong(1, usuarioDto.getPersonaDto().getId());
+                    stat.setString(2, usuarioDto.getPersonaDto().getNumeroIdentificacion());
+                    stat.setShort(3, usuarioDto.getYnActivo());
+                    stat.setLong(4, usuarioDto.getId());
+                    stat.executeUpdate();
+                } else {
+                    stat = this.conexion.getConexion().prepareStatement("INSERT INTO usuarios(tipo_usuario, persona_id, loggin, password, yn_activo, fecha_registro ) VALUES(?, ?, ?, ?, ?, NOW()) ", Statement.RETURN_GENERATED_KEYS);
+                    stat.setShort(1, usuarioDto.getTipoUsuario());
+                    stat.setLong(2, usuarioDto.getPersonaDto().getId());
+                    stat.setString(3, usuarioDto.getPersonaDto().getNumeroIdentificacion());
+                    stat.setString(4, String.valueOf(Util.setRandom(1000, 9999)));
+                    stat.setShort(5, usuarioDto.getYnActivo());
+                    if (stat.executeUpdate() > 0) {
+                        res = stat.getGeneratedKeys();
+                        if (res.next()) {
+                            correct = true;
+                            usuarioDto.setId(res.getLong(1));
+                        }
+                    }
+                }
+            }
+            stat.close();
+        } catch (SQLException ex) {
+            this.conexion.rollback();
+            throw ex;
+        } finally {
+            this.conexion.commit();
+        }
+    }
+
+    /**
+     *
      * @param idCliente
      * @param numeroDocuemnto
      * @return
@@ -825,9 +988,6 @@ public class Model {
         } finally {
             this.conexion.commit();
         }
-    }
-
-    public void setGuardarUsuario(UsuarioDto usuarioDto) throws SQLException {
     }
 
     public boolean setGuardarPaquete(PaqueteDto paquete) throws SQLException {
