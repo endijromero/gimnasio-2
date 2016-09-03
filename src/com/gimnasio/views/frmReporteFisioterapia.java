@@ -311,6 +311,7 @@ public class frmReporteFisioterapia extends javax.swing.JInternalFrame {
             String flexibilidad = dto.getDato6();
             String densidad = dto.getDato7();
             String grasa = dto.getDato8();
+            String imc = dto.getDato9();
             
             String ruta = "fisioterapia.jrxml";
             Map params = new HashMap<>();
@@ -320,6 +321,7 @@ public class frmReporteFisioterapia extends javax.swing.JInternalFrame {
             params.put("FLEXIBILIDAD", flexibilidad);
             params.put("DENSIDAD", densidad);
             params.put("GRASA", grasa);
+            params.put("IMC", imc);
             
             Util.generarReportes(ruta, params);
         }
