@@ -43,7 +43,7 @@ public final class frmGastos extends javax.swing.JInternalFrame {
         this.usuarioSessionDto = new UsuarioDto();
         
 
-        this.headTable = new String[]{"Id", "Nombre", "Porcentaje"};
+        this.headTable = new String[]{"Id", "Descripción", "Valor"};
         int widthColumna[] = {50, 200, 100};
         this.table = new TablaModelo(this.headTable);
         this.tblGastos.setModel(this.table);
