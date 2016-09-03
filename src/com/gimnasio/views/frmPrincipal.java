@@ -110,11 +110,6 @@ public class frmPrincipal extends javax.swing.JFrame {
 
         jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/cog-icon.png"))); // NOI18N
         jMenu1.setText("Administración");
-        jMenu1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu1ActionPerformed(evt);
-            }
-        });
 
         menuPaquetes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/gimnasio/files/folder-icon.png"))); // NOI18N
         menuPaquetes.setText("Paquetes");
@@ -372,10 +367,6 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.buscarClienteView.setClosable(true);
         this.buscarClienteView.setVisible(true);
     }//GEN-LAST:event_setRegistrarPagosPlanes
-
-    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenu1ActionPerformed
 
     /**
      *

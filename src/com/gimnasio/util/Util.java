@@ -221,7 +221,7 @@ public class Util {
      */
     public static void generarReportes(String ruta, Map parametros) {
         try {
-            parametros.put("RUTA_IMAGENES", "E:/gimnasio/gimnasio/reports/");
+            parametros.put("RUTA_IMAGENES", "reports/");
             Conexion conexion = new Conexion();
             File fileReport = new File("reports/" + ruta);
             JasperReport load = JasperCompileManager.compileReport(fileReport.getAbsolutePath());
