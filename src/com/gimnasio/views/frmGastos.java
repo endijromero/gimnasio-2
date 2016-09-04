@@ -62,7 +62,7 @@ public final class frmGastos extends javax.swing.JInternalFrame {
      * @throws SQLException
      */
     public void setConsultarTableDescuentos() throws SQLException {
-        List<TablaDto> lista = this.operacion.getDescuentosDatosTablaDto(null);
+        List<TablaDto> lista = this.operacion.getGastosDatosTablaDto(null);
         this.table.getData().clear();
         this.lblCantidad_descuentos.setText(String.valueOf(lista.size()));
         lista.stream().forEach((dto) -> {
@@ -274,10 +274,9 @@ public final class frmGastos extends javax.swing.JInternalFrame {
                         this.gastoDto.setValor(valor);
                     }
                     if (guarda) {
-                        boolean save = true;
-                        //boolean save = this.operacion.setSaveUpdateDescuentos(this.gastoDto);
+                        boolean save = this.operacion.setSaveGastos(this.gastoDto, String.valueOf(this.usuarioSessionDto.getId()));
                         if (save) {
-                            JLabel label = new JLabel("<html>Los datos para el Descuento: <b>" + this.gastoDto.getDescripcion()+ "</b>, fueron guardados correctamente</html>");
+                            JLabel label = new JLabel("<html>Los datos para el Gasto: <b>" + this.gastoDto.getDescripcion()+ "</b>, fueron guardados correctamente</html>");
                             label.setFont(new Font("consolas", Font.PLAIN, 14));
                             JOptionPane.showMessageDialog(this, label, "Información", JOptionPane.INFORMATION_MESSAGE);
                             this.setConsultarTableDescuentos();
@@ -285,12 +284,12 @@ public final class frmGastos extends javax.swing.JInternalFrame {
                         }
                     }
                 } else {
-                    JLabel label = new JLabel("El porcentaje debe ser mayor a 0");
+                    JLabel label = new JLabel("El Valor debe ser mayor a 0");
                     label.setFont(new Font("consolas", Font.PLAIN, 14));
                     JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
                 }
             } else {
-                JLabel label = new JLabel("Debe ingresar Nombre y Porcentaje");
+                JLabel label = new JLabel("Debe ingresar Descripción y Valor");
                 label.setFont(new Font("consolas", Font.PLAIN, 14));
                 JOptionPane.showMessageDialog(this, label, "Mensaje de Advertencia", JOptionPane.WARNING_MESSAGE);
             }

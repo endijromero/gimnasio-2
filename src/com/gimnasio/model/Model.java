@@ -650,6 +650,7 @@ public class Model {
         return list;
     }
 
+    
     /**
      *
      * @param descuento
@@ -678,6 +679,35 @@ public class Model {
         return true;
     }
 
+    /**
+     * 
+     * @param gasto
+     * @param usuario_id
+     * @return
+     * @throws SQLException 
+     */
+    public boolean setGuardarGastos(GastoDto gasto, String usuario_id) throws SQLException {
+        PreparedStatement stat;
+        try {
+            if (gasto.getId() != null && gasto.getId() > 0) {
+                stat = this.conexion.getConexion().prepareStatement("UPDATE gastos SET descripcion = ?, valor = ?, usuario_id = ? WHERE id=?");
+                stat.setInt(4, gasto.getId());
+            } else {
+                stat = this.conexion.getConexion().prepareStatement("INSERT INTO gastos (descripcion, valor, usuario_id) VALUES (?,?,?)");
+            }
+            stat.setString(1, gasto.getDescripcion());
+            stat.setDouble(2, gasto.getValor());
+            stat.setString(3, usuario_id);
+            stat.execute();
+            stat.close();
+        } catch (SQLException ex) {
+            this.conexion.rollback();
+            throw ex;
+        } finally {
+            this.conexion.commit();
+        }
+        return true;
+    }
     /**
      *
      * @param producto
@@ -1165,6 +1195,39 @@ public class Model {
                 list.add(dto);
             }
         }
+        return list;
+    }
+    
+    /**
+     * RP: se traen los gastos del dia
+     * @param idGastos
+     * @param fecha
+     * @return
+     * @throws SQLException 
+     */
+    public List<GastoDto> getDatosGastos(String idGastos, boolean fecha) throws SQLException {
+        List<GastoDto> list = new ArrayList();
+        Statement stat = this.conexion.getConexion().createStatement();
+        
+        String sql = "SELECT * FROM gastos WHERE 1 ";
+        if(fecha) {
+            sql += " AND CONCAT(year(fecha_registro),'-',month(fecha_registro),'-',day(fecha_registro)) = CONCAT(year(NOW()),'-',month(NOW()),'-',day(NOW())) ";
+        }
+        if (!Util.getVacio(idGastos)) {
+            sql += " AND id=" + idGastos;
+            
+        }        
+        sql += " ORDER BY id ASC ";
+        ResultSet res = stat.executeQuery(sql);
+        while (res.next()) {
+            GastoDto dto = new GastoDto();
+            dto.setId(res.getInt("id"));
+            dto.setDescripcion(res.getString("descripcion"));
+            dto.setValor(res.getDouble("valor"));
+            dto.setFechaRegistro(res.getString("fecha_registro"));
+            list.add(dto);
+        }
+        
         return list;
     }
     

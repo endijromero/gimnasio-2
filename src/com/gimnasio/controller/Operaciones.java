@@ -935,6 +935,43 @@ public class Operaciones {
      */
     public ClientePaqueteDto getPaqueteActivoCliente(String idCliente, String documento) throws SQLException {
         return this.model.getPaqueteActivoCliente(idCliente, documento);
+    }    
+    
+    /**
+     * 
+     * @param gasto
+     * @param usuario_id
+     * @return
+     * @throws SQLException 
+     */
+    public boolean setSaveGastos(GastoDto gasto, String usuario_id) throws SQLException {
+        boolean guarda = false;
+        if (Util.getVacio(gasto.getDescripcion())) {
+            JOptionPane.showMessageDialog(null, "El campo para la Descripcón del gasto es obligatorio");
+        } else if (Util.getVacio(String.valueOf(gasto.getValor()))) {
+            JOptionPane.showMessageDialog(null, "El campo para el Valor del gasto es obligatorio");
+        } else {
+            guarda = this.model.setGuardarGastos(gasto, usuario_id);
+        }
+        return guarda;
+    }
+    
+    /**
+     * 
+     * @param idGasto
+     * @return
+     * @throws SQLException 
+     */
+    public List<TablaDto> getGastosDatosTablaDto(String idGasto) throws SQLException {
+        List<TablaDto> listTable = new ArrayList();
+        List<GastoDto> listGastos = this.model.getDatosGastos(idGasto, true);
+        listGastos.stream().map((gasto) -> new TablaDto(
+                String.valueOf(gasto.getId()),
+                Util.getQuitaNULL(gasto.getDescripcion()),
+                String.valueOf(gasto.getValor()))).forEach((tabla) -> {
+                    listTable.add(tabla);
+                });
+        return listTable;
     }
 
     public Model getModel() {

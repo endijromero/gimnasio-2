@@ -171,7 +171,7 @@ public class HiloBusqueda extends Thread {
      *
      * @param clienteDto
      */
-    public void setGuardaAsistencia(ClienteDto clienteDto) {
+    public void setGuardaAsistencia(ClienteDto clienteDto) throws ParseException {
         try {
             boolean ingresa = false;
             boolean existe = false;
