@@ -38,7 +38,7 @@ coalesce(per.segundo_nombre,'') as segundo_nombre,
 coalesce(per.primer_apellido,'') AS primer_apellido,
 coalesce(per.segundo_apellido,'') as segundo_apellido,
 coalesce(paq.nombre,'') as nombre,
-coalesce((SELECT sum(clp.valor_total) from cliente_paquete clp WHERE  clp.fecha_registro >= $P{FECHA_INICIO} AND clp.fecha_registro <= $P{FECHA_FIN} ),0) as total
+coalesce((SELECT sum(clp.valor_total) from cliente_paquete clp WHERE  clp.fecha_registro >= CONCAT($P{FECHA_INICIO}, " 00:00:00") AND clp.fecha_registro <= CONCAT($P{FECHA_FIN}," 23:59:59") ),0) as total
 FROM 
 cliente_paquete clp
 INNER JOIN clientes cl
@@ -47,7 +47,7 @@ INNER JOIN personas per
 ON per.id = cl.persona_id
 INNER JOIN paquetes paq
 ON paq.id = clp.paquete_id
-WHERE clp.fecha_registro >= $P{FECHA_INICIO} AND clp.fecha_registro <= $P{FECHA_FIN}]]>
+WHERE clp.fecha_registro >= CONCAT($P{FECHA_INICIO}, " 00:00:00") AND clp.fecha_registro <= CONCAT($P{FECHA_FIN}," 23:59:59")]]>
 		</queryString>
 		<field name="id" class="java.math.BigInteger">
 			<fieldDescription><![CDATA[Id principal]]></fieldDescription>
@@ -81,12 +81,12 @@ ven.id,
 coalesce(ven.valor_total,0) as valor_total,
 coalesce(ven.cantidad,0) as cantidad,
 coalesce(prd.nombre,"")as nombre,
-coalesce((SELECT sum(ven.valor_total) FROM producto_ventas ven WHERE ven.fecha_registro >= $P{FECHA_INICIO} and  ven.fecha_registro <= $P{FECHA_FIN}),0) as total
+coalesce((SELECT sum(ven.valor_total) FROM producto_ventas ven WHERE ven.fecha_registro >= CONCAT($P{FECHA_INICIO}, " 00:00:00" ) and  ven.fecha_registro <= CONCAT($P{FECHA_FIN}," 23:59:59") ),0) as total
 FROM
 producto_ventas ven
 INNER JOIN productos prd
 ON prd.id = ven.productos_id
-WHERE ven.fecha_registro >= $P{FECHA_INICIO} and  ven.fecha_registro <= $P{FECHA_FIN}]]>
+WHERE ven.fecha_registro >= CONCAT($P{FECHA_INICIO}, " 00:00:00") and  ven.fecha_registro <= CONCAT($P{FECHA_FIN}," 23:59:59")]]>
 		</queryString>
 		<field name="id" class="java.math.BigInteger">
 			<fieldDescription><![CDATA[]]></fieldDescription>
@@ -117,10 +117,10 @@ WHERE ven.fecha_registro >= $P{FECHA_INICIO} and  ven.fecha_registro <= $P{FECHA
 g.id,
 coalesce(g.descripcion,'') as nombre,
 coalesce(g.valor,0) as valor,
-coalesce((SELECT sum(gas.valor) from gastos gas WHERE  gas.fecha_registro >= $P{FECHA_INICIO} AND gas.fecha_registro <= $P{FECHA_FIN} ),0) as total
+coalesce((SELECT sum(gas.valor) from gastos gas WHERE  gas.fecha_registro >= CONCAT($P{FECHA_INICIO}, " 00:00:00" ) AND gas.fecha_registro <= CONCAT($P{FECHA_FIN}, ' 23:59:59' ) ),0) as total
 FROM 
 gastos g
-WHERE g.fecha_registro >= $P{FECHA_INICIO} AND g.fecha_registro <= $P{FECHA_FIN}]]>
+WHERE g.fecha_registro >= CONCAT($P{FECHA_INICIO}, " 00:00:00" ) AND g.fecha_registro <= CONCAT($P{FECHA_FIN}, ' 23:59:59' ) ]]>
 		</queryString>
 		<field name="id" class="java.math.BigInteger">
 			<fieldDescription><![CDATA[]]></fieldDescription>
@@ -138,9 +138,9 @@ WHERE g.fecha_registro >= $P{FECHA_INICIO} AND g.fecha_registro <= $P{FECHA_FIN}
 	<parameter name="RUTA_IMAGENES" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select  
-coalesce((SELECT sum(clp.valor_total) from cliente_paquete clp WHERE clp.fecha_registro >= $P{FECHA_INICIO} AND  clp.fecha_registro <= $P{FECHA_FIN}),0) as total_paquetes,
-coalesce((SELECT sum(valor_total) FROM producto_ventas WHERE fecha_registro >= $P{FECHA_INICIO} AND fecha_registro <=$P{FECHA_FIN} ),0) as total_cafeteria,
-coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= $P{FECHA_INICIO} AND fecha_registro <=$P{FECHA_FIN} ),0) as total_gastos]]>
+coalesce((SELECT sum(clp.valor_total) from cliente_paquete clp WHERE clp.fecha_registro >= CONCAT($P{FECHA_INICIO}, " 00:00:00" ) AND  clp.fecha_registro <= CONCAT($P{FECHA_FIN}," 23:59:59") ),0) as total_paquetes,
+coalesce((SELECT sum(valor_total) FROM producto_ventas WHERE fecha_registro >= CONCAT($P{FECHA_INICIO}, " 00:00:00" ) AND fecha_registro <= CONCAT($P{FECHA_FIN}," 23:59:59") ),0) as total_cafeteria,
+coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= CONCAT($P{FECHA_INICIO}, " 00:00:00" ) AND fecha_registro <= CONCAT($P{FECHA_FIN}," 23:59:59") ),0) as total_gastos]]>
 	</queryString>
 	<field name="total_paquetes" class="java.math.BigDecimal"/>
 	<field name="total_cafeteria" class="java.lang.Double"/>
@@ -170,13 +170,18 @@ coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= $P{FECHA_INICIO}
 				</textElement>
 				<text><![CDATA[Cierre de caja ]]></text>
 			</staticText>
-			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="258" y="0" width="297" height="51" forecolor="#FFFFFF" uuid="2f74ed46-eed2-4ea3-86b0-baa21603db4e"/>
-				<box leftPadding="3"/>
-				<textElement verticalAlignment="Middle">
-					<font size="24"/>
+			<textField>
+				<reportElement mode="Transparent" x="258" y="0" width="297" height="51" forecolor="#FFFFFF" backcolor="#0066CC" uuid="54668f9f-ca3d-4c11-85e4-2ff9354653b7"/>
+				<box>
+					<topPen lineWidth="0.0" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.0" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.0" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.0" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="18"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{FECHA_INICIO}+"<br>"+$P{FECHA_FIN}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

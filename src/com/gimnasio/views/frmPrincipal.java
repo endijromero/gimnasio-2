@@ -452,19 +452,14 @@ public class frmPrincipal extends javax.swing.JFrame {
         this.buscarClienteView.setVisible(true);
     }//GEN-LAST:event_setRegistrarDatosFisioterapeuta
 
+    
     private void setMenuCierreCaja(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setMenuCierreCaja
-        String ruta = "cieerre_de_caja.jrxml";
-        Map params = new HashMap<>();
-        Calendar today = new GregorianCalendar();
-        Date currentDate = new Date();
-        today.setTime(currentDate);
-
-        String fecha_inicio = String.valueOf(today.get(Calendar.YEAR)) + "-" + String.valueOf(today.get(Calendar.MONTH) + 1) + "-" + String.valueOf(today.get(Calendar.DAY_OF_MONTH)) + " " + "00:00:00";
-        String fecha_fin = String.valueOf(today.get(Calendar.YEAR)) + "-" + String.valueOf(today.get(Calendar.MONTH) + 1) + "-" + String.valueOf(today.get(Calendar.DAY_OF_MONTH)) + " " + "23:59:59";
-
-        params.put("FECHA_INICIO", fecha_inicio);
-        params.put("FECHA_FIN", fecha_fin);
-        Util.generarReportes(ruta, params);
+        frmCierreCaja cierreCaja = new frmCierreCaja(this);
+        frmPrincipal.jdstPrincipal.add(cierreCaja);
+        cierreCaja.setSize(frmPrincipal.jdstPrincipal.getWidth(), frmPrincipal.jdstPrincipal.getHeight() - 1);
+        cierreCaja.setResizable(true);
+        cierreCaja.setClosable(true);
+        cierreCaja.setVisible(true);        
     }//GEN-LAST:event_setMenuCierreCaja
 
     /**
