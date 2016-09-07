@@ -194,19 +194,6 @@ coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= CONCAT($P{FECHA_
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="0" width="202" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="3a369cf6-0f9c-495c-a813-885e2fafeb73"/>
-				<box>
-					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
-					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
-					<bottomPen lineWidth="0.25" lineColor="#FFFFFF"/>
-					<rightPen lineWidth="0.25" lineColor="#FFFFFF"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Cliente"]]></textFieldExpression>
-			</textField>
-			<textField>
 				<reportElement mode="Opaque" x="299" y="0" width="97" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="f529af33-435a-48c9-9b74-33c54f068cd8"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
@@ -233,7 +220,7 @@ coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= CONCAT($P{FECHA_
 				<textFieldExpression><![CDATA["Valor Total"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="202" y="0" width="97" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="d39d2daf-90e2-4304-b0cd-e5f43d258afd"/>
+				<reportElement mode="Opaque" x="0" y="0" width="97" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="d39d2daf-90e2-4304-b0cd-e5f43d258afd"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
@@ -244,6 +231,19 @@ coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= CONCAT($P{FECHA_
 					<font size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Fecha"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="97" y="0" width="202" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="3a369cf6-0f9c-495c-a813-885e2fafeb73"/>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.25" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cliente"]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -284,7 +284,7 @@ coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= CONCAT($P{FECHA_
 						<jr:columnFooter style="table_CH" height="0" rowSpan="1"/>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="202" height="20" uuid="f8df6d88-8e69-485f-846e-904755ab2e96"/>
+								<reportElement stretchType="RelativeToBandHeight" x="97" y="0" width="202" height="20" uuid="f8df6d88-8e69-485f-846e-904755ab2e96"/>
 								<box leftPadding="2" rightPadding="2">
 									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
@@ -293,7 +293,7 @@ coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= CONCAT($P{FECHA_
 								<textFieldExpression><![CDATA[$F{primer_nombre}+" "+$F{segundo_nombre}+" "+$F{primer_apellido}+" "+$F{segundo_apellido}]]></textFieldExpression>
 							</textField>
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="202" y="0" width="97" height="20" uuid="0dcf4618-9b72-4659-a853-10b94a16f70f"/>
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="97" height="20" uuid="0dcf4618-9b72-4659-a853-10b94a16f70f"/>
 								<box leftPadding="2" rightPadding="2">
 									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
@@ -326,7 +326,7 @@ coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= CONCAT($P{FECHA_
 		</band>
 		<band height="55">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="10" width="202" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="d8d1c27c-1dff-4cb4-9965-ea2f33f3c1bb"/>
+				<reportElement mode="Opaque" x="97" y="10" width="202" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="d8d1c27c-1dff-4cb4-9965-ea2f33f3c1bb"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
@@ -386,7 +386,7 @@ coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= CONCAT($P{FECHA_
 						<jr:columnFooter style="table_CH" height="0" rowSpan="1"/>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="202" height="20" uuid="5965e4c4-8913-467b-93b4-4c3c13cde795"/>
+								<reportElement stretchType="RelativeToBandHeight" x="97" y="0" width="202" height="20" uuid="5965e4c4-8913-467b-93b4-4c3c13cde795"/>
 								<box leftPadding="2" rightPadding="2">
 									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
@@ -413,7 +413,7 @@ coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= CONCAT($P{FECHA_
 								<textFieldExpression><![CDATA[$F{valor_total}.intValue()]]></textFieldExpression>
 							</textField>
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="202" y="0" width="97" height="20" uuid="a04244af-6dc7-48ce-8aae-6e80ee805b8b"/>
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="97" height="20" uuid="a04244af-6dc7-48ce-8aae-6e80ee805b8b"/>
 								<box leftPadding="2" rightPadding="2">
 									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
@@ -439,7 +439,7 @@ coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= CONCAT($P{FECHA_
 				<textFieldExpression><![CDATA["Cantidad"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement mode="Opaque" x="202" y="10" width="97" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="3c0954b9-6b25-4ef6-8212-841aeeb55a70"/>
+				<reportElement mode="Opaque" x="0" y="10" width="97" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="3c0954b9-6b25-4ef6-8212-841aeeb55a70"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
@@ -466,19 +466,6 @@ coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= CONCAT($P{FECHA_
 				</textElement>
 				<textFieldExpression><![CDATA["Valor"]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement mode="Opaque" x="0" y="8" width="396" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="255c7b48-5658-4c9e-825f-1a134a3f4729"/>
-				<box>
-					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
-					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
-					<bottomPen lineWidth="0.25" lineColor="#FFFFFF"/>
-					<rightPen lineWidth="0.25" lineColor="#FFFFFF"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="14"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Gasto"]]></textFieldExpression>
-			</textField>
 			<componentElement>
 				<reportElement key="" x="0" y="28" width="555" height="20" uuid="b2ca69a4-3b27-459e-abf3-ff51bcee4e67"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
@@ -498,7 +485,7 @@ coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= CONCAT($P{FECHA_
 								<reportElement x="0" y="0" width="396" height="18" uuid="67138dc5-d171-4184-9176-79ef1bbda452"/>
 								<box rightPadding="3"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font size="10"/>
+									<font size="10" isBold="false"/>
 								</textElement>
 								<textFieldExpression><![CDATA["TOTAL"]]></textFieldExpression>
 							</textField>
@@ -514,7 +501,7 @@ coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= CONCAT($P{FECHA_
 						<jr:columnFooter style="table_CH" height="0" rowSpan="1"/>
 						<jr:detailCell height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="299" height="20" uuid="f93acdb1-e149-43bf-a87d-6120585a1c7d"/>
+								<reportElement stretchType="RelativeToBandHeight" x="97" y="0" width="299" height="20" uuid="f93acdb1-e149-43bf-a87d-6120585a1c7d"/>
 								<box leftPadding="2" rightPadding="2">
 									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
@@ -532,7 +519,7 @@ coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= CONCAT($P{FECHA_
 								<textFieldExpression><![CDATA[$F{valor}.intValue()]]></textFieldExpression>
 							</textField>
 							<textField isStretchWithOverflow="true">
-								<reportElement stretchType="RelativeToBandHeight" x="299" y="0" width="97" height="20" uuid="5a370e6a-242b-4102-bb2c-fe53a2866b11"/>
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="97" height="20" uuid="5a370e6a-242b-4102-bb2c-fe53a2866b11"/>
 								<box leftPadding="2" rightPadding="2">
 									<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
 									<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
@@ -545,7 +532,7 @@ coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= CONCAT($P{FECHA_
 				</jr:table>
 			</componentElement>
 			<textField>
-				<reportElement mode="Opaque" x="299" y="8" width="97" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="405016c4-3aa7-4261-8f9f-bf135f25c5cb"/>
+				<reportElement mode="Opaque" x="0" y="8" width="97" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="405016c4-3aa7-4261-8f9f-bf135f25c5cb"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
@@ -556,6 +543,19 @@ coalesce((SELECT sum(valor) FROM gastos WHERE fecha_registro >= CONCAT($P{FECHA_
 					<font size="14"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Fecha"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="97" y="8" width="299" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="255c7b48-5658-4c9e-825f-1a134a3f4729"/>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.25" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Gasto"]]></textFieldExpression>
 			</textField>
 		</band>
 		<band height="117">
