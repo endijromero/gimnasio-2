@@ -89,7 +89,7 @@ ORDER BY primer_nombre, segundo_nombre, primer_apellido]]>
 	<columnHeader>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement mode="Opaque" x="0" y="0" width="159" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="8630629a-b43f-420f-a6b3-5c2da69360ff"/>
+				<reportElement mode="Opaque" x="22" y="0" width="137" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="8630629a-b43f-420f-a6b3-5c2da69360ff"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
 					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
@@ -153,6 +153,19 @@ ORDER BY primer_nombre, segundo_nombre, primer_apellido]]>
 				</textElement>
 				<textFieldExpression><![CDATA["Paquete"]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="22" height="20" forecolor="#FFFFFF" backcolor="#0066CC" uuid="800e0abb-3f2d-4a91-b551-22b2821da449"/>
+				<box>
+					<topPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="0.25" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.25" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["#"]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
@@ -169,7 +182,7 @@ ORDER BY primer_nombre, segundo_nombre, primer_apellido]]>
 				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="159" height="20" uuid="c42dc669-a0f5-4fad-aab4-b30ba1b75aaf"/>
+				<reportElement stretchType="RelativeToBandHeight" x="22" y="0" width="137" height="20" uuid="c42dc669-a0f5-4fad-aab4-b30ba1b75aaf"/>
 				<box leftPadding="2" rightPadding="2">
 					<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
 					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
@@ -211,6 +224,17 @@ ORDER BY primer_nombre, segundo_nombre, primer_apellido]]>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Inicio: "+$F{fecha_inicio}+"<br> Fin: "+$F{fecha_fin}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="22" height="20" uuid="d228bd9f-5bd4-40bf-a1e7-a41e441592c7"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.25" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="0.25" lineColor="#CCCCCC"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
