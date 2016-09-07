@@ -38,7 +38,7 @@ coalesce(per.segundo_nombre,'') as segundo_nombre,
 coalesce(per.primer_apellido,'') AS primer_apellido,
 coalesce(per.segundo_apellido,'') as segundo_apellido,
 coalesce(paq.nombre,'') as nombre,
-concat(DAY(clp.fecha_registro),"-",MONTH(clp.fecha_registro),"-",YEAR(clp.fecha_registro)) as fecha,
+concat( IF (DAY(clp.fecha_registro)< 10,CONCAT("0",DAY(clp.fecha_registro)),DAY(clp.fecha_registro) ),"-",IF(MONTH(clp.fecha_registro) < 10,CONCAT("0",MONTH(clp.fecha_registro)),MONTH(clp.fecha_registro)),"-",YEAR(clp.fecha_registro)) as fecha,
 coalesce((SELECT sum(clp.valor_total) from cliente_paquete clp WHERE  clp.fecha_registro >= CONCAT($P{FECHA_INICIO}, " 00:00:00") AND clp.fecha_registro <= CONCAT($P{FECHA_FIN}," 23:59:59") ),0) as total
 FROM 
 cliente_paquete clp
@@ -83,7 +83,7 @@ ven.id,
 coalesce(ven.valor_total,0) as valor_total,
 coalesce(ven.cantidad,0) as cantidad,
 coalesce(prd.nombre,"")as nombre,
-concat(DAY(ven.fecha_registro),"-",MONTH(ven.fecha_registro),"-",YEAR(ven.fecha_registro)) as fecha,
+concat( IF (DAY(ven.fecha_registro)< 10,CONCAT("0",DAY(ven.fecha_registro)),DAY(ven.fecha_registro) ),"-",IF(MONTH(ven.fecha_registro) < 10,CONCAT("0",MONTH(ven.fecha_registro)),MONTH(ven.fecha_registro)),"-",YEAR(ven.fecha_registro)) as fecha,
 coalesce((SELECT sum(ven.valor_total) FROM producto_ventas ven WHERE ven.fecha_registro >= CONCAT($P{FECHA_INICIO}, " 00:00:00" ) and  ven.fecha_registro <= CONCAT($P{FECHA_FIN}," 23:59:59") ),0) as total
 FROM
 producto_ventas ven
@@ -121,7 +121,7 @@ WHERE ven.fecha_registro >= CONCAT($P{FECHA_INICIO}, " 00:00:00") and  ven.fecha
 g.id,
 coalesce(g.descripcion,'') as nombre,
 coalesce(g.valor,0) as valor,
-concat(DAY(g.fecha_registro),"-",MONTH(g.fecha_registro),"-",YEAR(g.fecha_registro)) as fecha,
+concat( IF (DAY(g.fecha_registro)< 10,CONCAT("0",DAY(g.fecha_registro)),DAY(g.fecha_registro) ),"-",IF(MONTH(g.fecha_registro) < 10,CONCAT("0",MONTH(g.fecha_registro)),MONTH(g.fecha_registro)),"-",YEAR(g.fecha_registro))  as fecha,
 coalesce((SELECT sum(gas.valor) from gastos gas WHERE  gas.fecha_registro >= CONCAT($P{FECHA_INICIO}, " 00:00:00" ) AND gas.fecha_registro <= CONCAT($P{FECHA_FIN}, ' 23:59:59' ) ),0) as total
 FROM 
 gastos g
