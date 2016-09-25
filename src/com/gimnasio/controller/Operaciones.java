@@ -22,15 +22,25 @@ import javax.swing.JOptionPane;
  * @author emimaster16
  */
 public class Operaciones {
-    
+
     private Model model;
     private Conexion conexion;
-    
+
     public Operaciones() {
         this.conexion = new Conexion();
         this.conexion.connect();
         this.model = new Model();
         this.model.setConexion(this.conexion);
+    }
+
+    public void setCambiarEstados() {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Date fechaActual = format.parse(format.format(new Date()));
+            
+        } catch (ParseException ex) {
+            Logger.getLogger(Operaciones.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -121,7 +131,7 @@ public class Operaciones {
     public List<ClienteIngresoDto> getClientesIngresosDia(String idCliente) throws SQLException {
         return this.model.getClientesIngresosDia(idCliente);
     }
-    
+
     public List<TablaDto> getClientesIngresoTableDto() throws SQLException {
         List<TablaDto> result = new ArrayList();
         List<ClienteIngresoDto> list = this.model.getClientesIngresosDia(null);
@@ -132,7 +142,7 @@ public class Operaciones {
             }
             return this.getClientesDatosTablaDto(llaves);
         }
-        
+
         return result;
     }
 
@@ -197,7 +207,7 @@ public class Operaciones {
         }
         return lista;
     }
-    
+
     public List<ComboDto> getYnActivo() throws Exception {
         List<ComboDto> lista = new ArrayList();
         for (ESiNo tip : ESiNo.getValues()) {
@@ -236,7 +246,7 @@ public class Operaciones {
         }
         return lista;
     }
-    
+
     public List<PaqueteDto> getPaquetesDatos(String idPaquete) throws SQLException {
         return this.model.getPaquetesDatos(idPaquete);
     }
@@ -256,7 +266,7 @@ public class Operaciones {
         } else {
             listMessages.add("<li>TEST DE MMII: Número de repeticiones</li>");
         }
-        
+
         if (fisioterapia.getTest_uno() > 0) {
         } else {
             listMessages.add("<li>TEST DE FLEXIBILIDAD: Test uno</li>");
@@ -269,7 +279,7 @@ public class Operaciones {
         } else {
             listMessages.add("<li>TEST DE FLEXIBILIDAD: Test tres</li>");
         }
-        
+
         if (fisioterapia.getClienteDto().getPersonaDto().getGenero() == EGenero.FEMENIMO.getId()) { //HOMBRE
             if (fisioterapia.getTriceps() > 0) {
             } else {
@@ -280,7 +290,7 @@ public class Operaciones {
                 listMessages.add("<li>PORCENTAJE DE GRASA: Siliaco</li>");
             }
         }
-        
+
         if (fisioterapia.getClienteDto().getPersonaDto().getGenero() == EGenero.MASCULINO.getId()) { //HOMBRE
             if (fisioterapia.getPectoral() > 0) {
             } else {
@@ -310,7 +320,7 @@ public class Operaciones {
         if (listMessages.size() < 1) {
             try {
                 this.model.getSaveFisioterapia(fisioterapia);
-                
+
             } catch (SQLException ex) {
                 Logger.getLogger(Operaciones.class
                         .getName()).log(Level.SEVERE, null, ex);
@@ -442,8 +452,8 @@ public class Operaciones {
                 String.valueOf(descuento.getId()),
                 Util.getQuitaNULL(descuento.getNombre()),
                 String.valueOf(descuento.getPorcentaje()))).forEach((tabla) -> {
-                    listTable.add(tabla);
-                });
+            listTable.add(tabla);
+        });
         return listTable;
     }
 
@@ -461,7 +471,7 @@ public class Operaciones {
             if (idProducto > 0 && idUsuario > 0 && !cantidad.equals("") && !valor_total.equals("")) {
                 java.util.Date fecha = new Date();
                 guarda = this.model.setGuardarCafeteria(idProducto, idUsuario, cantidad, valor_total, fecha);
-                
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(Operaciones.class
@@ -497,8 +507,8 @@ public class Operaciones {
         List<ProductoDto> listProductos = this.getProductosDatosDto(null);
         listProductos.stream().map((producto) -> new ComboDto(String.valueOf(producto.getId()),
                 Util.getQuitaNULL(producto.getNombre()))).forEach((tabla) -> {
-                    listTable.add(tabla);
-                });
+            listTable.add(tabla);
+        });
         return listTable;
     }
 
@@ -544,11 +554,11 @@ public class Operaciones {
                 String.valueOf(producto.getId()),
                 Util.getQuitaNULL(producto.getNombre()),
                 String.valueOf(producto.getPrecio()))).forEach((tabla) -> {
-                    listTable.add(tabla);
-                });
+            listTable.add(tabla);
+        });
         return listTable;
     }
-    
+
     public boolean setValidaDocumentoCliene(String idPersona, String numeroDocuemnto) throws SQLException {
         boolean correcto = true;
         List<ClienteDto> listClientes = this.model.getClienteDatos(null, numeroDocuemnto);
@@ -565,7 +575,18 @@ public class Operaciones {
         }
         return correcto;
     }
-    
+
+    public List<ClienteDto> getClienteHuellasDatos(String idCliente) throws SQLException {
+        List<ClienteDto> list = new ArrayList();
+        List<ClienteDto> listClientes = this.model.getClienteDatos(idCliente, null);
+        for (ClienteDto dto : listClientes) {
+            if (dto.getPersonaDto().getHuellaDactilar() != null) {
+                list.add(dto);
+            }
+        }
+        return list;
+    }
+
     public List<ClienteDto> getClienteDatos(String idCliente) throws SQLException {
         List<ClienteDto> list = this.model.getClienteDatos(idCliente, null);
         return list;
@@ -608,7 +629,7 @@ public class Operaciones {
         if (Util.getVacio(clienteDto.getPersonaDto().getNumeroIdentificacion())) {
             listMessages.add("<li>Número de documento</li>");
         }
-        
+
         if (clienteDto.getPersonaDto().getGenero() == 0) {
             listMessages.add("<li>Género</li>");
         }
@@ -632,7 +653,7 @@ public class Operaciones {
         }
         return listMessages;
     }
-    
+
     public List<String> setGuardarUsuario(UsuarioDto usuarioDto) throws SQLException {
         List<String> listMessages = new ArrayList();
         if (Util.getVacio(usuarioDto.getPersonaDto().getPrimerNombre())) {
@@ -670,7 +691,7 @@ public class Operaciones {
         }
         return listMessages;
     }
-    
+
     public List<ComboDto> getTipoDocumentos() throws Exception {
         List<ComboDto> lista = new ArrayList();
         for (ETipoDocumento tip : ETipoDocumento.getValues()) {
@@ -753,21 +774,21 @@ public class Operaciones {
     public ClientePaqueteDto getPaqueteActivoCliente(String idCliente, String documento) throws SQLException {
         return this.model.getPaqueteActivoCliente(idCliente, documento);
     }
-    
+
     public Model getModel() {
         return model;
     }
-    
+
     public void setModel(Model model) {
         this.model = model;
     }
-    
+
     public Conexion getConexion() {
         return conexion;
     }
-    
+
     public void setConexion(Conexion conexion) {
         this.conexion = conexion;
     }
-    
+
 }

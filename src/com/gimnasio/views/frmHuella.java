@@ -9,6 +9,7 @@ import com.digitalpersona.onetouch.DPFPFeatureSet;
 import com.digitalpersona.onetouch.DPFPGlobal;
 import com.digitalpersona.onetouch.DPFPSample;
 import com.digitalpersona.onetouch.DPFPTemplate;
+import com.digitalpersona.onetouch.DPFPTemplateFactory;
 import com.digitalpersona.onetouch.capture.DPFPCapture;
 import com.digitalpersona.onetouch.capture.event.DPFPDataAdapter;
 import com.digitalpersona.onetouch.capture.event.DPFPDataEvent;
@@ -93,13 +94,22 @@ public class frmHuella extends javax.swing.JDialog {
 
     private UsuarioDto usuarioSessionDto;
 
+    /**
+     *
+     * @param operacion
+     * @param parent
+     * @param modal
+     * @param cliDto
+     * @param tipoProceso
+     * @param frmCliente
+     */
     public frmHuella(Operaciones operacion, javax.swing.JFrame parent, boolean modal, ClienteDto cliDto, short tipoProceso, frmClientes frmCliente) {
         super(parent, modal);
         initComponents();
         this.cambia = false;
         this.operacion = operacion;
         try {
-            this.listClientesHuellas = this.operacion.getClienteDatos(null);
+            this.listClientesHuellas = this.operacion.getClienteHuellasDatos(null);
             this.listTemplates = new ArrayList();
             FileInputStream stream;
             File fileHuella;
@@ -168,6 +178,14 @@ public class frmHuella extends javax.swing.JDialog {
         }
     }
 
+    /**
+     *
+     * @param operacion
+     * @param parent
+     * @param modal
+     * @param tipoProceso
+     * @param frmClienteIngreso
+     */
     public frmHuella(Operaciones operacion, javax.swing.JFrame parent, boolean modal, short tipoProceso, frmClientesIngresos frmClienteIngreso) {
         super(parent, modal);
         initComponents();
@@ -178,31 +196,37 @@ public class frmHuella extends javax.swing.JDialog {
         this.clienteDto = new ClienteDto();
         try {
             this.listTemplates = new ArrayList();
-            this.listClientesHuellas = this.operacion.getClienteDatos(null);
+            this.listClientesHuellas = this.operacion.getClienteHuellasDatos(null);
             FileInputStream stream;
             File fileHuella;
             for (ClienteDto dto : this.listClientesHuellas) {
                 if (dto.getPersonaDto().getNumeroIdentificacion() != null) {
-                    fileHuella = new File(this.rutaHuellas + dto.getPersonaDto().getNumeroIdentificacion() + this.extension);
-                    if (fileHuella.exists()) {
-                        try {
-                            stream = new FileInputStream(fileHuella);
-                            byte[] data = new byte[stream.available()];
-                            stream.read(data);
-                            stream.close();
-                            DPFPTemplate t = DPFPGlobal.getTemplateFactory().createTemplate();
-                            t.deserialize(data);
-                            setTemplate(t);
-                            dto.getPersonaDto().setTemplateHuella(getTemplate());
-                        } catch (IOException | IllegalArgumentException ex) {
+                    DPFPTemplateFactory templateFactory = DPFPGlobal.getTemplateFactory();
+                    DPFPTemplate deserializedTemplate = templateFactory.createTemplate(dto.getPersonaDto().getHuellaDactilar());
+                    this.setTemplate(deserializedTemplate);
+                    dto.getPersonaDto().setTemplateHuella(getTemplate());
+                    /*
+                        fileHuella = new File(this.rutaHuellas + dto.getPersonaDto().getNumeroIdentificacion() + this.extension);
+                        if (fileHuella.exists()) {
                             try {
-                                throw ex;
-                            } catch (IOException ex1) {
-                                Logger.getLogger(frmHuella.class.getName()).log(Level.SEVERE, null, ex1);
+                                stream = new FileInputStream(fileHuella);
+                                byte[] data = new byte[stream.available()];
+                                stream.read(data);
+                                stream.close();
+                                DPFPTemplate t = DPFPGlobal.getTemplateFactory().createTemplate();
+                                t.deserialize(data);
+                                setTemplate(t);
+                                dto.getPersonaDto().setTemplateHuella(getTemplate());
+                            } catch (IOException | IllegalArgumentException ex) {
+                                try {
+                                    throw ex;
+                                } catch (IOException ex1) {
+                                    Logger.getLogger(frmHuella.class.getName()).log(Level.SEVERE, null, ex1);
+                                }
                             }
-                        }
 
-                    }
+                        }
+                     */
                 }
             }
             if (this.listClientesHuellas.size() > 0) {
